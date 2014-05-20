@@ -1,0 +1,140 @@
+
+<template name="CheckForm">
+	<div class="checkForm container">
+		<form class="form-horizontal check-form" role="form">
+			<fieldset>
+				<!-- Form Name -->
+				<legend>Check Form</legend>
+                
+				<!-- Checbox for Recurring-->
+				<div class="checkbox">
+				    <label>
+				      <input type="checkbox" name="is_recurring" checked {{isRecurringChecked}}> Make my donation recurring.
+				    </label>
+				  </div>
+
+                <!-- Checbox for Covering related fees-->
+                <div class="checkbox">
+                    <label>
+                      <input type="checkbox" name="coverTheFees" checked {{coverTheFeesChecked}}> I'll cover the fees.
+                    </label>
+                </div>
+
+				<!-- Amount of donation -->
+                <div class="form-group">
+                    <label {{attributes_Label_Amount}} >Amount</label>
+                    <div class="col-sm-9">
+                        <div class="input-group">
+                            <span class="input-group-addon">$</span>
+                            <input {{attributes_Input_Amount}} />
+                        </div>
+                    </div>
+                </div>
+
+				<!-- Full Name-->
+				<div class="form-group">
+					<label {{attributes_Label_Name}} >Name</label>
+					<div class="col-sm-9">
+						<input {{attributes_Input_Name}} />
+					</div>
+				</div>
+
+				<!-- address-line1 input-->
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="address_line1">Address Line 1</label>
+                    <div class="col-sm-9">
+                        <input {{attributes_Input_AddressLine1}} >
+                        <p class="help-block">Street address, P.O. box, company name, c/o</p>
+                    </div>
+                </div>
+                <!-- address-line2 input-->
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Address Line 2</label>
+                    <div class="col-sm-9">
+                        <input {{attributes_Input_AddressLine2}} >
+                        <p class="help-block">Apartment, suite , unit, building, floor, etc.</p>
+                    </div>
+                </div>
+                <!-- city input-->
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">City / Town</label>
+                    <div class="col-sm-9">
+                        <input {{attributes_Input_City}} >
+                        <p class="help-block"></p>
+                    </div>
+                </div>
+                <!-- region input-->
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">State / Province / Region</label>
+                    <div class="col-sm-9">
+                        <input {{attributes_Input_State}} >
+                        <p class="help-block"></p>
+                    </div>
+                </div>
+                <!-- postal-code input-->
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Zip / Postal Code</label>
+                    <div class="col-sm-9">
+                        <input {{attributes_Input_Zip}} >
+                        <p class="help-block"></p>
+                    </div>
+                </div>
+                <!-- country select -->
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Country</label>
+                    <div class="col-sm-9">
+                        <select {{attributes_Select_Country}} >
+                            <!--Countires template called here -->
+                            {{> Countries}}
+                        </select>
+                    </div>
+                </div>
+				<!-- Bank Info -->
+				<div class="form-group">
+					<label {{attributes_Label_AccountNumber}} >Bank Account Number</label>
+					<div class="col-sm-9">
+						<input {{attributes_Input_AccountNumber}} />
+					</div>
+				</div>
+				<div class="form-group">
+					<label {{attributes_Label_RoutingNumber}} >Routing Number</label>
+					<div class="col-sm-9">
+						<input {{attributes_Input_RoutingNumber}} />
+					</div>
+				</div>
+
+				<div class="form-group">
+			        <div class="col-sm-offset-3 col-sm-9">
+			          <button type="submit" class="btn btn-success">Donate Now</button>
+			        </div>
+			    </div>
+			</fieldset>
+		</form>	
+	</div>
+
+	<!-- Tokenize info -->
+	<div class="row">
+        <div id="response" class="col-lg-12" style="display: none;">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Customer Create Response</h3>
+                </div>
+                <div class="panel-body">
+                    <pre></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div id="response1" class="col-lg-12" style="display: none;">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Bank Account Create Response</h3>
+                </div>
+                <div class="panel-body">
+                    <pre></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
