@@ -55,20 +55,6 @@ Template.CheckForm.events({
       Donations.update({_id: id}, {
         $set: { 'recurring.is_recurring': true }
         });
-    },
-    'click [name=coverTheFees]': function (e, tmpl) {
-      var id = this._id;
-      console.log(id);
-      var coverTheFeesBox = tmpl.find('input').checked;
-      // Need to find the amount field on the page and change
-      // it to reflect the new amount based on this being checked or unchecked
-      // currentValue = $(e.target).find('[name=amount]').val();
-      // newValue = Math.round(currentValue * 1.029 + .30);
-      // $(e.target).set('[name=amount]').val(newValue); - > not sure if this is the right jQuery command or not
-
-      Donations.update({_id: id}, {
-        $set: { 'coverTheFees': true }
-        });
     }
 });
 
