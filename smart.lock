@@ -1,0 +1,44 @@
+{
+  "meteor": {},
+  "dependencies": {
+    "basePackages": {
+      "iron-router": {},
+      "balanced-payments-production": {},
+      "meteor-editable": {},
+      "npm": {},
+      "bootstrap-3": {}
+    },
+    "packages": {
+      "iron-router": {
+        "git": "https://github.com/EventedMind/iron-router.git",
+        "tag": "v0.7.1",
+        "commit": "d1ffb3f06ea4c112132b030f2eb1a70b81675ecb"
+      },
+      "balanced-payments-production": {
+        "git": "https://github.com/c316/balanced-payments-production.git",
+        "tag": "v0.3.0",
+        "commit": "21e2665c4e9c0485a8cf728cf76b590a3fea33fb"
+      },
+      "meteor-editable": {
+        "git": "https://github.com/davidworkman9/meteor-editable.git",
+        "tag": "v0.0.11",
+        "commit": "cc30abb43f17f89b1ab8009ec38f006edbbcec13"
+      },
+      "npm": {
+        "git": "https://github.com/arunoda/meteor-npm.git",
+        "tag": "v0.2.6",
+        "commit": "177ab6118de5bf8cffb19481343d5762ff7a2aaf"
+      },
+      "bootstrap-3": {
+        "git": "https://github.com/mangasocial/meteor-bootstrap-3.git",
+        "tag": "v3.1.1-1",
+        "commit": "63dd38968828bb8963636df93e9a1c45e2dfe67e"
+      },
+      "blaze-layout": {
+        "git": "https://github.com/EventedMind/blaze-layout.git",
+        "tag": "v0.2.4",
+        "commit": "b40e9b0612329288d75cf52ad14a7da64bb8618f"
+      }
+    }
+  }
+}

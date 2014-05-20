@@ -1,0 +1,9 @@
+{
+  "packages": {
+    "iron-router": {},
+    "balanced-payments-production": {},
+    "meteor-editable": {},
+    "npm": {},
+    "bootstrap-3": {}
+  }
+}
