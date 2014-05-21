@@ -19,16 +19,16 @@
                     </label>
                 </div>
 
-				<!-- Amount of donation -->
-                <div class="form-group">
-                    <label {{attributes_Label_Amount}} >Amount</label>
-                    <div class="col-sm-9">
-                        <div class="input-group">
-                            <span class="input-group-addon">$</span>
-                            <input {{attributes_Input_Amount}} />
-                        </div>
-                    </div>
-                </div>
+<!-- Amount of donation -->
+<div class="form-group donation_amount">
+    <label {{attributes_Label_Amount}} >Amount</label>
+    <div class="col-sm-9">
+        <div class="input-group">
+            <span class="input-group-addon">$</span>
+            <input {{attributes_Input_Amount}} />
+        </div>
+    </div>
+</div>
 
                 <!-- Total Amount, which includes the fees if the user selected that checkbox -->
                 {{> TotalDonation}}

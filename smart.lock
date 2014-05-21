@@ -6,7 +6,9 @@
       "balanced-payments-production": {},
       "meteor-editable": {},
       "npm": {},
-      "bootstrap-3": {}
+      "bootstrap-3": {},
+      "accounts-ui-bootstrap-3": {},
+      "accounts-admin-ui-bootstrap-3": {}
     },
     "packages": {
       "iron-router": {
@@ -34,10 +36,25 @@
         "tag": "v3.1.1-1",
         "commit": "63dd38968828bb8963636df93e9a1c45e2dfe67e"
       },
+      "accounts-ui-bootstrap-3": {
+        "git": "https://github.com/mangasocial/meteor-accounts-ui-bootstrap-3.git",
+        "tag": "v0.3.0-1",
+        "commit": "93ffa5d0e325dc7026de89f6d90c178fa04bdd3a"
+      },
+      "accounts-admin-ui-bootstrap-3": {
+        "git": "https://github.com/hharnisc/meteor-accounts-admin-ui-bootstrap-3.git",
+        "tag": "v0.2.5",
+        "commit": "381d4ca347f16d2ca2e1e6ca5f51c3f2e9c6c5cd"
+      },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",
         "tag": "v0.2.4",
         "commit": "b40e9b0612329288d75cf52ad14a7da64bb8618f"
+      },
+      "roles": {
+        "git": "https://github.com/alanning/meteor-roles.git",
+        "tag": "v1.2.8",
+        "commit": "68844ba216c348d332bdb840825850f497f515bb"
       }
     }
   }

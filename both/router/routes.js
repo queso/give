@@ -14,4 +14,9 @@ Router.map(function () {
     Example:
       this.route('home', {path: '/'});
   */
+  this.route('check_form', {path: '/'});
+  this.route('check_form'), {path: '/check_form'};
+  this.route('card_form'), {path: '/payWithCard'};
+  this.route('card_form'), {path: '/card_form'};
+  this.route('receipt', {path: '/receipt'});
 });

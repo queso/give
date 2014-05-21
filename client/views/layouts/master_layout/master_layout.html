@@ -1,3 +1,10 @@
 <template name="MasterLayout">
-  {{> yield}}
+	<div class="container">
+		<div class="login">
+			{{> loginButtons}}
+			{{> DonationBar}}
+		</div>
+  		
+  		{{> yield}}
+  	</div>
 </template>
