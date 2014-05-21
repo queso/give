@@ -1,6 +1,6 @@
 <template name="CardForm">
 	<div class="cardForm container">
-		<form class="form-horizontal card-form" role="form">
+		<form class="form-horizontal card-form" role="form" id="card_form" >
 			<fieldset>
 				<!-- Form Name -->
 				<legend>Card Form</legend>
@@ -8,14 +8,14 @@
 				<!-- Checbox for Recurring-->
 				<div class="checkbox">
 				    <label>
-				      <input type="checkbox" name="is_recurring" checked {{isRecurringChecked}}> Make my donation recurring.
+				      <input type="checkbox" name="is_recurring" {{isRecurringChecked}}> Make my donation recurring.
 				    </label>
 				  </div>
 
                 <!-- Checbox for Covering related fees-->
                 <div class="checkbox">
                     <label>
-                      <input type="checkbox" name="coverTheFees" checked {{coverTheFeesChecked}}> I'll cover the fees.
+                      <input type="checkbox" name="coverTheFees" id="coverTheFees" {{coverTheFeesChecked}}> I'll cover the fees. 
                     </label>
                 </div>
 

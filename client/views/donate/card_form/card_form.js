@@ -1,13 +1,24 @@
 /*****************************************************************************/
 /* CardForm: Event Handlers and Helpers */
 /*****************************************************************************/
+function updateTotal(data){
+  if ($('#coverTheFees').prop('checked')) {
+        var donationAmount = $('#amount').val();
+        var roundedAmount = Math.round(donationAmount * 1.029 + .30);
+        return $("#total_amount").val(roundedAmount);
+      }
+      else {
+        return $("#total_amount").val($('#amount').val());
+      }
+}
+
 Template.CardForm.events({
   'submit form': function (e, tmpl) {
     e.preventDefault();
     var recurringStatus = $(e.target).find('[name=is_recurring]').is(':checked');
     var coverTheFeesStatus = $(e.target).find('[name=coverTheFees]').is(':checked');
-    var cardForm = {
-            amount: $(e.target).find('[name=amount]').val(),
+    /*var cardForm = {
+      amount: $(e.target).find('[name=amount]').val(),
       name: $(e.target).find('[name=name]').val(),
       card_number: $(e.target).find('[name=card-number]').val(),
       expiry_month: $(e.target).find('[name=expiry-month]').val(),
@@ -15,34 +26,41 @@ Template.CardForm.events({
       cvv: $(e.target).find('[name=cvv]').val(),
       recurring: { is_recurring: recurringStatus },
       created_at: new Date
-    }
-    cardForm._id = Donations.insert(cardForm);
+    };*/
 
-            Meteor.call("createCustomerWithThen", checkForm, function(error, result) {
-                console.log(error);
-                console.log(result);
-                console.log(result.customers[0].href);
-                // Successful tokenization
-            if(result.status_code === 201 && result.href) {
-                // Send to your backend
-                jQuery.post(responseTarget, {
-                    uri: result.href
-                }, function(r) {
-                    // Check your backend result
-                    if(r.status === 201) {
-                        // Your successful logic here from backend
-                    } else {
-                        // Your failure logic here from backend
-                    }
-                });
+    var cardForm = $('#card_form').serializeArray();
+    for(i in cardForm){
+        console.log(cardForm[i]);
+    }  
+    cardForm._id = Donate.insert(cardForm);
+    
+    
+    Meteor.call("createCustomer", cardForm, function(error, result) {
+
+        console.log("Error: " + error + "  Result: " + result); 
+        //console.log(result.customers[0].href);
+        
+        // Successful tokenization
+    if(result.status_code === 201 && result.href) {
+        // Send to your backend
+        jQuery.post(responseTarget, {
+            uri: result.href
+        }, function(r) {
+            // Check your backend result
+            if(r.status === 201) {
+                // Your successful logic here from backend
             } else {
-                // Failed to tokenize, your error logic here
+                // Your failure logic here from backend
             }
-            
-            // Debuging, just displays the tokenization result in a pretty div
-            $('#response .panel-body pre').html(JSON.stringify(result, false, 4));
-            $('#response').slideDown(300);
-            });
+        });
+    } else {
+        // Failed to tokenize, your error logic here
+    }
+    
+    // Debuging, just displays the tokenization result in a pretty div
+    $('#response1 .panel-body pre').html(JSON.stringify(result, false, 4));
+    $('#response1').slideDown(300);
+    });
           
     var form = tmpl.find('form');
     //form.reset();
@@ -54,7 +72,7 @@ Template.CardForm.events({
       console.log(id);
       var isRecuring = tmpl.find('input').checked;
 
-      Donations.update({_id: id}, {
+      Donate.update({_id: id}, {
         $set: { 'recurring.is_recurring': true }
         });
     },
@@ -68,14 +86,18 @@ Template.CardForm.events({
       // newValue = Math.round(currentValue * 1.029 + .30);
       // $(e.target).set('[name=amount]').val(newValue); - > not sure if this is the right jQuery command or not
 
-      Donations.update({_id: id}, {
+      Donate.update({_id: id}, {
         $set: { 'coverTheFees': true }
         });
     },
-    'change [name=amount]': function() {    
-      var donationAmount = $('#amount').val();
-      var roundedAmount = Math.round(donationAmount * 1.029 + .30);
-      return $("#total_amount").val(roundedAmount);
+    'mouseup [name=amount]': function() {    
+      return updateTotal();
+    },
+    'keyup [name=amount]': function(data) {    
+      return updateTotal();
+    },
+    'change [name=coverTheFees]': function(data) {    
+      return updateTotal();
     }
 });
 

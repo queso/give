@@ -14,33 +14,37 @@ Template.CheckForm.events({
       recurring: { is_recurring: recurringStatus },
       created_at: new Date
     }
-    checkForm._id = Donations.insert(checkForm);
+    
+    var formData = tmpl.find(".checkForm").val;
+    console.log(formData);
 
-            Meteor.call("createCustomerWithThen", checkForm, function(error, result) {
-                console.log(error);
-                console.log(result);
-                console.log(result.customers[0].href);
-                // Successful tokenization
-            if(result.status_code === 201 && result.href) {
-                // Send to your backend
-                jQuery.post(responseTarget, {
-                    uri: result.href
-                }, function(r) {
-                    // Check your backend result
-                    if(r.status === 201) {
-                        // Your successful logic here from backend
-                    } else {
-                        // Your failure logic here from backend
-                    }
-                });
-            } else {
-                // Failed to tokenize, your error logic here
-            }
+     //checkForm._id = Donate.insert(checkForm);
+    Meteor.call("createCustomer", checkForm, function(error, result) {
             
-            // Debuging, just displays the tokenization result in a pretty div
-            $('#response .panel-body pre').html(JSON.stringify(result, false, 4));
-            $('#response').slideDown(300);
+            console.log("Error: " + error + "  Result: " + result); 
+            //console.log(result.customers[0].href);
+            
+            // Successful tokenization
+        if(result.status_code === 201 && result.href) {
+            // Send to your backend
+            jQuery.post(responseTarget, {
+                uri: result.href
+            }, function(r) {
+                // Check your backend result
+                if(r.status === 201) {
+                    // Your successful logic here from backend
+                } else {
+                    // Your failure logic here from backend
+                }
             });
+        } else {
+            // Failed to tokenize, your error logic here
+        }
+        
+        // Debuging, just displays the tokenization result in a pretty div
+        $('#response1 .panel-body pre').html(JSON.stringify(result, false, 4));
+        $('#response1').slideDown(300);
+        });
           
     var form = tmpl.find('form');
     //form.reset();
