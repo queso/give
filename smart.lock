@@ -6,7 +6,9 @@
       "balanced-payments-production": {},
       "meteor-editable": {},
       "npm": {},
-      "bootstrap-3": {}
+      "bootstrap-3": {},
+      "mandrill": {},
+      "iron-router-progress": {}
     },
     "packages": {
       "iron-router": {
@@ -33,6 +35,16 @@
         "git": "https://github.com/mangasocial/meteor-bootstrap-3.git",
         "tag": "v3.1.1-1",
         "commit": "63dd38968828bb8963636df93e9a1c45e2dfe67e"
+      },
+      "mandrill": {
+        "git": "https://github.com/timmyg/meteor-mandrill.git",
+        "tag": "v0.0.6",
+        "commit": "211be350989440403f8171031a97dd80b6c924ec"
+      },
+      "iron-router-progress": {
+        "git": "https://github.com/Multiply/iron-router-progress.git",
+        "tag": "v0.3.1",
+        "commit": "3f7900feb4bb70a1289b39a1fdcd1f438c0335b3"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",

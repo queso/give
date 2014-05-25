@@ -11,3 +11,5 @@ npm
 bootstrap-3
 autopublish
 insecure
+mandrill
+iron-router-progress
