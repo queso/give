@@ -11,8 +11,3 @@ balanced-payments-production
 meteor-editable
 npm
 bootstrap-3
-accounts-ui-bootstrap-3
-accounts-admin-ui-bootstrap-3
-accounts-password
-accounts-google
-accounts-facebook
