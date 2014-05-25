@@ -15,7 +15,8 @@ Template.CheckForm.events({
       created_at: new Date
     }
     
-    var formData = tmpl.find(".checkForm").val;
+    var formData = tmpl.find("#check_form").val;
+    
     console.log(formData);
 
      //checkForm._id = Donate.insert(checkForm);

@@ -4,10 +4,10 @@
 # but you can also edit it by hand.
 
 standard-app-packages
-autopublish
-insecure
 iron-router
 balanced-payments-production
 meteor-editable
 npm
 bootstrap-3
+autopublish
+insecure

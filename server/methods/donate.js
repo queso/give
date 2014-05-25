@@ -13,14 +13,45 @@ var Future = Npm.require("fibers/future");
     return fut.wait();
   }
 
+  function addACHToCustomer(customerID) {
+    var payload = {
+      name: 'John Doe',
+      routing_number: '321174851',
+      account_number: '9900000000'
+    };
+
+  // Create bank account
+  balanced.configure(Meteor.settings.balancedPaymentsAPI);
+  var customerData =  extractFromPromise(balanced.bankAccount.create(payload));
+  console.log(customerData.href);
+  }
+
 Meteor.methods({
  createCustomer: function () {
       balanced.configure(Meteor.settings.balancedPaymentsAPI);
-      var customer = balanced.marketplace.customers.create();
-      var customerData =  extractFromPromise(customer);
-      var customerDataString = JSON.stringify(customerData, undefined, 2);      
-      console.log(customerDataString);
-      console.log(customerDataString.href);
+//      var customer = balanced.marketplace.customers.create();
+      var customerData =  extractFromPromise(balanced.marketplace.customers.create());
+      console.log(customerData.href);
+      var customerID = Donate.insert({ customerURL: customerData.href });
+      // this isn't ready yet
+      //var printMe = addACHToCustomer(Donate.findOne(customerID).customerURL);
+      //console.log(printMe); 
+
+      //customerDataString returns a strange subset of the whole, not sure why this is
+      //var customerDataString = JSON.stringify(customerData, undefined, 2);      
+      //console.log(customerDataString);
       return customerData;
-    }
+    },
+  addBankAccount: function () {
+    var payload = {
+      name: 'John Doe',
+      routing_number: '321174851',
+      account_number: '9900000000'
+    };
+
+  // Create bank account
+  balanced.configure(Meteor.settings.balancedPaymentsAPI);
+  var customerData =  extractFromPromise(balanced.bankAccount.create(payload));
+  console.log(customerData.href);
+  }
 });
