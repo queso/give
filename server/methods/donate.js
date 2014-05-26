@@ -1,6 +1,14 @@
 /*****************************************************************************/
 /* Donate Methods */
 /*****************************************************************************/
+Meteor.startup(function() {
+  return Meteor.Mandrill.config({
+    username: "josh@trashmountain.com",
+    key: "f9trMQWLtBo4XDsxZd97yw"
+  });
+});
+
+
 var Future = Npm.require("fibers/future");
 
   function extractFromPromise(promise) {
@@ -53,5 +61,16 @@ Meteor.methods({
   balanced.configure(Meteor.settings.balancedPaymentsAPI);
   var customerData =  extractFromPromise(balanced.bankAccount.create(payload));
   console.log(customerData.href);
+  },
+  sendEmailOut: function (data) {
+    console.log(data);
+    var to = data.to;
+    var subject = data.subject;
+  return Meteor.Mandrill.send({
+    to: to,
+    from: 'josh@trashmountain.com',
+    subject: subject,
+    html: '<html><body>Test html body</body></html>'
+  });
   }
 });

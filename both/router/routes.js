@@ -26,4 +26,5 @@ Router.map(function () {
   this.route('card_form'), {path: '/payWithCard'};
   this.route('card_form'), {path: '/card_form'};
   this.route('receipt', {path: '/receipt'});
+  this.route('send.email', {path: '/send_email'});
 });
