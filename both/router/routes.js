@@ -25,6 +25,9 @@ Router.map(function () {
   this.route('check_form'), {path: '/check_form'};
   this.route('card_form'), {path: '/payWithCard'};
   this.route('card_form'), {path: '/card_form'};
-  this.route('receipt', {path: '/receipt'});
+  this.route('receipt', {path: '/receipt/:_id', 
+    data: function () {
+      return Donate.findOne(this.params._id);}
+    });
   this.route('send.email', {path: '/send_email'});
 });

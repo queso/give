@@ -15,25 +15,33 @@ function updateTotal(data){
 Template.CardForm.events({
   'submit form': function (e, tmpl) {
     e.preventDefault();
-    var recurringStatus = $(e.target).find('[name=is_recurring]').is(':checked');
-    var coverTheFeesStatus = $(e.target).find('[name=coverTheFees]').is(':checked');
-    /*var cardForm = {
-      amount: $(e.target).find('[name=amount]').val(),
-      name: $(e.target).find('[name=name]').val(),
-      card_number: $(e.target).find('[name=card-number]').val(),
-      expiry_month: $(e.target).find('[name=expiry-month]').val(),
-      expiry_year: $(e.target).find('[name=expiry-year]').val(),
-      cvv: $(e.target).find('[name=cvv]').val(),
-      recurring: { is_recurring: recurringStatus },
-      created_at: new Date
-    };*/
+    var recurringStatus =     $(e.target).find('[name=is_recurring]').is(':checked');
+    var coverTheFeesStatus =  $(e.target).find('[name=coverTheFees]').is(':checked');
+    var cardForm = {
+      amount:         $(e.target).find('[name=amount]').val(),
+      fname:          $(e.target).find('[name=fname]').val(),
+      lname:          $(e.target).find('[name=lname]').val(),
+      address_line1:  $(e.target).find('[name=address_line1]').val(),
+      address_line2:  $(e.target).find('[name=address_line2]').val(),
+      region:         $(e.target).find('[name=region]').val(),
+      state:          $(e.target).find('[name=state]').val(),
+      postal_code:    $(e.target).find('[name=postal_code]').val(),
+      country:        $(e.target).find('[name=country]').val(),
+      card_number:    $(e.target).find('[name=card-number]').val(),
+      expiry_month:   $(e.target).find('[name=expiry-month]').val(),
+      expiry_year:    $(e.target).find('[name=expiry-year]').val(),
+      cvv:            $(e.target).find('[name=cvv]').val(),
+      recurring:      { is_recurring: recurringStatus },
+      created_at:     new Date
+    };
 
-    var cardForm = $('#card_form').serializeArray();
-    for(i in cardForm){
-        console.log(cardForm[i]);
-    }  
-    cardForm._id = Donate.insert(cardForm);
     
+    cardForm._id = Donate.insert(cardForm);
+    Donate.update(cardForm._id, {$set: {sessionId: Meteor.default_connection._lastSessionId}});
+  
+    cardForm.type = card;
+    console.log(cardForm._id);
+    console.log(Meteor.default_connection._lastSessionId);
     
     Meteor.call("createCustomer", cardForm, function(error, result) {
 
@@ -116,12 +124,20 @@ Template.CardForm.helpers({
             class: "form-control"
         }
     },
-    attributes_Input_Name: function () {
+    attributes_Input_FName: function () {
       return {
         type: "text",
-        name: "name",
+        name: "fname",
         class: "form-control",
-        value: "John Doe"
+        value: "John"
+      }
+    },
+    attributes_Input_LName: function () {
+      return {
+        type: "text",
+        name: "lname",
+        class: "form-control",
+        value: "Doe"
       }
     },
     attributes_Input_AddressLine1: function () {

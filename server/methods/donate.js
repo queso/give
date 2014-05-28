@@ -1,13 +1,6 @@
 /*****************************************************************************/
 /* Donate Methods */
 /*****************************************************************************/
-Meteor.startup(function() {
-  return Meteor.Mandrill.config({
-    username: "josh@trashmountain.com",
-    key: "f9trMQWLtBo4XDsxZd97yw"
-  });
-});
-
 
 var Future = Npm.require("fibers/future");
 
@@ -35,10 +28,37 @@ var Future = Npm.require("fibers/future");
   }
 
 Meteor.methods({
- createCustomer: function () {
+ createCustomer: function (data) {
       balanced.configure(Meteor.settings.balancedPaymentsAPI);
 //      var customer = balanced.marketplace.customers.create();
       var customerData =  extractFromPromise(balanced.marketplace.customers.create());
+      console.log(data.type);
+      /*if (data.type === card) {
+        var card = extractFromPromise(balanced.marketplace.cards.create({
+          'number': '4111111111111111',
+          'expiration_year': '2016',
+          'expiration_month': '12',
+          'cvv': '123'
+        }));
+        card.associate_to_customer(customerData).debit(data.amount).then(function (debit) {
+          // save the result of the debit
+        }, function (err) {
+          // record the error message
+        });
+        } else {*/
+          var check = extractFromPromise(balanced.marketplace.bank_accounts.create({
+            "routing_number": "121000358", 
+            "account_type": "checking", 
+            "name": "Johann Bernoulli", 
+            "account_number": "9900000001"
+          }));
+          check.associate_to_customer(customerData).debit(data.amount).then(function (debit) {
+          // save the result of the debit
+        }, function (err) {
+          // record the error message
+        });
+        
+
       console.log(customerData.href);
       var customerID = Donate.insert({ customerURL: customerData.href });
       // this isn't ready yet
@@ -62,15 +82,12 @@ Meteor.methods({
   var customerData =  extractFromPromise(balanced.bankAccount.create(payload));
   console.log(customerData.href);
   },
-  sendEmailOut: function (data) {
-    console.log(data);
-    var to = data.to;
-    var subject = data.subject;
-  return Meteor.Mandrill.send({
-    to: to,
-    from: 'josh@trashmountain.com',
-    subject: subject,
-    html: '<html><body>Test html body</body></html>'
-  });
+  addCard: function () {
+    var card = balanced.marketplace.cards.create({
+      'number': '4111111111111111',
+      'expiration_year': '2016',
+      'expiration_month': '12',
+      'cvv': '123'
+    });
   }
 });

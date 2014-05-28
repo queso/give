@@ -41,56 +41,8 @@
 					</div>
 				</div>
 
-				<!-- address-line1 input-->
-                <div class="form-group">
-                    <label class="col-sm-3 control-label" for="address_line1">Address Line 1</label>
-                    <div class="col-sm-9">
-                        <input {{attributes_Input_AddressLine1}} >
-                        <p class="help-block">Street address, P.O. box, company name, c/o</p>
-                    </div>
-                </div>
-                <!-- address-line2 input-->
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">Address Line 2</label>
-                    <div class="col-sm-9">
-                        <input {{attributes_Input_AddressLine2}} >
-                        <p class="help-block">Apartment, suite , unit, building, floor, etc.</p>
-                    </div>
-                </div>
-                <!-- city input-->
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">City / Town</label>
-                    <div class="col-sm-9">
-                        <input {{attributes_Input_City}} >
-                        <p class="help-block"></p>
-                    </div>
-                </div>
-                <!-- region input-->
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">State / Province / Region</label>
-                    <div class="col-sm-9">
-                        <input {{attributes_Input_State}} >
-                        <p class="help-block"></p>
-                    </div>
-                </div>
-                <!-- postal-code input-->
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">Zip / Postal Code</label>
-                    <div class="col-sm-9">
-                        <input {{attributes_Input_Zip}} >
-                        <p class="help-block"></p>
-                    </div>
-                </div>
-                <!-- country select -->
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">Country</label>
-                    <div class="col-sm-9">
-                        <select {{attributes_Select_Country}} >
-                            <!--Countires template called here -->
-                            {{> Countries}}
-                        </select>
-                    </div>
-                </div>
+				<!--call the address portion of the form -->
+                {{> RequestAddress}}
 
                 <br>
                 <h4 style="text-align:center;">Payment Information</h4>

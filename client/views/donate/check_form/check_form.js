@@ -4,20 +4,30 @@
 Template.CheckForm.events({
   'submit form': function (e, tmpl) {
     e.preventDefault();
-    var recurringStatus = $(e.target).find('[name=is_recurring]').is(':checked');
-        var coverTheFeesStatus = $(e.target).find('[name=coverTheFees]').is(':checked');
-    var checkForm = {
-            amount: $(e.target).find('[name=amount]').val(),
-      name: $(e.target).find('[name=name]').val(),
-      account_number: $(e.target).find('[name=account_number]').val(),
-      routing_number: $(e.target).find('[name=routing_number]').val(),
-      recurring: { is_recurring: recurringStatus },
-      created_at: new Date
+    var recurringStatus =     $(e.target).find('[name=is_recurring]').is(':checked');
+    var coverTheFeesStatus =  $(e.target).find('[name=coverTheFees]').is(':checked');
+    var checkForm =           {
+                                amount:         $(e.target).find('[name=amount]').val(),
+                                fname:          $(e.target).find('[name=fname]').val(),
+                                lname:          $(e.target).find('[name=lname]').val(),
+                                address_line1:  $(e.target).find('[name=address_line1]').val(),
+                                address_line2:  $(e.target).find('[name=address_line2]').val(),
+                                region:         $(e.target).find('[name=region]').val(),
+                                state:          $(e.target).find('[name=state]').val(),
+                                postal_code:    $(e.target).find('[name=postal_code]').val(),
+                                country:        $(e.target).find('[name=country]').val(),
+                                account_number: $(e.target).find('[name=account_number]').val(),
+                                routing_number: $(e.target).find('[name=routing_number]').val(),
+                                recurring:      { is_recurring: recurringStatus },
+                                created_at:     new Date
     }
     
-    var formData = tmpl.find("#check_form").val;
-    
-    console.log(formData);
+    checkForm._id = Donate.insert(checkForm);
+    Donate.update(checkForm._id, {$set: {sessionId: Meteor.default_connection._lastSessionId}});
+  
+    checkForm.type = check;
+    console.log(checkForm._id);
+    console.log(Meteor.default_connection._lastSessionId);
 
      //checkForm._id = Donate.insert(checkForm);
     Meteor.call("createCustomer", checkForm, function(error, result) {
@@ -51,6 +61,8 @@ Template.CheckForm.events({
     //form.reset();
     //Will need to add route to receipt page here.
     //Something like this maybe - Router.go('receiptPage', checkForm);
+
+    //Router.go('receipt');
   },
   'click [name=is_recurring]': function (e, tmpl) {
       var id = this._id;
@@ -77,71 +89,6 @@ Template.CheckForm.helpers({
             class: "form-control"
         }
     },
-    attributes_Input_Name: function () {
-      return {
-        type: "text",
-        name: "name",
-        class: "form-control",
-        value: "John Doe"
-      }
-    },
-    attributes_Input_AddressLine1: function () {
-      return {
-        type: "text",
-        name: "address_line1",
-        id: "address_line1",
-        class: "form-control",
-        value: "",
-        placeholder: "address line 1"
-      }
-    },
-    attributes_Input_AddressLine2: function () {
-      return {
-        type: "text",
-        name: "address_line2",
-        id: "address_line2",
-        class: "form-control",
-        value: "",
-        placeholder: "address line 2"
-      }
-    },
-    attributes_Input_City: function () {
-      return {
-        type: "text",
-        name: "city",
-        id: "city",
-        class: "form-control",
-        value: "",
-        placeholder: "city"
-      }
-    },
-    attributes_Input_State: function () {
-      return {
-        type: "text",
-        name: "region",
-        id: "region",
-        class: "form-control",
-        value: "",
-        placeholder: "state / province / region"
-      }
-    },
-    attributes_Input_Zip: function () {
-      return {
-        type: "text",
-        name: "postal_code",
-        id: "postal_code",
-        class: "form-control",
-        value: "",
-        placeholder: "zip or postal code"
-      }
-    },
-    attributes_Select_Country: function () {
-      return {
-        name: "country",
-        id: "country",
-        class: "form-control"
-      }
-    },
     attributes_Input_AccountNumber: function () {
       return {
         type: "text",
@@ -166,10 +113,16 @@ Template.CheckForm.helpers({
             for: "amount"
         }
     },
-    attributes_Label_Name: function () {
+    attributes_Label_FName: function () {
       return {
-        class: "col-sm-3 control-label",
-        for: "name"
+        class: "control-label",
+        for: "fname"
+      }
+    },
+    attributes_Label_LName: function () {
+      return {
+        class: "control-label",
+        for: "lname"
       }
     },
     attributes_Label_AccountNumber: function () {

@@ -3,9 +3,14 @@
 		<fieldset>
 			<legend>Send Email</legend>
 		  	<form class="form-horizontal send_email" role="form" id="send_email" >
+		  		<label for="email_address">Email</label>
 		  		<input type="email" name="email_address" value="josh@trashmountain.com">
 		  		<br>
-		  		<input type="text" name="subject" value="Test Subject">
+		  		<label for="DonatedTo">Donate To</label>
+		  		<input type="text" name="DonatedTo" value="BaseCamp" id="DonatedTo">
+		  		<br>
+		  		<label for="amount">Amount</label>
+		  		<input type="text" name="amount" value="100">
 		  		<div class="form-group">
 			        <div class="col-sm-offset-3 col-sm-9">
 				        <button type="submit" class="btn btn-success">Send it!</button>

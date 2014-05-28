@@ -1,7 +1,3 @@
 /*****************************************************************************/
-/* DonateIndex Publish Functions
+/* RequestAddress: Style */
 /*****************************************************************************/
-
-Meteor.publish('donate', function () {
-	 return Donate.find();
-});
