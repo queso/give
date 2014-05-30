@@ -10,7 +10,20 @@
             <input {{attributes_Input_LName}} />
         </div>
 	</div>
-
+    <!-- email address input-->
+    <div class="form-group">
+        <label {{attributes_Label_Email_Address}} >Email</label>
+        <div class="col-sm-9">
+            <input {{attributes_Input_Email_Address}} >
+        </div>
+    </div>
+    <!-- phone number input-->
+    <div class="form-group">
+        <label {{attributes_Label_Phone_Number}} >Phone</label>
+        <div class="col-sm-9">
+            <input {{attributes_Input_Phone_Number}} >
+        </div>
+    </div>
 	<!-- address-line1 input-->
     <div class="form-group">
         <label class="col-sm-3 control-label" for="address_line1">Address Line 1</label>
@@ -32,14 +45,13 @@
         <label class="col-sm-3 control-label">City / Town</label>
         <div class="col-sm-9">
             <input {{attributes_Input_City}} >
-            <p class="help-block"></p>
         </div>
     </div>
     <!-- region input-->
     <div class="form-group">
         <label class="col-sm-3 control-label">State / Province / Region</label>
         <div class="col-sm-9">
-            <input {{attributes_Input_State}} >
+            <input {{attributes_Input_Region}} >
             <p class="help-block"></p>
         </div>
     </div>

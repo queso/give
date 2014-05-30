@@ -27,6 +27,24 @@ Template.RequestAddress.helpers({
         value: "Doe"
       }
     },
+    attributes_Input_Email_Address: function () {
+      return {
+        type: "email",
+        name: "email_address",
+        class: "form-control",
+        value: "josh@trashmountain.com",
+        placeholder: "me@myemaildomain.com"
+      }
+    },
+    attributes_Input_Phone_Number: function () {
+      return {
+        type: "phone",
+        name: "phone_number",
+        class: "form-control",
+        value: "785-246-6845",
+        placeholder: "785-246-6845"
+      }
+    },
     attributes_Input_AddressLine1: function () {
       return {
         type: "text",
@@ -54,7 +72,7 @@ Template.RequestAddress.helpers({
         placeholder: "city"
       }
     },
-    attributes_Input_State: function () {
+    attributes_Input_Region: function () {
       return {
         type: "text",
         name: "region",
@@ -78,7 +96,31 @@ Template.RequestAddress.helpers({
         class: "form-control",
         value: "US"
       }
-    }
+    },
+    attributes_Label_FName: function () {
+      return {
+        class: "control-label",
+        for: "fname"
+      }
+    },
+    attributes_Label_LName: function () {
+      return {
+        class: "control-label",
+        for: "lname"
+      }
+    },
+    attributes_Label_Email_Address: function () {
+      return {
+        class: "col-sm-3 control-label",
+        for: "email_address"
+      }
+    },
+    attributes_Label_Phone_Number: function () {
+      return {
+        class: "col-sm-3 control-label",
+        for: "phone_number"
+      }
+    },
 });
 
 /*****************************************************************************/

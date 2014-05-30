@@ -10,24 +10,26 @@ Template.CheckForm.events({
                                 amount:         $(e.target).find('[name=amount]').val(),
                                 fname:          $(e.target).find('[name=fname]').val(),
                                 lname:          $(e.target).find('[name=lname]').val(),
+                                email_address:  $(e.target).find('[name=email_address]').val(),
+                                phone_number:   $(e.target).find('[name=phone_number]').val(),
                                 address_line1:  $(e.target).find('[name=address_line1]').val(),
                                 address_line2:  $(e.target).find('[name=address_line2]').val(),
+                                city:          $(e.target).find('[name=city]').val(),
                                 region:         $(e.target).find('[name=region]').val(),
-                                state:          $(e.target).find('[name=state]').val(),
                                 postal_code:    $(e.target).find('[name=postal_code]').val(),
                                 country:        $(e.target).find('[name=country]').val(),
                                 account_number: $(e.target).find('[name=account_number]').val(),
                                 routing_number: $(e.target).find('[name=routing_number]').val(),
                                 recurring:      { is_recurring: recurringStatus },
-                                created_at:     new Date
+                                created_at:     new Date().getTime()
     }
     
     checkForm._id = Donate.insert(checkForm);
     Donate.update(checkForm._id, {$set: {sessionId: Meteor.default_connection._lastSessionId}});
   
-    checkForm.type = check;
-    console.log(checkForm._id);
-    console.log(Meteor.default_connection._lastSessionId);
+    checkForm.type = "check";
+    console.log('ID: ' + checkForm._id);
+    console.log('Session ID: ' + Meteor.default_connection._lastSessionId);
 
      //checkForm._id = Donate.insert(checkForm);
     Meteor.call("createCustomer", checkForm, function(error, result) {
@@ -62,7 +64,7 @@ Template.CheckForm.events({
     //Will need to add route to receipt page here.
     //Something like this maybe - Router.go('receiptPage', checkForm);
 
-    //Router.go('receipt');
+    Router.go('/receipt/' + checkForm._id);
   },
   'click [name=is_recurring]': function (e, tmpl) {
       var id = this._id;
@@ -112,18 +114,6 @@ Template.CheckForm.helpers({
             class: "col-sm-3 control-label",
             for: "amount"
         }
-    },
-    attributes_Label_FName: function () {
-      return {
-        class: "control-label",
-        for: "fname"
-      }
-    },
-    attributes_Label_LName: function () {
-      return {
-        class: "control-label",
-        for: "lname"
-      }
     },
     attributes_Label_AccountNumber: function () {
       return {

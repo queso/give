@@ -1,10 +1,11 @@
 <template name="CardForm">
 	<div class="cardForm container">
-		<form class="form-horizontal card-form" role="form" id="card_form" >
+		<form class="form-horizontal card-form" role="form" id="card_form" name="card_form">
 			<fieldset>
 				<!-- Form Name -->
 				<legend>Card Form</legend>
-                
+                <a href="{{pathFor 'check_form'}}">Check Form</a>
+
 				<!-- Checbox for Recurring-->
 				<div class="checkbox">
 				    <label>
@@ -32,14 +33,6 @@
 
                 <!-- Total Amount, which includes the fees if the user selected that checkbox -->
                 {{> TotalDonation}}
-
-				<!-- Full Name-->
-				<div class="form-group">
-					<label {{attributes_Label_Name}} >Name</label>
-					<div class="col-sm-9">
-						<input {{attributes_Input_Name}} />
-					</div>
-				</div>
 
 				<!--call the address portion of the form -->
                 {{> RequestAddress}}

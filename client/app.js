@@ -11,4 +11,4 @@ _.each(App.helpers, function (helper, key) {
   Handlebars.registerHelper(key, helper);
 });
 
-Meteor.subscribe('donate');
+Meteor.subscribe('Donate');

@@ -15,6 +15,7 @@ function updateTotal(data){
 Template.CardForm.events({
   'submit form': function (e, tmpl) {
     e.preventDefault();
+    
     var recurringStatus =     $(e.target).find('[name=is_recurring]').is(':checked');
     var coverTheFeesStatus =  $(e.target).find('[name=coverTheFees]').is(':checked');
     var cardForm = {
@@ -39,7 +40,7 @@ Template.CardForm.events({
     cardForm._id = Donate.insert(cardForm);
     Donate.update(cardForm._id, {$set: {sessionId: Meteor.default_connection._lastSessionId}});
   
-    cardForm.type = card;
+    cardForm.type = "card";
     console.log(cardForm._id);
     console.log(Meteor.default_connection._lastSessionId);
     
