@@ -11,17 +11,10 @@ Template.Receipt.events({
 });
 
 Template.Receipt.helpers({
-  /*
-   * Example: 
-   *  items: function () {
-   *    return Items.find();
-   *  }
-   */
    receiptNumber: function () {
    		return this._id;
    },
    date: function () {
-   		console.log(this.created_at);
    		return moment(this.created_at).format('HH:MM, MM/DD/YYYY');
    },
    fname: function () {
@@ -62,6 +55,18 @@ Template.Receipt.helpers({
    phone_number: function () {
    		return this.phone_number;
    		
+   },
+   donateTo: function () {
+   		return this.donateTo;
+   },
+   donateWith: function () {
+   		return this.donateWith;
+   },
+   amount: function () {
+         return this.amount;
+   },
+   total_amount: function () {
+         return this.total_amount;
    }
 });
 

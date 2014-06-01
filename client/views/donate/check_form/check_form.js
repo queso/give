@@ -8,6 +8,7 @@ Template.CheckForm.events({
     var coverTheFeesStatus =  $(e.target).find('[name=coverTheFees]').is(':checked');
     var checkForm =           {
                                 amount:         $(e.target).find('[name=amount]').val(),
+                                total_amount:   $(e.target).find('[name=amount]').val(),
                                 fname:          $(e.target).find('[name=fname]').val(),
                                 lname:          $(e.target).find('[name=lname]').val(),
                                 email_address:  $(e.target).find('[name=email_address]').val(),
@@ -21,9 +22,10 @@ Template.CheckForm.events({
                                 account_number: $(e.target).find('[name=account_number]').val(),
                                 routing_number: $(e.target).find('[name=routing_number]').val(),
                                 recurring:      { is_recurring: recurringStatus },
+                                donateTo:       $('#donateTo a').text(),
+                                donateWith:     $('#donateWith a').text(),
                                 created_at:     new Date().getTime()
     }
-    
     checkForm._id = Donate.insert(checkForm);
     Donate.update(checkForm._id, {$set: {sessionId: Meteor.default_connection._lastSessionId}});
   
@@ -78,8 +80,8 @@ Template.CheckForm.events({
 });
 
 Template.CheckForm.helpers({
-  isRecurringChecked: function () {
-    return this.is_recurring ? 'checked' : '';
+    isRecurringChecked: function () {
+        return this.is_recurring ? 'checked' : '';
     },
     coverTheFeesChecked: function () {
         return this.coverTheFees ? 'checked' : '';

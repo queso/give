@@ -1,6 +1,11 @@
 <template name="CardForm">
 	<div class="cardForm container">
 		<form class="form-horizontal card-form" role="form" id="card_form" name="card_form">
+			<div class="row">
+	            <div class="col-md-offset-3">
+	                <h1>Donation info </h1><p class="lead">You are donating toward {{> DonationTo}} using your {{> DonationWith}}.</p>
+	            </div>
+	        </div>	
 			<fieldset>
 				<!-- Form Name -->
 				<legend>Card Form</legend>
@@ -26,7 +31,7 @@
     <div class="col-sm-9">
         <div class="input-group">
             <span class="input-group-addon">$</span>
-            <input {{attributes_Input_Amount}} />
+            <input {{attributes_Input_Amount}} value="{{amount}}" />
         </div>
     </div>
 </div>
@@ -40,7 +45,6 @@
                 <br>
                 <h4 style="text-align:center;">Payment Information</h4>
                 <hr>
-
 				<!-- CC Info -->
 				<div class="form-group">
 					<label class="col-sm-3 control-label" for="card-number">Card Number</label>

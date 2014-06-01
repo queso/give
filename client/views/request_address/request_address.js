@@ -16,7 +16,8 @@ Template.RequestAddress.helpers({
         type: "text",
         name: "fname",
         class: "form-control",
-        value: "John"
+        value: "John",
+        autofocus: "autofocus"
       }
     },
     attributes_Input_LName: function () {

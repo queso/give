@@ -20,12 +20,17 @@ Template.CardForm.events({
     var coverTheFeesStatus =  $(e.target).find('[name=coverTheFees]').is(':checked');
     var cardForm = {
       amount:         $(e.target).find('[name=amount]').val(),
+      total_amount:   $(e.target).find('[name=total_amount]').val(),
+      donateTo:       $('#donateTo a').text(),
+      donateWith:     $('#donateWith a').text(),
       fname:          $(e.target).find('[name=fname]').val(),
       lname:          $(e.target).find('[name=lname]').val(),
+      email_address:  $(e.target).find('[name=email_address]').val(),
+      phone_number:   $(e.target).find('[name=phone_number]').val(),
       address_line1:  $(e.target).find('[name=address_line1]').val(),
       address_line2:  $(e.target).find('[name=address_line2]').val(),
       region:         $(e.target).find('[name=region]').val(),
-      state:          $(e.target).find('[name=state]').val(),
+      city:          $(e.target).find('[name=city]').val(),
       postal_code:    $(e.target).find('[name=postal_code]').val(),
       country:        $(e.target).find('[name=country]').val(),
       card_number:    $(e.target).find('[name=card-number]').val(),
@@ -33,7 +38,7 @@ Template.CardForm.events({
       expiry_year:    $(e.target).find('[name=expiry-year]').val(),
       cvv:            $(e.target).find('[name=cvv]').val(),
       recurring:      { is_recurring: recurringStatus },
-      created_at:     new Date
+      created_at:     new Date().getTime()
     };
 
     
@@ -71,10 +76,12 @@ Template.CardForm.events({
     $('#response1').slideDown(300);
     });
           
-    var form = tmpl.find('form');
+    //var form = tmpl.find('form');
     //form.reset();
     //Will need to add route to receipt page here.
     //Something like this maybe - Router.go('receiptPage', checkForm);
+
+    Router.go('/receipt/' + cardForm._id);
   },
   'click [name=is_recurring]': function (e, tmpl) {
       var id = this._id;
@@ -89,23 +96,18 @@ Template.CardForm.events({
       var id = this._id;
       console.log(id);
       var coverTheFeesBox = tmpl.find('input').checked;
-      // Need to find the amount field on the page and change
-      // it to reflect the new amount based on this being checked or unchecked
-      // currentValue = $(e.target).find('[name=amount]').val();
-      // newValue = Math.round(currentValue * 1.029 + .30);
-      // $(e.target).set('[name=amount]').val(newValue); - > not sure if this is the right jQuery command or not
 
       Donate.update({_id: id}, {
         $set: { 'coverTheFees': true }
         });
     },
-    'mouseup [name=amount]': function() {    
+    'keyup [name=amount]': function() {    
       return updateTotal();
     },
-    'keyup [name=amount]': function(data) {    
+    'change [name=amount]': function() {    
       return updateTotal();
     },
-    'change [name=coverTheFees]': function(data) {    
+    'change [name=coverTheFees]': function() {    
       return updateTotal();
     }
 });

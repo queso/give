@@ -22,8 +22,14 @@ Router.map(function () {
       }
     }
     });
-  this.route('card_form'), {path: '/payWithCard'};
-  this.route('card_form'), {path: '/card_form'};
+  this.route('card_form', {
+    path: '/card_form',
+    data: function() {
+      return {
+        amount: this.params.amount
+      }
+    }
+    });
   this.route('receipt', {path: '/receipt/:_id', 
     waitOn: function() { return Meteor.subscribe('donate', this.params._id)},
     data: function () {return Donate.findOne(this.params._id);}
