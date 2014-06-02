@@ -35,4 +35,5 @@ Router.map(function () {
     data: function () {return Donate.findOne(this.params._id);}
     });
   this.route('send.email', {path: '/send_email'});
+  this.route('failed', {path: '/failed/:_id'});
 });

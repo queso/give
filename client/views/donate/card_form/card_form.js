@@ -1,6 +1,19 @@
 /*****************************************************************************/
 /* CardForm: Event Handlers and Helpers */
 /*****************************************************************************/
+
+function logRenders () {
+    _.each(Template, function (template, name) {
+      var oldRender = template.rendered;
+      var counter = 0;
+ 
+      template.rendered = function () {
+        console.log(name, "render count: ", ++counter);
+        oldRender && oldRender.apply(this, arguments);
+      };
+    });
+  }
+
 function updateTotal(data){
   if ($('#coverTheFees').prop('checked')) {
         var donationAmount = $('#amount').val();
@@ -46,42 +59,27 @@ Template.CardForm.events({
     Donate.update(cardForm._id, {$set: {sessionId: Meteor.default_connection._lastSessionId}});
   
     cardForm.type = "card";
-    console.log(cardForm._id);
-    console.log(Meteor.default_connection._lastSessionId);
+    console.log(cardForm.type);
+    console.log("ID: " + cardForm._id);
+    console.log("Session ID: " + Meteor.default_connection._lastSessionId);
     
     Meteor.call("createCustomer", cardForm, function(error, result) {
 
         console.log("Error: " + error + "  Result: " + result); 
+        console.dir(result);
         //console.log(result.customers[0].href);
-        
-        // Successful tokenization
-    if(result.status_code === 201 && result.href) {
-        // Send to your backend
-        jQuery.post(responseTarget, {
-            uri: result.href
-        }, function(r) {
-            // Check your backend result
-            if(r.status === 201) {
-                // Your successful logic here from backend
-            } else {
-                // Your failure logic here from backend
-            }
-        });
-    } else {
-        // Failed to tokenize, your error logic here
-    }
-    
-    // Debuging, just displays the tokenization result in a pretty div
-    $('#response1 .panel-body pre').html(JSON.stringify(result, false, 4));
-    $('#response1').slideDown(300);
+
+        if (error) {
+            Router.go('/failed/' + cardForm._id);
+        } else {
+            Router.go('/receipt/' + cardForm._id);
+        } 
     });
           
     //var form = tmpl.find('form');
     //form.reset();
     //Will need to add route to receipt page here.
     //Something like this maybe - Router.go('receiptPage', checkForm);
-
-    Router.go('/receipt/' + cardForm._id);
   },
   'click [name=is_recurring]': function (e, tmpl) {
       var id = this._id;
@@ -124,7 +122,8 @@ Template.CardForm.helpers({
             type: "number",
             name: "amount",
             id: "amount",
-            class: "form-control"
+            class: "form-control",
+            min: "1"
         }
     },
     attributes_Input_FName: function () {
@@ -218,6 +217,7 @@ Template.CardForm.helpers({
 /* CardForm: Lifecycle Hooks */
 /*****************************************************************************/
 Template.CardForm.created = function () {
+  logRenders();
 };
 
 Template.CardForm.rendered = function () {

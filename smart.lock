@@ -9,7 +9,9 @@
       "bootstrap-3": {},
       "mandrill": {},
       "iron-router-progress": {},
-      "moment": {}
+      "moment": {},
+      "houston": {},
+      "kadira": {}
     },
     "packages": {
       "iron-router": {
@@ -52,10 +54,30 @@
         "tag": "v2.6.0",
         "commit": "26156df681750fd6e6ed77043eef32b6653ebbdf"
       },
+      "houston": {
+        "git": "https://github.com/gterrono/houston.git",
+        "tag": "v1.0.4",
+        "commit": "e76bda40587ac80ce51ee417047be8272664625c"
+      },
+      "kadira": {
+        "git": "https://github.com/meteorhacks/kadira.git",
+        "tag": "v2.1.1",
+        "commit": "d15bb5299c898d2534b9f0d3ab07daf266a8928a"
+      },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",
         "tag": "v0.2.4",
         "commit": "b40e9b0612329288d75cf52ad14a7da64bb8618f"
+      },
+      "paginated-subscription": {
+        "git": "https://github.com/tmeasday/meteor-paginated-subscription.git",
+        "tag": "v0.2.2",
+        "commit": "2133a2163575f569f90253f81314f21b2bf08d20"
+      },
+      "spin": {
+        "git": "https://github.com/SachaG/meteor-spin.git",
+        "tag": "v0.2.2",
+        "commit": "3f655f0016228e4195acc784c45d3e3a247dc39f"
       }
     }
   }

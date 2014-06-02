@@ -1,6 +1,17 @@
 /*****************************************************************************/
 /* CheckForm: Event Handlers and Helpers */
 /*****************************************************************************/
+function logRenders () {
+    _.each(Template, function (template, name) {
+      var oldRender = template.rendered;
+      var counter = 0;
+ 
+      template.rendered = function () {
+        console.log(name, "render count: ", ++counter);
+        oldRender && oldRender.apply(this, arguments);
+      };
+    });
+  }
 Template.CheckForm.events({
   'submit form': function (e, tmpl) {
     e.preventDefault();
@@ -21,6 +32,7 @@ Template.CheckForm.events({
                                 country:        $(e.target).find('[name=country]').val(),
                                 account_number: $(e.target).find('[name=account_number]').val(),
                                 routing_number: $(e.target).find('[name=routing_number]').val(),
+                                account_type: $(e.target).find('[name=account_type]').val(),
                                 recurring:      { is_recurring: recurringStatus },
                                 donateTo:       $('#donateTo a').text(),
                                 donateWith:     $('#donateWith a').text(),
@@ -36,37 +48,17 @@ Template.CheckForm.events({
      //checkForm._id = Donate.insert(checkForm);
     Meteor.call("createCustomer", checkForm, function(error, result) {
             
-            console.log("Error: " + error + "  Result: " + result); 
-            //console.log(result.customers[0].href);
-            
-            // Successful tokenization
-        if(result.status_code === 201 && result.href) {
-            // Send to your backend
-            jQuery.post(responseTarget, {
-                uri: result.href
-            }, function(r) {
-                // Check your backend result
-                if(r.status === 201) {
-                    // Your successful logic here from backend
-                } else {
-                    // Your failure logic here from backend
-                }
-            });
+        console.log("Error: " + error + "  Result: " + JSON.stringify(result, false, 4)); 
+        //console.log(result.status);
+        console.log(result);
+        console.log(error);
+        //console.log(result.customers[0].href);
+       if (error) {
+            Router.go('/failed/' + checkForm._id);
         } else {
-            // Failed to tokenize, your error logic here
-        }
-        
-        // Debuging, just displays the tokenization result in a pretty div
-        $('#response1 .panel-body pre').html(JSON.stringify(result, false, 4));
-        $('#response1').slideDown(300);
-        });
-          
-    var form = tmpl.find('form');
-    //form.reset();
-    //Will need to add route to receipt page here.
-    //Something like this maybe - Router.go('receiptPage', checkForm);
-
-    Router.go('/receipt/' + checkForm._id);
+            Router.go('/receipt/' + checkForm._id);
+        } 
+    });
   },
   'click [name=is_recurring]': function (e, tmpl) {
       var id = this._id;
@@ -90,7 +82,8 @@ Template.CheckForm.helpers({
         return {
             type: "number",
             name: "amount",
-            class: "form-control"
+            class: "form-control",
+            min: "1"
         }
     },
     attributes_Input_AccountNumber: function () {
@@ -135,6 +128,7 @@ Template.CheckForm.helpers({
 /* CheckForm: Lifecycle Hooks */
 /*****************************************************************************/
 Template.CheckForm.created = function () {
+    logRenders();
 };
 
 Template.CheckForm.rendered = function () {

@@ -14,80 +14,106 @@ var Future = Npm.require("fibers/future");
     return fut.wait();
   }
 
-  function addACHToCustomer(customerID) {
-    var payload = {
-      name: 'John Doe',
-      routing_number: '321174851',
-      account_number: '9900000000'
-    };
-
-  // Create bank account
-  balanced.configure(Meteor.settings.balancedPaymentsAPI);
-  var customerData =  extractFromPromise(balanced.bankAccount.create(payload));
-  console.log(customerData.href);
-  }
-
 Meteor.methods({
  createCustomer: function (data) {
       balanced.configure(Meteor.settings.balancedPaymentsAPI);
-//      var customer = balanced.marketplace.customers.create();
-      var customerData =  extractFromPromise(balanced.marketplace.customers.create());
-      console.log(data.type);
-      /*if (data.type === card) {
-        var card = extractFromPromise(balanced.marketplace.cards.create({
-          'number': '4111111111111111',
-          'expiration_year': '2016',
-          'expiration_month': '12',
-          'cvv': '123'
+
+      var customerData =  extractFromPromise(balanced.marketplace.customers.create({
+        'name': data.fname + " " + data.lname,
+        "address": {
+          "city": data.city,
+          "state": data.region,
+          "line1": data.address_line1,
+          "line2": data.address_line2,
+          "postal_code": data.postal_code,
+        },
+        'email': data.email_address, 
+        'phone': data.phone_number
         }));
-        card.associate_to_customer(customerData).debit(data.amount).then(function (debit) {
-          // save the result of the debit
-        }, function (err) {
-          // record the error message
-        });
-        } else {*/
-          var check = extractFromPromise(balanced.marketplace.bank_accounts.create({
-            "routing_number": "121000358", 
-            "account_type": "checking", 
-            "name": "Johann Bernoulli", 
-            "account_number": "9900000001"
-          }));
-          check.associate_to_customer(customerData).debit(data.amount).then(function (debit) {
-          // save the result of the debit
-        }, function (err) {
-          // record the error message
-        });
+      
+      //Runs if the form used was the credit card form, which sets type as part of the array which is passed to this server
+      // side function
+      if (data.type === "card") {
+        var card = extractFromPromise(balanced.marketplace.cards.create({
+          'number': data.card_number,
+          'expiration_year': data.expiry_year,
+          'expiration_month': data.expiry_month,
+          'cvv': data.cvv
+        }));
+        try {
+          var associate = extractFromPromise(card.associate_to_customer(customerData.href).debit({
+          "amount": data.total_amount*100,
+          "appears_on_statement_as": "Trash Mountain" }));
+        } catch (e) {
+          return e;
+        }
         
 
-      console.log(customerData.href);
-      var customerID = Donate.insert({ customerURL: customerData.href });
-      // this isn't ready yet
-      //var printMe = addACHToCustomer(Donate.findOne(customerID).customerURL);
-      //console.log(printMe); 
+        //add customer create response from Balanced to the database
+        var customerResponse = Donate.update(data._id, {$set: {
+          customerHref: customerData.href,
+          customerType: customerData.type,
+        }});
 
-      //customerDataString returns a strange subset of the whole, not sure why this is
-      //var customerDataString = JSON.stringify(customerData, undefined, 2);      
-      //console.log(customerDataString);
-      return customerData;
-    },
-  addBankAccount: function () {
-    var payload = {
-      name: 'John Doe',
-      routing_number: '321174851',
-      account_number: '9900000000'
-    };
+        //add card create response from Balanced to the database
+        var cardResponse = Donate.update(data._id, {$set: {
+          cardHref: card.href,
+          cardType: card.type
+        }});
 
-  // Create bank account
-  balanced.configure(Meteor.settings.balancedPaymentsAPI);
-  var customerData =  extractFromPromise(balanced.bankAccount.create(payload));
-  console.log(customerData.href);
-  },
-  addCard: function () {
-    var card = balanced.marketplace.cards.create({
-      'number': '4111111111111111',
-      'expiration_year': '2016',
-      'expiration_month': '12',
-      'cvv': '123'
-    });
-  }
+        //add debit response from Balanced to the database
+        var debitReponse = Donate.update(data._id, {$set: {
+          debitStatus: associate.status,
+          debitHREF:  associate.href,
+          deitType:   associate.type,
+          debitAmount: associate.amount,
+          debitFailureReaons: associate.failure_reason
+        }});        
+
+        if (associate.status === "failed") {
+          return "failed";
+        }
+        } 
+
+        //for running ACH
+        else {
+          var check = extractFromPromise(balanced.marketplace.bank_accounts.create({
+            "routing_number": data.routing_number, 
+            "account_type": data.account_type, 
+            "name": data.fname + " " + data.lname, 
+            "account_number": data.account_number,
+            "appears_on_statement_as": "Trash Mountain"
+          }));
+
+          var associate = extractFromPromise(check.associate_to_customer(customerData.href).debit({
+            "amount": data.total_amount * 100,
+            "appears_on_statement_as": "Trash Mountain"}));
+
+          //not properly getting error data out and preventing the receipt page from showing up, need to fix this. 
+          console.log(associate.debits[0].status);
+          console.log(associate.errors);
+          console.log(associate.status);
+          if (associate.debits.status === "failed") {
+            return "failed";
+          }
+
+          //add customer create response from Balanced to the database
+          var customerResponse = Donate.update(data._id, {$set: {customerData: customerData}});
+
+          //add card create response from Balanced to the database
+          var cardResponse = Donate.update(data._id, {$set: {
+            checkReponse: check
+          }});
+
+          //add debit response from Balanced to the database
+          var debitReponse = Donate.update(data._id, {$set: {
+            debitHREF:  associate.href,
+            deitType:   associate.type
+          }}); 
+
+          //add customer create response from Balanced to the database
+          var customerID = Donate.update(data._id, {$set: {customerData: customerData}});
+        }
+      return associate;
+    }
 });

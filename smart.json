@@ -7,6 +7,8 @@
     "bootstrap-3": {},
     "mandrill": {},
     "iron-router-progress": {},
-    "moment": {}
+    "moment": {},
+    "houston": {},
+    "kadira": {}
   }
 }
