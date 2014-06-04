@@ -1,19 +1,6 @@
 /*****************************************************************************/
 /* CardForm: Event Handlers and Helpers */
 /*****************************************************************************/
-
-function logRenders () {
-    _.each(Template, function (template, name) {
-      var oldRender = template.rendered;
-      var counter = 0;
- 
-      template.rendered = function () {
-        console.log(name, "render count: ", ++counter);
-        oldRender && oldRender.apply(this, arguments);
-      };
-    });
-  }
-
 function updateTotal(data){
   if ($('#coverTheFees').prop('checked')) {
         var donationAmount = $('#amount').val();
@@ -34,8 +21,8 @@ Template.CardForm.events({
     var cardForm = {
       amount:         $(e.target).find('[name=amount]').val(),
       total_amount:   $(e.target).find('[name=total_amount]').val(),
-      donateTo:       $('#donateTo a').text(),
-      donateWith:     $('#donateWith a').text(),
+      donateTo:       $(e.target).find('[name=donationTo]').val(),
+      donateWith:     $(e.target).find('[name=donationWith]').val(),
       fname:          $(e.target).find('[name=fname]').val(),
       lname:          $(e.target).find('[name=lname]').val(),
       email_address:  $(e.target).find('[name=email_address]').val(),
@@ -65,17 +52,12 @@ Template.CardForm.events({
     
     Meteor.call("createCustomer", cardForm, function(error, result) {
 
-        console.log("Error: " + error + "  Result: " + result); 
+        console.dir(error);
         console.dir(result);
         //console.log(result.customers[0].href);
-
-        if (error) {
-            Router.go('/failed/' + cardForm._id);
-        } else {
-            Router.go('/receipt/' + cardForm._id);
-        } 
     });
           
+    Router.go('/receipt/' + cardForm._id);
     //var form = tmpl.find('form');
     //form.reset();
     //Will need to add route to receipt page here.
@@ -111,6 +93,19 @@ Template.CardForm.events({
 });
 
 Template.CardForm.helpers({
+  attributes_Input_DonationTo: function () {
+    return {
+        name: "donationTo",
+        class: "form-control",
+        value: "{{donation_to}}"
+    }
+  },
+  attributes_Input_DonationWith: function () {
+    return {
+        name: "donationWith",
+        class: "form-control"
+    }
+  },
   isRecurringChecked: function () {
     return this.is_recurring ? 'checked' : '';
     },
@@ -217,7 +212,6 @@ Template.CardForm.helpers({
 /* CardForm: Lifecycle Hooks */
 /*****************************************************************************/
 Template.CardForm.created = function () {
-  logRenders();
 };
 
 Template.CardForm.rendered = function () {

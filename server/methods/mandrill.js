@@ -1,45 +1,34 @@
 Meteor.startup(function() {
   return Meteor.Mandrill.config({
-    username: "Meteor.settings.mandrillUsername",
-    key: "Meteor.settings.mandrillKey"
+    username: Meteor.settings.mandrillUsername
   });
 });
 
 Meteor.methods({
   sendEmailOutAPI: function (data) {
-    greet("SERVER");
+    console.log("started email send out with API");
+    console.log(data);
     Meteor.Mandrill.sendTemplate({
-      key: "f9trMQWLtBo4XDsxZd97yw",
+      key: Meteor.settings.mandrillKey,
       templateSlug: "compatiblereceipt",
       templateContent: [
         {}
       ],
       mergeVars: [
         {
-          "rcpt": data.to,
+          "rcpt": data.email,
           "vars": [
             {
               "name": "DonatedTo",
-              "content": data.donatedTo
+              "content": data.donateTo
             }, {
               "name": "GiftAmount",
-              "content": data.amount
+              "content": data.total_amount
             }
           ]
         }
       ],
-      toEmail: data.to
+      toEmail: data.email
     });
-  },
-  sendEmailOut: function (data) {
-    console.log(data);
-    var to = data.to;
-    var subject = data.subject;
-  return Meteor.Mandrill.send({
-    to: to,
-    from: 'josh@trashmountain.com',
-    subject: subject,
-    html: '<html><body>Test html body</body></html>'
-  });
   }
 });

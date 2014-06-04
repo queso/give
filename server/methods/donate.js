@@ -40,18 +40,13 @@ Meteor.methods({
           'expiration_month': data.expiry_month,
           'cvv': data.cvv
         }));
-        try {
           var associate = extractFromPromise(card.associate_to_customer(customerData.href).debit({
           "amount": data.total_amount*100,
-          "appears_on_statement_as": "Trash Mountain" }));
-        } catch (e) {
-          return e;
-        }
-        
+          "appears_on_statement_as": "Trash Mountain" }));        
 
         //add customer create response from Balanced to the database
         var customerResponse = Donate.update(data._id, {$set: {
-          customerHref: customerData.href,
+          customerHref: customerData.href,  
           customerType: customerData.type,
         }});
 
@@ -69,10 +64,6 @@ Meteor.methods({
           debitAmount: associate.amount,
           debitFailureReaons: associate.failure_reason
         }});        
-
-        if (associate.status === "failed") {
-          return "failed";
-        }
         } 
 
         //for running ACH
@@ -93,9 +84,9 @@ Meteor.methods({
           console.log(associate.debits[0].status);
           console.log(associate.errors);
           console.log(associate.status);
-          if (associate.debits.status === "failed") {
+          /*if (associate.debits.status === "failed") {
             return "failed";
-          }
+          }*/
 
           //add customer create response from Balanced to the database
           var customerResponse = Donate.update(data._id, {$set: {customerData: customerData}});

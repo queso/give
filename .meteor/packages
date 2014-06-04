@@ -9,11 +9,8 @@ balanced-payments-production
 meteor-editable
 npm
 bootstrap-3
-insecure
 mandrill
 iron-router-progress
 email
 http
 moment
-houston
-kadira

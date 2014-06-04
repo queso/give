@@ -5,8 +5,8 @@ Template.SendEmail.events({
   'submit form': function (e, tmpl) {
     e.preventDefault();
      var emailData = {
-      to:         $(e.target).find('[name=email_address]').val(),
-      donatedTo:  $(e.target).find('[name=DonatedTo]').val(),
+      email:         $(e.target).find('[name=email_address]').val(),
+      donateTo:  $(e.target).find('[name=DonateTo]').val(),
       amount:     $(e.target).find('[name=amount]').val()
     }
     console.log(emailData);

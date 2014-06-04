@@ -1,3 +1,19 @@
 /*****************************************************************************/
 /* CardForm: Style */
 /*****************************************************************************/
+.control-width {
+	width: 200px;
+	display: inline-block;
+}
+.control-width-smaller {
+	width: 155px;
+	display: inline-block;
+}
+.control-width-xs {
+	width: 90px;
+	display: inline-block;
+}
+.control-width-xxs {
+	width: 68px;
+	display: inline-block;
+}

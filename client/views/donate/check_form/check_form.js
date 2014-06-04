@@ -1,17 +1,7 @@
 /*****************************************************************************/
 /* CheckForm: Event Handlers and Helpers */
 /*****************************************************************************/
-function logRenders () {
-    _.each(Template, function (template, name) {
-      var oldRender = template.rendered;
-      var counter = 0;
- 
-      template.rendered = function () {
-        console.log(name, "render count: ", ++counter);
-        oldRender && oldRender.apply(this, arguments);
-      };
-    });
-  }
+
 Template.CheckForm.events({
   'submit form': function (e, tmpl) {
     e.preventDefault();
@@ -34,8 +24,8 @@ Template.CheckForm.events({
                                 routing_number: $(e.target).find('[name=routing_number]').val(),
                                 account_type: $(e.target).find('[name=account_type]').val(),
                                 recurring:      { is_recurring: recurringStatus },
-                                donateTo:       $('#donateTo a').text(),
-                                donateWith:     $('#donateWith a').text(),
+                                donateTo:       $(e.target).find('[name=donationTo]').val(),
+                                donateWith:     $(e.target).find('[name=donationWith]').val(),
                                 created_at:     new Date().getTime()
     }
     checkForm._id = Donate.insert(checkForm);
@@ -53,12 +43,14 @@ Template.CheckForm.events({
         console.log(result);
         console.log(error);
         //console.log(result.customers[0].href);
-       if (error) {
+       /*if (error) {
             Router.go('/failed/' + checkForm._id);
         } else {
             Router.go('/receipt/' + checkForm._id);
-        } 
+        }*/
+
     });
+    Router.go('/receipt/' + checkForm._id);
   },
   'click [name=is_recurring]': function (e, tmpl) {
       var id = this._id;
@@ -101,7 +93,21 @@ Template.CheckForm.helpers({
         name: "routing_number",
         id: "routing_number",
         class: "form-control",
-        value: "321174851"
+        value: "321174851",
+        maxlength: "9"
+      }
+    },
+    attributes_Input_DonationTo: function () {
+        return {
+            name: "donationTo",
+            class: "form-control"
+      }
+    },
+    attributes_Input_DonationWith: function () {
+        return {
+            name: "donationWith",
+            class: "form-control",
+            value: "Check"
       }
     },
     attributes_Label_Amount: function () {
@@ -128,7 +134,6 @@ Template.CheckForm.helpers({
 /* CheckForm: Lifecycle Hooks */
 /*****************************************************************************/
 Template.CheckForm.created = function () {
-    logRenders();
 };
 
 Template.CheckForm.rendered = function () {
