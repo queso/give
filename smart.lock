@@ -9,7 +9,8 @@
       "bootstrap-3": {},
       "mandrill": {},
       "iron-router-progress": {},
-      "moment": {}
+      "moment": {},
+      "synced-cron": {}
     },
     "packages": {
       "iron-router": {
@@ -51,6 +52,11 @@
         "git": "https://github.com/acreeger/meteor-moment.git",
         "tag": "v2.6.0",
         "commit": "26156df681750fd6e6ed77043eef32b6653ebbdf"
+      },
+      "synced-cron": {
+        "git": "https://github.com/percolatestudio/meteor-synced-cron.git",
+        "tag": "v0.1.0",
+        "commit": "40fefdf32ca08b126575caf946943e0b7bc3f94f"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",

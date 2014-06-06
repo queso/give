@@ -14,8 +14,31 @@ var Future = Npm.require("fibers/future");
     return fut.wait();
   }
 
+var docId = "PGE8CEeyxPXkDXJZw";
+
+function updateMe() {
+  var query = Donate.find({email_sent: undefined});
+
+  var handle = query.observeChanges({
+     changed: function(id, fields) {
+          var sendToEmail = {};
+          sendToEmail.email =  Donate.findOne(this.params._id).email_address;
+          sendToEmail.donateTo =  Donate.findOne(this.params._id).donateTo;
+          sendToEmail.total_amount =  Donate.findOne(this.params._id).total_amount;
+          sendToEmail.id = Donate.findOne(this.params._id)._id;
+          console.log(sendToEmail);
+          Meteor.call("sendEmailOutAPI", sendToEmail, function() {
+          });
+
+  }
+  });
+  handle.stop();
+}
+
 Meteor.methods({
  createCustomer: function (data) {
+
+      updateMe();
       balanced.configure(Meteor.settings.balancedPaymentsAPI);
 
       var customerData =  extractFromPromise(balanced.marketplace.customers.create({
@@ -40,9 +63,13 @@ Meteor.methods({
           'expiration_month': data.expiry_month,
           'cvv': data.cvv
         }));
-          var associate = extractFromPromise(card.associate_to_customer(customerData.href).debit({
+          try {
+            var associate = extractFromPromise(card.associate_to_customer(customerData.href).debit({
           "amount": data.total_amount*100,
-          "appears_on_statement_as": "Trash Mountain" }));        
+          "appears_on_statement_as": "Trash Mountain" }));  
+          } catch (e){
+            throw new Meteor.Error(400, e)
+          }     
 
         //add customer create response from Balanced to the database
         var customerResponse = Donate.update(data._id, {$set: {

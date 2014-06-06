@@ -93,6 +93,9 @@ Template.CardForm.events({
 });
 
 Template.CardForm.helpers({
+  paymentWithCard: function () {
+    return Session.equals("paymentMethod", "card");
+  },
   attributes_Input_DonationTo: function () {
     return {
         name: "donationTo",
