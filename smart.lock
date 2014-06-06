@@ -10,7 +10,8 @@
       "mandrill": {},
       "iron-router-progress": {},
       "moment": {},
-      "synced-cron": {}
+      "synced-cron": {},
+      "later": {}
     },
     "packages": {
       "iron-router": {
@@ -57,6 +58,11 @@
         "git": "https://github.com/percolatestudio/meteor-synced-cron.git",
         "tag": "v0.1.0",
         "commit": "40fefdf32ca08b126575caf946943e0b7bc3f94f"
+      },
+      "later": {
+        "git": "https://github.com/apendua/meteor-later.git",
+        "tag": "v1.6.1",
+        "commit": "a9d41464760ab63f6eae65e97e79fd47cff72e3e"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",

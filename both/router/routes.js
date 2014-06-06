@@ -32,25 +32,13 @@ Router.map(function () {
       }
     }
     });
-  this.route('receipt', {path: '/receipt/:_id', 
+  this.route('thanks', {path: '/thanks/:_id', 
     waitOn: function() { return Meteor.subscribe('donate', this.params._id)},
     data: function () {
-      console.log(moment(Donate.findOne(this.params._id).email_sent).format('HH:MM, MM/DD/YYYY'));
-      if (!Donate.findOne(this.params._id).email_sent) {
-        var sendToEmail = {};
-        sendToEmail.email =  Donate.findOne(this.params._id).email_address;
-        sendToEmail.donateTo =  Donate.findOne(this.params._id).donateTo;
-        sendToEmail.total_amount =  Donate.findOne(this.params._id).total_amount;
-        sendToEmail.id = Donate.findOne(this.params._id)._id;
-        console.log(sendToEmail);
-        Meteor.call("sendEmailOutAPI", sendToEmail, function() {
-        });
-        Donate.update(sendToEmail.id, {$set: {
-            email_sent: new Date().getTime()
-      }});
-    } 
-        return Donate.findOne(this.params._id);}
-      });
+      return Donate.findOne(this.params._id);
+    }
+  });
   this.route('send.email', {path: '/send_email'});
   this.route('failed', {path: '/failed/:_id'});
+  this.route('charge_existing', {path: '/charge_existing'});
 });

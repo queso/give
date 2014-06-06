@@ -1,0 +1,34 @@
+<template name="Thanks">
+	{{#if emailSent}}
+		{{> Receipt}}
+	{{else}}
+	<p>
+		Thank you for your gift!
+		<br>
+		This page will automatically show your gift receipt once the payment has been approved. 
+	</p>
+
+	<p>
+		Donation summary: 
+		<br>
+		You gave $___
+		<br>
+		You gave towards ______
+		<br>
+		Your donation payment method was ______
+	</p>
+
+	<p>
+		You will recieve a receipt via email shortly. 
+	</p>
+
+	<p>
+		For giving by check online it can take up to 4 days to recieve a receipt.
+	</p>
+	<p>
+		Questions? 
+		<br>
+		785-246-6845
+	</p>
+	{{/if}}
+</template>

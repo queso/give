@@ -14,8 +14,6 @@ var Future = Npm.require("fibers/future");
     return fut.wait();
   }
 
-var docId = "PGE8CEeyxPXkDXJZw";
-
 function updateMe() {
   var query = Donate.find({email_sent: undefined});
 
@@ -107,14 +105,6 @@ Meteor.methods({
             "amount": data.total_amount * 100,
             "appears_on_statement_as": "Trash Mountain"}));
 
-          //not properly getting error data out and preventing the receipt page from showing up, need to fix this. 
-          console.log(associate.debits[0].status);
-          console.log(associate.errors);
-          console.log(associate.status);
-          /*if (associate.debits.status === "failed") {
-            return "failed";
-          }*/
-
           //add customer create response from Balanced to the database
           var customerResponse = Donate.update(data._id, {$set: {customerData: customerData}});
 
@@ -133,5 +123,19 @@ Meteor.methods({
           var customerID = Donate.update(data._id, {$set: {customerData: customerData}});
         }
       return associate;
+    },
+
+    chargeExistingCard: function (data) {
+      console.log("Started Charge Existing Card Method");
+
+      balanced.configure(Meteor.settings.balancedPaymentsAPI);
+      
+      
+      var debit = extractFromPromise(balanced.get(data.href).debit({
+        "amount": data.total_amount * 100,
+        "appears_on_statement_as": "Trash Mountain",
+        "description": data.description
+      }));
+
     }
 });

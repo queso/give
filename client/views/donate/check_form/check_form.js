@@ -50,7 +50,7 @@ Template.CheckForm.events({
         }*/
 
     });
-    Router.go('/receipt/' + checkForm._id);
+    Router.go('thanks', {_id: checkForm._id});
   },
   'click [name=is_recurring]': function (e, tmpl) {
       var id = this._id;

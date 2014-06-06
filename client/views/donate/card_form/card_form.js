@@ -57,7 +57,7 @@ Template.CardForm.events({
         //console.log(result.customers[0].href);
     });
           
-    Router.go('/receipt/' + cardForm._id);
+    Router.go('/thanks/' + cardForm._id);
     //var form = tmpl.find('form');
     //form.reset();
     //Will need to add route to receipt page here.
