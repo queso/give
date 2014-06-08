@@ -9,12 +9,14 @@ WebApp.connectHandlers
  
         // necessary for Collection use and other wrapped methods
         Fiber(function() {
- 
-            var userId = req.body.userId;
-            var user = Meteor.users.findOne(userId);
+            
+            var body = req.body;
+            console.log(body);
+            console.log(body.events[0].entity.card_holds[0].status)
+            //var user = Meteor.users.findOne(userId);
  
             res.writeHead(200, {'Content-Type': 'application/json'});
-            res.end(JSON.stringify(user.profile));
+            //res.end(JSON.stringify(user.profile));
  
         }).run();
     });    
