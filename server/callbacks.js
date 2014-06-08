@@ -5,7 +5,7 @@ var Fiber = Npm.require('fibers');
 WebApp.connectHandlers
     .use(connect.urlencoded())  // these two replace
     .use(connect.json())        // the old bodyParser
-    .use('/post', function(req, res, next) {
+    .use('/callbacks', function(req, res, next) {
  
         // necessary for Collection use and other wrapped methods
         Fiber(function() {
