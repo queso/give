@@ -56,5 +56,3 @@ suite('Donate', function() {
       Donate.insert({fname: 'George2'});
     }
   });
-
-});
