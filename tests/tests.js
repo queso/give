@@ -46,13 +46,13 @@ suite('Donate', function() {
       }
       emit('done');
     }).once('donate', function(donate) {
-      assert.equal(donate.fname, 'George2');
+      assert.equal(donate.fname, 'from c1');
       done();
     }).once('done', function() {
       c2.eval(insertDonate);
     });
 
     function insertDonate() {
-      Donate.insert({fname: 'George2'});
+      Donate.insert({fname: 'from c2'});
     }
   });
