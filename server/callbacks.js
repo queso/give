@@ -59,12 +59,11 @@ WebApp.connectHandlers
           if ((body.events[0].type) === "hold.captured") {
             console.log("holds: " + body.events[0].entity.card_holds[0].href);
             console.log("holds: " + body.events[0].entity.card_holds[0].id);
-            res.writeHead(200, {'Content-Type': 'application/json'});
-            res.end(body.events[0].entity.card_holds[0].href);
+            var sendToEnd = body.events[0].entity.card_holds[0].id;
           }
  
             res.writeHead(200, {'Content-Type': 'application/json'});
-            res.end(); //JSON.stringify(user.profile)
+            res.end(sendToEnd); //JSON.stringify(user.profile)
  
         }).run();
     });    
