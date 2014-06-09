@@ -34,25 +34,3 @@ suite('Donate', function() {
       Donate.insert({fname: 'George'});
     });
   });
-
-  test('using two clients', function(done, server, c1, c2) {
-    c1.eval(function() {
-      Donate.find().observe({
-        added: addedNewDonate
-      });
-
-      function addedNewDonate(donate) {
-        emit('donate', donate);
-      }
-      emit('done');
-    }).once('donate', function(donate) {
-      assert.equal(donate.fname, 'from c1');
-      done();
-    }).once('done', function() {
-      c2.eval(insertDonate);
-    });
-
-    function insertDonate() {
-      Donate.insert({fname: 'from c2'});
-    }
-  });
