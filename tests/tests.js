@@ -1,4 +1,4 @@
-//tests/posts.js
+//tests/tests.js
 var assert = require('assert');
 
 suite('Donate', function() {
