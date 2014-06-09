@@ -56,6 +56,7 @@ if(Session.get("paymentMethod") === "card") {
 
   //set the form type so the server side method knows what to do with the data.
   form.type = "check";
+  Session.equals("paymentMethod", "check");
 }
 
     form._id = Donate.insert(form);
