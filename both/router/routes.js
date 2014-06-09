@@ -10,25 +10,14 @@ Router.configure({
 });
 
 Router.map(function () {
-  /*
-    Example:
-      this.route('home', {path: '/'});
-  */
-    this.route('check_form', {
-    path: '/check_form',
+  
+  this.route('donation_form', {
+    path: '/donation_form',
     data: function() {
       return {
         amount: this.params.amount,
-        donation_to: this.params.donation_to
-      }
-    }
-    });
-  this.route('card_form', {
-    path: '/card_form',
-    data: function() {
-      return {
-        amount: this.params.amount,
-        donation_to: this.params.donation_to
+        donation_to: this.params.donation_to,
+        donation_with: this.params.donation_with
       }
     }
     });

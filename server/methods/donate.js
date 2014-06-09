@@ -9,7 +9,10 @@ var Future = Npm.require("fibers/future");
     promise.then(function (result) {
       fut["return"](result);
     }, function (error) {
+      
       fut["throw"](error);
+      /*console.log(error[0].status)
+      fut.return(error.message);*/
     });
     return fut.wait();
   }
@@ -51,7 +54,8 @@ Meteor.methods({
         'email': data.email_address, 
         'phone': data.phone_number
         }));
-      
+      console.log("Customer: ");
+      console.dir(JSON.stringify(customerData));
       //Runs if the form used was the credit card form, which sets type as part of the array which is passed to this server
       // side function
       if (data.type === "card") {
@@ -61,14 +65,14 @@ Meteor.methods({
           'expiration_month': data.expiry_month,
           'cvv': data.cvv
         }));
-          try {
+        console.log("Card: ");
+        console.dir(JSON.stringify(card));
+          
             var associate = extractFromPromise(card.associate_to_customer(customerData.href).debit({
           "amount": data.total_amount*100,
-          "appears_on_statement_as": "Trash Mountain" }));  
-          } catch (e){
-            throw new Meteor.Error(400, e)
-          }     
-
+          "appears_on_statement_as": "Trash Mountain" }));    
+console.log("Associate and debit: ");
+console.dir(JSON.stringify(associate));
         //add customer create response from Balanced to the database
         var customerResponse = Donate.update(data._id, {$set: {
           customerHref: customerData.href,  
@@ -100,16 +104,19 @@ Meteor.methods({
             "account_number": data.account_number,
             "appears_on_statement_as": "Trash Mountain"
           }));
-
+console.log("Check: ");
+console.dir(JSON.stringify(check));
           var associate = extractFromPromise(check.associate_to_customer(customerData.href).debit({
             "amount": data.total_amount * 100,
             "appears_on_statement_as": "Trash Mountain"}));
+console.log("Associate and debit: ");
+console.dir(JSON.stringify(associate));
 
           //add customer create response from Balanced to the database
           var customerResponse = Donate.update(data._id, {$set: {customerData: customerData}});
 
           //add card create response from Balanced to the database
-          var cardResponse = Donate.update(data._id, {$set: {
+          var checkResponse = Donate.update(data._id, {$set: {
             checkReponse: check
           }});
 

@@ -1,5 +1,5 @@
 /*****************************************************************************/
-/* CardForm: Event Handlers and Helpers */
+/* DonationForm: Event Handlers and Helpers */
 /*****************************************************************************/
 function updateTotal(data){
   if ($('#coverTheFees').prop('checked')) {
@@ -12,13 +12,13 @@ function updateTotal(data){
       }
 }
 
-Template.CardForm.events({
+Template.DonationForm.events({
   'submit form': function (e, tmpl) {
     e.preventDefault();
     
     var recurringStatus =     $(e.target).find('[name=is_recurring]').is(':checked');
     var coverTheFeesStatus =  $(e.target).find('[name=coverTheFees]').is(':checked');
-    var cardForm = {
+    var form = {
       amount:         $(e.target).find('[name=amount]').val(),
       total_amount:   $(e.target).find('[name=total_amount]').val(),
       donateTo:       $(e.target).find('[name=donationTo]').val(),
@@ -41,23 +41,39 @@ Template.CardForm.events({
       created_at:     new Date().getTime()
     };
 
-    
-    cardForm._id = Donate.insert(cardForm);
-    Donate.update(cardForm._id, {$set: {sessionId: Meteor.default_connection._lastSessionId}});
+if(Session.get("paymentMethod") === "card") {
+  form.card_number =     $(e.target).find('[name=card-number]').val();
+  form.expiry_month =    $(e.target).find('[name=expiry-month]').val();
+  form.expiry_year =     $(e.target).find('[name=expiry-year]').val();
+  form.cvv =             $(e.target).find('[name=cvv]').val();
+
+  //set the form type so the server side method knows what to do with the data.
+  form.type = "card";
+} else {
+  form.account_number =  $(e.target).find('[name=account_number]').val();
+  form.routing_number =  $(e.target).find('[name=routing_number]').val();
+  form.account_type =    $(e.target).find('[name=account_type]').val();
+
+  //set the form type so the server side method knows what to do with the data.
+  form.type = "check";
+}
+
+    form._id = Donate.insert(form);
+    Donate.update(form._id, {$set: {sessionId: Meteor.default_connection._lastSessionId}});
   
-    cardForm.type = "card";
-    console.log(cardForm.type);
-    console.log("ID: " + cardForm._id);
+    
+    console.log(form.type);
+    console.log("ID: " + form._id);
     console.log("Session ID: " + Meteor.default_connection._lastSessionId);
     
-    Meteor.call("createCustomer", cardForm, function(error, result) {
+    Meteor.call("createCustomer", form, function(error, result) {
 
         console.dir(error);
         console.dir(result);
         //console.log(result.customers[0].href);
     });
           
-    Router.go('/thanks/' + cardForm._id);
+    Router.go('/thanks/' + form._id);
     //var form = tmpl.find('form');
     //form.reset();
     //Will need to add route to receipt page here.
@@ -89,10 +105,14 @@ Template.CardForm.events({
     },
     'change [name=coverTheFees]': function() {    
       return updateTotal();
+    },
+    'click [name=donationWith]': function(e,tmpl) {
+      var selectedValue = $("#donationWith").val();
+      Session.set("paymentMethod", selectedValue);
     }
 });
 
-Template.CardForm.helpers({
+Template.DonationForm.helpers({
   paymentWithCard: function () {
     return Session.equals("paymentMethod", "card");
   },
@@ -101,12 +121,6 @@ Template.CardForm.helpers({
         name: "donationTo",
         class: "form-control",
         value: "{{donation_to}}"
-    }
-  },
-  attributes_Input_DonationWith: function () {
-    return {
-        name: "donationWith",
-        class: "form-control"
     }
   },
   isRecurringChecked: function () {
@@ -212,13 +226,51 @@ Template.CardForm.helpers({
 });
 
 /*****************************************************************************/
-/* CardForm: Lifecycle Hooks */
+/* DonationForm: Lifecycle Hooks */
 /*****************************************************************************/
-Template.CardForm.created = function () {
+Template.DonationForm.created = function () {
 };
 
-Template.CardForm.rendered = function () {
+Template.DonationForm.rendered = function () {
 };
 
-Template.CardForm.destroyed = function () {
+Template.DonationForm.destroyed = function () {
 };
+
+
+
+
+Template.checkPaymentInformation.helpers({
+
+    attributes_Input_AccountNumber: function () {
+      return {
+        type: "text",
+        name: "account_number",
+        id: "account_number",
+        class: "form-control",
+        value: "9900000000"
+      }
+    },
+    attributes_Input_RoutingNumber: function () {
+      return {
+        type: "text",
+        name: "routing_number",
+        id: "routing_number",
+        class: "form-control",
+        value: "321174851",
+        maxlength: "9"
+      }
+    },
+    attributes_Label_AccountNumber: function () {
+      return {
+        class: "col-sm-3 control-label",
+        for: "account_number"
+      }
+    },
+    attributes_Label_RoutingNumber: function () {
+      return {
+        class: "col-sm-3 control-label",
+        for: "routing_number"
+      }
+    }
+});

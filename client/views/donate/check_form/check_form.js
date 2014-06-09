@@ -78,25 +78,6 @@ Template.CheckForm.helpers({
             min: "1"
         }
     },
-    attributes_Input_AccountNumber: function () {
-      return {
-        type: "text",
-        name: "account_number",
-        id: "account_number",
-        class: "form-control",
-        value: "9900000000"
-      }
-    },
-    attributes_Input_RoutingNumber: function () {
-      return {
-        type: "text",
-        name: "routing_number",
-        id: "routing_number",
-        class: "form-control",
-        value: "321174851",
-        maxlength: "9"
-      }
-    },
     attributes_Input_DonationTo: function () {
         return {
             name: "donationTo",
@@ -115,18 +96,6 @@ Template.CheckForm.helpers({
             class: "col-sm-3 control-label",
             for: "amount"
         }
-    },
-    attributes_Label_AccountNumber: function () {
-      return {
-        class: "col-sm-3 control-label",
-        for: "account_number"
-      }
-    },
-    attributes_Label_RoutingNumber: function () {
-      return {
-        class: "col-sm-3 control-label",
-        for: "routing_number"
-      }
     }
 });
 
