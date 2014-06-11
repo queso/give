@@ -12,7 +12,7 @@ Router.configure({
 Router.map(function () {
   
   this.route('donation_form', {
-    path: '/donation_form',
+    path: '/',
     data: function() {
       return {
         amount: this.params.amount,
