@@ -23,7 +23,8 @@ function updateMe() {
   var handle = query.observeChanges({
     changed: function(id, fields) {
           var emailSent = Donate.findOne(id).debit.email_sent;
-          if (!emailSent === "sent") {
+          console.log(emailSent);
+          if (emailSent != "sent") {
           console.log("Entered changed method");
           var sendToEmail = {};
           sendToEmail.email =  Donate.findOne(id).customer.email_address;

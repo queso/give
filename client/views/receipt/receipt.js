@@ -58,10 +58,10 @@ Template.Receipt.helpers({
    		
    },
    donateTo: function () {
-   		return this.donateTo;
+   		return this.debit.donateTo;
    },
    donateWith: function () {
-   		return this.donateWith;
+   		return this.debit.donateWith;
    },
    amount: function () {
          return this.debit.total_amount;
