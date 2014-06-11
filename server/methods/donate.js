@@ -22,6 +22,8 @@ function updateMe() {
 
   var handle = query.observeChanges({
     changed: function(id, fields) {
+          var emailSent = Donate.findOne(id).debit.email_sent;
+          if (!emailSent === "sent") {
           console.log("Entered changed method");
           var sendToEmail = {};
           sendToEmail.email =  Donate.findOne(id).customer.email_address;
@@ -32,6 +34,7 @@ function updateMe() {
           Meteor.call("sendEmailOutAPI", sendToEmail, function() {
             Donate.update(id, {$set: {'debit.email_sent': 'sent'}});
           });
+        }
     }
   });
   //handle.stop();
