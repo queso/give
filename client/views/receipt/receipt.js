@@ -30,7 +30,7 @@ Template.Receipt.helpers({
    address_line2: function () {
    	if(this.customer.address_line2) {
    		return this.customer.address_line2;
-   	}else {
+   	} else {
    		return false;
    	}
    },
@@ -61,6 +61,7 @@ Template.Receipt.helpers({
    		return this.debit.donateTo;
    },
    donateWith: function () {
+         //need to add the last four digits of the account numer here
    		return this.debit.donateWith;
    },
    amount: function () {

@@ -8,8 +8,7 @@ var Future = Npm.require("fibers/future");
     var fut = new Future();
     promise.then(function (result) {
       fut["return"](result);
-    }, function (error) {
-      
+    }, function (error) {      
       fut["throw"](error);
       /*console.log(error[0].status)
       fut.return(error.message);*/
@@ -31,7 +30,6 @@ function updateMe() {
           sendToEmail.donateTo =  Donate.findOne(id).debit.donateTo;
           sendToEmail.total_amount =  Donate.findOne(id).debit.total_amount;
           sendToEmail.id = Donate.findOne(id)._id;
-          console.log(sendToEmail);
           Meteor.call("sendEmailOutAPI", sendToEmail, function() {
             Donate.update(id, {$set: {'debit.email_sent': 'sent'}});
           });
@@ -146,7 +144,7 @@ console.dir(JSON.stringify(associate));
             'debit.type':   associate.type,
             'debit.status': associate.status,
             'debit.customer': associate.links.customer,
-            'debit.amount': associate.amount,
+            'debit.total_amount': associate.amount / 100 ,
             'debit.id': associate.id
           }}); 
         }

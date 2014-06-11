@@ -64,9 +64,9 @@ if(Session.get("paymentMethod") === "card") {
       sessionId: Meteor.default_connection._lastSessionId,
       'recurring.isRecuring': form.recurring,
       'customer': form.customer[0],
-      'debit.email_sent': false,
       'debit.donateTo': form.paymentInformation[0].donateTo,
-      'debit.donatewith': form.paymentInformation[0].donateWith
+      'debit.donateWith': form.paymentInformation[0].donateWith,
+      'debit.email_sent': false
     }});
   
     console.log("ID: " + form._id);

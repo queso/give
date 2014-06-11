@@ -7,3 +7,6 @@
 .container {
 	margin-top: 30px;
 }
+.donateWith {
+	text-transform: capitalize;
+}
