@@ -16,45 +16,45 @@ Template.Receipt.helpers({
    		return this._id;
    },
    date: function () {
-   		return moment(this.created_at).format('HH:MM, MM/DD/YYYY');
+   		return moment(this.debit.created_at).format('HH:MM, MM/DD/YYYY');
    },
    fname: function () {
-   		return this.fname;
+   		return this.customer.fname;
    },
    lname: function () {
-   		return this.lname;
+   		return this.customer.lname;
    },
    address_line1: function () {
-   		return this.address_line1;
+   		return this.customer.address_line1;
    },
    address_line2: function () {
-   	if(this.address_line2) {
-   		return this.address_line2;
+   	if(this.customer.address_line2) {
+   		return this.customer.address_line2;
    	}else {
    		return false;
    	}
    },
    city: function () {
-   		return this.city;
+   		return this.customer.city;
    },
    region: function () {
-   		return this.region;
+   		return this.customer.region;
    },
    postal_code: function () {
-   		return this.postal_code;
+   		return this.customer.postal_code;
    },
    country: function () {
-   		if(this.country === 'US') {
+   		if(this.customer.country === 'US') {
    			return;
    		}else {
-   			return this.country;
+   			return this.customer.country;
    		}
    },
    email_address: function () {
-   		return this.email_address;
+   		return this.customer.email_address;
    },
    phone_number: function () {
-   		return this.phone_number;
+   		return this.customer.phone_number;
    		
    },
    donateTo: function () {
@@ -64,10 +64,10 @@ Template.Receipt.helpers({
    		return this.donateWith;
    },
    amount: function () {
-         return this.amount;
+         return this.debit.total_amount;
    },
    total_amount: function () {
-         return this.total_amount;
+         return this.debit.total_amount;
    }
 });
 

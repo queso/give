@@ -1,7 +1,7 @@
 /*****************************************************************************/
 /* DonationWith: Event Handlers and Helpers */
 /*****************************************************************************/
-Session.set('value', 1);
+Session.set('value', 'Check');
 
 Template.DonationWith.events({
   /*

@@ -6,6 +6,7 @@ Meteor.startup(function() {
 
 Meteor.methods({
   sendEmailOutAPI: function (data) {
+
     console.log("started email send out with API");
     console.log(data);
     Meteor.Mandrill.sendTemplate({

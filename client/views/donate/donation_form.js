@@ -19,51 +19,56 @@ Template.DonationForm.events({
     var recurringStatus =     $(e.target).find('[name=is_recurring]').is(':checked');
     var coverTheFeesStatus =  $(e.target).find('[name=coverTheFees]').is(':checked');
     var form = {
-      amount:         $(e.target).find('[name=amount]').val(),
-      total_amount:   $(e.target).find('[name=total_amount]').val(),
-      donateTo:       $(e.target).find('[name=donationTo]').val(),
-      donateWith:     $(e.target).find('[name=donationWith]').val(),
-      fname:          $(e.target).find('[name=fname]').val(),
-      lname:          $(e.target).find('[name=lname]').val(),
-      email_address:  $(e.target).find('[name=email_address]').val(),
-      phone_number:   $(e.target).find('[name=phone_number]').val(),
-      address_line1:  $(e.target).find('[name=address_line1]').val(),
-      address_line2:  $(e.target).find('[name=address_line2]').val(),
-      region:         $(e.target).find('[name=region]').val(),
-      city:          $(e.target).find('[name=city]').val(),
-      postal_code:    $(e.target).find('[name=postal_code]').val(),
-      country:        $(e.target).find('[name=country]').val(),
-      card_number:    $(e.target).find('[name=card-number]').val(),
-      expiry_month:   $(e.target).find('[name=expiry-month]').val(),
-      expiry_year:    $(e.target).find('[name=expiry-year]').val(),
-      cvv:            $(e.target).find('[name=cvv]').val(),
-      recurring:      { is_recurring: recurringStatus },
-      created_at:     new Date().getTime()
+      "paymentInformation": [{
+      "amount":         $(e.target).find('[name=amount]').val(),
+      "total_amount":   $(e.target).find('[name=total_amount]').val(),
+      "donateTo":       $( "#donateTo" ).val(),
+      "donateWith":     $("#donateWith").val(),
+      "recurring":      { is_recurring: recurringStatus },
+      "created_at":     new Date().getTime(),
+      }],
+        "customer": [{
+        "fname":          $(e.target).find('[name=fname]').val(),
+        "lname":          $(e.target).find('[name=lname]').val(),
+        "email_address":  $(e.target).find('[name=email_address]').val(),
+        "phone_number":   $(e.target).find('[name=phone_number]').val(),
+        "address_line1":  $(e.target).find('[name=address_line1]').val(),
+        "address_line2":  $(e.target).find('[name=address_line2]').val(),
+        "region":         $(e.target).find('[name=region]').val(),
+        "city":           $(e.target).find('[name=city]').val(),
+        "postal_code":    $(e.target).find('[name=postal_code]').val(),
+        "country":        $(e.target).find('[name=country]').val(),
+        "created_at":     new Date().getTime()
+      }]
     };
-
+console.log(form.paymentInformation[0].donateTo);
 if(Session.get("paymentMethod") === "card") {
-  form.card_number =     $(e.target).find('[name=card-number]').val();
-  form.expiry_month =    $(e.target).find('[name=expiry-month]').val();
-  form.expiry_year =     $(e.target).find('[name=expiry-year]').val();
-  form.cvv =             $(e.target).find('[name=cvv]').val();
+  form.paymentInformation[0].card_number =     $(e.target).find('[name=card-number]').val();
+  form.paymentInformation[0].expiry_month =    $(e.target).find('[name=expiry-month]').val();
+  form.paymentInformation[0].expiry_year =     $(e.target).find('[name=expiry-year]').val();
+  form.paymentInformation[0].cvv =             $(e.target).find('[name=cvv]').val();
 
   //set the form type so the server side method knows what to do with the data.
-  form.type = "card";
+  form.paymentInformation[0].type = "card";
 } else {
-  form.account_number =  $(e.target).find('[name=account_number]').val();
-  form.routing_number =  $(e.target).find('[name=routing_number]').val();
-  form.account_type =    $(e.target).find('[name=account_type]').val();
+  form.paymentInformation[0].account_number =  $(e.target).find('[name=account_number]').val();
+  form.paymentInformation[0].routing_number =  $(e.target).find('[name=routing_number]').val();
+  form.paymentInformation[0].account_type =    $(e.target).find('[name=account_type]').val();
 
   //set the form type so the server side method knows what to do with the data.
-  form.type = "check";
+  form.paymentInformation[0].type = "check";
   Session.equals("paymentMethod", "check");
 }
-
-    form._id = Donate.insert(form);
-    Donate.update(form._id, {$set: {sessionId: Meteor.default_connection._lastSessionId}});
+    form._id = Donate.insert(form.created_at);
+    Donate.update(form._id, {$set: {
+      sessionId: Meteor.default_connection._lastSessionId,
+      'recurring.isRecuring': form.recurring,
+      'customer': form.customer[0],
+      'debit.email_sent': false,
+      'debit.donateTo': form.paymentInformation[0].donateTo,
+      'debit.donatewith': form.paymentInformation[0].donateWith
+    }});
   
-    
-    console.log(form.type);
     console.log("ID: " + form._id);
     console.log("Session ID: " + Meteor.default_connection._lastSessionId);
     
@@ -107,8 +112,8 @@ if(Session.get("paymentMethod") === "card") {
     'change [name=coverTheFees]': function() {    
       return updateTotal();
     },
-    'click [name=donationWith]': function(e,tmpl) {
-      var selectedValue = $("#donationWith").val();
+    'click [name=donateWith]': function(e,tmpl) {
+      var selectedValue = $("#donateWith").val();
       Session.set("paymentMethod", selectedValue);
     }
 });
@@ -119,7 +124,8 @@ Template.DonationForm.helpers({
   },
   attributes_Input_DonationTo: function () {
     return {
-        name: "donationTo",
+        name: "donateTo",
+        id: "donateTo",
         class: "form-control",
         value: "{{donation_to}}"
     }
