@@ -67,7 +67,6 @@ WebApp.connectHandlers
             } catch(e) {
               console.log(e);
             }
-
  
             switch (bodyType) {
               case "bank_account.created":
@@ -116,8 +115,6 @@ WebApp.connectHandlers
             res.end(sendToEnd); //JSON.stringify(user.profile)
           } else {
             res.end();
-          }
-
- 
+          } 
         }).run();
     });    
