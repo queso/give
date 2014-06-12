@@ -62,7 +62,11 @@ WebApp.connectHandlers
             }
 
             var body = req.body; //request body
+            try {
             var bodyType = body.events[0].type; //What type of event is coming from Balanced?
+            } catch(e) {
+              console.log(e);
+            }
 
  
             switch (bodyType) {
@@ -87,6 +91,9 @@ WebApp.connectHandlers
                   var sendToEnd = debitWrite(body.events[0]);
                   break;
               case "debit.succeeded":
+                  //this area should be used to update the debit and trigger the email send
+                  //add another variable here and store the debit.succeeded along with the body info, 
+                  //then send this on to the function for calling the email receipt and updating the data.
                   var sendToEnd = debitWrite(body.events[0]);
                   break;
               case "hold.created":
@@ -97,6 +104,10 @@ WebApp.connectHandlers
                   break;
               case "hold.captured":
                   var sendToEnd = holdWrite(body.events[0].entity.card_holds[0]);
+                  break;
+              default:
+                  console.log("Didn't match any case");
+                  var sendToEnd = "No Match";
                   break;
         }
           

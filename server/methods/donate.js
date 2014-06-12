@@ -16,6 +16,8 @@ var Future = Npm.require("fibers/future");
     return fut.wait();
   }
 
+
+//Remove this area and instead use the callbacks to trigger events inside Meteor
 function updateMe() {
   var query = Donate.find({'debit.email_sent': false});
 
