@@ -1,4 +1,4 @@
-![Codeship Status](https://www.codeship.io/projects/62331c80-d22a-0131-3606-465b6d0c2955/status)
+![Codeship Status](https://codeship.io/projects/c339dcf0-d4a8-0131-d880-3ea79a4fc40b/status)
 
 A donation page for Meteor using balanced-payments
 
