@@ -28,13 +28,14 @@ WebApp.connectHandlers
             function bank_accountWrite(postData) {
               console.log('Callback event received type = bank_account');
               
-              var updateThis = Donate.findOne({'bank_account.id': postData.entity.bank_accounts[0].id});
-              Donate.update(updateThis, {$set: {'bank_account.edited': new Date().getTime()}});
-              return postData.entity.bank_accounts[0].id;
+              var updateThis = Donate.findOne({'bank_account.id': postData.id});
+              Donate.update(updateThis, {$set: {'bank_account': postData
+            }});
+              return postData.id;
             }
 
             function accountWrite(postData) {
-              console.log('Coming from accountWrite call:');
+              console.log('Callback event received type = account:');
               
               var updateThis = Donate.findOne({'customer.id': postData.entity.customers[0].id});
               Donate.update(updateThis, {$set: {'customer.created': postData.type,
@@ -43,12 +44,21 @@ WebApp.connectHandlers
             }
 
             function holdWrite(postData) {
-              console.log('Coming from holdWrite call:');
+              console.log('Callback event received type = hold:');
               
-              var updateThis = Donate.findOne({'customer.id': postData.entity.customers[0].id});
-              Donate.update(updateThis, {$set: {'customer.created': postData.type,
-                'customer.edited': new Date().getTime()}});
-              return postData.entity.customers[0].id;
+              var updateThis = Donate.findOne({'hold.id': postData.id});
+              Donate.update(updateThis, {$set: {'hold.status': postData.status,
+                'hold.updated_at': postData.updated_at
+            }});
+              return postData.id;
+            }
+            function cardWrite(postData) {
+              console.log('Callback event received type = cards:');
+              
+              var updateThis = Donate.findOne({'card.id': postData.id});
+              Donate.update(updateThis, {$set: {'card': postData
+              }});
+              return postData.id;
             }
 
             var body = req.body; //request body
@@ -57,17 +67,21 @@ WebApp.connectHandlers
  
             switch (bodyType) {
               case "bank_account.created":
-                  var sendToEnd = bank_accountWrite(body.events[0]);
+                  var sendToEnd = bank_accountWrite(body.events[0].entity.bank_accounts[0]);
                   break;
               case "bank_account.updated":
-                  var sendToEnd = bank_accountWrite(body.events[0]);
+                  var sendToEnd = bank_accountWrite(body.events[0].entity.bank_accounts[0]);
                   break;
               case "account.created":
                   var sendToEnd = accountWrite(body.events[0]);
                   break;
               case "card.created":
                   console.log(body.events[0].entity);
-                  var sendToEnd = body.events[0].entity;
+                  var sendToEnd = cardWrite(body.events[0].entity.cards[0]);
+                  break;
+              case "card.updated":
+                  console.log(body.events[0].entity);
+                  var sendToEnd = cardWrite(body.events[0].entity.cards[0]);
                   break;
               case "debit.created":
                   var sendToEnd = debitWrite(body.events[0]);
@@ -76,13 +90,13 @@ WebApp.connectHandlers
                   var sendToEnd = debitWrite(body.events[0]);
                   break;
               case "hold.created":
-                  var sendToEnd = holdWrite(body.events[0]);
+                  var sendToEnd = holdWrite(body.events[0].entity.card_holds[0]);
                   break;
               case "hold.updated":
-                  var sendToEnd = holdWrite(body.events[0]);
+                  var sendToEnd = holdWrite(body.events[0].entity.card_holds[0]);
                   break;
               case "hold.captured":
-                  var sendToEnd = holdWrite(body.events[0]);
+                  var sendToEnd = holdWrite(body.events[0].entity.card_holds[0]);
                   break;
         }
           

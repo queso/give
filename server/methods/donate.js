@@ -83,21 +83,18 @@ Meteor.methods({
         
         //add customer create response from Balanced to the database
           var customerResponse = Donate.update(data._id, {$set: {
-            'customer.href': customerData._href,
             'customer.type': customerData._type,
             'customer.id': customerData.id
           }});
 
           //add card create response from Balanced to the database
           var cardResponse = Donate.update(data._id, {$set: {
-            'card.href': card._href, 
             'card.type': card._type,
             'card.id': card.id
           }});
 
           //add debit response from Balanced to the database
           var debitReponse = Donate.update(data._id, {$set: {
-            'debit.href':  associate.href,
             'debit.type':   associate.type,
             'debit.status': associate.status,
             'debit.customer': associate.links.customer,
@@ -126,21 +123,18 @@ console.dir(JSON.stringify(associate));
 
           //add customer create response from Balanced to the database
           var customerResponse = Donate.update(data._id, {$set: {
-            'customer.href': customerData._href,
             'customer.type': customerData._type,
             'customer.id': customerData.id
           }});
 
           //add card create response from Balanced to the database
           var checkResponse = Donate.update(data._id, {$set: {
-            'bank_account.href': check._href, 
             'bank_account.type': check._type,
             'bank_account.id': check.id
           }});
 
           //add debit response from Balanced to the database
           var debitReponse = Donate.update(data._id, {$set: {
-            'debit.href':  associate.href,
             'debit.type':   associate.type,
             'debit.status': associate.status,
             'debit.customer': associate.links.customer,
