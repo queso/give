@@ -109,7 +109,6 @@ WebApp.connectHandlers
                   var sendToEnd = "No Match";
                   break;
         }
-          
           if (sendToEnd) {
             res.writeHead(200, {'Content-Type': 'application/json'});
             res.end(sendToEnd); //JSON.stringify(user.profile)
