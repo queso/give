@@ -1,11 +1,16 @@
 <template name="Thanks">
-	{{#if emailSent}}
+	{{#if displayReceipt}}
 		{{> Receipt}}
 	{{else}}
+	
 	<p>
 		Thank you for your gift!
 		<br>
 		This page will automatically show your gift receipt once the payment has been approved. 
+		<div>
+		<i class="fa fa-check-circle fa-6 icon-xxlarge"></i>
+		<i class="fa fa-5x fa-refresh fa-spin "></i>
+		</div>
 	</p>
 
 	<p>

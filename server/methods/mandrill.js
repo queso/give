@@ -10,7 +10,11 @@ Meteor.startup(function() {
 Meteor.methods({
   sendEmailOutAPI: function (data) {
     console.log("started email send out with API");
-    console.log(data);
+    var email_address = Donate.findOne({_id: data}).customer.email_address;
+    var donateTo = Donate.findOne({_id: data}).debit.donateTo;
+    var donateWith = Donate.findOne({_id: data}).debit.doanteWith;
+    var total_amount = Donate.findOne({_id: data}).debit.total_amount;
+
     Meteor.Mandrill.sendTemplate({
       key: Meteor.settings.mandrillKey,
       templateSlug: "compatiblereceipt",
@@ -19,19 +23,19 @@ Meteor.methods({
       ],
       mergeVars: [
         {
-          "rcpt": data.email,
+          "rcpt": email_address,
           "vars": [
             {
               "name": "DonatedTo",
-              "content": data.donateTo
+              "content": donateTo
             }, {
               "name": "GiftAmount",
-              "content": data.total_amount
+              "content": total_amount
             }
           ]
         }
       ],
-      toEmail: data.email
+      toEmail: email_address
     });
   }
 });

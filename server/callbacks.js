@@ -12,18 +12,27 @@ WebApp.connectHandlers
         Fiber(function() {
             
             function debitWrite(postData) {
-              console.log('Callback event received type = debit');
-              
-              var updateThis = Donate.findOne({'debit.id': postData.entity.debits[0].id})._id;
-              Donate.update(updateThis, {$set: {'debit.created': postData.type,
-                'debit.edited': new Date().getTime()}});
-              //if (postData.entity.debits[0].status === "debit.succeeded") {
+              var updateThis = Donate.findOne({'debit.id': postData.debitID})._id;
+
+              //if the debit was successful updated the debit status in the database and then 
+              //run the Mandrill email function to send a receipt to the donor
+              if (postData.status === "succeeded") { 
+
                 Donate.update(updateThis, {$set: {'debit.status': 'succeeded',
                   'debit.email_sent': 'sending'}});
+
+                //send out the appropriate email using Mandrill
+                Meteor.call('sendEmailOutAPI', updateThis, function (error, result) {
+                  console.log(error, result);
+                });
                 
-              //}
-              return postData.entity.debits[0].id;
+              } else if (postData.status === "created") {
+                 Donate.update(updateThis, {$set: {'debit.status': postData.status,
+                'debit.edited': new Date().getTime()}});
+              }
+              return postData.id;
             }
+            //END debitWrite function
 
             function bank_accountWrite(postData) {
               console.log('Callback event received type = bank_account');
@@ -33,6 +42,7 @@ WebApp.connectHandlers
             }});
               return postData.id;
             }
+            //END bank_accountWrite function
 
             function accountWrite(postData) {
               console.log('Callback event received type = account:');
@@ -42,6 +52,7 @@ WebApp.connectHandlers
                 'customer.edited': new Date().getTime()}});
               return postData.entity.customers[0].id;
             }
+            //END accountWrite function
 
             function holdWrite(postData) {
               console.log('Callback event received type = hold:');
@@ -52,6 +63,8 @@ WebApp.connectHandlers
             }});
               return postData.id;
             }
+            //END holdWrite function
+
             function cardWrite(postData) {
               console.log('Callback event received type = cards:');
               
@@ -60,6 +73,7 @@ WebApp.connectHandlers
               }});
               return postData.id;
             }
+            //END cardWrite function
 
             var body = req.body; //request body
             try {
@@ -87,13 +101,19 @@ WebApp.connectHandlers
                   var sendToEnd = cardWrite(body.events[0].entity.cards[0]);
                   break;
               case "debit.created":
-                  var sendToEnd = debitWrite(body.events[0]);
+                  var sendToWriteFunction = [];
+                  sendToWriteFunction.debitID = body.events[0].entity.debits[0].id;
+                  sendToWriteFunction.status = body.events[0].entity.debits[0].status;
+                  var sendToEnd = debitWrite(sendToWriteFunction);
                   break;
               case "debit.succeeded":
                   //this area should be used to update the debit and trigger the email send
                   //add another variable here and store the debit.succeeded along with the body info, 
                   //then send this on to the function for calling the email receipt and updating the data.
-                  var sendToEnd = debitWrite(body.events[0]);
+                  var sendToWriteFunction = [];
+                  sendToWriteFunction.debitID = body.events[0].entity.debits[0].id;
+                  sendToWriteFunction.status = body.events[0].entity.debits[0].status;
+                  var sendToEnd = debitWrite(sendToWriteFunction);
                   break;
               case "hold.created":
                   var sendToEnd = holdWrite(body.events[0].entity.card_holds[0]);

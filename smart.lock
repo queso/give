@@ -11,7 +11,8 @@
       "iron-router-progress": {},
       "moment": {},
       "synced-cron": {},
-      "later": {}
+      "later": {},
+      "font-awesome": {}
     },
     "packages": {
       "iron-router": {
@@ -63,6 +64,11 @@
         "git": "https://github.com/apendua/meteor-later.git",
         "tag": "v1.6.1",
         "commit": "a9d41464760ab63f6eae65e97e79fd47cff72e3e"
+      },
+      "font-awesome": {
+        "git": "https://github.com/nate-strauser/meteor-font-awesome.git",
+        "tag": "v4.1.0",
+        "commit": "ce6b1e92715d1938babc5d69c655c17e387f5926"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",

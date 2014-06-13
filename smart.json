@@ -9,6 +9,7 @@
     "iron-router-progress": {},
     "moment": {},
     "synced-cron": {},
-    "later": {}
+    "later": {},
+    "font-awesome": {}
   }
 }
