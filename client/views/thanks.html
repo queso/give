@@ -2,38 +2,20 @@
 	{{#if displayReceipt}}
 		{{> Receipt}}
 	{{else}}
+
+	<div class="container">
+	    <div class="row vertical-center-row">
+	        <div class="col-lg-12">
+                <p class="text-center">
+	                Thank you for your gift!
+					<br>
+					This page will automatically show your gift receipt once the payment has been approved. 
+					<br>
+	               	<i class="fa fa-check-square"></i>
+	            </p>
+	        </div>
+	    </div>
+	</div>
 	
-	<p>
-		Thank you for your gift!
-		<br>
-		This page will automatically show your gift receipt once the payment has been approved. 
-		<div>
-		<i class="fa fa-check-circle fa-6 icon-xxlarge"></i>
-		<i class="fa fa-5x fa-refresh fa-spin "></i>
-		</div>
-	</p>
-
-	<p>
-		Donation summary: 
-		<br>
-		You gave $___
-		<br>
-		You gave towards ______
-		<br>
-		Your donation payment method was ______
-	</p>
-
-	<p>
-		You will recieve a receipt via email shortly. 
-	</p>
-
-	<p>
-		For giving by check online it can take up to 4 days to recieve a receipt.
-	</p>
-	<p>
-		Questions? 
-		<br>
-		785-246-6845
-	</p>
 	{{/if}}
 </template>

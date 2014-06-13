@@ -1,0 +1,16 @@
+.fa-check-square {
+	font-size: 15em;
+	color: #389ADC;
+}
+html, body, .container {
+    height: 100%;
+    margin-top: 0;
+}
+.container {
+    display: table;
+    vertical-align: middle;
+}
+.vertical-center-row {
+    display: table-cell;
+    vertical-align: middle;
+}
