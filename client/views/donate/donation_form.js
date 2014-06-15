@@ -239,6 +239,47 @@ Template.DonationForm.created = function () {
 };
 
 Template.DonationForm.rendered = function () {
+  $('.donation-form').bootstrapValidator({
+        message: 'This value is not valid',
+        submitButtons: 'button[type="submit"]',
+        submitHandler: null,
+        trigger: null,
+        live: 'disabled',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            fname: {
+                message: 'The name is not valid',
+                validators: {
+                    notEmpty: {
+                        message: 'First name is mandatory'
+                    }
+                }
+            },
+            lname: {
+                message: 'The name is not valid',
+                validators: {
+                    notEmpty: {
+                        message: 'Last name is mandatory'
+                    }
+                }
+            },
+            phone_number: {
+                message: 'The number is not valid',
+                validators: {
+                    phone: {
+                        message: 'That does not look like a phone number, please check.'
+                    },
+                    notEmpty: {
+                        message: 'A phone number is mandatory'
+                    }
+                }
+            }
+        }
+    });
 };
 
 Template.DonationForm.destroyed = function () {

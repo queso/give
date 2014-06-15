@@ -3,25 +3,27 @@
 	<div class="form-group">
 		<div class="col-sm-3 col-sm-offset-3">
             <label {{attributes_Label_FName}} >First Name</label>
-			<input {{attributes_Input_FName}} />
+			<input {{attributes_Input_FName}} data-bv-notempty="true"
+                data-bv-notempty-message="First name is required and cannot be empty"/>
 		</div>
         <div class="col-sm-3">
             <label {{attributes_Label_LName}} >Last Name</label>
-            <input {{attributes_Input_LName}} />
+            <input {{attributes_Input_LName}} data-bv-notempty="true"
+                data-bv-notempty-message="Last name is required and cannot be empty"/>
         </div>
 	</div>
     <!-- email address input-->
     <div class="form-group">
         <label {{attributes_Label_Email_Address}} >Email</label>
         <div class="col-sm-9">
-            <input {{attributes_Input_Email_Address}} >
+            <input {{attributes_Input_Email_Address}} data-parsley-trigger="change" >
         </div>
     </div>
     <!-- phone number input-->
     <div class="form-group">
         <label {{attributes_Label_Phone_Number}} >Phone</label>
         <div class="col-sm-9">
-            <input {{attributes_Input_Phone_Number}} >
+            <input {{attributes_Input_Phone_Number}} data-parsley-trigger="change" >
         </div>
     </div>
 	<!-- address-line1 input-->

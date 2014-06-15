@@ -131,6 +131,7 @@ Template.RequestAddress.created = function () {
 };
 
 Template.RequestAddress.rendered = function () {
+    
 };
 
 Template.RequestAddress.destroyed = function () {

@@ -10,6 +10,7 @@
     "moment": {},
     "synced-cron": {},
     "later": {},
-    "font-awesome": {}
+    "font-awesome": {},
+    "Bootstrap-Validator": {}
   }
 }

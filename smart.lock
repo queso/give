@@ -12,7 +12,8 @@
       "moment": {},
       "synced-cron": {},
       "later": {},
-      "font-awesome": {}
+      "font-awesome": {},
+      "Bootstrap-Validator": {}
     },
     "packages": {
       "iron-router": {
@@ -69,6 +70,11 @@
         "git": "https://github.com/nate-strauser/meteor-font-awesome.git",
         "tag": "v4.1.0",
         "commit": "ce6b1e92715d1938babc5d69c655c17e387f5926"
+      },
+      "Bootstrap-Validator": {
+        "git": "https://github.com/aashuagg/Bootstrap-Validator.git",
+        "tag": "v0.0.1",
+        "commit": "3e4f9808d86e55315afee4b16080eac991bf8fa4"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",
