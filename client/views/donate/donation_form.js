@@ -115,7 +115,11 @@ if(Session.get("paymentMethod") === "card") {
     'click [name=donateWith]': function(e,tmpl) {
       var selectedValue = $("#donateWith").val();
       Session.set("paymentMethod", selectedValue);
-    }
+  },
+  //need to find a way to resize the iframe window once the page finishes loading
+  'click [name=fname]':function() {
+    if ('parentIFrame' in window) window.parentIFrame.size(250);return false;
+  }
 });
 
 Template.DonationForm.helpers({
@@ -236,9 +240,11 @@ Template.DonationForm.helpers({
 /* DonationForm: Lifecycle Hooks */
 /*****************************************************************************/
 Template.DonationForm.created = function () {
+  
 };
 
 Template.DonationForm.rendered = function () {
+  window.parentIFrame.size(1200);
   $('.donation-form').bootstrapValidator({
         message: 'This value is not valid',
         submitButtons: 'button[type="submit"]',
