@@ -1,6 +1,15 @@
 Meteor.methods({
 	createBillyCustomer: function (data) {
 		
+    var result = extractFromPromise(HTTP.post("https://billy.balancedpayments.com/v1/customers",{
+		
+       	headers: {"Authorization": "Basic" + Meteor.settings.billyKey},
+       	params: {"processor_uri": 'CU5TULDo1gF4aVQKLZKBad4p'}}
+
+       	));
+    return result;
+    
+
 		//this is the layout, need to convert this to HTTP.post instead of curl
 		//POST request looks like this. basic authentication with the the billyKey
 		//body processor_uri=data.customer.href

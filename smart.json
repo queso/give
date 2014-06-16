@@ -11,6 +11,7 @@
     "synced-cron": {},
     "later": {},
     "font-awesome": {},
-    "Bootstrap-Validator": {}
+    "Bootstrap-Validator": {},
+    "autoform": {}
   }
 }

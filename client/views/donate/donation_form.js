@@ -74,9 +74,13 @@ if(Session.get("paymentMethod") === "card") {
   
     console.log("ID: " + form._id);
     console.log("Session ID: " + Meteor.default_connection._lastSessionId);
-    
+    Meteor.call('createBillyCustomer', 1, function (error, result) {
+      console.log(error);
+      console.log(result);
+    });
+
     Meteor.call("createCustomer", form, function(error, result) {
-        if(result === true) {
+        if(result) {
            Router.go('/thanks/' + form._id);
          } else {
             console.dir(error);  
@@ -85,6 +89,7 @@ if(Session.get("paymentMethod") === "card") {
         console.dir(result);
         //console.log(result.customers[0].href);
     });
+
           
     
     //var form = tmpl.find('form');
