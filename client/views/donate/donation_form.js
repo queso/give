@@ -244,7 +244,6 @@ Template.DonationForm.created = function () {
 };
 
 Template.DonationForm.rendered = function () {
-  window.parentIFrame.size(1200);
   $('.donation-form').bootstrapValidator({
         message: 'This value is not valid',
         submitButtons: 'button[type="submit"]',
