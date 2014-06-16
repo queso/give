@@ -74,10 +74,10 @@ if(Session.get("paymentMethod") === "card") {
   
     console.log("ID: " + form._id);
     console.log("Session ID: " + Meteor.default_connection._lastSessionId);
-    Meteor.call('createBillyCustomer', 1, function (error, result) {
+/*    Meteor.call('createBillyCustomer', 1, function (error, result) {
       console.log(error);
       console.log(result);
-    });
+    });*/
 
     Meteor.call("createCustomer", form, function(error, result) {
         if(result) {
