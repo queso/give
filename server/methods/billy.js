@@ -4,9 +4,11 @@ Meteor.methods({
     var result = extractFromPromise(HTTP.post("https://billy.balancedpayments.com/v1/customers",{
 		
        	auth: Meteor.settings.billyKey,
-       	params: {"processor_uri": 'CU5TULDo1gF4aVQKLZKBad4p'}}
+       	params: {"processor_uri": 'CU5TULDo1gF4aVQKLZKBad4p',
+       	"Access-Control-Allow-Origin": "*"}}
 
        	));
+    console.log(result);
     return result;
     
 
