@@ -4,7 +4,6 @@
     "basePackages": {
       "iron-router": {},
       "balanced-payments-production": {},
-      "meteor-editable": {},
       "npm": {},
       "bootstrap-3": {},
       "mandrill": {},
@@ -13,7 +12,6 @@
       "synced-cron": {},
       "later": {},
       "font-awesome": {},
-      "Bootstrap-Validator": {},
       "autoform": {}
     },
     "packages": {
@@ -26,11 +24,6 @@
         "git": "https://github.com/c316/balanced-payments-production.git",
         "tag": "v0.3.0",
         "commit": "21e2665c4e9c0485a8cf728cf76b590a3fea33fb"
-      },
-      "meteor-editable": {
-        "git": "https://github.com/davidworkman9/meteor-editable.git",
-        "tag": "v0.0.13",
-        "commit": "b96bdd847e9d9fb3056bb9c5092ecf0fbad87d3f"
       },
       "npm": {
         "git": "https://github.com/arunoda/meteor-npm.git",
@@ -71,11 +64,6 @@
         "git": "https://github.com/nate-strauser/meteor-font-awesome.git",
         "tag": "v4.1.0",
         "commit": "ce6b1e92715d1938babc5d69c655c17e387f5926"
-      },
-      "Bootstrap-Validator": {
-        "git": "https://github.com/aashuagg/Bootstrap-Validator.git",
-        "tag": "v0.0.1",
-        "commit": "3e4f9808d86e55315afee4b16080eac991bf8fa4"
       },
       "autoform": {
         "git": "https://github.com/aldeed/meteor-autoform.git",

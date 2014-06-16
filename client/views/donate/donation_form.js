@@ -46,7 +46,7 @@ Template.DonationForm.events({
     };
 console.log(form.paymentInformation[0].donateTo);
 if(Session.get("paymentMethod") === "card") {
-  form.paymentInformation[0].card_number =     $(e.target).find('[name=card-number]').val();
+  form.paymentInformation[0].card_number =     $(e.target).find('[name=card_number]').val();
   form.paymentInformation[0].expiry_month =    $(e.target).find('[name=expiry-month]').val();
   form.paymentInformation[0].expiry_year =     $(e.target).find('[name=expiry-year]').val();
   form.paymentInformation[0].cvv =             $(e.target).find('[name=cvv]').val();
@@ -251,47 +251,7 @@ Template.DonationForm.created = function () {
 };
 
 Template.DonationForm.rendered = function () {
-  $('.donation-form').bootstrapValidator({
-        message: 'This value is not valid',
-        submitButtons: 'button[type="submit"]',
-        submitHandler: 'submitButton',
-        trigger: null,
-        live: 'submitted',
-        feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        fields: {
-            fname: {
-                message: 'The name is not valid',
-                validators: {
-                    notEmpty: {
-                        message: 'First name is mandatory'
-                    }
-                }
-            },
-            lname: {
-                message: 'The name is not valid',
-                validators: {
-                    notEmpty: {
-                        message: 'Last name is mandatory'
-                    }
-                }
-            },
-            phone_number: {
-                message: 'The number is not valid',
-                validators: {
-                    phone: {
-                        message: 'That does not look like a phone number, please check.'
-                    },
-                    notEmpty: {
-                        message: 'A phone number is mandatory'
-                    }
-                }
-            }
-        }
-    });
+  
 };
 
 Template.DonationForm.destroyed = function () {

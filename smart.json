@@ -2,7 +2,6 @@
   "packages": {
     "iron-router": {},
     "balanced-payments-production": {},
-    "meteor-editable": {},
     "npm": {},
     "bootstrap-3": {},
     "mandrill": {},
@@ -11,7 +10,6 @@
     "synced-cron": {},
     "later": {},
     "font-awesome": {},
-    "Bootstrap-Validator": {},
     "autoform": {}
   }
 }

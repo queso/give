@@ -3,7 +3,7 @@ Meteor.methods({
 		
     var result = extractFromPromise(HTTP.post("https://billy.balancedpayments.com/v1/customers",{
 		
-       	headers: {"Authorization": "Basic" + Meteor.settings.billyKey},
+       	auth: Meteor.settings.billyKey,
        	params: {"processor_uri": 'CU5TULDo1gF4aVQKLZKBad4p'}}
 
        	));
