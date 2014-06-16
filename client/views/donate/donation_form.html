@@ -1,6 +1,6 @@
 <template name="DonationForm">
 	<div class="donationForm container">
-		<form class="form-horizontal donation-form" role="form" id="donation_form" name="donation_form" data-bv-message="This value is not valid"
+		<form onsubmit="parent.scrollTo(0, 0); return true" class="form-horizontal donation-form" role="form" id="donation_form" name="donation_form" data-bv-message="This value is not valid"
     data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
     data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
     data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">

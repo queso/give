@@ -3,12 +3,12 @@
 	color: #389ADC;
 }
 html, body, .container {
-    height: 100%;
     margin-top: 0;
 }
 .container {
     display: table;
     vertical-align: middle;
+    height: 400px;
 }
 .vertical-center-row {
     display: table-cell;

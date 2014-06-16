@@ -15,6 +15,9 @@ function updateTotal(data){
 Template.DonationForm.events({
   'submit form': function (e, tmpl) {
     e.preventDefault();
+    $('html, body').animate({ scrollTop: 0 }, 'fast');
+    //window.parent.$("body").animate({scrollTop:0}, 'slow');
+
     
     var recurringStatus =     $(e.target).find('[name=is_recurring]').is(':checked');
     var coverTheFeesStatus =  $(e.target).find('[name=coverTheFees]').is(':checked');
@@ -115,11 +118,7 @@ if(Session.get("paymentMethod") === "card") {
     'click [name=donateWith]': function(e,tmpl) {
       var selectedValue = $("#donateWith").val();
       Session.set("paymentMethod", selectedValue);
-  },
-  //need to find a way to resize the iframe window once the page finishes loading
-  'click [name=fname]':function() {
-    if ('parentIFrame' in window) window.parentIFrame.size(250);return false;
-  }
+    }
 });
 
 Template.DonationForm.helpers({
@@ -240,7 +239,6 @@ Template.DonationForm.helpers({
 /* DonationForm: Lifecycle Hooks */
 /*****************************************************************************/
 Template.DonationForm.created = function () {
-  
 };
 
 Template.DonationForm.rendered = function () {
