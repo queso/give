@@ -76,13 +76,17 @@ if(Session.get("paymentMethod") === "card") {
     console.log("Session ID: " + Meteor.default_connection._lastSessionId);
     
     Meteor.call("createCustomer", form, function(error, result) {
-
-        console.dir(error);
+        if(result === true) {
+           Router.go('/thanks/' + form._id);
+         } else {
+            console.dir(error);  
+         }
+        
         console.dir(result);
         //console.log(result.customers[0].href);
     });
           
-    Router.go('/thanks/' + form._id);
+    
     //var form = tmpl.find('form');
     //form.reset();
     //Will need to add route to receipt page here.
@@ -245,9 +249,9 @@ Template.DonationForm.rendered = function () {
   $('.donation-form').bootstrapValidator({
         message: 'This value is not valid',
         submitButtons: 'button[type="submit"]',
-        submitHandler: null,
+        submitHandler: 'submitButton',
         trigger: null,
-        live: 'disabled',
+        live: 'submitted',
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
             invalid: 'glyphicon glyphicon-remove',

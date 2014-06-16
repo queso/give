@@ -9,9 +9,9 @@ var Future = Npm.require("fibers/future");
     promise.then(function (result) {
       fut["return"](result);
     }, function (error) {      
+      //console.log(error.message.errors[0].status);
       fut["throw"](error);
-      /*console.log(error[0].status)
-      fut.return(error.message);*/
+      fut.return(error);
     });
     return fut.wait();
   }
