@@ -82,15 +82,20 @@ if(Session.get("paymentMethod") === "card") {
 
     Meteor.call("createCustomer", form, function(error, result) {
         if(result) {
-           
+           Router.go('/thanks/' + form._id);
          } else {
-            console.dir(error);  
+            console.log(error.reason);
+          var testMe = error.reason;
+          if ($("testMe:contains('Invalid field [amount] - \"0\" must be >= 2')")) {
+             console.log("test");
+             $(".alert").alert('close');
+           }
          }
         
         console.dir(result);
         //console.log(result.customers[0].href);
     });
-  Router.go('/thanks/' + form._id);
+  
           
     
     //var form = tmpl.find('form');

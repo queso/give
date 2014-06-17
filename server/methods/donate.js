@@ -7,11 +7,10 @@ var Future = Npm.require("fibers/future");
   function extractFromPromise(promise) {
     var fut = new Future();
     promise.then(function (result) {
-      fut["return"](result);
-    }, function (error) {      
-      //console.log(error.message.errors[0].status);
-      fut["throw"](error);
-      fut.return(error);
+       fut.return(result);
+     }, function (error) { 
+       console.log(error);      
+       fut.throw(error);
     });
     return fut.wait();
   }
@@ -91,11 +90,19 @@ Meteor.methods({
 console.log("Check: ");
 console.dir(JSON.stringify(check));
 console.log(customerData.href);
-          var associate = extractFromPromise(check.associate_to_customer(customerData.href).debit({
+          var associate;
+           try {
+             associate = extractFromPromise(check.associate_to_customer(customerData.href).debit({
             "amount": paymentInfo.total_amount * 100,
             "appears_on_statement_as": "Trash Mountain"}));
-console.log("Associate and debit: ");
-console.dir(JSON.stringify(associate));
+            console.log("Associate and debit: ");
+            console.dir(JSON.stringify(associate));
+}
+catch (e) {
+  console.log(JSON.parse(e.message).errors[0].extras);            
+            var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
+            throw new Meteor.Error(error.status_code, error.description, error.extras);
+          }
 
           //add customer create response from Balanced to the database
           var customerResponse = Donate.update(data._id, {$set: {
