@@ -84,16 +84,9 @@ if(Session.get("paymentMethod") === "card") {
         if(result) {
            Router.go('/thanks/' + form._id);
          } else {
-<<<<<<< HEAD
             console.log(error.reason);
           var testMe = error.reason;
           if ($("testMe:contains('Invalid field [amount] - \"0\" must be >= 2')")) {
-=======
-            console.dir(error);  
-           console.log(error.reason);
-           var testMe = error.reason;
-           if ($("testMe:contains('Invalid field [amount] - \"0\" must be >= 2')")) {
->>>>>>> aa302707137c6d6bb8a5e48fdc7e7c5f3fa035bd
              console.log("test");
              $(".alert").alert('close');
            }

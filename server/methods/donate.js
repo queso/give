@@ -102,7 +102,6 @@ console.log(customerData.href);
           }
           catch (e) {
             console.log(JSON.parse(e.message).errors[0].extras);            
-          }
             var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
             throw new Meteor.Error(error.status_code, error.description, error.extras);
           }
