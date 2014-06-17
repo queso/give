@@ -83,6 +83,11 @@ WebApp.connectHandlers
               console.log(e);
             }
  
+          // var events = new Npm.require(events).EventEmitter;
+          // events.on("bank_account.created", bank_accountWrite);
+          
+          // events.emit(bodyType, body.events[0]);
+          
             switch (bodyType) {
               case "bank_account.created":
                   var sendToEnd = bank_accountWrite(body.events[0].entity.bank_accounts[0]);
