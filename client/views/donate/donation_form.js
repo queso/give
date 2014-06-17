@@ -15,6 +15,7 @@ function updateTotal(data){
 Template.DonationForm.events({
   'submit form': function (e, tmpl) {
     e.preventDefault();
+    $('#loading').show();
     $('html, body').animate({ scrollTop: 0 }, 'fast');
     //window.parent.$("body").animate({scrollTop:0}, 'slow');
 
@@ -81,7 +82,7 @@ if(Session.get("paymentMethod") === "card") {
 
     Meteor.call("createCustomer", form, function(error, result) {
         if(result) {
-           Router.go('/thanks/' + form._id);
+           
          } else {
             console.dir(error);  
          }
@@ -89,7 +90,7 @@ if(Session.get("paymentMethod") === "card") {
         console.dir(result);
         //console.log(result.customers[0].href);
     });
-
+  Router.go('/thanks/' + form._id);
           
     
     //var form = tmpl.find('form');
