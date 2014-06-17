@@ -91,15 +91,18 @@ console.log("Check: ");
 console.dir(JSON.stringify(check));
 console.log(customerData.href);
           var associate;
-           try {
-             associate = extractFromPromise(check.associate_to_customer(customerData.href).debit({
+
+          try {
+            associate = extractFromPromise(check.associate_to_customer(customerData.href).debit({
+
             "amount": paymentInfo.total_amount * 100,
             "appears_on_statement_as": "Trash Mountain"}));
             console.log("Associate and debit: ");
             console.dir(JSON.stringify(associate));
-}
-catch (e) {
-  console.log(JSON.parse(e.message).errors[0].extras);            
+          }
+          catch (e) {
+            console.log(JSON.parse(e.message).errors[0].extras);            
+          }
             var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
             throw new Meteor.Error(error.status_code, error.description, error.extras);
           }
