@@ -21,9 +21,6 @@ Meteor.methods({
       var customerInfo = data.customer[0];
       console.log("Customer Info: " + customerInfo);
 
-
-      var paymentInfo = data.paymentInformation[0];
-      console.log(paymentInfo);
       var customerData =  extractFromPromise(balanced.marketplace.customers.create({
         'name': customerInfo.fname + " " + customerInfo.lname,
         "address": {
@@ -42,20 +39,42 @@ Meteor.methods({
       //Runs if the form used was the credit card form, which sets type as part of the array which is passed to this server
       // side function
       if (data.paymentInformation[0].type === "card") {
-        var card = extractFromPromise(balanced.marketplace.cards.create({
-          'number': paymentInfo.card_number,
-          'expiration_year': paymentInfo.expiry_year,
-          'expiration_month': paymentInfo.expiry_month,
-          'cvv': paymentInfo.cvv
-        }));
-        console.log("Card: ");
-        console.dir(JSON.stringify(card));
-          console.log(customerData.href);
-            var associate = extractFromPromise(card.associate_to_customer(customerData.href).debit({
-          "amount": data.paymentInformation[0].total_amount*100,
-          "appears_on_statement_as": "Trash Mountain" }));    
-        console.log("Associate and debit: ");
-        console.dir(JSON.stringify(associate));
+        //Tokenize card
+        var card;
+        try {
+          card = extractFromPromise(balanced.marketplace.cards.create({
+            'number': data.paymentInformation[0].card_number,
+            'expiration_year': data.paymentInformation[0].expiry_year,
+            'expiration_month': data.paymentInformation[0].expiry_month,
+            'cvv': data.paymentInformation[0].cvv
+          }));
+          console.log("Card: ");
+          console.dir(JSON.stringify(card));
+            console.log(customerData.href);
+          } 
+          catch (e) {
+            console.log(JSON.parse(e.message).errors[0].extras);  
+            console.log(JSON.parse(e.message).errors[0].category_code);            
+            var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
+            throw new Meteor.Error(error.category_code, error.status_code, error.description, error.extras);
+          }
+
+          //Debit function
+          var associate;
+          try {
+            associate = extractFromPromise(card.associate_to_customer(customerData.href).debit({
+
+            "amount": data.paymentInformation[0].total_amount * 100,
+            "appears_on_statement_as": "Trash Mountain"}));
+            console.log("Associate and debit: ");
+            console.dir(JSON.stringify(associate));
+          }
+          catch (e) {
+            console.log(JSON.parse(e.message).errors[0].extras);  
+            console.log(JSON.parse(e.message).errors[0].category_code);            
+            var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
+            throw new Meteor.Error(error.category_code, error.status_code, error.description, error.extras);
+          }
         
         //add customer create response from Balanced to the database
           var customerResponse = Donate.update(data._id, {$set: {
@@ -80,22 +99,34 @@ Meteor.methods({
 
         //for running ACH
         else {
-          var check = extractFromPromise(balanced.marketplace.bank_accounts.create({
-            "routing_number": paymentInfo.routing_number, 
-            "account_type": paymentInfo.account_type, 
-            "name": customerInfo.fname + " " + customerInfo.lname, 
-            "account_number": paymentInfo.account_number,
-            "appears_on_statement_as": "Trash Mountain"
-          }));
-console.log("Check: ");
-console.dir(JSON.stringify(check));
-console.log(customerData.href);
+          
+          //Create bank account
+          var check;
+          try {
+            check = extractFromPromise(balanced.marketplace.bank_accounts.create({
+              "routing_number": data.paymentInformation[0].routing_number, 
+              "account_type": data.paymentInformation[0].account_type, 
+              "name": customerInfo.fname + " " + customerInfo.lname, 
+              "account_number": data.paymentInformation[0].account_number,
+              "appears_on_statement_as": "Trash Mountain"
+            }));
+            console.log("Check: ");
+            console.dir(JSON.stringify(check));
+            console.log(customerData.href);
+          }
+          catch (e) {
+            console.log(JSON.parse(e.message).errors[0].extras);            
+            var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
+            throw new Meteor.Error(error.status_code, error.description, error.extras);
+          }
+
+          //Debit function
           var associate;
 
           try {
             associate = extractFromPromise(check.associate_to_customer(customerData.href).debit({
 
-            "amount": paymentInfo.total_amount * 100,
+            "amount": data.paymentInformation[0].total_amount * 100,
             "appears_on_statement_as": "Trash Mountain"}));
             console.log("Associate and debit: ");
             console.dir(JSON.stringify(associate));
@@ -135,10 +166,10 @@ console.log(customerData.href);
       balanced.configure(Meteor.settings.balancedPaymentsAPI);
       
       
-      var debit = extractFromPromise(balanced.get(data.href).debit({
-        "amount": data.total_amount * 100,
+      var debit = extractFromPromise(balanced.get(data.paymentInformation[0].href).debit({
+        "amount": data.paymentInformation[0].total_amount * 100,
         "appears_on_statement_as": "Trash Mountain",
-        "description": data.description
+        "description": data.paymentInformation[0].donateTo
       }));
 
     }

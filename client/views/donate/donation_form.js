@@ -15,9 +15,16 @@ function updateTotal(data){
 Template.DonationForm.events({
   'submit form': function (e, tmpl) {
     e.preventDefault();
-    $('#loading').show();
+
+    //Start the bootstrap modal with the awesome font refresh logo
+    //Also, backdrop: 'static' sets the modal to not be exited when 
+    //a user clicks in the background.
+    $('#loading1').modal({
+      visibility: 'show',
+      backdrop: 'static'});
+
+    //Scroll to the top of the window after form is submitted.
     $('html, body').animate({ scrollTop: 0 }, 'fast');
-    //window.parent.$("body").animate({scrollTop:0}, 'slow');
 
     
     var recurringStatus =     $(e.target).find('[name=is_recurring]').is(':checked');
@@ -48,8 +55,8 @@ Template.DonationForm.events({
 console.log(form.paymentInformation[0].donateTo);
 if(Session.get("paymentMethod") === "card") {
   form.paymentInformation[0].card_number =     $(e.target).find('[name=card_number]').val();
-  form.paymentInformation[0].expiry_month =    $(e.target).find('[name=expiry-month]').val();
-  form.paymentInformation[0].expiry_year =     $(e.target).find('[name=expiry-year]').val();
+  form.paymentInformation[0].expiry_month =    $(e.target).find('[name=expiry_month]').val();
+  form.paymentInformation[0].expiry_year =     $(e.target).find('[name=expiry_year]').val();
   form.paymentInformation[0].cvv =             $(e.target).find('[name=cvv]').val();
 
   //set the form type so the server side method knows what to do with the data.
@@ -82,26 +89,91 @@ if(Session.get("paymentMethod") === "card") {
 
     Meteor.call("createCustomer", form, function(error, result) {
         if(result) {
+          $('#loading1').modal('hide');
            Router.go('/thanks/' + form._id);
          } else {
-            console.log(error.reason);
-          var testMe = error.reason;
-          if ($("testMe:contains('Invalid field [amount] - \"0\" must be >= 2')")) {
-             console.log("test");
-             $(".alert").alert('close');
-           }
+          console.log("Errror message: " + error.message);
+          console.log(error);
+          var errorCode = error.error;
+          var errorDescription = error.description;
+          console.log("description: " + error.description);
+          switch (errorCode) {
+              case "card-declined":
+                  //var sendToErrorFunction = cardDeclined();
+                  console.log("Card was declined");
+                  //use this area to add the error to the errors collection,
+                  //also, send an email to me with the error printed in it
+                  //don't need to use mandrill for this (unless that would be 
+                  //easier
+                  break;
+              case "account-insufficient-funds":
+                  //var sendToErrorFunction = accountInsufficientFunds();
+                  break;
+              case "authorization-failed":
+                  //var sendToErrorFunction = authorizationFailed();
+                  break;
+              case "address-verification-failed":
+                  //var sendToErrorFunction = addressVerificationFailed();
+                  break;
+              case "bank-account-not-valid":
+                  //var sendToErrorFunction = bankAccountNotValid();
+                  break;
+              case "card-not-valid":
+                  console.log(error.details);
+                  //var sendToErrorFunction = cardNotValid();
+                  break;
+              case "card-not-validated":
+                  //this is the error for a card that is to short, probably for other errors too
+                  console.log(error.details);
+                  //var sendToErrorFunction = cardNotValidated();
+                  break;
+              case "insufficient-funds":
+                  //var sendToErrorFunction = insufficientFunds();
+                  break;
+              case "multiple-debits":
+                  //var sendToErrorFunction = multipleDebits();
+                  break;
+              case "no-funding-destination":
+                  //var sendToErrorFunction = noFundingDestination();
+                  break;
+              case "no-funding-source":
+                  break;
+              case "unexpected-payload":
+                  break;
+              case "bank-account-authentication-forbidden":
+                  break;
+              case "incomplete-account-info":
+                  break;
+              case "invalid-amount":
+                  break;
+              case "invalid-bank-account-number":
+                  break;
+              case "invalid-routing-number":
+                  break;
+              case "not-found":
+                  break;
+              case "request":
+                  console.log(error.details);
+                  break;
+              case "method-not-allowed":
+                  break;
+              case "amount-exceeds-limit":
+                  //use this area to split payment into more than one
+                  //then send the multiple payments through, 
+                  //or for a temporary workaround print instructions
+                  //back to the user, tell them the max and how they can
+                  //debit more in sepearte transactions
+                  break;
+              default:
+                  console.log("Didn't match any case");
+                  //var sendToErrorFunction = "No Match";
+                  break;
+        }
+          $('#loading1').modal('hide');
          }
-        
         console.dir(result);
-        //console.log(result.customers[0].href);
     });
   
-          
-    
-    //var form = tmpl.find('form');
-    //form.reset();
-    //Will need to add route to receipt page here.
-    //Something like this maybe - Router.go('receiptPage', checkForm);
   },
   'click [name=is_recurring]': function (e, tmpl) {
       var id = this._id;
