@@ -1,8 +1,5 @@
 <template name="DonationForm">
 	<div class="donationForm container">
-        <div class="modal" id="loading1" >
-            <span class="fa fa-refresh fa-spin loading1"></span>
-        </div>
 		<form onsubmit="parent.scrollTo(0, 0); return true" class="form-horizontal donation-form" role="form" id="donation_form" name="donation_form" data-bv-message="This value is not valid"
     data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
     data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
@@ -85,7 +82,9 @@
 			</fieldset>
 		</form>	
 	</div>
-    
+    <div class="modal" id="loading1" >
+        <span class="fa fa-refresh fa-spin loading1 "></span>
+    </div>
 </template>
 
 <template name="checkPaymentInformation">

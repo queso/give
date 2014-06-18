@@ -21,5 +21,12 @@
 .loading1 {
     font-size: 18em;
 	color: #389ADC;
+
+}
+
+#loading1 {
 	vertical-align: middle;
+	left: 50%;
+    height: 400px;
+    top: calc(50% - 200px) !important;
 }
