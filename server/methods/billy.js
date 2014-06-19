@@ -1,13 +1,12 @@
 Meteor.methods({
 	createBillyCustomer: function (data) {
-		
-    var result = extractFromPromise(HTTP.post(
+    var resultSet = '';
+
+		resultSet = HTTP.post(
     	"https://billy.balancedpayments.com/v1/customers",{
-	    	auth: Meteor.settings.billyKey, 
-	    	params: {"processor_uri": '/customers/CU3PBumdCI8OcME495onww9X'}
-	}));
-    console.log(result);
-    return result;
+	    	params: {"processor_uri": '/customers/CU5FE5sFz4FBuosv1ziLEltf'},
+	    	auth: Meteor.settings.billyKey + ':'
+	});
     
 
 		//this is the layout, need to convert this to HTTP.post instead of curl
@@ -18,6 +17,28 @@ Meteor.methods({
     -X POST \
     -u Meteor.settings.billyKey: \
     -d "processor_uri=" + data.customer.href*/
+	},
+	testBillyFunction: function (dataFromOther) {
+		var resultSet = '';
+		try {
+			resultSet = HTTP.post("https://billy.balancedpayments.com/v1/customers", {
+				params: {"processor_uri": "/customers/CU5FE5sFz4FBuosv1ziLElt"},
+				auth: Meteor.settings.billyKey + ':'
+			});
+			
+			console.log(resultSet.data.company_guid); 
+			return resultSet;
+		} catch (e) {
+			console.log(e.error_class);
+			//var errorParsed = JSON.parse(e.message);
+			//console.log(errorParsed);
+			console.log(e.message.error_class);
+			console.log(e.error_class);
+			e._id = Donate.insert(e.message);
+			console.log(e.message);
+		    var error = (e.message); // Update this to handle multiple errors?
+		    throw new Meteor.Error(error);
+		}
 	},
 	createBillyPlan: function (data) {
 		

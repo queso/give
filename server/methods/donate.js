@@ -21,7 +21,10 @@ Meteor.methods({
       var customerInfo = data.customer[0];
       console.log("Customer Info: " + customerInfo);
 
-      var customerData =  extractFromPromise(balanced.marketplace.customers.create({
+      var customerData;
+
+      try {
+        customerData =  extractFromPromise(balanced.marketplace.customers.create({
         'name': customerInfo.fname + " " + customerInfo.lname,
         "address": {
           "city": customerInfo.city,
@@ -35,6 +38,12 @@ Meteor.methods({
         }));
       console.log("Customer: ");
       console.dir(JSON.stringify(customerData));
+    } catch (e) {
+      console.log(JSON.parse(e.message).errors[0].extras);  
+      console.log(JSON.parse(e.message).errors[0].category_code);            
+      var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
+      throw new Meteor.Error(error.category_code, error.status_code, error.description, error.extras);
+    }
 
       //Runs if the form used was the credit card form, which sets type as part of the array which is passed to this server
       // side function

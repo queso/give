@@ -1,0 +1,1 @@
+AllErrors = new Meteor.Collection('allerrors');

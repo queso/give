@@ -86,7 +86,8 @@ if(Session.get("paymentMethod") === "card") {
       console.log(error);
       console.log(result);
     });*/
-
+    
+    if (false) {
     Meteor.call("createCustomer", form, function(error, result) {
         if(result) {
           $('#loading1').modal('hide');
@@ -168,12 +169,28 @@ if(Session.get("paymentMethod") === "card") {
                   console.log("Didn't match any case");
                   //var sendToErrorFunction = "No Match";
                   break;
-        }
+            }
+            //END Switch case block
+
           $('#loading1').modal('hide');
-         }
-        console.dir(result);
-    });
-  
+        }
+        //END error handling block for meteor call to createCustomer
+
+        });
+        //END Meteor call block
+        } else {
+          Meteor.call('testBillyFunction', 1, function (error, result) {
+            if (error) {
+              console.log(error.error);
+              console.log(JSON.stringify(error.error));
+              console.log(typeof(error));
+            } else {
+            console.log(" Result: " + result.data.company_guid);
+            console.log(" Result: " + JSON.stringify(result));
+            console.log(" Result: " + result.create_at);
+          }
+          });
+        }
   },
   'click [name=is_recurring]': function (e, tmpl) {
       var id = this._id;
