@@ -10,7 +10,6 @@
     "synced-cron": {},
     "later": {},
     "font-awesome": {},
-    "autoform": {},
-    "parsley.js": {}
+    "autoform": {}
   }
 }

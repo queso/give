@@ -12,8 +12,7 @@
       "synced-cron": {},
       "later": {},
       "font-awesome": {},
-      "autoform": {},
-      "parsley.js": {}
+      "autoform": {}
     },
     "packages": {
       "iron-router": {
@@ -70,11 +69,6 @@
         "git": "https://github.com/aldeed/meteor-autoform.git",
         "tag": "v0.12.0",
         "commit": "24b0284425e446f2d88760a81052eefe74a20bbf"
-      },
-      "parsley.js": {
-        "git": "https://github.com/amrali/parsleyjs-meteor.git",
-        "tag": "v2.0.0",
-        "commit": "368a0002c6896e547bbc5da6bc8dc11a13757f63"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",
