@@ -93,7 +93,7 @@ if(Session.get("paymentMethod") === "card") {
           $('#loading1').modal('hide');
            Router.go('/thanks/' + form._id);
          } else {
-          console.log("Errror message: " + error.message);
+          console.log("Error message: " + error.message);
           console.log(error);
           var errorCode = error.error;
           var errorDescription = error.description;
@@ -181,9 +181,9 @@ if(Session.get("paymentMethod") === "card") {
         } else {
           Meteor.call('testBillyFunction', 1, function (error, result) {
             if (error) {
-              console.log(error.error);
-              console.log(JSON.stringify(error.error));
-              console.log(typeof(error));
+              console.log(error.error.data.error_class);
+              console.log(error.error.data.error_message);
+              console.log(error.reason);
             } else {
             console.log(" Result: " + result.data.company_guid);
             console.log(" Result: " + JSON.stringify(result));
@@ -348,7 +348,45 @@ Template.DonationForm.created = function () {
 };
 
 Template.DonationForm.rendered = function () {
-  $('#donation_form').parsley();
+
+//Parsley form validation setup, commented to test other things while I wait to 
+//hear back from the developer on a good example to work from.
+/*  $('#donation_form').parsley(parsleyOptions);
+  parsleyOptions = {
+  // Sets success and error class to Bootstrap class names
+  successClass: '',//'has-success',
+  errorClass: 'has-error has-feedback',
+  trigger: 'change',
+
+  // Bootsrap needs success/error class to be set on parent element
+  errors: {
+   classHandler: function ( elem, isRadioOrCheckbox ) {
+     // specify where parsley error-success classes are set
+     return $(elem).parents(".form-group");
+   },
+   // Set these to empty to make sure the default Parsley elements are not rendered
+   errorsWrapper: '',
+   errorElem: ''
+  },
+
+  listeners: {
+   onFieldValidate: function ( elem ) {
+     // remove the X from onFieldError if it's there
+     elem.next( ".glyphicon-remove" ).remove();
+   },
+
+   onFieldError: function ( elem, constraints, parsleyField ) {
+     // add the Bootstrap X glyphicon to the right side of the form element
+     elem.after( '<span class="glyphicon glyphicon-remove form-control-feedback"></span>' );
+     // access the data-required-message="xx" attribute on the field
+     throwError( 000, "", elem.data('required-message' ) );
+    },
+
+    // onFieldSuccess: function(elem, constraints, parsleyField) {
+    //   elem.next().remove( 'form-control-feedback' );
+    // }
+  }
+};*/
 };
 
 Template.DonationForm.destroyed = function () {

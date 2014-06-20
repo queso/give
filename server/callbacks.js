@@ -131,11 +131,13 @@ WebApp.connectHandlers
                   break;
               default:
                   console.log("Didn't match any case");
-                  var sendToEnd = "No Match";
+                  var sendToEnd = "";
                   break;
         }
           if (sendToEnd) {
-            res.writeHead(200, {'Content-Type': 'application/json'});
+            res.writeHead(200, {'Content-Type': 'application/json'}); //Need to make sure that the 200 is only sent if the record is found
+            //otherwise balanced won't keep trying to send to us. Need to get all the errors at the beginning and send an email or I need
+            //to use the allerrors collection to view all errors and resolve
             res.end(sendToEnd); //JSON.stringify(user.profile)
           } else {
             res.end();

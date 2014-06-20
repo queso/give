@@ -22,6 +22,7 @@ Meteor.methods({
 		var resultSet = '';
 		try {
 			resultSet = HTTP.post("https://billy.balancedpayments.com/v1/customers", {
+				//customer URI below is missing the last character, 'f' so that I can test errors
 				params: {"processor_uri": "/customers/CU5FE5sFz4FBuosv1ziLElt"},
 				auth: Meteor.settings.billyKey + ':'
 			});
@@ -29,15 +30,9 @@ Meteor.methods({
 			console.log(resultSet.data.company_guid); 
 			return resultSet;
 		} catch (e) {
-			console.log(e.error_class);
-			//var errorParsed = JSON.parse(e.message);
-			//console.log(errorParsed);
-			console.log(e.message.error_class);
-			console.log(e.error_class);
-			e._id = Donate.insert(e.message);
-			console.log(e.message);
-		    var error = (e.message); // Update this to handle multiple errors?
-		    throw new Meteor.Error(error);
+			e._id = AllErrors.insert(e.response);
+		    var error = (e.response);
+		    throw new Meteor.Error(error, e._id);
 		}
 	},
 	createBillyPlan: function (data) {
