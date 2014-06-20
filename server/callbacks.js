@@ -12,7 +12,7 @@ WebApp.connectHandlers
         Fiber(function() {
             
             function debitWrite(postData) {
-              console.log('Callback event received type = debit:');
+              console.log('Callback event received type = debit: ' + postData.debitID);
               var updateThis = Donate.findOne({'debit.id': postData.debitID})._id;
 
               //if the debit was successful updated the debit status in the database and then 
