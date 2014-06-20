@@ -245,11 +245,13 @@ Template.DonationForm.helpers({
     },
     attributes_Input_Amount: function () {
         return {
-            type: "number",
             name: "amount",
             id: "amount",
             class: "form-control",
-            min: "1"
+            min: "1",
+            'data-parsley-trigger': "change",
+            'data-parsley-type': "integer",
+            "data-parsley-required": true
         }
     },
     attributes_Input_FName: function () {
@@ -346,7 +348,7 @@ Template.DonationForm.created = function () {
 };
 
 Template.DonationForm.rendered = function () {
-  
+  $('#donation_form').parsley();
 };
 
 Template.DonationForm.destroyed = function () {
@@ -373,7 +375,10 @@ Template.checkPaymentInformation.helpers({
         id: "routing_number",
         class: "form-control",
         value: "321174851",
-        maxlength: "9"
+        'data-parsley-trigger': "change",
+        'data-parsley-type': "integer",
+        "data-parsley-min": 9,
+        "data-parsley-max": 9
       }
     },
     attributes_Label_AccountNumber: function () {

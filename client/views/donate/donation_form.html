@@ -1,6 +1,6 @@
 <template name="DonationForm">
 	<div class="donationForm container">
-		<form onsubmit="parent.scrollTo(0, 0); return true" class="form-horizontal donation-form" role="form" id="donation_form" name="donation_form" data-bv-message="This value is not valid"
+		<form onsubmit="parent.scrollTo(0, 0); return true" class="form-horizontal donation-form" role="form" id="donation_form" name="donation_form" 
     data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
     data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
     data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
@@ -51,7 +51,7 @@
 				    <div class="col-sm-9">
 				        <div class="input-group">
 				            <span class="input-group-addon">$</span>
-				            <input {{attributes_Input_Amount}} value="{{amount}}"  />
+				            <input {{attributes_Input_Amount}} value="{{amount}}" data-parsley-type="integer" data-parsley-required="true" data-parsley-trigger="change"/>
 				        </div>
 				    </div>
 				</div>
@@ -120,7 +120,8 @@
 	<div class="form-group">
 		<label class="col-sm-3 control-label" for="card_number">Card Number</label>
         <div class="col-sm-9">
-          <input type="text" class="form-control" name="card_number" id="card_number" placeholder="Debit/Credit Card Number " value="4111111111111111">
+          <input type="text" class="form-control" name="card_number" id="card_number" placeholder="Debit/Credit Card Number" value="4111111111111111"
+          data-parsley-trigger="change" parsley-luhn="true">
         </div>
       </div>
       <div class="form-group">
