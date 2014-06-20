@@ -87,7 +87,7 @@ if(Session.get("paymentMethod") === "card") {
       console.log(result);
     });*/
     
-    if (false) {
+    if (!recurringStatus.checked) {
     Meteor.call("createCustomer", form, function(error, result) {
         if(result) {
           $('#loading1').modal('hide');

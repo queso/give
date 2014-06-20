@@ -23,7 +23,7 @@ Meteor.methods({
 		try {
 			resultSet = HTTP.post("https://billy.balancedpayments.com/v1/customers", {
 				//customer URI below is missing the last character, 'f' so that I can test errors
-				params: {"processor_uri": "/customers/CU5FE5sFz4FBuosv1ziLElt"},
+				params: {"processor_uri": "/customers/CU5FE5sFz4FBuosv1ziLEltf"},
 				auth: Meteor.settings.billyKey + ':'
 			});
 			
