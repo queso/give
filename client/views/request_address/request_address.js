@@ -47,7 +47,7 @@ Template.RequestAddress.helpers({
       return {
         name: "phone_number",
         class: "form-control",
-        //value: "785-246-6845",
+        value: "785-246-6845",
         placeholder: "785-246-6845",
         'data-parsley-trigger': "change",
         "data-parsley-required": true,
