@@ -26,7 +26,7 @@ Template.DonateIndex.created = function () {
 };
 
 Template.DonateIndex.rendered = function () {
-  Donate.insert({ created_at : new Date });
+  //Donate.insert({ created_at : new Date });
 };
 
 Template.DonateIndex.destroyed = function () {
