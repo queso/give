@@ -14,6 +14,7 @@ Meteor.methods({
     var donateTo = Donate.findOne({_id: data}).debit.donateTo;
     var donateWith = Donate.findOne({_id: data}).debit.doanteWith;
     var total_amount = Donate.findOne({_id: data}).debit.total_amount;
+    Donate.update(data, {$set: {'debit.email_sent': true}});
 
     Meteor.Mandrill.sendTemplate({
       key: Meteor.settings.mandrillKey,

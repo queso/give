@@ -17,8 +17,8 @@ WebApp.connectHandlers
 
               //if the debit was successful updated the debit status in the database and then 
               //run the Mandrill email function to send a receipt to the donor
-              if (postData.status === "succeeded") { 
-
+              if (postData.status === "succeeded" && !(Donate.findOne(updateThis).debit.email_sent) ) { 
+                console.log("debit write area")
                 Donate.update(updateThis, {$set: {'debit.status': 'succeeded',
                   'debit.email_sent': 'sending'}});
 
@@ -79,6 +79,7 @@ WebApp.connectHandlers
             var body = req.body; //request body
             try {
             var bodyType = body.events[0].type; //What type of event is coming from Balanced?
+            console.log('received an event');
             } catch(e) {
               console.log(e);
             }

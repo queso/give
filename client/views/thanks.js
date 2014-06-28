@@ -12,6 +12,7 @@ Template.Thanks.helpers({
 
 Template.Thanks.rendered = function () {
 	// Scroll to top of the parent window
-	window.parent.ScrollToTop(); 
-
+	if (window.parent){
+		window.parent.ScrollToTop(); 
+	}
 };
