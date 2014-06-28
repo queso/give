@@ -18,6 +18,7 @@ WebApp.connectHandlers
               //if the debit was successful updated the debit status in the database and then 
               //run the Mandrill email function to send a receipt to the donor
               if (postData.status === "succeeded" && !(Donate.findOne(updateThis).debit.email_sent) ) { 
+                Donate.update(updateThis, {$set: {'debit.email_sent': true}});
                 console.log("debit write area")
                 Donate.update(updateThis, {$set: {'debit.status': 'succeeded',
                   'debit.email_sent': 'sending'}});
