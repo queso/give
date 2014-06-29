@@ -17,6 +17,8 @@ var Future = Npm.require("fibers/future");
 
 Meteor.methods({
  createCustomer: function (data) {
+      Donate.update(data._id, {$set: {status: 'Creating Customer'}});
+
       balanced.configure(Meteor.settings.balancedPaymentsAPI);
       var customerInfo = data.customer[0];
       console.log("Customer Info: " + customerInfo);
@@ -38,6 +40,8 @@ Meteor.methods({
         }));
       console.log("Customer: ");
       console.dir(JSON.stringify(customerData));
+      Donate.update(data._id, {$set: {status: 'Customer created.'}});
+      console.log("Customer created." + data._id);
     } catch (e) {
       console.log(JSON.parse(e.message).errors[0].extras);  
       console.log(JSON.parse(e.message).errors[0].category_code);            

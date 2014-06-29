@@ -13,8 +13,6 @@ iron-router-progress
 email
 http
 moment
-synced-cron
-later
 webapp
 font-awesome
 autoform

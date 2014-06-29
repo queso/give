@@ -10,3 +10,7 @@
 .donateWith {
 	text-transform: capitalize;
 }
+
+.table th {
+	border-bottom: 2px solid #fb7a42;
+}

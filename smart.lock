@@ -9,8 +9,6 @@
       "mandrill": {},
       "iron-router-progress": {},
       "moment": {},
-      "synced-cron": {},
-      "later": {},
       "font-awesome": {},
       "autoform": {}
     },
@@ -50,16 +48,6 @@
         "tag": "v2.6.0",
         "commit": "26156df681750fd6e6ed77043eef32b6653ebbdf"
       },
-      "synced-cron": {
-        "git": "https://github.com/percolatestudio/meteor-synced-cron.git",
-        "tag": "v0.1.1",
-        "commit": "c731ab04e7bf2b0aa7a7e3c4f4750c8c648b791d"
-      },
-      "later": {
-        "git": "https://github.com/apendua/meteor-later.git",
-        "tag": "v1.6.1",
-        "commit": "a9d41464760ab63f6eae65e97e79fd47cff72e3e"
-      },
       "font-awesome": {
         "git": "https://github.com/nate-strauser/meteor-font-awesome.git",
         "tag": "v4.1.0",
@@ -67,8 +55,8 @@
       },
       "autoform": {
         "git": "https://github.com/aldeed/meteor-autoform.git",
-        "tag": "v0.12.0",
-        "commit": "24b0284425e446f2d88760a81052eefe74a20bbf"
+        "tag": "v0.13.5",
+        "commit": "27dd5b912eeba687b228a6a7c2c14eef63b12cca"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",
@@ -82,8 +70,8 @@
       },
       "collection2": {
         "git": "https://github.com/aldeed/meteor-collection2.git",
-        "tag": "v0.4.1",
-        "commit": "a9ffc9b285c3af8ad631f9cda4851b0ffc30c5ce"
+        "tag": "v0.4.2",
+        "commit": "4ff4b707bec8be434919730bf101325adb215444"
       }
     }
   }

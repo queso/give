@@ -26,7 +26,13 @@
 
 #loading1 {
 	vertical-align: middle;
-	left: 50%;
+	left: 45%;
     height: 400px;
-    top: calc(50% - 200px) !important;
+    top: calc(50% - 150px) !important; 
+    padding-left: 40px;
+    padding-top: 20px;
+}
+.modal-backdrop.in
+{
+   opacity: 0.01;
 }

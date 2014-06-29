@@ -1,8 +1,9 @@
 <template name="Receipt">
+	<br>
 	<div class="container">
 		<div class="receipt">
 				<div class="row header">
-					<div class="col-sm-4">
+					<div class="col-xs-4">
 
 						<img src="https://trashmountain.com/system/wp-content/uploads/2012/07/TMP_logo.png" class="img-rounded logo img-responsive">
 						<br>
@@ -14,31 +15,33 @@
 							</div>
 						</div>
 					</div><!--/col-->		
-					<div class="col-sm-4">
+					<div class="col-xs-4">
 						<div class="panel panel-default">
 							<div class="panel-body padding-horizontal evenHeight">
 								<h2>From</h2>
 								<p><strong>Trash Mountain Project</strong></p>
-								<p>1555 NW Gage BLVD</p>
-								<p>Topeka, KS 66618</p>
-								<p>Email: info@trashmountain.com</p>
-								<p>Phone: 785 246 6845</p>
+								<p>1555 NW Gage BLVD
+								<br>Topeka, KS 66618
+								<br>Email: info@trashmountain.com
+								<br>Phone: 785 246 6845</p>
 							</div>	
 						</div>
 					</div><!--/col-->
 
-					<div class="col-sm-4">
+					<div class="col-xs-4">
 						<div class="panel panel-default">
 							<div class="panel-body padding-horizontal evenHeight">
 								<h2>To</h2>
 								<p><strong>{{fname}} {{lname}}</strong></p>
-								<p>{{address_line1}}</p>
-								<p>{{address_line2}}</p>
-								<p>{{city}}, {{region}} {{postal_code}}</p>
-								<p>{{country}}</p>
-								
-								<p>Email: <span id="email">{{email_address}}</span></p>
-								<p>Phone: {{phone_number}}</p>
+								<p>{{address_line1}}
+								<br>{{address_line2}}
+								<br>{{city}}, {{region}} {{postal_code}}
+								{{#if country}}
+									<br>{{country}}
+								{{else}}
+								{{/if}}
+								<br>Email: <span id="email">{{email_address}}</span>
+								<br>Phone: {{phone_number}}</p>
 							</div>	
 						</div>
 					</div><!--/col-->

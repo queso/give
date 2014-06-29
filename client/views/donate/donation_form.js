@@ -14,7 +14,18 @@ function updateTotal(data){
 
 Template.DonationForm.events({
   'submit form': function (e, tmpl) {
+
     e.preventDefault();
+    Session.equals('status', 'Started donation process.');
+
+    Deps.autorun(function(){
+    Session.get("status");
+      notif({
+        msg: "<b>" + Session.get('status') + "</b>",
+        type: "success",
+        position: "center"
+      });
+});
 
     //Start the bootstrap modal with the awesome font refresh logo
     //Also, backdrop: 'static' sets the modal to not be exited when 
@@ -71,6 +82,17 @@ if(Session.get("paymentMethod") === "card") {
   Session.equals("paymentMethod", "check");
 }
     form._id = Donate.insert(form.created_at);
+
+    Deps.autorun(function(){
+      var statusValue = Donate.update(form._id, {$set: {status: 'In collection'}});
+         notif({
+          msg: "<b>" + statusValue + "</b>",
+          type: "success",
+          position: "right"
+        });
+    });
+
+    Session.set('status', Donate.findOne(form._id).status);
     Donate.update(form._id, {$set: {
       sessionId: Meteor.default_connection._lastSessionId,
       'recurring.isRecuring': form.recurring,
@@ -91,6 +113,8 @@ if(Session.get("paymentMethod") === "card") {
     Meteor.call("createCustomer", form, function(error, result) {
         if(result) {
           $('#loading1').modal('hide');
+
+          //Session.set('status', Donate.findOne({id: form._id}).status);
            Router.go('/thanks/' + form._id);
          } else {
           console.log("Error message: " + error.message);
