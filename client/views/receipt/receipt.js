@@ -16,7 +16,7 @@ Template.Receipt.helpers({
    		return this._id;
    },
    date: function () {
-   		return moment(this.debit.created_at).format('HH:MM, MM/DD/YYYY');
+   		return moment(this.debit.created_at).format('MM/DD/YYYY');
    },
    fname: function () {
    		return this.customer.fname;

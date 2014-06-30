@@ -21,7 +21,9 @@
     <div class="form-group">
         <label {{attributes_Label_Phone_Number}} >Phone</label>
         <div class="col-sm-9">
-            <input {{attributes_Input_Phone_Number}} >
+            <input {{attributes_Input_Phone_Number}} pattern="/(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]‌​)\s*)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)([2-9]1[02-9]‌​|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})/" 
+            oninvalid="setCustomValidity('Please enter only numbers')"
+            onchange="try{setCustomValidity('')}catch(e){}" />
         </div>
     </div>
 	<!-- address-line1 input-->
@@ -59,7 +61,7 @@
     <div class="form-group">
         <label class="col-sm-3 control-label">Zip / Postal Code</label>
         <div class="col-sm-9">
-            <input {{attributes_Input_Zip}} >
+            <input {{attributes_Input_Zip}} pattern="(\d{5}([\-]\d{4})?)">
             <p class="help-block"></p>
         </div>
     </div>

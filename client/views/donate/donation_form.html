@@ -12,8 +12,7 @@
                     </div>
                     <div name="donateTo" class="control-width">
                     	<select {{attributes_Input_DonationTo}} >
-                    		<option value="BaseCamp">Base Camp</option>
-							<option value="MostUrgentNeed">Most Urgent Need</option>
+                            {{> DonationTo}}
 						</select> 
                     </div>
                     <div class="control-width-xxs">
@@ -51,7 +50,7 @@
 				    <div class="col-sm-9">
 				        <div class="input-group">
 				            <span class="input-group-addon">$</span>
-				            <input {{attributes_Input_Amount}} value="{{amount}}" data-parsley-type="integer" data-parsley-required="true" data-parsley-trigger="change"/>
+				            <input {{attributes_Input_Amount}} value="{{amount}}" />
 				        </div>
 				    </div>
 				</div>
@@ -172,5 +171,5 @@
 </template>
 
 <template name="building">
-    
+
 </template>

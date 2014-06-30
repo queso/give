@@ -86,8 +86,8 @@
 
 						<div class="col-lg-3 col-lg-offset-3 col-sm-4 col-sm-offset-1 recap">
 							
-							<a class="btn btn-info" onclick="javascript:window.print();"><i class="fa fa-print"></i> Print</a>
-							<!--<a href="page-invoice.html#" class="btn btn-success"><i class="fa fa-usd"></i> Proceed to Payment</a> -->
+							<a class="btn btn-info" onclick="javascript:if(window.print()){window.print()}else{confirm('Please use the browser menu to print')};"><i class="fa fa-print"></i> Print</a>
+							<!-- need to check that the above works on a mobile browser -->
 						</div><!--/col-->
 
 					</div><!--/row-->

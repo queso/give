@@ -262,7 +262,8 @@ Template.DonationForm.helpers({
         name: "donateTo",
         id: "donateTo",
         class: "form-control",
-        value: "{{donation_to}}"
+        //value: "{{donation_to}}"
+        required: true
     }
   },
   isRecurringChecked: function () {
@@ -277,9 +278,7 @@ Template.DonationForm.helpers({
             id: "amount",
             class: "form-control",
             min: "1",
-            'data-parsley-trigger': "change",
-            'data-parsley-type': "integer",
-            "data-parsley-required": true
+            required: true
         }
     },
     attributes_Input_FName: function () {
@@ -287,7 +286,8 @@ Template.DonationForm.helpers({
         type: "text",
         name: "fname",
         class: "form-control",
-        value: "John"
+        value: "John",
+        required: true
       }
     },
     attributes_Input_LName: function () {
@@ -295,7 +295,8 @@ Template.DonationForm.helpers({
         type: "text",
         name: "lname",
         class: "form-control",
-        value: "Doe"
+        value: "Doe",
+        required: true
       }
     },
     attributes_Input_AddressLine1: function () {
@@ -305,7 +306,8 @@ Template.DonationForm.helpers({
         id: "address_line1",
         class: "form-control",
         value: "",
-        placeholder: "address line 1"
+        placeholder: "address line 1",
+        required: true
       }
     },
     attributes_Input_AddressLine2: function () {
@@ -325,7 +327,8 @@ Template.DonationForm.helpers({
         id: "city",
         class: "form-control",
         value: "",
-        placeholder: "city"
+        placeholder: "city",
+        required: true
       }
     },
     attributes_Input_State: function () {
@@ -335,7 +338,8 @@ Template.DonationForm.helpers({
         id: "region",
         class: "form-control",
         value: "",
-        placeholder: "state / province / region"
+        placeholder: "state / province / region",
+        required: true
       }
     },
     attributes_Input_Zip: function () {
@@ -345,14 +349,16 @@ Template.DonationForm.helpers({
         id: "postal_code",
         class: "form-control",
         value: "",
-        placeholder: "zip or postal code"
+        placeholder: "zip or postal code",
+        required: true
       }
     },
     attributes_Select_Country: function () {
       return {
         name: "country",
         id: "country",
-        class: "form-control"
+        class: "form-control",
+        required: true
       }
     },
     attributes_Label_Amount: function () {
