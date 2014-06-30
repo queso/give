@@ -12,5 +12,9 @@
 }
 
 .table th {
-	border-bottom: 2px solid #fb7a42;
+	border-bottom-color: #fb7a42 !important;
+}
+
+ @page { 
+ 	size: landscape;
 }

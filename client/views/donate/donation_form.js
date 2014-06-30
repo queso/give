@@ -16,7 +16,7 @@ Template.DonationForm.events({
   'submit form': function (e, tmpl) {
 
     e.preventDefault();
-    Session.equals('status', 'Started donation process.');
+    /*Session.equals('status', 'Started donation process.');
 
     Deps.autorun(function(){
     Session.get("status");
@@ -25,7 +25,7 @@ Template.DonationForm.events({
         type: "success",
         position: "center"
       });
-});
+});*/
 
     //Start the bootstrap modal with the awesome font refresh logo
     //Also, backdrop: 'static' sets the modal to not be exited when 
@@ -83,16 +83,16 @@ if(Session.get("paymentMethod") === "card") {
 }
     form._id = Donate.insert(form.created_at);
 
-    Deps.autorun(function(){
+    /*Deps.autorun(function(){
       var statusValue = Donate.update(form._id, {$set: {status: 'In collection'}});
          notif({
           msg: "<b>" + statusValue + "</b>",
           type: "success",
           position: "right"
         });
-    });
+    });*/
 
-    Session.set('status', Donate.findOne(form._id).status);
+    //Session.set('status', Donate.findOne(form._id).status);
     Donate.update(form._id, {$set: {
       sessionId: Meteor.default_connection._lastSessionId,
       'recurring.isRecuring': form.recurring,
@@ -244,6 +244,10 @@ if(Session.get("paymentMethod") === "card") {
       return updateTotal();
     },
     'click [name=donateWith]': function(e,tmpl) {
+      var selectedValue = $("#donateWith").val();
+      Session.set("paymentMethod", selectedValue);
+    },
+    'change [name=donateWith]': function(e,tmpl) {
       var selectedValue = $("#donateWith").val();
       Session.set("paymentMethod", selectedValue);
     }
