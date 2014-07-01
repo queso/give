@@ -29,7 +29,7 @@ Template.Receipt.helpers({
    },
    address_line2: function () {
    	if(this.customer.address_line2) {
-   		return this.customer.address_line2;
+   		return "<br>" + this.customer.address_line2;
    	} else {
    		return false;
    	}
@@ -54,8 +54,11 @@ Template.Receipt.helpers({
    		return this.customer.email_address;
    },
    phone_number: function () {
-   		return this.customer.phone_number;
-   		
+      if(this.customer.phone_number !== '') {
+         return "Phone: " + this.customer.phone_number;
+      } else {
+         return false;
+      }   		
    },
    donateTo: function () {
    		return this.debit.donateTo;

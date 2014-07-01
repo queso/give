@@ -37,14 +37,14 @@
 								<address>
 									<strong>{{fname}} {{lname}}</strong>
 									<br>{{address_line1}}
-									<br>{{address_line2}}
+									{{{address_line2}}}
 									<br>{{city}}, {{region}} {{postal_code}}
 									{{#if country}}
 										<br>{{country}}
 									{{else}}
 									{{/if}}
 									<br>Email: <span id="email">{{email_address}}</span>
-									<br>Phone: {{phone_number}}
+									<br>{{phone_number}}
 								</address>
 							</div>	
 						</div>
@@ -73,7 +73,7 @@
 
 					<div class="row">
 
-						<div class="col-lg-5 col-sm-6 notice">
+						<div class="col-lg-12 notice">
 							<div class="well">
 								<p>Thank you for your donation of for Trash Mountain Project, Inc.! We know that our efforts are only possible because of the contributions we receive from generous donors like you, and we thank you again for believing in and supporting our mission. 
 								</p>
@@ -84,9 +84,9 @@
 							</div>	
 						</div><!--/col-->
 
-						<div class="col-lg-3 col-lg-offset-3 col-sm-4 col-sm-offset-1 recap">
+						<div class="col-lg-3 recap">
 							
-							<a class="btn btn-info" onclick="javascript:if(window.print()){window.print()}else{confirm('Please use the browser menu to print')};"><i class="fa fa-print"></i> Print</a>
+							<a class="btn btn-info" onclick="javascript:window.print();"><i class="fa fa-print"></i> Print</a>
 							<!-- need to check that the above works on a mobile browser -->
 						</div><!--/col-->
 

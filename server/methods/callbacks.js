@@ -1,3 +1,6 @@
+//Make sure to fix the callback responses, they should all be blank, no matter what goes in. 
+//Need to make sure that a 200 response isn't sent for some kind of failure on this end, otherwise that request 
+//will never come back to this side
 
 // necessary to parse POST data
 var connect = Meteor.require('connect');

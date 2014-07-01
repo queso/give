@@ -8,6 +8,14 @@ Template.RequestAddress.events({
    *
    *  }
    */
+   'change [name=country]': function(e, tmpl) {
+    if($(e.target).find('[name=country]').val() !== "US") {
+      console.log("Value of country " + $('[name=country]').val());
+      $('#phone').hide().find('input, textarea').prop('disabled', true);
+      $('#phone, text').val("");
+      $('#phoneDiv').hide().find('input, textarea').prop('disabled', true);
+    }
+   }
 
 });
 
@@ -82,13 +90,14 @@ Template.RequestAddress.helpers({
         required: true
       }
     },
-    attributes_Input_Region: function () {
+    attributes_Input_State: function () {
       return {
         type: "text",
         name: "region",
-        class: "form-control",
+        id: "region",
+        class: "form-control text-uppercase",
         value: "KS",
-        placeholder: "state / province / region",
+        placeholder: "State",
         required: true
       }
     },
@@ -133,7 +142,7 @@ Template.RequestAddress.helpers({
         class: "col-sm-3 control-label",
         for: "phone_number"
       }
-    },
+    }
 });
 
 /*****************************************************************************/

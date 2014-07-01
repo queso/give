@@ -16,8 +16,8 @@ var Future = Npm.require("fibers/future");
   }
 
 Meteor.methods({
- createCustomer: function (data) {
-      Donate.update(data._id, {$set: {status: 'Creating Customer'}});
+ processPayment: function (data) {
+      Donate.update(data._id, {$set: {'recurring.isRecurring': data.recurring}});
 
       balanced.configure(Meteor.settings.balancedPaymentsAPI);
       var customerInfo = data.customer[0];
@@ -36,6 +36,7 @@ Meteor.methods({
           "postal_code": customerInfo.postal_code,
         },
         'email': customerInfo.email_address, 
+        //need to add if statement for any fields that might be blank
         'phone': customerInfo.phone_number
         }));
       console.log("Customer: ");

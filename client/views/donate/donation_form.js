@@ -16,37 +16,28 @@ Template.DonationForm.events({
   'submit form': function (e, tmpl) {
 
     e.preventDefault();
-    /*Session.equals('status', 'Started donation process.');
-
-    Deps.autorun(function(){
-    Session.get("status");
-      notif({
-        msg: "<b>" + Session.get('status') + "</b>",
-        type: "success",
-        position: "center"
-      });
-});*/
-
+    
     //Start the bootstrap modal with the awesome font refresh logo
     //Also, backdrop: 'static' sets the modal to not be exited when 
     //a user clicks in the background.
     $('#loading1').modal({
       visibility: 'show',
       backdrop: 'static'});
-
+    //remove below before production 
+    //$('#loading1').center();
     //Scroll to the top of the window after form is submitted.
-    $('html, body').animate({ scrollTop: 0 }, 'fast');
+    //$('html, body').animate({ scrollTop: 0 }, 'fast');
+    //$('html, body').animate({ scrollIntoView: 0 }, 'fast');
 
     
-    var recurringStatus =     $(e.target).find('[name=is_recurring]').is(':checked');
     var coverTheFeesStatus =  $(e.target).find('[name=coverTheFees]').is(':checked');
     var form = {
       "paymentInformation": [{
       "amount":         $(e.target).find('[name=amount]').val(),
       "total_amount":   $(e.target).find('[name=total_amount]').val(),
-      "donateTo":       $( "#donateTo" ).val(),
+      "donateTo":       $("#donateTo").val(),
       "donateWith":     $("#donateWith").val(),
-      "recurring":      { is_recurring: recurringStatus },
+      "recurring":      $('#recurring').is(':checked'),
       "created_at":     new Date().getTime(),
       }],
         "customer": [{
@@ -63,6 +54,7 @@ Template.DonationForm.events({
         "created_at":     new Date().getTime()
       }]
     };
+//remove below before production    
 console.log(form.paymentInformation[0].donateTo);
 if(Session.get("paymentMethod") === "card") {
   form.paymentInformation[0].card_number =     $(e.target).find('[name=card_number]').val();
@@ -83,6 +75,7 @@ if(Session.get("paymentMethod") === "card") {
 }
     form._id = Donate.insert(form.created_at);
 
+//remove below before production 
     /*Deps.autorun(function(){
       var statusValue = Donate.update(form._id, {$set: {status: 'In collection'}});
          notif({
@@ -101,7 +94,7 @@ if(Session.get("paymentMethod") === "card") {
       'debit.donateWith': form.paymentInformation[0].donateWith,
       'debit.email_sent': false
     }});
-  
+    //remove below before production 
     console.log("ID: " + form._id);
     console.log("Session ID: " + Meteor.default_connection._lastSessionId);
 /*    Meteor.call('createBillyCustomer', 1, function (error, result) {
@@ -109,22 +102,25 @@ if(Session.get("paymentMethod") === "card") {
       console.log(result);
     });*/
     
-    if (!recurringStatus.checked) {
-    Meteor.call("createCustomer", form, function(error, result) {
+    if (!$('#recurring').is(':checked')) {
+    Meteor.call("processPayment", form, function(error, result) {
         if(result) {
           $('#loading1').modal('hide');
 
           //Session.set('status', Donate.findOne({id: form._id}).status);
            Router.go('/thanks/' + form._id);
          } else {
+          //remove below before production 
           console.log("Error message: " + error.message);
           console.log(error);
           var errorCode = error.error;
           var errorDescription = error.description;
+          //remove below before production 
           console.log("description: " + error.description);
           switch (errorCode) {
               case "card-declined":
                   //var sendToErrorFunction = cardDeclined();
+                  //remove below before production 
                   console.log("Card was declined");
                   //use this area to add the error to the errors collection,
                   //also, send an email to me with the error printed in it
@@ -144,11 +140,13 @@ if(Session.get("paymentMethod") === "card") {
                   //var sendToErrorFunction = bankAccountNotValid();
                   break;
               case "card-not-valid":
+              //remove below before production 
                   console.log(error.details);
                   //var sendToErrorFunction = cardNotValid();
                   break;
               case "card-not-validated":
                   //this is the error for a card that is to short, probably for other errors too
+                  //remove below before production 
                   console.log(error.details);
                   //var sendToErrorFunction = cardNotValidated();
                   break;
@@ -178,6 +176,7 @@ if(Session.get("paymentMethod") === "card") {
               case "not-found":
                   break;
               case "request":
+              //remove below before production 
                   console.log(error.details);
                   break;
               case "method-not-allowed":
@@ -190,6 +189,7 @@ if(Session.get("paymentMethod") === "card") {
                   //debit more in sepearte transactions
                   break;
               default:
+              //remove below before production 
                   console.log("Didn't match any case");
                   //var sendToErrorFunction = "No Match";
                   break;
@@ -198,35 +198,49 @@ if(Session.get("paymentMethod") === "card") {
 
           $('#loading1').modal('hide');
         }
-        //END error handling block for meteor call to createCustomer
+        //END error handling block for meteor call to processPayment
 
         });
         //END Meteor call block
         } else {
-          Meteor.call('testBillyFunction', 1, function (error, result) {
+          form.pass = true;
+          Meteor.call('createCustomer', form, function (error, result) {
             if (error) {
+              //remove below before production 
               console.log(error.error.data.error_class);
               console.log(error.error.data.error_message);
               console.log(error.reason);
             } else {
-            console.log(" Result: " + result.data.company_guid);
-            console.log(" Result: " + JSON.stringify(result));
-            console.log(" Result: " + result.create_at);
+              //remove below before production 
+            //console.log(" Result: " + result.data.company_guid);
+            //console.log(" Result: " + JSON.stringify(result));
+            //console.log(" Result: " + result.create_at);
+            console.log(" Result: " + result);
+
           }
           });
         }
   },
   'click [name=is_recurring]': function (e, tmpl) {
-      var id = this._id;
-      console.log(id);
-      var isRecuring = tmpl.find('input').checked;
+      if ($('#recurring').is(':checked')) {
+        Session.set('recurring', true);
+        console.log("Checked equal to true");
+      }else {
+        Session.set('recurring', false);
+        console.log("Checked equal to false");
+      }
 
-      Donate.update({_id: id}, {
+
+      //remove below before production 
+      var isRecuring = tmpl.find('#recurring').checked;
+
+/*      Donate.update({_id: id}, {
         $set: { 'recurring.is_recurring': true }
-        });
+        });*/
     },
     'click [name=coverTheFees]': function (e, tmpl) {
       var id = this._id;
+      //remove below before production 
       console.log(id);
       var coverTheFeesBox = tmpl.find('input').checked;
 
@@ -262,6 +276,7 @@ Template.DonationForm.helpers({
         name: "donateTo",
         id: "donateTo",
         class: "form-control",
+        //remove below before production or fix
         //value: "{{donation_to}}"
         required: true
     }
@@ -281,86 +296,6 @@ Template.DonationForm.helpers({
             required: true
         }
     },
-    attributes_Input_FName: function () {
-      return {
-        type: "text",
-        name: "fname",
-        class: "form-control",
-        value: "John",
-        required: true
-      }
-    },
-    attributes_Input_LName: function () {
-      return {
-        type: "text",
-        name: "lname",
-        class: "form-control",
-        value: "Doe",
-        required: true
-      }
-    },
-    attributes_Input_AddressLine1: function () {
-      return {
-        type: "text",
-        name: "address_line1",
-        id: "address_line1",
-        class: "form-control",
-        value: "",
-        placeholder: "address line 1",
-        required: true
-      }
-    },
-    attributes_Input_AddressLine2: function () {
-      return {
-        type: "text",
-        name: "address_line2",
-        id: "address_line2",
-        class: "form-control",
-        value: "",
-        placeholder: "address line 2"
-      }
-    },
-    attributes_Input_City: function () {
-      return {
-        type: "text",
-        name: "city",
-        id: "city",
-        class: "form-control",
-        value: "",
-        placeholder: "city",
-        required: true
-      }
-    },
-    attributes_Input_State: function () {
-      return {
-        type: "text",
-        name: "region",
-        id: "region",
-        class: "form-control",
-        value: "",
-        placeholder: "state / province / region",
-        required: true
-      }
-    },
-    attributes_Input_Zip: function () {
-      return {
-        type: "text",
-        name: "postal_code",
-        id: "postal_code",
-        class: "form-control",
-        value: "",
-        placeholder: "zip or postal code",
-        required: true
-      }
-    },
-    attributes_Select_Country: function () {
-      return {
-        name: "country",
-        id: "country",
-        class: "form-control",
-        required: true
-      }
-    },
     attributes_Label_Amount: function () {
         return {
             class: "col-sm-3 control-label",
@@ -379,10 +314,11 @@ Template.DonationForm.helpers({
 /* DonationForm: Lifecycle Hooks */
 /*****************************************************************************/
 Template.DonationForm.created = function () {
+  Session.set('recurring', false);
 };
 
 Template.DonationForm.rendered = function () {
-
+//remove below before production 
 //Parsley form validation setup, commented to test other things while I wait to 
 //hear back from the developer on a good example to work from.
 /*  $('#donation_form').parsley(parsleyOptions);
@@ -425,8 +361,6 @@ Template.DonationForm.rendered = function () {
 
 Template.DonationForm.destroyed = function () {
 };
-
-
 
 
 Template.checkPaymentInformation.helpers({

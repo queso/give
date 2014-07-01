@@ -32,7 +32,15 @@
     padding-left: 40px;
     padding-top: 20px;
 }
-.modal-backdrop.in
-{
+.modal-backdrop.in {
    opacity: 0.01;
+}
+input {
+    text-transform: capitalize;
+}
+ #region {
+    text-transform: uppercase;
+}
+.modal {
+	overflow:hidden;
 }
