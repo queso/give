@@ -20,9 +20,13 @@ Meteor.methods({
       Donate.update(data._id, {$set: {'recurring.isRecurring': data.recurring}});
 
       balanced.configure(Meteor.settings.balancedPaymentsAPI);
+
+      /*var testMe1 = data.customer[0].fname;
+      console.log(testMe1);
+      console.log((testMe1).typeOf);
+      check(testMe1, String);*/
       var customerInfo = data.customer[0];
       console.log("Customer Info: " + customerInfo);
-
       var customerData;
 
       try {
@@ -157,7 +161,7 @@ Meteor.methods({
             'customer.id': customerData.id
           }});
 
-          //add card create response from Balanced to the database
+          //add check create response from Balanced to the database
           var checkResponse = Donate.update(data._id, {$set: {
             'bank_account.type': check._type,
             'bank_account.id': check.id

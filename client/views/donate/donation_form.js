@@ -92,7 +92,8 @@ if(Session.get("paymentMethod") === "card") {
       'customer': form.customer[0],
       'debit.donateTo': form.paymentInformation[0].donateTo,
       'debit.donateWith': form.paymentInformation[0].donateWith,
-      'debit.email_sent': false
+      'debit.email_sent': false,
+      'debit.type': form.paymentInformation[0].type
     }});
     //remove below before production 
     console.log("ID: " + form._id);
@@ -211,13 +212,10 @@ if(Session.get("paymentMethod") === "card") {
               console.log(error.error.data.error_message);
               console.log(error.reason);
             } else {
-              //remove below before production 
-            //console.log(" Result: " + result.data.company_guid);
-            //console.log(" Result: " + JSON.stringify(result));
-            //console.log(" Result: " + result.create_at);
-            console.log(" Result: " + result);
-
-          }
+                $('#loading1').modal('hide');
+                Router.go('/thanks/' + form._id);
+                console.log(" Result: " + result.statusCode);
+            }
           });
         }
   },
