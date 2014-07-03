@@ -8,5 +8,5 @@ before_install:
   provider: heroku
   api_key: SKU3dqjSMxMyaU8GgsrzVfvWc4RSw2HMihhKerISos3NPdMVsF4WD2lYts98yTWlKKr0Y4gUoqXnYgassCtGQoc8fJd9iaGiN8Jp6T5g33asdvG4398DNoyRdQqDtTk5HeHgNLZeHgmObDJIgY453tcEAeFN10yiwrkj7Qjqyi8=
   app:
-    master: master
-    production: trash-mountain
+    master: trash-mountain
+    production: trash-mountain-give-production
