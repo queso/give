@@ -14,10 +14,14 @@ Router.map(function () {
   this.route('donation_form', {
     path: '/',
     data: function() {
+      var params = this.params;
+      Session.set('params.donateTo', this.params.donateTo);
+      Session.set('params.amount', this.params.amount);
+      Session.set('params.donateWith', this.params.donateWith);
+      Session.set('params.recurring', this.params.recurring);
+      console.log('Params: ' + params.donateTo);
       return {
-        amount: this.params.amount,
-        donation_to: this.params.donation_to,
-        donation_with: this.params.donation_with
+        amount: params.amount
       }
     }
     });

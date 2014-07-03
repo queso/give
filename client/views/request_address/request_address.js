@@ -43,7 +43,7 @@ Template.RequestAddress.helpers({
       return {
         type: "email",
         name: "email_address",
-        class: "form-control",
+        class: "form-control email",
         value: "josh@trashmountain.com",
         placeholder: "me@myemaildomain.com",
         required: true
@@ -152,8 +152,8 @@ Template.RequestAddress.created = function () {
 };
 
 Template.RequestAddress.rendered = function () {
- $("#phone").mask("(999) 999-9999");    
-};
+ $("#phone").mask("(999) 999-9999");   
+ };
 
 Template.RequestAddress.destroyed = function () {
 };

@@ -56,7 +56,8 @@ Template.DonationForm.events({
     };
 //remove below before production    
 console.log(form.paymentInformation[0].donateTo);
-if(Session.get("paymentMethod") === "card") {
+console.log(form.paymentInformation[0].recurring);
+if(form.paymentInformation[0].donateWith === "card") {
   form.paymentInformation[0].card_number =     $(e.target).find('[name=card_number]').val();
   form.paymentInformation[0].expiry_month =    $(e.target).find('[name=expiry_month]').val();
   form.paymentInformation[0].expiry_year =     $(e.target).find('[name=expiry_year]').val();
@@ -93,7 +94,8 @@ if(Session.get("paymentMethod") === "card") {
       'debit.donateTo': form.paymentInformation[0].donateTo,
       'debit.donateWith': form.paymentInformation[0].donateWith,
       'debit.email_sent': false,
-      'debit.type': form.paymentInformation[0].type
+      'debit.type': form.paymentInformation[0].type,
+      'debit.total_amount': form.paymentInformation[0].total_amount
     }});
     //remove below before production 
     console.log("ID: " + form._id);
@@ -269,16 +271,6 @@ Template.DonationForm.helpers({
   paymentWithCard: function () {
     return Session.equals("paymentMethod", "card");
   },
-  attributes_Input_DonationTo: function () {
-    return {
-        name: "donateTo",
-        id: "donateTo",
-        class: "form-control",
-        //remove below before production or fix
-        //value: "{{donation_to}}"
-        required: true
-    }
-  },
   isRecurringChecked: function () {
     return this.is_recurring ? 'checked' : '';
     },
@@ -305,6 +297,9 @@ Template.DonationForm.helpers({
         class: "col-sm-3 control-label",
         for: "name"
       }
+    },
+    donateWithParam: function () {
+      
     }
 });
 
@@ -312,10 +307,10 @@ Template.DonationForm.helpers({
 /* DonationForm: Lifecycle Hooks */
 /*****************************************************************************/
 Template.DonationForm.created = function () {
-  Session.set('recurring', false);
 };
 
 Template.DonationForm.rendered = function () {
+  
 //remove below before production 
 //Parsley form validation setup, commented to test other things while I wait to 
 //hear back from the developer on a good example to work from.
@@ -365,7 +360,7 @@ Template.checkPaymentInformation.helpers({
 
     attributes_Input_AccountNumber: function () {
       return {
-        type: "text",
+        type: "number",
         name: "account_number",
         id: "account_number",
         class: "form-control",
@@ -379,10 +374,8 @@ Template.checkPaymentInformation.helpers({
         id: "routing_number",
         class: "form-control",
         value: "321174851",
-        'data-parsley-trigger': "change",
-        'data-parsley-type': "integer",
-        "data-parsley-min": 9,
-        "data-parsley-max": 9
+        required: true,
+        placeholder: "Routing numbers are 9 digits long"
       }
     },
     attributes_Label_AccountNumber: function () {
@@ -398,3 +391,11 @@ Template.checkPaymentInformation.helpers({
       }
     }
 });
+
+Template.checkPaymentInformation.rendered = function () {
+  $("#routing_number").mask("999999999");
+  }
+Template.checkPaymentInformation.created = function () {
+  //$("#routing_number").mask("(999)999-9999");
+  }
+  

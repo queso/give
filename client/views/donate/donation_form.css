@@ -38,6 +38,9 @@
 input {
     text-transform: capitalize;
 }
+.email {
+    text-transform: none;
+}
  #region {
     text-transform: uppercase;
 }

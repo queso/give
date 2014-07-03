@@ -1,37 +1,41 @@
 <template name="DonationTo">
-	<optgroup label="">
-		<option value="Where Most Needed" selected title="Your donation goes to where it is needed most." >Where Most Needed</option>
-	</optgroup>
-	<optgroup label="BaseCamp" title="Base Camp is used to specify giving toward operational expenses, or to help support a missionary/staff member.">
-		<option value="Urgent Operational Needs" >Urgent Operational Needs</option>
-		<option value="Brett Durbin" title="Executive Director">Brett Durbin</option>
-		<option value="Joshua Bechard" title="Technology Director">Joshua Bechard</option>
-		<option value="Timm Collins" title="Discipleship Director">Timm Collins</option>
-		<option value="Jon DeMeo" title="Director of Operations">Jon DeMeo</option>
-		<option value="John Kazaklis" title="Missions Director for Asia">John Kazaklis</option>
-		<option value="Chris Mammoliti" title="Aquaponics Director">Chris Mammoliti</option>
-		<option value="Shelley Setchell" title="Missions Director for Latin America">Shelley Setchell</option>
-		<option value="Isaac Tarwater" title="Aquaponics" >Isaac Tarwater</option>
-		<option value="WriteIn" name="WriteIn" title="If you would like to write in another staff member that isn't listed choose this">Write In Another Name</option>
-	</optgroup>
-	<optgroup label="Dominican Republic">
-		<option value="DR-Urgent">Urgent Field Needs</option>
-		<option value="DR-CS">Community Sponsorship</option>
-		<option value="DR-Infrastructure">Infrastructure</option>
-	</optgroup>
-	<optgroup label="Philippines">
-		<option value="Philippines Urgent">Urgent Field Needs</option>
-		<option value="Philippines CS">Community Sponsorship</option>
-		<option value="Philippines Infrastructure">Infrastructure</option>
-	</optgroup>
-	<optgroup label="Cambodia">
-		<option value="Cambodia Urgent">Urgent Field Needs</option>
-		<option value="Cambodia CS">Community Sponsorship</option>
-		<option value="Cambodia Infrastructure">Infrastructure</option>
-	</optgroup>
-	<optgroup label="Honduras">
-		<option value="Honduras Urgent">Urgent Field Needs</option>
-		<option value="Honduras CS">Community Sponsorship</option>
-		<option value="Honduras Infrastructure">Infrastructure</option>
-	</optgroup>
+	<div name="donateTo" class="control-width">
+		<select {{attributes_Input_DonationTo}} >
+	       	<optgroup label="">
+				<option value="Where Most Needed" selected title="Your donation goes to where it is needed most." >Where Most Needed</option>
+			</optgroup>
+			<optgroup label="BaseCamp" title="Base Camp is used to specify giving toward operational expenses, or to help support a missionary/staff member.">
+				<option value="Urgent Operational Needs" >Urgent Operational Needs</option>
+				<option value="Brett Durbin" title="Executive Director">Brett Durbin</option>
+				<option value="Joshua Bechard" title="Technology Director">Joshua Bechard</option>
+				<option value="Timm Collins" title="Discipleship Director">Timm Collins</option>
+				<option value="Jon DeMeo" title="Director of Operations">Jon DeMeo</option>
+				<option value="John Kazaklis" title="Missions Director for Asia">John Kazaklis</option>
+				<option value="Chris Mammoliti" title="Aquaponics Director">Chris Mammoliti</option>
+				<option value="Shelley Setchell" title="Missions Director for Latin America">Shelley Setchell</option>
+				<option value="Isaac Tarwater" title="Aquaponics" >Isaac Tarwater</option>
+				<option value="WriteIn" name="WriteIn" title="If you would like to write in another staff member that isn't listed choose this">Write In Another Name</option>
+			</optgroup>
+			<optgroup label="Dominican Republic">
+				<option value="DR-Urgent">Urgent Field Needs</option>
+				<option value="DR-CS">Community Sponsorship</option>
+				<option value="DR-Infrastructure">Infrastructure</option>
+			</optgroup>
+			<optgroup label="Philippines">
+				<option value="Philippines Urgent">Urgent Field Needs</option>
+				<option value="Philippines CS">Community Sponsorship</option>
+				<option value="Philippines Infrastructure">Infrastructure</option>
+			</optgroup>
+			<optgroup label="Cambodia">
+				<option value="Cambodia Urgent">Urgent Field Needs</option>
+				<option value="Cambodia CS">Community Sponsorship</option>
+				<option value="Cambodia Infrastructure">Infrastructure</option>
+			</optgroup>
+			<optgroup label="Honduras">
+				<option value="Honduras Urgent">Urgent Field Needs</option>
+				<option value="Honduras CS">Community Sponsorship</option>
+				<option value="Honduras Infrastructure">Infrastructure</option>
+			</optgroup>
+		</select>
+	</div>
 </template>

@@ -15,27 +15,41 @@ WebApp.connectHandlers
         Fiber(function() {
             
             function debitWrite(postData) {
-              console.log('Callback event received type = debit: ' + postData.debitID);
-              var updateThis = Donate.findOne({'debit.id': postData.debitID})._id;
-
-              //if the debit was successful updated the debit status in the database and then 
-              //run the Mandrill email function to send a receipt to the donor
-              if (postData.status === "succeeded" && !(Donate.findOne(updateThis).debit.email_sent) ) { 
-                Donate.update(updateThis, {$set: {'debit.email_sent': true}});
-                console.log("debit write area")
-                Donate.update(updateThis, {$set: {'debit.status': 'succeeded',
-                  'debit.email_sent': 'sending'}});
-
-                //send out the appropriate email using Mandrill
-                Meteor.call('sendEmailOutAPI', updateThis, function (error, result) {
-                  console.log(error, result);
-                });
-                
-              } else if (postData.status === "created") {
-                 Donate.update(updateThis, {$set: {'debit.status': postData.status,
-                'debit.edited': new Date().getTime()}});
+              console.log('Callback event received type = debit: ' + postData.type + " ID: " + postData.debitID);
+              var updateThis;
+              try {
+                if (Donate.findOne({'debit.id': postData.debitID})._id) {
+                updateThis = Donate.findOne({'debit.id': postData.debitID})._id;
+              } else {
+                updateThis = Donate.findOne({'recurring.subscription.guid.': postData.links.debitID})._id
               }
-              return postData.id;
+
+                //if the debit was successful updated the debit status in the database and then 
+                //run the Mandrill email function to send a receipt to the donor
+                if (postData.status === "succeeded" && !(Donate.findOne(updateThis).debit.email_sent) ) { 
+                  Donate.update(updateThis, {$set: {'debit.email_sent': true}});
+                  console.log("debit write area")
+                  Donate.update(updateThis, {$set: {'debit.status': 'succeeded',
+                    'debit.email_sent': 'sending'}});
+
+                  //send out the appropriate email using Mandrill
+                  Meteor.call('sendEmailOutAPI', updateThis, function (error, result) {
+                    console.log(error, result);
+                  });
+                  
+                } else if (postData.status === "created") {
+                   Donate.update(updateThis, {$set: {'debit.status': postData.status,
+                  'debit.edited': new Date().getTime()}});
+                }
+                return postData.id;
+              }
+              catch (e) {
+                console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+                var searchForThis = postData.debitID;
+                console.log(Donate.find( { $text: { $search: searchForThis } } ));
+                console.log("There was a problem inside the try statement for the debitWrite function: " + e);
+                res.writeHead(500, {'Content-Type': 'application/json'});
+              }
             }
             //END debitWrite function
 
@@ -114,6 +128,8 @@ WebApp.connectHandlers
                   var sendToWriteFunction = [];
                   sendToWriteFunction.debitID = body.events[0].entity.debits[0].id;
                   sendToWriteFunction.status = body.events[0].entity.debits[0].status;
+                  sendToWriteFunction.type = "created";
+                  sendToWriteFunction.links = body.events[0].entity.debits[0].links;
                   var sendToEnd = debitWrite(sendToWriteFunction);
                   break;
               case "debit.succeeded":
@@ -123,6 +139,8 @@ WebApp.connectHandlers
                   var sendToWriteFunction = [];
                   sendToWriteFunction.debitID = body.events[0].entity.debits[0].id;
                   sendToWriteFunction.status = body.events[0].entity.debits[0].status;
+                  sendToWriteFunction.type = "succeeded";
+                  sendToWriteFunction.links = body.events[0].entity.debits[0].links;
                   var sendToEnd = debitWrite(sendToWriteFunction);
                   break;
               case "hold.created":

@@ -12,14 +12,14 @@ var Future = Npm.require("fibers/future");
   }
 
 	function createPaymentMethod(data) {
-		console.log(data._id);
+		console.log("ID: " + data._id);
 			var debitType = Donate.findOne(data._id).debit.type;
 			console.log("In create Payment Method before if: " + debitType);
 		if (debitType === "card") {
 			console.log("In createPaymentMethod card portion");
 	        //Tokenize card
 	        var card;
-	        /*try {*/
+	        try {
 	          card = extractFromPromise(balanced.marketplace.cards.create({
 	            'number': data.paymentInformation[0].card_number,
 	            'expiration_year': data.paymentInformation[0].expiry_year,
@@ -44,15 +44,38 @@ var Future = Npm.require("fibers/future");
 	      		'card.can_debit': card.can_debit
 	      	}});
 	          console.log("Added card into collection");
-	          return 'card';
-	        /*} 
+	        } 
 	        catch (e) {
 	            console.log(JSON.parse(e.message).errors[0].extras);  
 	            console.log(JSON.parse(e.message).errors[0].category_code);            
 	            var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
 	            throw new Meteor.Error(error.category_code, error.status_code, error.description, error.extras);
-	        }*/
-    	}
+	        }
+	        //Debit function
+          var associate;
+          try {
+          	var processor_uri = Donate.findOne(data._id).recurring.customer.processor_uri;
+          	var cardHref = card.href;
+          	console.log(cardHref + ' ' + processor_uri);
+            associate = extractFromPromise(balanced.get(cardHref).associate_to_customer(processor_uri));
+            console.log("Associate and debit: ");
+            console.dir(JSON.stringify(associate));
+          }
+          catch (e) {
+            console.log(JSON.parse(e.message).errors[0].extras);  
+            console.log(JSON.parse(e.message).errors[0].category_code);            
+            var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
+            throw new Meteor.Error(error.category_code, error.status_code, error.description, error.extras);
+          }
+	    
+		//add debit response from Balanced to the database
+        var debitReponse = Donate.update(data._id, {$set: {
+          'debit.type':   associate.type,
+          'debit.customer': associate.links.customer,
+          'debit.id': associate.id
+        }});    
+        return 'card';
+	}
 
         //for running ACH
         else {
@@ -73,22 +96,24 @@ var Future = Npm.require("fibers/future");
             //add check create response from Balanced to the database
 	        var checkResponse = Donate.update(data._id, {$set: {
 	          'bank_account.type': check._type,
-	          'bank_account.id': check.id
+	          'bank_account.id': check.id,
+	          'debit.type':   associate.type,
+	          'debit.customer': associate.links.customer,
+	          'debit.id': associate.id
 	        }});
-	        return 'bank_accounts';
+	        
+          
           }
           catch (e) {
             console.log(JSON.parse(e.message).errors[0].extras);            
             var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
             throw new Meteor.Error(error.status_code, error.description, error.extras);
           }
-        }
-        /*//Debit function
+          //Debit function
           var associate;
           try {
-            associate = extractFromPromise({{debitType}}.associate_to_customer(customerData.href).debit({
-
-            "amount": data.paymentInformation[0].total_amount * 100,
+          	console.log("Associate uri: " + data.recurring.data.processor_uri);
+            associate = extractFromPromise(check.associate_to_customer(data.recurring.data.processor_uri)({
             "appears_on_statement_as": "Trash Mountain"}));
             console.log("Associate and debit: ");
             console.dir(JSON.stringify(associate));
@@ -98,9 +123,18 @@ var Future = Npm.require("fibers/future");
             console.log(JSON.parse(e.message).errors[0].category_code);            
             var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
             throw new Meteor.Error(error.category_code, error.status_code, error.description, error.extras);
-          }*/
-      
+          }
+	    
+		//add debit response from Balanced to the database
+        var debitReponse = Donate.update(data._id, {$set: {
+          'debit.type':   associate.type,
+          'debit.customer': associate.links.customer,
+          'debit.total_amount': associate.amount / 100,
+          'debit.id': associate.id
+        }});    
+        return 'bank_accounts';
 	}
+}
 
   function createBillyCustomer(customerID) {
   	console.log('Customer ID from balanced: ' + customerID);
@@ -119,17 +153,12 @@ var Future = Npm.require("fibers/future");
 		    var error = (e.response);
 		    throw new Meteor.Error(error, e._id);
 		}
-		//this is the layout, need to convert this to HTTP.post instead of curl
-		/*curl https://billy.balancedpayments.com/v1/customers \
-    -X POST \
-    -u Meteor.settings.billyKey: \
-    -d "processor_uri=" + data.customer.href - the cutomer href, check on this, because it might have to include the uri with the marketplace as well*/
 	}
 
 	function subscribeToBillyPlan(data) {
 		var paymentType = Donate.findOne(data).debit.type;
 
-		if (paymentType == "card") {
+		if (paymentType == "credit") {
 			console.log("Payment Type: " + paymentType);
 			var funding_instrument_uri = Donate.findOne(data).card.href;
 		} else {
@@ -137,15 +166,18 @@ var Future = Npm.require("fibers/future");
 			var funding_instrument_uri = Donate.findOne(data).bank_accounts.href;
 		}
 		
-		
+		console.log("Amount: " + (Donate.findOne(data).debit.total_amount * 100));
+		var billyAmount = (Donate.findOne(data).debit.total_amount * 100);
 		var resultSet = '';
 		/*try {*/
 			resultSet = HTTP.post("https://billy.balancedpayments.com/v1/subscriptions", {
 				//customer URI below is missing the last character, 'f' so that I can test errors
-				params: {"customer_guid": Donate.findOne(data).recurring.data.guid,
+				params: {"customer_guid": Donate.findOne(data).recurring.customer.guid,
 						"plan_guid": "PLHhZ2sD5AyTzy2m3oV1WsTs",//this is the daily plan GUID
 						//fix below
-						"funding_instrument_uri": "/v1/marketplaces/TEST-MP2YcEwiMjhT1jmtW33ptC6N" + funding_instrument_uri},
+						"funding_instrument_uri": "/v1/marketplaces/TEST-MP2YcEwiMjhT1jmtW33ptC6N" + funding_instrument_uri,
+						"appears_on_statement_as": "Trash Mountain",
+						"amount": billyAmount},						
 				auth: Meteor.settings.billyKey + ':'
 			});
 			if (resultSet.statusCode == 200) {
@@ -278,15 +310,17 @@ Meteor.methods({
 			var billyCustomer = ''; 
 			billyCustomer = createBillyCustomer(customerData.id);
 			console.log("Customer GUID: " + JSON.stringify(billyCustomer.data));
-			Donate.update(data._id, {$set: {'recurring.data': billyCustomer.data}});
+			Donate.update(data._id, {$set: {'recurring.customer': billyCustomer.data}});
 
 			var billyPayment = ''; 
 			billyPayment = createPaymentMethod(data);
 			console.log("Customer Payment Type: " + billyPayment);
+			//Donate.update(data._id, {$set: {'recurring.payment': billyPayment.data}});
 
 			var billySubsribeCustomer = '';
 			billySubsribeCustomer = subscribeToBillyPlan(data._id);
 			console.log("Subscription: " + billySubsribeCustomer.statusCode);
+			Donate.update(data._id, {$set: {'recurring.subscription': billySubsribeCustomer.data}});
 
 			return billySubsribeCustomer;
 
