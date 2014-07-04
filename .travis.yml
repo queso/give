@@ -1,14 +1,13 @@
 language: node_js
 node_js:
-  - "0.10"
+- '0.10'
 before_install:
-  - "curl -L http://git.io/ejPSng | /bin/sh"
-
+- curl -L http://git.io/ejPSng | /bin/sh
 deploy:
   provider: heroku
-  api_key: SKU3dqjSMxMyaU8GgsrzVfvWc4RSw2HMihhKerISos3NPdMVsF4WD2lYts98yTWlKKr0Y4gUoqXnYgassCtGQoc8fJd9iaGiN8Jp6T5g33asdvG4398DNoyRdQqDtTk5HeHgNLZeHgmObDJIgY453tcEAeFN10yiwrkj7Qjqyi8=
+  api_key:
+    secure: pbw35CzsNnW8QxzcteFuhV0wqiGNwp3AcpUwSmM9NWkviXJNFC+pmvu7JyMFmEPrw5zq27uKegvG3uF50kTJdOmY14uXlg6ShLMzQbE0JQnp8KcGDOmd4Scz04DIkBhcq2wvMB95VSTirvvGYlDkGlVGhZV5e1bCxIebx5EYSWQ=
   app:
     dev: trash-mountain
     master: trash-mountain-give-production
-
   on: master
