@@ -8,8 +8,8 @@ deploy:
   api_key:
     secure: b97KO92itP7cgu5/pw25YrQPRr5ITL97qOtRilJxoiL5y+xloG6IpluWwsUGSIlNgwJ0n1WjWNgl7XGWnug1qQdPBCL7GYlTvJ6cxGr5wK6S0fYwA0mPUg3TFy+6uCvSs82GAPgFEW6/3627dUW3l6VbyNd/HTIInC7t4E6qi+8=
   app:
-  		master: trash-mountain-give-production
-  		dev: trash-mountain 
+        master: trash-mountain-give-production
+        dev: trash-mountain 
   on:
     repo: c316/give
 
