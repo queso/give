@@ -6,8 +6,9 @@ before_install:
 deploy:
   provider: heroku
   api_key:
-    secure: pbw35CzsNnW8QxzcteFuhV0wqiGNwp3AcpUwSmM9NWkviXJNFC+pmvu7JyMFmEPrw5zq27uKegvG3uF50kTJdOmY14uXlg6ShLMzQbE0JQnp8KcGDOmd4Scz04DIkBhcq2wvMB95VSTirvvGYlDkGlVGhZV5e1bCxIebx5EYSWQ=
+    secure: b97KO92itP7cgu5/pw25YrQPRr5ITL97qOtRilJxoiL5y+xloG6IpluWwsUGSIlNgwJ0n1WjWNgl7XGWnug1qQdPBCL7GYlTvJ6cxGr5wK6S0fYwA0mPUg3TFy+6uCvSs82GAPgFEW6/3627dUW3l6VbyNd/HTIInC7t4E6qi+8=
   app:
-    dev: trash-mountain
-    master: trash-mountain-give-production
-  on: master
+        master: trash-mountain-give-production
+        dev: trash-mountain 
+  on:
+    repo: c316/give
