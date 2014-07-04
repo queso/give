@@ -16,7 +16,6 @@ Template.RequestAddress.events({
       $('#phoneDiv').hide().find('input, textarea').prop('disabled', true);
     }
    }
-
 });
 
 Template.RequestAddress.helpers({
