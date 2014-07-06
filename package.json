@@ -3,5 +3,10 @@
   "Version": "0.1",
   "engines": {
     "node": "0.10.28"
-  }
+  },
+  "subdomain": "bechard-give",
+  "scripts": {
+    "start": "node server"
+  },
+  "version": "0.0.1"
 }
