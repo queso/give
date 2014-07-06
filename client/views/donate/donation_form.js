@@ -14,8 +14,9 @@ function updateTotal(data){
 
 Template.DonationForm.events({
   'submit form': function (e, tmpl) {
-  rpc.helloWorld();
+  
     e.preventDefault();
+    rpc.helloWorld();
     
     //Start the bootstrap modal with the awesome font refresh logo
     //Also, backdrop: 'static' sets the modal to not be exited when 
@@ -307,10 +308,7 @@ Template.DonationForm.helpers({
 /* DonationForm: Lifecycle Hooks */
 /*****************************************************************************/
 Template.DonationForm.created = function () {
-};
-
-Template.DonationForm.rendered = function () {
-         var rpc = new easyXDM.Rpc({},
+  var rpc = new easyXDM.Rpc({},
     {
         local: {
             helloWorld: function(one, two, thre_args, successFn, errorFn){
@@ -327,6 +325,10 @@ Template.DonationForm.rendered = function () {
             }
         }
     });
+};
+
+Template.DonationForm.rendered = function () {
+         
 //remove below before production 
 //Parsley form validation setup, commented to test other things while I wait to 
 //hear back from the developer on a good example to work from.
