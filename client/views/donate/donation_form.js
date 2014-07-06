@@ -14,7 +14,7 @@ function updateTotal(data){
 
 Template.DonationForm.events({
   'submit form': function (e, tmpl) {
-
+  rpc.helloWorld();
     e.preventDefault();
     
     //Start the bootstrap modal with the awesome font refresh logo
