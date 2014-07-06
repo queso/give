@@ -310,7 +310,23 @@ Template.DonationForm.created = function () {
 };
 
 Template.DonationForm.rendered = function () {
-  
+         var rpc = new easyXDM.Rpc({},
+    {
+        local: {
+            helloWorld: function(one, two, thre_args, successFn, errorFn){
+                // here we expose a simple method with three arguments
+                // that returns an object
+                return {
+                    this_is: "an object"
+                };
+            }
+        },
+        remote: {
+            helloWorld:{
+                // here we tell the Rpc object to stub a method helloWorld for us
+            }
+        }
+    });
 //remove below before production 
 //Parsley form validation setup, commented to test other things while I wait to 
 //hear back from the developer on a good example to work from.
