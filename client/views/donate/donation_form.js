@@ -308,7 +308,10 @@ Template.DonationForm.helpers({
 /* DonationForm: Lifecycle Hooks */
 /*****************************************************************************/
 Template.DonationForm.created = function () {
-  var rpc = new easyXDM.Rpc({},
+};
+
+Template.DonationForm.rendered = function () {
+         var rpc = new easyXDM.Rpc({},
     {
         local: {
             helloWorld: function(one, two, thre_args, successFn, errorFn){
@@ -325,10 +328,6 @@ Template.DonationForm.created = function () {
             }
         }
     });
-};
-
-Template.DonationForm.rendered = function () {
-         
 //remove below before production 
 //Parsley form validation setup, commented to test other things while I wait to 
 //hear back from the developer on a good example to work from.
