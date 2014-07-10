@@ -93,15 +93,7 @@ var Future = Npm.require("fibers/future");
             console.log("Check: ");
             console.dir(JSON.stringify(check));
 
-            //add check create response from Balanced to the database
-	        var checkResponse = Donate.update(data._id, {$set: {
-	          'bank_account.type': check._type,
-	          'bank_account.id': check.id,
-	          'debit.type':   associate.type,
-	          'debit.customer': associate.links.customer,
-	          'debit.id': associate.id
-	        }});
-	        
+            
           
           }
           catch (e) {
@@ -117,6 +109,28 @@ var Future = Npm.require("fibers/future");
             "appears_on_statement_as": "Trash Mountain"}));
             console.log("Associate and debit: ");
             console.dir(JSON.stringify(associate));
+
+            //add check create response from Balanced to the database
+	        /*var checkResponse = Donate.update(data._id, {$set: {
+	          'bank_account.type': check._type,
+	          'bank_account.id': check.id,
+	          'debit.type':   associate.type,
+	          'debit.customer': associate.links.customer,
+	          'debit.id': associate.id
+	        }}); */
+			
+			//add debit response from Balanced to the database
+		    var debitReponse = Donate.update(data._id, {$set: {
+	          'bank_account.type': check._type,
+	          'bank_account.id': check.id,	
+	          'debit.type':   associate.type,
+	          'debit.customer': associate.links.customer,
+	          //'debit.total_amount': associate.amount / 100,
+	          'debit.id': associate.id
+	        }});    
+	
+	        return 'bank_accounts';
+	        
           }
           catch (e) {
             console.log(JSON.parse(e.message).errors[0].extras);  
@@ -125,14 +139,6 @@ var Future = Npm.require("fibers/future");
             throw new Meteor.Error(error.category_code, error.status_code, error.description, error.extras);
           }
 	    
-		//add debit response from Balanced to the database
-        var debitReponse = Donate.update(data._id, {$set: {
-          'debit.type':   associate.type,
-          'debit.customer': associate.links.customer,
-          'debit.total_amount': associate.amount / 100,
-          'debit.id': associate.id
-        }});    
-        return 'bank_accounts';
 	}
 }
 
@@ -317,12 +323,13 @@ Meteor.methods({
 			console.log("Customer Payment Type: " + billyPayment);
 			//Donate.update(data._id, {$set: {'recurring.payment': billyPayment.data}});
 
-			var billySubsribeCustomer = '';
-			billySubsribeCustomer = subscribeToBillyPlan(data._id);
-			console.log("Subscription: " + billySubsribeCustomer.statusCode);
-			Donate.update(data._id, {$set: {'recurring.subscription': billySubsribeCustomer.data}});
+			var billySubscribeCustomer = '';
+			console.log("subscribe id: " + data._id);
+			billySubscribeCustomer = subscribeToBillyPlan(data._id);
+			console.log("Subscription: " + billySubscribeCustomer.statusCode);
+			Donate.update(data._id, {$set: {'recurring.subscription': billySubscribeCustomer.data}});
 
-			return billySubsribeCustomer;
+			return billySubscribeCustomer;
 
             /*if (error) {
               //remove below before production 

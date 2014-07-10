@@ -34,7 +34,7 @@ function updateTotal(data){
 }*/
 
 Template.DonationForm.events({
-  'submit form': function (e, tmpl) {
+  'click [name=submitThisForm]': function (e, tmpl) {
   
     e.preventDefault();
     //runRpcCommand();
