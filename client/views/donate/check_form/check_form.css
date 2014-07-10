@@ -4,13 +4,7 @@
 .popover-content {
 	padding: 8px 20px;
 }
-.check-graphic {
-	background: url(/images/check_image.png) no-repeat center center;
-	height: 110px;
-	width: 280px;
-	background-size: 280px;
-	margin-top: 25px;
-}
+
 .control-width {
 	width: 200px;
 	display: inline-block;

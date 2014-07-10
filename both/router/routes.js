@@ -12,7 +12,7 @@ Router.configure({
 Router.map(function () {
   
   this.route('donation_form', {
-    path: '/',
+    path: '/give',
     data: function() {
       var params = this.params;
       Session.set('params.donateTo', this.params.donateTo);
