@@ -12,19 +12,24 @@ var Future = Npm.require("fibers/future");
   }
 
 	function createPaymentMethod(data) {
+		var customerInfo = data.customer[0];
 		console.log("ID: " + data._id);
-			var debitType = Donate.findOne(data._id).debit.type;
-			console.log("In create Payment Method before if: " + debitType);
-		if (debitType === "card") {
+		var debitType = Donate.findOne(data._id).debit.type;
+		console.log("In create Payment Method before if: " + debitType);
+		
+		if (debitType == "card") {
 			console.log("In createPaymentMethod card portion");
 	        //Tokenize card
 	        var card;
 	        try {
+	        	console.log("Payment info: " + JSON.stringify(data.paymentInformation[0]));
 	          card = extractFromPromise(balanced.marketplace.cards.create({
+	            "name": customerInfo.fname + " " + customerInfo.lname, 
 	            'number': data.paymentInformation[0].card_number,
 	            'expiration_year': data.paymentInformation[0].expiry_year,
 	            'expiration_month': data.paymentInformation[0].expiry_month,
-	            'cvv': data.paymentInformation[0].cvv
+	            'cvv': data.paymentInformation[0].cvv,
+	            "appears_on_statement_as": "Trash Mountain"
 	          }));
 	          console.log("Card: ");
 	          console.log(JSON.stringify(card));
@@ -83,6 +88,7 @@ var Future = Npm.require("fibers/future");
           //Create bank account
           var check;
           try {
+          	console.log("Payment info: " + JSON.stringify(data.paymentInformation[0]));
             check = extractFromPromise(balanced.marketplace.bank_accounts.create({
               "routing_number": data.paymentInformation[0].routing_number, 
               "account_type": data.paymentInformation[0].account_type, 
@@ -92,11 +98,11 @@ var Future = Npm.require("fibers/future");
             }));
             console.log("Check: ");
             console.dir(JSON.stringify(check));
+            console.log("ID: " + data._id);
 
-            
-          
           }
           catch (e) {
+          	console.log(e);
             console.log(JSON.parse(e.message).errors[0].extras);            
             var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
             throw new Meteor.Error(error.status_code, error.description, error.extras);
@@ -104,26 +110,17 @@ var Future = Npm.require("fibers/future");
           //Debit function
           var associate;
           try {
-          	console.log("Associate uri: " + data.recurring.data.processor_uri);
-            associate = extractFromPromise(check.associate_to_customer(data.recurring.data.processor_uri)({
-            "appears_on_statement_as": "Trash Mountain"}));
+          	var processor_uri = Donate.findOne(data._id).recurring.customer.processor_uri;
+          	var checkHref = check.href;
+          	console.log(checkHref + ' ' + processor_uri);
+          	console.log("Associate uri: " + processor_uri);
+            associate = extractFromPromise(balanced.get(checkHref).associate_to_customer(processor_uri));
             console.log("Associate and debit: ");
             console.dir(JSON.stringify(associate));
-
-            //add check create response from Balanced to the database
-	        /*var checkResponse = Donate.update(data._id, {$set: {
-	          'bank_account.type': check._type,
-	          'bank_account.id': check.id,
-	          'debit.type':   associate.type,
-	          'debit.customer': associate.links.customer,
-	          'debit.id': associate.id
-	        }}); */
-			
-			//add debit response from Balanced to the database
-		    var debitReponse = Donate.update(data._id, {$set: {
-	          'bank_account.type': check._type,
+        
+           var debitReponse = Donate.update(data._id, {$set: {
 	          'bank_account.id': check.id,	
-	          'debit.type':   associate.type,
+	          'bank_account.href': check.href,
 	          'debit.customer': associate.links.customer,
 	          //'debit.total_amount': associate.amount / 100,
 	          'debit.id': associate.id
@@ -133,6 +130,7 @@ var Future = Npm.require("fibers/future");
 	        
           }
           catch (e) {
+          	console.log(e);
             console.log(JSON.parse(e.message).errors[0].extras);  
             console.log(JSON.parse(e.message).errors[0].category_code);            
             var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
@@ -155,6 +153,7 @@ var Future = Npm.require("fibers/future");
 			console.log(resultSet.data.company_guid); 
 			return resultSet;
 		} catch (e) {
+			console.log(e);
 			e._id = AllErrors.insert(e.response);
 		    var error = (e.response);
 		    throw new Meteor.Error(error, e._id);
@@ -164,18 +163,20 @@ var Future = Npm.require("fibers/future");
 	function subscribeToBillyPlan(data) {
 		var paymentType = Donate.findOne(data).debit.type;
 
-		if (paymentType == "credit") {
+		if (paymentType === "credit") {
 			console.log("Payment Type: " + paymentType);
 			var funding_instrument_uri = Donate.findOne(data).card.href;
+			console.log("Funding URI: " + funding_instrument_uri);
 		} else {
 			console.log("Payment Type: " + paymentType);
-			var funding_instrument_uri = Donate.findOne(data).bank_accounts.href;
+			var funding_instrument_uri = Donate.findOne(data).bank_account.href;
+			console.log("Funding URI: " + funding_instrument_uri);
 		}
 		
 		console.log("Amount: " + (Donate.findOne(data).debit.total_amount * 100));
 		var billyAmount = (Donate.findOne(data).debit.total_amount * 100);
 		var resultSet = '';
-		/*try {*/
+		try {
 			resultSet = HTTP.post("https://billy.balancedpayments.com/v1/subscriptions", {
 				//customer URI below is missing the last character, 'f' so that I can test errors
 				params: {"customer_guid": Donate.findOne(data).recurring.customer.guid,
@@ -197,11 +198,12 @@ var Future = Npm.require("fibers/future");
 		} else {
 			Meteor.error(resultSet.statusCode);
 		}
-/*		} catch (e) {
+		} catch (e) {
+			console.log(e);
 			e._id = AllErrors.insert(e.response);
 		    var error = (e.response);
 		    throw new Meteor.Error(error, e._id);
-		}*/
+		}
 		//this is the layout, need to convert this to HTTP.post instead of curl
 		//this plan has the amount, which uses a plan that is already setup, but since the amount is included
 		// the plan amount is overritten. 
@@ -215,6 +217,22 @@ var Future = Npm.require("fibers/future");
     //POST request looks like this. basic authentication with the the billyKey
 	//content-type:application/x-www-form-urlencoded
     //BODY is normal query string, for example amount=350&customer_guid=CU4NheTMcQqXgmAtg1aGTJPK"
+	}
+
+	function getInvoice (subGUID) {
+		try {
+			resultSet = HTTP.post("https://billy.balancedpayments.com/v1/subscriptions/" + subGUID + "/invoices", {
+				auth: Meteor.settings.billyKey + ':'
+			});
+			
+			console.log(resultSet.data); 
+			return resultSet;
+		} catch (e) {
+			console.log(e);
+			e._id = AllErrors.insert(e.response);
+		    var error = (e.response);
+		    throw new Meteor.Error(error, e._id);
+		}
 	}
 Meteor.methods({
 	testBillyFunction: function (dataFromOther) {
@@ -277,6 +295,7 @@ Meteor.methods({
     -X POST \
     -u Meteor.settings.billyKey:*/
 	},
+	
 	createCustomer: function (data) {
 		//Donate.update(data._id, {$set: {status: 'Creating Customer'}});
 
@@ -324,10 +343,15 @@ Meteor.methods({
 			//Donate.update(data._id, {$set: {'recurring.payment': billyPayment.data}});
 
 			var billySubscribeCustomer = '';
-			console.log("subscribe id: " + data._id);
+			console.log("subscribe this mongo id: " + data._id);
 			billySubscribeCustomer = subscribeToBillyPlan(data._id);
 			console.log("Subscription: " + billySubscribeCustomer.statusCode);
 			Donate.update(data._id, {$set: {'recurring.subscription': billySubscribeCustomer.data}});
+
+			var billyGetInvoiceID = '';
+			billyGetInvoiceID = getInvoice(billySubscribeCustomer.data.guid);
+			console.log("Invoice id: " + billyGetInvoiceID.data.guid);
+			Donate.update(data._id, {$set: {'recurring.invoice': billyGetInvoiceID.data}});
 
 			return billySubscribeCustomer;
 

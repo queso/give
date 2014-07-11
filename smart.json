@@ -8,6 +8,7 @@
     "iron-router-progress": {},
     "moment": {},
     "font-awesome": {},
-    "autoform": {}
+    "autoform": {},
+    "kadira": {}
   }
 }
