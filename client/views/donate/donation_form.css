@@ -2,11 +2,11 @@
 /* CardForm: Style */
 /*****************************************************************************/
 .control-width {
-	width: 200px;
+	width: 180px;
 	display: inline-block;
 }
 .control-width-smaller {
-	width: 155px;
+	width: 145px;
 	display: inline-block;
 }
 .control-width-xs {
@@ -58,4 +58,25 @@ input {
 	position: absolute;
 	top: 15px;
 	right: 15px;
+}
+.moveLegend {
+	border-bottom: none;
+	border-top: 1px solid #e5e5e5;
+}
+.borderBottom {
+	border-bottom: 1px solid #e5e5e5;
+}
+.marginRight {
+	margin-right: 5px;
+}
+.marginLeft {
+	margin-left: 10px;
+}
+.jumboSize {
+	font-size: 6em;
+	font-weight: bold;
+	letter-spacing: 2px;
+}
+#total_amount {
+
 }

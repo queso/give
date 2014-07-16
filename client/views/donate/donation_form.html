@@ -1,87 +1,97 @@
 <template name="DonationForm">
 	<div class="donationForm container">
-		<form onsubmit="parent.scrollTo(0, 0); return true" class="form-horizontal donation-form" role="form" id="donation_form" name="donation_form" 
-    data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
-    data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
-    data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
-    <div class='topRight'>
-        <a class="btn btn-success" href="https://coinbase.com/checkouts/08fdac022d552894dc005bf6d3450cb1">Donate Bitcoins</a>
-        <a type="button" class="btn btn-default btn-md" href="https://coinbase.com/checkouts/08fdac022d552894dc005bf6d3450cb1">
-          <span class="glyphicon glyphicon-star"></span> Donate Bitcoins
-        </a>
-    </div>
-			<div class="form-group">
-                <div class="col-sm-offset-3 col-sm-9">
-                    <h1>Donation info </h1>
-                    <div class="control-width-smaller">
-                    	You are donating toward
+        <div class="row">
+        <h1 class="borderBottom jumboSize"><center>THANK YOU</center></h1>
+
+            
+    		<form onsubmit="parent.scrollTo(0, 0); return true" class="form-horizontal donation-form" role="form" id="donation_form" name="donation_form"    data-bv-feedbackicons-valid="glyphicon glyphicon-ok" data-bv-feedbackicons-invalid="glyphicon glyphicon-remove" 
+                data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+            
+            <!-- Bitcoin buttons -->
+            <div class='topRight'>
+                <a class="btn btn-success" href="https://coinbase.com/checkouts/08fdac022d552894dc005bf6d3450cb1">Donate Bitcoins</a>
+                <a type="button" class="btn btn-default btn-md" href="https://coinbase.com/checkouts/08fdac022d552894dc005bf6d3450cb1">
+                  <span class="glyphicon glyphicon-star"></span> Donate Bitcoins
+                </a>
+            </div>
+              
+            <div class="col-md-6 col-md-offset-3">
+            <h1>Your donation amount: </h1>
+            <h1 id="total_amount">{{amount}}</h1>
+    			<div class="form-group">
+                    <div class="col-md-12">
+                        <label>Donation Type Summary:</label>&nbsp;<i class="fa fa-question-circle"></i>
                     </div>
+                    <div class="col-md-3" >
                         {{> DonationTo}}
-                    <div class="control-width-xxs">
-                    	using your
                     </div>
-                    <div name="donateWith" class="control-width-xs">
-                    	<select name="donateWith" id="donateWith" class="form-control" >	
-                    		<option value="check" selected>Check</option>
-							<option value="card">Card</option>
-						</select>
+                    <div class="col-md-3 col-md-offset-1 marginRight">
+                        <select name="donateWith" id="donateWith" class="form-control control-width-smaller" >    
+                            <option value="check" selected>Check</option>
+                            <option value="card">Card</option>
+                        </select>
+                    </div>
+                    <div name="is_recurring" class="col-md-3">
+                        <select name="is_recurring" id="is_recurring" class="form-control control-width" >    
+                            <option value="monthly" selected>Monthly</option>
+                            <option value="one_time">One-Time</option>
+                        </select>
                     </div>
                 </div>
-            </div>	
-			<fieldset>
-				<!-- Form Name -->
-				<legend>Card Form</legend>
-
-				<!-- Checbox for Recurring-->
-				<div class="checkbox">
-				    <label>
-				      <input type="checkbox" name="is_recurring" id="recurring" {{isRecurringChecked}}> Make my donation recurring.
-				    </label>
-				  </div>
-
-                <!-- Checbox for Covering related fees-->
-                <div class="checkbox">
-                    <label>
-                      <input type="checkbox" name="coverTheFees" id="coverTheFees" {{coverTheFeesChecked}}> I'll cover the fees. 
-                    </label>
-                </div>
-
-				<!-- Amount of donation -->
-				<div class="form-group donation_amount">
-				    <label {{attributes_Label_Amount}} >Amount</label>
-				    <div class="col-sm-9">
-				        <div class="input-group">
-				            <span class="input-group-addon">$</span>
-				            <input {{attributes_Input_Amount}} value="{{amount}}" />
-				        </div>
-				    </div>
-				</div>
-
-                <!-- Total Amount, which includes the fees if the user selected that checkbox -->
-                {{> TotalDonation}}
-
-				<!--call the address portion of the form -->
-                {{> RequestAddress}}
-
-                <hr>
-                <h4 style="text-align:center;">Payment Information</h4>
-                <hr>
-
                 {{#if paymentWithCard}}
-					
-					{{> cardPaymentInformation}}
-                {{else}}
-					{{> checkPaymentInformation}}
-                {{/if}}
-
-                <br>
-				<div class="form-group">
-			        <div class="col-sm-offset-3 col-sm-9">
-			          <button name="submitThisForm" type="submit" class="btn btn-success" data-toggle="modal" data-target=".bs-example-modal-lg">Donate Now</button>
+                    <!-- Checbox for Covering related fees-->
+                    <div class="checkbox marginLeft">
+                        <label>
+                          <input type="checkbox" name="coverTheFees" id="coverTheFees" {{coverTheFeesChecked}}> I'll cover the credit card processing fees. 
+                        </label>
+                        <i class="fa fa-question-circle"></i>
                     </div>
-                </div> 
-			</fieldset>
-		</form>	
+                {{else}}
+                {{/if}}
+                <br>
+    			<fieldset>
+
+    				<!-- Form Name -->
+    				<legend class="moveLegend">Information</legend>
+
+    				<!-- Amount of donation -->
+    				<div class="form-group donation_amount">
+    				    <label {{attributes_Label_Amount}} >Amount</label>
+    				    <div class="col-sm-9">
+    				        <div class="input-group">
+    				            <span class="input-group-addon">$</span>
+    				            <input {{attributes_Input_Amount}} value="{{amount}}" />
+    				        </div>
+    				    </div>
+    				</div>
+
+                    <!-- Total Amount, which includes the fees if the user selected that checkbox 
+                    {{> TotalDonation}}-->
+
+    				<!--call the address portion of the form -->
+                    {{> RequestAddress}}
+
+                    <hr>
+                    <h4 style="text-align:center;">Payment Information</h4>
+                    <hr>
+
+                    {{#if paymentWithCard}}
+    					
+    					{{> cardPaymentInformation}}
+                    {{else}}
+    					{{> checkPaymentInformation}}
+                    {{/if}}
+
+                    <br>
+    				<div class="form-group">
+    			        <div class="col-sm-offset-3 col-sm-9">
+    			          <button name="submitThisForm" type="submit" class="btn btn-success" data-toggle="modal" data-target=".bs-example-modal-lg">Donate Now</button>
+                        </div>
+                    </div> 
+    			</fieldset>
+            </div>
+    	</form>	
+        </div>
 	</div>
     <div class="modal" id="loading1" >
         <span class="fa fa-refresh fa-spin loading1 "></span>
@@ -165,7 +175,7 @@
         </div>
       </div>
       <div class="form-group">
-        <label class="col-sm-3 control-label" for="cvv">Card CVV</label>
+        <label class="col-sm-3 control-label" for="cvv">Card CVV </label><i class="fa fa-question-circle"></i>
         <div class="col-sm-3">
           <input type="text" class="form-control" name="cvv" id="cvv" value="123" placeholder="Security Code">
         </div>

@@ -5,9 +5,9 @@ function updateTotal(data){
   if ($('#coverTheFees').prop('checked')) {
         var donationAmount = $('#amount').val();
         var roundedAmount = Math.round(donationAmount * 1.029 + .30);
-        return $("#total_amount").val(roundedAmount);
+        return $("#total_amount").text(roundedAmount);
       } else {
-        return $("#total_amount").val($('#amount').val());
+        return $("#total_amount").text($('#amount').val());
       }
 }
 //iframe rpc command, hopefully I won't need this hacky function
