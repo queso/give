@@ -387,7 +387,8 @@ Template.checkPaymentInformation.helpers({
         name: "account_number",
         id: "account_number",
         class: "form-control",
-        value: "9900000003"
+        value: "9900000003",
+        placeholder: "Bank Account Number"
       }
     },
     attributes_Input_RoutingNumber: function () {

@@ -25,6 +25,7 @@ Template.RequestAddress.helpers({
         name: "fname",
         class: "form-control",
         value: "John",
+        placeholder: "First Name",
         autofocus: "autofocus",
         required: true
       }
@@ -35,6 +36,7 @@ Template.RequestAddress.helpers({
         name: "lname",
         class: "form-control",
         value: "Doe",
+        placeholder: "Last Name",
         required: true
       }
     },
@@ -44,7 +46,7 @@ Template.RequestAddress.helpers({
         name: "email_address",
         class: "form-control email",
         value: "josh@trashmountain.com",
-        placeholder: "me@myemaildomain.com",
+        placeholder: "Email address",
         required: true
 
       }
@@ -54,7 +56,7 @@ Template.RequestAddress.helpers({
         name: "phone_number",
         class: "form-control",
         value: "785-246-6845",
-        placeholder: "785-246-6845",
+        placeholder: "Phone Number",
         required: true,
         type: "tel",
         id: "phone"

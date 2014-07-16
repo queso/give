@@ -2,24 +2,20 @@
   <!-- Name-->
 	<div class="form-group">
 		<div class="col-sm-3 col-sm-offset-3">
-            <label {{attributes_Label_FName}} >First Name</label>
 			<input {{attributes_Input_FName}} />
 		</div>
         <div class="col-sm-3">
-            <label {{attributes_Label_LName}} >Last Name</label>
             <input {{attributes_Input_LName}} />
         </div>
 	</div>
     <!-- email address input-->
     <div class="form-group">
-        <label {{attributes_Label_Email_Address}} >Email</label>
         <div class="col-sm-9">
             <input {{attributes_Input_Email_Address}} >
         </div>
     </div>
     <!-- phone number input-->
     <div class="form-group" id="phoneDiv">
-        <label {{attributes_Label_Phone_Number}} >Phone</label>
         <div class="col-sm-9">
             <input {{attributes_Input_Phone_Number}} 
             oninvalid="setCustomValidity('Please enter only numbers')"
@@ -28,30 +24,24 @@
     </div>
 	<!-- address-line1 input-->
     <div class="form-group">
-        <label class="col-sm-3 control-label" for="address_line1">Address Line 1</label>
         <div class="col-sm-9">
             <input {{attributes_Input_AddressLine1}} >
-            <p class="help-block">Street address, P.O. box, company name, c/o</p>
         </div>
     </div>
     <!-- address-line2 input-->
     <div class="form-group">
-        <label class="col-sm-3 control-label">Address Line 2</label>
         <div class="col-sm-9">
             <input {{attributes_Input_AddressLine2}} >
-            <p class="help-block">Apartment, suite , unit, building, floor, etc.</p>
         </div>
     </div>
     <!-- city input-->
     <div class="form-group">
-        <label class="col-sm-3 control-label">City / Town</label>
         <div class="col-sm-9">
             <input {{attributes_Input_City}} >
         </div>
     </div>
     <!-- region input-->
     <div class="form-group">
-        <label class="col-sm-3 control-label">State / Province / Region</label>
         <div class="col-sm-9">
             <input {{attributes_Input_State}} >
             <p class="help-block"></p>
@@ -59,7 +49,6 @@
     </div>
     <!-- postal-code input-->
     <div class="form-group">
-        <label class="col-sm-3 control-label">Zip / Postal Code</label>
         <div class="col-sm-9">
             <input {{attributes_Input_Zip}} pattern="(\d{5}([\-]\d{4})?)">
             <p class="help-block"></p>
@@ -67,7 +56,6 @@
     </div>
     <!-- country select -->
     <div class="form-group">
-        <label class="col-sm-3 control-label">Country</label>
         <div class="col-sm-9">
             <select {{attributes_Select_Country}} >
                 <!--Countires template called here -->
