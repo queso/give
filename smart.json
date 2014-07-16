@@ -3,12 +3,12 @@
     "iron-router": {},
     "balanced-payments-production": {},
     "npm": {},
-    "bootstrap-3": {},
     "mandrill": {},
     "iron-router-progress": {},
     "moment": {},
     "font-awesome": {},
     "autoform": {},
-    "kadira": {}
+    "kadira": {},
+    "bootstrap-3": {}
   }
 }

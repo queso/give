@@ -7,7 +7,6 @@ standard-app-packages
 iron-router
 balanced-payments-production
 npm
-bootstrap-3
 mandrill
 iron-router-progress
 email
@@ -18,3 +17,4 @@ font-awesome
 autoform
 less
 kadira
+bootstrap-3

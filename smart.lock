@@ -5,13 +5,13 @@
       "iron-router": {},
       "balanced-payments-production": {},
       "npm": {},
-      "bootstrap-3": {},
       "mandrill": {},
       "iron-router-progress": {},
       "moment": {},
       "font-awesome": {},
       "autoform": {},
-      "kadira": {}
+      "kadira": {},
+      "bootstrap-3": {}
     },
     "packages": {
       "iron-router": {
@@ -28,11 +28,6 @@
         "git": "https://github.com/arunoda/meteor-npm.git",
         "tag": "v0.2.6",
         "commit": "177ab6118de5bf8cffb19481343d5762ff7a2aaf"
-      },
-      "bootstrap-3": {
-        "git": "https://github.com/mangasocial/meteor-bootstrap-3.git",
-        "tag": "v3.2.0-1",
-        "commit": "17a63902fc6cf1096c5289d963c66cf28b474727"
       },
       "mandrill": {
         "git": "https://github.com/timmyg/meteor-mandrill.git",
@@ -63,6 +58,11 @@
         "git": "https://github.com/meteorhacks/kadira.git",
         "tag": "v2.4.8",
         "commit": "5f4437af113537def34484c7b7a2a5e4d60847a9"
+      },
+      "bootstrap-3": {
+        "git": "https://github.com/mangasocial/meteor-bootstrap-3.git",
+        "tag": "v3.2.0-1",
+        "commit": "17a63902fc6cf1096c5289d963c66cf28b474727"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",
