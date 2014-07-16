@@ -48,7 +48,7 @@ input {
 	overflow:hidden;
 }
 .check-graphic {
-	background: url('public/images/check_image.png') no-repeat center center;
+	background: url(/images/check_image.png) no-repeat center center;
 	height: 110px;
 	width: 280px;
 	background-size: 280px;
