@@ -2,12 +2,7 @@
 /* RequestAddress: Event Handlers and Helpers */
 /*****************************************************************************/
 Template.RequestAddress.events({
-  /*
-   * Example: 
-   *  'click .selector': function (e, tmpl) {
-   *
-   *  }
-   */
+
    'change [name=country]': function(e, tmpl) {
     if($(e.target).find('[name=country]').val() !== "US") {
       console.log("Value of country " + $('[name=country]').val());

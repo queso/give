@@ -19,7 +19,6 @@ Router.map(function () {
       Session.set('params.amount', this.params.amount);
       Session.set('params.donateWith', this.params.donateWith);
       Session.set('params.recurring', this.params.recurring);
-      console.log('Params: ' + params.donateTo);
       return {
         amount: params.amount
       }

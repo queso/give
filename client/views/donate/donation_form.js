@@ -2,14 +2,23 @@
 /* DonationForm: Event Handlers and Helpers */
 /*****************************************************************************/
 function updateTotal(data){
-  if ($('#coverTheFees').prop('checked')) {
-        var donationAmount = $('#amount').val();
+  var donationAmount = $('#amount').val();
+  if (donationAmount < 1 && $.isNumeric(donationAmount) ) {
+    return $("#total_amount").text("Amount cannot be lower than $1.").css({ 'color': 'red'});
+  } else{
+    if ($.isNumeric(donationAmount)) {
+      if ($('#coverTheFees').prop('checked')) {
         var fee = Math.round(donationAmount * .029 + .30);
         var roundedAmount = (+donationAmount + +fee);
-        return $("#total_amount").text("$" + donationAmount + " + $" + fee + " = $" + roundedAmount);
-      } else {
-        return $("#total_amount").text($('#amount').val());
+        return $("#total_amount").text("$" + donationAmount + " + $" + fee + " = $" + roundedAmount).css({ 'color': 'black'});
+      } else{
+        return $("#total_amount").text("$" + donationAmount).css({ 'color': 'black'});
       }
+    } else {
+        return $("#total_amount").text("Please enter a number in the amount field").css({ 'color': 'red'});
+      }
+    
+  }
 }
 
 Template.DonationForm.events({
@@ -267,34 +276,32 @@ Template.DonationForm.helpers({
   },
   isRecurringChecked: function () {
     return this.is_recurring ? 'checked' : '';
-    },
-    coverTheFeesChecked: function () {
-        return this.coverTheFees ? 'checked' : '';
-    },
-    attributes_Input_Amount: function () {
-        return {
-            name: "amount",
-            id: "amount",
-            class: "form-control",
-            min: "1",
-            required: true
-        }
-    },
-    attributes_Label_Amount: function () {
-        return {
-            class: "col-md-1 control-label",
-            for: "amount"
-        }
-    },
-    attributes_Label_Name: function () {
-      return {
-        class: "col-sm-3 control-label",
-        for: "name"
-      }
-    },
-    donateWithParam: function () {
-      
+  },
+  coverTheFeesChecked: function () {
+    return this.coverTheFees ? 'checked' : '';
+  },
+  attributes_Input_Amount: function () {
+    return {
+        name: "amount",
+        id: "amount",
+        class: "form-control",
+        min: "1",
+        type: "number",
+        required: true
     }
+  },
+  attributes_Label_Amount: function () {
+      return {
+          class: "col-md-4 control-label",
+          for: "amount"
+      }
+  },
+  attributes_Label_Name: function () {
+    return {
+      class: "col-sm-3 control-label",
+      for: "name"
+    }
+  }
 });
 
 /*****************************************************************************/

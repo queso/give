@@ -8,7 +8,7 @@
     "moment": {},
     "font-awesome": {},
     "autoform": {},
-    "kadira": {},
-    "bootstrap-3": {}
+    "bootstrap-3": {},
+    "jquery-ui": {}
   }
 }

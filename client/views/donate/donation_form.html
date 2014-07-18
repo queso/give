@@ -1,8 +1,8 @@
 <template name="DonationForm">
 	<div class="donationForm container-full v-center">
         <div class="row">
-        <h1 class="borderBottom jumboSize"><center>THANK YOU</center></h1>
-
+        <h1 class="jumboSize"><center>THANK YOU</center></h1>
+        
             
     		<form onsubmit="parent.scrollTo(0, 0); return true" class="form-horizontal donation-form" role="form" id="donation_form" name="donation_form"    data-bv-feedbackicons-valid="glyphicon glyphicon-ok" data-bv-feedbackicons-invalid="glyphicon glyphicon-remove" 
                 data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
@@ -14,9 +14,11 @@
                   <span class="glyphicon glyphicon-star"></span> Donate Bitcoins
                 </a>
             </div>
+
               <div class="col-md-6 col-md-offset-3">
-                    <h2><center>Your donation amount: </center></h2>
-                    <h2 id="total_amount" >${{amount}}</h2>
+              <hr>
+                    <h4><center>Your Donation Amount: </center></h4>
+                    <h4 id="total_amount">{{amount}}</h4>
                 </div>
             <div class="col-md-6 col-md-offset-3">
                 
@@ -25,17 +27,15 @@
                     <div class="col-md-12">
                         <label>Donation Type Summary:</label>&nbsp;<i class="fa fa-question-circle"></i>
                     </div>
-                    <div class="col-md-3" >
-                        {{> DonationTo}}
-                    </div>
-                    <div class="col-md-3 col-md-offset-1 marginRight">
-                        <select name="donateWith" id="donateWith" class="form-control control-width-smaller" >    
+                    {{> DonationTo}}
+                    <div class="col-md-4 fixSpacingBetweenInputsTop">
+                        <select name="donateWith" id="donateWith" class="form-control" >    
                             <option value="check" selected>Check</option>
                             <option value="card">Card</option>
                         </select>
                     </div>
-                    <div name="is_recurring" class="col-md-3">
-                        <select name="is_recurring" id="is_recurring" class="form-control control-width" >    
+                    <div class="col-md-4 fixSpacingBetweenInputsTop" name="is_recurring">
+                        <select name="is_recurring" id="is_recurring" class="form-control" >    
                             <option value="monthly" selected>Monthly</option>
                             <option value="one_time">One-Time</option>
                         </select>
@@ -55,11 +55,12 @@
     			<fieldset>
 
     				<!-- Form Name -->
-    				<legend class="moveLegend">Information</legend>
+                    <hr>
+    				<p class=""><strong>INFORMATION</strong></p>
 
     				<!-- Amount of donation -->
     				<div class="form-group donation_amount">
-    				    <label {{attributes_Label_Amount}} >Amount</label>
+    				    <label {{attributes_Label_Amount}} >Donation Amount</label>
     				    <div class="col-sm-12">
     				        <div class="input-group">
     				            <span class="input-group-addon">$</span>
@@ -74,7 +75,7 @@
     				<!--call the address portion of the form -->
                     {{> RequestAddress}}
 
-                    <legend>Payment Details</legend>
+                    <p class="moveLegend">PAYMENT DETAILS</p>
 
                     {{#if paymentWithCard}}
     					
@@ -85,8 +86,8 @@
 
                     <br>
     				<div class="form-group">
-    			        <div class="col-sm-offset-3 col-sm-9">
-    			          <button name="submitThisForm" type="submit" class="btn-lg btn-success" data-toggle="modal" data-target=".bs-example-modal-lg">Submit Donation</button>
+    			        <div class="col-sm-offset-2 col-sm-8">
+    			          <button name="submitThisForm" type="submit" class="btn btn-block btn-lg btn-primary submitThisForm" data-toggle="modal" data-target=".bs-example-modal-lg">Submit Donation</button>
                         </div>
                     </div> 
     			</fieldset>
