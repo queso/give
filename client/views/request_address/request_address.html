@@ -1,22 +1,22 @@
 <template name="RequestAddress">
   <!-- Name-->
 	<div class="form-group">
-		<div class="col-sm-3 col-sm-offset-3">
+		<div class="col-md-6">
 			<input {{attributes_Input_FName}} />
 		</div>
-        <div class="col-sm-3">
+        <div class="col-md-6">
             <input {{attributes_Input_LName}} />
         </div>
 	</div>
     <!-- email address input-->
     <div class="form-group">
-        <div class="col-sm-9">
+        <div class="col-sm-12">
             <input {{attributes_Input_Email_Address}} >
         </div>
     </div>
     <!-- phone number input-->
     <div class="form-group" id="phoneDiv">
-        <div class="col-sm-9">
+        <div class="col-sm-12">
             <input {{attributes_Input_Phone_Number}} 
             oninvalid="setCustomValidity('Please enter only numbers')"
             onchange="try{setCustomValidity('')}catch(e){}" />
@@ -24,39 +24,39 @@
     </div>
 	<!-- address-line1 input-->
     <div class="form-group">
-        <div class="col-sm-9">
+        <div class="col-sm-12">
             <input {{attributes_Input_AddressLine1}} >
         </div>
     </div>
     <!-- address-line2 input-->
     <div class="form-group">
-        <div class="col-sm-9">
+        <div class="col-sm-12">
             <input {{attributes_Input_AddressLine2}} >
         </div>
     </div>
     <!-- city input-->
     <div class="form-group">
-        <div class="col-sm-9">
+        <div class="col-sm-12">
             <input {{attributes_Input_City}} >
         </div>
     </div>
     <!-- region input-->
     <div class="form-group">
-        <div class="col-sm-9">
+        <div class="col-sm-12">
             <input {{attributes_Input_State}} >
             <p class="help-block"></p>
         </div>
     </div>
     <!-- postal-code input-->
     <div class="form-group">
-        <div class="col-sm-9">
+        <div class="col-sm-12">
             <input {{attributes_Input_Zip}} pattern="(\d{5}([\-]\d{4})?)">
             <p class="help-block"></p>
         </div>
     </div>
     <!-- country select -->
     <div class="form-group">
-        <div class="col-sm-9">
+        <div class="col-sm-12">
             <select {{attributes_Select_Country}} >
                 <!--Countires template called here -->
                 {{> Countries}}

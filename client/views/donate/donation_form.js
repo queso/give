@@ -4,41 +4,18 @@
 function updateTotal(data){
   if ($('#coverTheFees').prop('checked')) {
         var donationAmount = $('#amount').val();
-        var roundedAmount = Math.round(donationAmount * 1.029 + .30);
-        return $("#total_amount").text(roundedAmount);
+        var fee = Math.round(donationAmount * .029 + .30);
+        var roundedAmount = (+donationAmount + +fee);
+        return $("#total_amount").text("$" + donationAmount + " + $" + fee + " = $" + roundedAmount);
       } else {
         return $("#total_amount").text($('#amount').val());
       }
 }
-//iframe rpc command, hopefully I won't need this hacky function
-/*function runRpcCommand() {
-  var rpc = new easyXDM.Rpc({},
-                                   
-    {
-        local: {
-            helloWorld: function(one, two, thre_args, successFn, errorFn){
-                // here we expose a simple method with three arguments
-                // that returns an object
-                return {
-                    this_is: "an object"
-                };
-            }
-        },
-        remote: {
-            helloWorld:{
-                // here we tell the Rpc object to stub a method helloWorld for us
-            }
-        }
-    });
-  rpc.helloWorld();
-}*/
 
 Template.DonationForm.events({
   //'click [name=submitThisForm]': function (e, tmpl) {
   'submit form': function (e, tmpl) {
-  
     e.preventDefault();
-    //runRpcCommand();
     
     //Start the bootstrap modal with the awesome font refresh logo
     //Also, backdrop: 'static' sets the modal to not be exited when 
@@ -46,12 +23,6 @@ Template.DonationForm.events({
     $('#loading1').modal({
       visibility: 'show',
       backdrop: 'static'});
-    //remove below before production 
-    //$('#loading1').center();
-    //Scroll to the top of the window after form is submitted.
-    //$('html, body').animate({ scrollTop: 0 }, 'fast');
-    //$('html, body').animate({ scrollIntoView: 0 }, 'fast');
-
     
     var coverTheFeesStatus =  $(e.target).find('[name=coverTheFees]').is(':checked');
     var form = {
@@ -311,7 +282,7 @@ Template.DonationForm.helpers({
     },
     attributes_Label_Amount: function () {
         return {
-            class: "col-sm-3 control-label",
+            class: "col-md-1 control-label",
             for: "amount"
         }
     },

@@ -48,11 +48,9 @@ input {
 	overflow:hidden;
 }
 .check-graphic {
-	background: url(/images/check_image.png) no-repeat center center;
+	background: url(/images/check_image.png) no-repeat right center;
 	height: 110px;
-	width: 280px;
 	background-size: 280px;
-	margin-top: 25px;
 }
 .topRight {
 	position: absolute;
@@ -77,6 +75,21 @@ input {
 	font-weight: bold;
 	letter-spacing: 2px;
 }
+.bgColored {
+	background-color: grey;
+}
+.bgColored1 {
+	background-color: #151515;
+}
 #total_amount {
-
+	text-align: center;
+}
+.fa-question-circle {
+    color: #2a94d6;
+}
+.noRightPadding {
+	padding-right: 0;
+}
+.form-horizontal .control-label {
+    text-align: left;
 }

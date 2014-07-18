@@ -1,5 +1,5 @@
 <template name="DonationForm">
-	<div class="donationForm container">
+	<div class="donationForm container-full v-center">
         <div class="row">
         <h1 class="borderBottom jumboSize"><center>THANK YOU</center></h1>
 
@@ -14,10 +14,13 @@
                   <span class="glyphicon glyphicon-star"></span> Donate Bitcoins
                 </a>
             </div>
-              
+              <div class="col-md-6 col-md-offset-3">
+                    <h2><center>Your donation amount: </center></h2>
+                    <h2 id="total_amount" >${{amount}}</h2>
+                </div>
             <div class="col-md-6 col-md-offset-3">
-            <h1>Your donation amount: </h1>
-            <h1 id="total_amount">{{amount}}</h1>
+                
+            
     			<div class="form-group">
                     <div class="col-md-12">
                         <label>Donation Type Summary:</label>&nbsp;<i class="fa fa-question-circle"></i>
@@ -57,7 +60,7 @@
     				<!-- Amount of donation -->
     				<div class="form-group donation_amount">
     				    <label {{attributes_Label_Amount}} >Amount</label>
-    				    <div class="col-sm-9">
+    				    <div class="col-sm-12">
     				        <div class="input-group">
     				            <span class="input-group-addon">$</span>
     				            <input {{attributes_Input_Amount}} value="{{amount}}" />
@@ -71,9 +74,7 @@
     				<!--call the address portion of the form -->
                     {{> RequestAddress}}
 
-                    <hr>
-                    <h4 style="text-align:center;">Payment Information</h4>
-                    <hr>
+                    <legend>Payment Details</legend>
 
                     {{#if paymentWithCard}}
     					
@@ -85,7 +86,7 @@
                     <br>
     				<div class="form-group">
     			        <div class="col-sm-offset-3 col-sm-9">
-    			          <button name="submitThisForm" type="submit" class="btn btn-success" data-toggle="modal" data-target=".bs-example-modal-lg">Donate Now</button>
+    			          <button name="submitThisForm" type="submit" class="btn-lg btn-success" data-toggle="modal" data-target=".bs-example-modal-lg">Submit Donation</button>
                         </div>
                     </div> 
     			</fieldset>
@@ -101,43 +102,41 @@
 <template name="checkPaymentInformation">
 	<!-- Bank Info -->
 	<div class="form-group">
-		<div class="col-sm-9">
+		<div class="col-sm-12">
 			<input {{attributes_Input_AccountNumber}} />
 		</div>
 	</div>
 	<div class="form-group">
-		<div class="col-sm-9">
+		<div class="col-sm-12">
 			<input {{attributes_Input_RoutingNumber}} />
 		</div>
 	</div>
     <div class="form-group">
-    <label class="col-sm-3 control-label" for="account_type" >Account Type</label>     
-        <div class="col-sm-6">
-            <select class="form-control" name="account_type" >
+        <div class="col-md-7">
+            <label class="control-label" for="account_type">Account Type <i class="makeRightOfInput fa fa-question-circle"></i></label>
+            <select class="form-control" name="account_type">
               <option>Checking</option>
               <option>Savings</option>
             </select>
         </div>
+        <div class="center-block check-graphic">
+        </div>
     </div>
-    <div class="center-block check-graphic">
-    </div>
+
 </template>
 
 
 <template name="cardPaymentInformation">
 	<!-- CC Info -->
 	<div class="form-group">
-        <div class="col-sm-9">
-          <input type="text" class="form-control" name="card_number" id="card_number" placeholder="Debit/Credit Card Number" value="4111111111111111"
-          data-parsley-trigger="change" parsley-luhn="true">
+        <div class="col-sm-12">
+          <input type="text" class="form-control" name="card_number" id="card_number" placeholder="Debit/Credit Card Number" value="4111111111111111">
         </div>
-      </div>
-      <div class="form-group">
-        <label class="col-sm-3 control-label" for="expiry_month">Expiration Date</label>
-        <div class="col-sm-9">
-          <div class="row">
-            <div class="col-xs-3">
-              <select class="form-control col-sm-2" name="expiry_month" id="expiry_month">
+    </div>
+    <div class="form-group">
+        <label class="col-md-3 control-label noRightPadding" for="expiry_month">Expiration Date</label>
+        <div class="col-md-3">
+            <select class="form-control" name="expiry_month" id="expiry_month">
                 <option>Month</option>
                 <option value="01">Jan (01)</option>
                 <option value="02">Feb (02)</option>
@@ -151,10 +150,10 @@
                 <option value="10">Oct (10)</option>
                 <option value="11">Nov (11)</option>
                 <option value="12" selected>Dec (12)</option>
-              </select>
-            </div>
-            <div class="col-xs-3">
-              <select class="form-control" name="expiry_year">
+            </select>
+        </div>
+        <div class="col-md-3 marginRight">
+            <select class="form-control" name="expiry_year">
                 <option value="2014">2014</option>
                 <option value="2015" selected>2015</option>
                 <option value="2016">2016</option>
@@ -166,17 +165,13 @@
                 <option value="2022">2022</option>
                 <option value="2023">2023</option>
                 <option value="2024">2024</option>
-              </select>
-            </div>
-          </div>
+            </select>  
         </div>
-      </div>
-      <div class="form-group">
-        
-        <div class="col-sm-3">
-        <i class="fa fa-question-circle"></i><input type="text" class="form-control" name="cvv" id="cvv" value="123" placeholder="CVV">
+        <label class="control-label" for="cvv"><i class="makeRightOfInput fa fa-question-circle"></i></label>
+        <div class="col-md-2">
+            <input type="text" class="form-control" name="cvv" id="cvv" value="123" placeholder="CVV">
         </div>
-      </div>
+    </div>
 </template>
 
 <template name="building">
