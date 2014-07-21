@@ -16,20 +16,20 @@
             </div>
 
               <div class="col-md-6 col-md-offset-3">
-              <hr>
                     <h4><center>Your Donation Amount: </center></h4>
-                    <h4 id="total_amount">{{amount}}</h4>
+                    <h4 id="total_amount_display">${{amount}}</h4>
+                    <input type="hidden" id="total_amount" name="total_amount" value="{{amount}}" />
                 </div>
             <div class="col-md-6 col-md-offset-3">
                 
             
-    			<div class="form-group">
+    			<div class="form-group noBottomMargin">
                     <div class="col-md-12">
                         <label>Donation Type Summary:</label>&nbsp;<i class="fa fa-question-circle"></i>
                     </div>
                     {{> DonationTo}}
                     <div class="col-md-4 fixSpacingBetweenInputsTop">
-                        <select name="donateWith" id="donateWith" class="form-control" >    
+                        <select name="donateWith" id="donateWith" class="form-control">    
                             <option value="check" selected>Check</option>
                             <option value="card">Card</option>
                         </select>
@@ -42,21 +42,21 @@
                     </div>
                 </div>
                 {{#if paymentWithCard}}
+
                     <!-- Checbox for Covering related fees-->
                     <div class="checkbox marginLeft">
                         <label>
-                          <input type="checkbox" name="coverTheFees" id="coverTheFees" {{coverTheFeesChecked}}> I'll cover the credit card processing fees. 
+                          <input type="checkbox" name="coverTheFees" id="coverTheFees" data-toggle="checkbox" {{coverTheFeesChecked}} /> I'll cover the credit card processing fees.
                         </label>
                         <i class="fa fa-question-circle"></i>
                     </div>
                 {{else}}
                 {{/if}}
-                <br>
     			<fieldset>
 
     				<!-- Form Name -->
                     <hr>
-    				<p class=""><strong>INFORMATION</strong></p>
+    				<p class="moveLegend"><strong>INFORMATION</strong></p>
 
     				<!-- Amount of donation -->
     				<div class="form-group donation_amount">

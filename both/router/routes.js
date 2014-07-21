@@ -8,7 +8,6 @@ Router.configure({
   templateNameConverter: 'upperCamelCase',
   routeControllerNameConverter: 'upperCamelCase'
 });
-
 Router.map(function () {
   
   this.route('donation_form', {
@@ -22,8 +21,11 @@ Router.map(function () {
       return {
         amount: params.amount
       }
+    },
+    onAfterAction: function () {
+      return uncheckThatBox();
     }
-    });
+  });
   this.route('thanks', {path: '/thanks/:_id', 
     waitOn: function() { return Meteor.subscribe('donate', this.params._id)},
     data: function () {

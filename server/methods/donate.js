@@ -27,6 +27,8 @@ Meteor.methods({
       check(testMe1, String);*/
       var customerInfo = data.customer[0];
       console.log("Customer Info: " + customerInfo);
+      var paymentInfo = data.paymentInformation[0];
+      console.log("Customer Info: " + paymentInfo);
       var customerData;
 
       try {
@@ -101,7 +103,7 @@ Meteor.methods({
           }});
 
           //add card create response from Balanced to the database
-          var cardResponse = Donate.update(data._id, {$set: {
+          var cardResponse = Donate.update(_id, {$set: {
             'card.type': card._type,
             'card.id': card.id
           }});

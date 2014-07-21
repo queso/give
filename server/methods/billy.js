@@ -74,7 +74,7 @@ var Future = Npm.require("fibers/future");
           }
 	    
 		//add debit response from Balanced to the database
-        var debitReponse = Donate.update(data._id, {$set: {
+        var debitResponse = Donate.update(data._id, {$set: {
           'debit.type':   associate.type,
           'debit.customer': associate.links.customer,
           'debit.id': associate.id

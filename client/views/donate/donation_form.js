@@ -1,28 +1,51 @@
 /*****************************************************************************/
 /* DonationForm: Event Handlers and Helpers */
 /*****************************************************************************/
-function updateTotal(data){
+function updateTotal(){
+  var data = Session.get('paymentMethod');
   var donationAmount = $('#amount').val();
-  if (donationAmount < 1 && $.isNumeric(donationAmount) ) {
-    return $("#total_amount").text("Amount cannot be lower than $1.").css({ 'color': 'red'});
-  } else{
-    if ($.isNumeric(donationAmount)) {
-      if ($('#coverTheFees').prop('checked')) {
-        var fee = Math.round(donationAmount * .029 + .30);
-        var roundedAmount = (+donationAmount + +fee);
-        return $("#total_amount").text("$" + donationAmount + " + $" + fee + " = $" + roundedAmount).css({ 'color': 'black'});
-      } else{
-        return $("#total_amount").text("$" + donationAmount).css({ 'color': 'black'});
-      }
-    } else {
-        return $("#total_amount").text("Please enter a number in the amount field").css({ 'color': 'red'});
-      }
-    
+  console.log(donationAmount);
+  console.log(data);
+  if (data == 'check') {
+    $("#total_amount").val(donationAmount);
+    console.log($("#total_amount").val());
+    var testValueTransfer = $("#total_amount").val();
+    $("#total_amount_display").text("$" + donationAmount).css({ 'color': '#34495e'});
+    return Session.set("total_amount", testValueTransfer);
+  } else {
+    if (donationAmount < 1 && $.isNumeric(donationAmount) ) {
+      return $("#total_amount_display").text("Amount cannot be lower than $1.").css({ 'color': 'red'});
+    } else{
+      if ($.isNumeric(donationAmount)) {
+        if ($('#coverTheFees').prop('checked')) {
+          var fee = Math.round(donationAmount * .029 + .30);
+          var roundedAmount = (+donationAmount + +fee);
+          $("#total_amount_display").text("$" + donationAmount + " + $" + fee + " = $" + roundedAmount).css({ 'color': '#34495e'});
+          $("#total_amount").val(roundedAmount);
+          return Session.set("amount", roundedAmount);
+        } else{
+          $("#total_amount").val(roundedAmount);
+          return $("#total_amount_display").text("$" + donationAmount).css({ 'color': '#34495e'});
+        }
+      } else {
+          return $("#total_amount_display").text("Please enter a number in the amount field").css({ 'color': 'red'});
+        }
+      
+    }
   }
+}
+uncheckThatBox = function () {
+  $(':checkbox').checkbox('toggle');
 }
 
 Template.DonationForm.events({
-  //'click [name=submitThisForm]': function (e, tmpl) {
+  /*'keypress form': function(e, tmpl) {
+      var keycode = (event.keyCode ? event.keyCode : event.which);
+      if (keycode == '13') {
+        $('button[name="submitThisForm"]').trigger('click');
+      }
+    },*/
+    //'click [name=submitThisForm]': function (e, tmpl) {
   'submit form': function (e, tmpl) {
     e.preventDefault();
     
@@ -40,7 +63,7 @@ Template.DonationForm.events({
       "total_amount":   $(e.target).find('[name=total_amount]').val(),
       "donateTo":       $("#donateTo").val(),
       "donateWith":     $("#donateWith").val(),
-      "recurring":      $('#recurring').is(':checked'),
+      "is_recurring":   $('#is_recurring').val(),
       "created_at":     new Date().getTime(),
       }],
         "customer": [{
@@ -59,7 +82,7 @@ Template.DonationForm.events({
     };
 //remove below before production    
 console.log(form.paymentInformation[0].donateTo);
-console.log(form.paymentInformation[0].recurring);
+console.log(form.paymentInformation[0].is_recurring);
 if(form.paymentInformation[0].donateWith === "card") {
   form.paymentInformation[0].card_number =     $(e.target).find('[name=card_number]').val();
   form.paymentInformation[0].expiry_month =    $(e.target).find('[name=expiry_month]').val();
@@ -92,7 +115,7 @@ if(form.paymentInformation[0].donateWith === "card") {
     //Session.set('status', Donate.findOne(form._id).status);
     Donate.update(form._id, {$set: {
       sessionId: Meteor.default_connection._lastSessionId,
-      'recurring.isRecuring': form.recurring,
+      'recurring.isRecuring': form.is_recurring,
       'customer': form.customer[0],
       'debit.donateTo': form.paymentInformation[0].donateTo,
       'debit.donateWith': form.paymentInformation[0].donateWith,
@@ -108,7 +131,7 @@ if(form.paymentInformation[0].donateWith === "card") {
       console.log(result);
     });*/
     
-    if (!$('#recurring').is(':checked')) {
+    if ($('#is_recurring').val() == 'one-time') {
     Meteor.call("processPayment", form, function(error, result) {
         if(result) {
           $('#loading1').modal('hide');
@@ -116,108 +139,111 @@ if(form.paymentInformation[0].donateWith === "card") {
           //Session.set('status', Donate.findOne({id: form._id}).status);
            Router.go('/thanks/' + form._id);
          } else {
-          //remove below before production 
-          console.log("Error message: " + error.message);
-          console.log(error);
-          var errorCode = error.error;
-          var errorDescription = error.description;
-          //remove below before production 
-          console.log("description: " + error.description);
-          switch (errorCode) {
-              case "card-declined":
-                  //var sendToErrorFunction = cardDeclined();
-                  //remove below before production 
-                  console.log("Card was declined");
-                  //use this area to add the error to the errors collection,
-                  //also, send an email to me with the error printed in it
-                  //don't need to use mandrill for this (unless that would be 
-                  //easier
-                  break;
-              case "account-insufficient-funds":
-                  //var sendToErrorFunction = accountInsufficientFunds();
-                  break;
-              case "authorization-failed":
-                  //var sendToErrorFunction = authorizationFailed();
-                  break;
-              case "address-verification-failed":
-                  //var sendToErrorFunction = addressVerificationFailed();
-                  break;
-              case "bank-account-not-valid":
-                  //var sendToErrorFunction = bankAccountNotValid();
-                  break;
-              case "card-not-valid":
-              //remove below before production 
-                  console.log(error.details);
-                  //var sendToErrorFunction = cardNotValid();
-                  break;
-              case "card-not-validated":
-                  //this is the error for a card that is to short, probably for other errors too
-                  //remove below before production 
-                  console.log(error.details);
-                  //var sendToErrorFunction = cardNotValidated();
-                  break;
-              case "insufficient-funds":
-                  //var sendToErrorFunction = insufficientFunds();
-                  break;
-              case "multiple-debits":
-                  //var sendToErrorFunction = multipleDebits();
-                  break;
-              case "no-funding-destination":
-                  //var sendToErrorFunction = noFundingDestination();
-                  break;
-              case "no-funding-source":
-                  break;
-              case "unexpected-payload":
-                  break;
-              case "bank-account-authentication-forbidden":
-                  break;
-              case "incomplete-account-info":
-                  break;
-              case "invalid-amount":
-                  break;
-              case "invalid-bank-account-number":
-                  break;
-              case "invalid-routing-number":
-                  break;
-              case "not-found":
-                  break;
-              case "request":
-              //remove below before production 
-                  console.log(error.details);
-                  break;
-              case "method-not-allowed":
-                  break;
-              case "amount-exceeds-limit":
-                  //use this area to split payment into more than one
-                  //then send the multiple payments through, 
-                  //or for a temporary workaround print instructions
-                  //back to the user, tell them the max and how they can
-                  //debit more in sepearte transactions
-                  break;
-              default:
-              //remove below before production 
-                  console.log("Didn't match any case");
-                  //var sendToErrorFunction = "No Match";
-                  break;
-            }
-            //END Switch case block
+            console.log("Error message: " + error.message);
+  console.log(error);
+  var errorCode = error.error;
+  var errorDescription = error.description;
+  //remove below before production 
+  console.log("description: " + error.description);
+  switch (errorCode) {
+    case "card-declined":
+        //var sendToErrorFunction = cardDeclined();
+        //remove below before production 
+        console.log("Card was declined");
+        //use this area to add the error to the errors collection,
+        //also, send an email to me with the error printed in it
+        //don't need to use mandrill for this (unless that would be 
+        //easier
+        break;
+    case "account-insufficient-funds":
+        //var sendToErrorFunction = accountInsufficientFunds();
+        break;
+    case "authorization-failed":
+        //var sendToErrorFunction = authorizationFailed();
+        break;
+    case "address-verification-failed":
+        //var sendToErrorFunction = addressVerificationFailed();
+        break;
+    case "bank-account-not-valid":
+        //var sendToErrorFunction = bankAccountNotValid();
+        break;
+    case "card-not-valid":
+    //remove below before production 
+        console.log(error.details);
+        //var sendToErrorFunction = cardNotValid();
+        break;
+    case "card-not-validated":
+        //this is the error for a card that is to short, probably for other errors too
+        //remove below before production 
+        console.log(error.details);
+        //var sendToErrorFunction = cardNotValidated();
+        break;
+    case "insufficient-funds":
+        //var sendToErrorFunction = insufficientFunds();
+        break;
+    case "multiple-debits":
+        //var sendToErrorFunction = multipleDebits();
+        break;
+    case "no-funding-destination":
+        //var sendToErrorFunction = noFundingDestination();
+        break;
+    case "no-funding-source":
+        break;
+    case "unexpected-payload":
+        break;
+    case "bank-account-authentication-forbidden":
+        break;
+    case "incomplete-account-info":
+        break;
+    case "invalid-amount":
+      alert((error.details));
+        break;
+    case "invalid-bank-account-number":
+        break;
+    case "invalid-routing-number":
+        break;
+    case "not-found":
+        break;
+    case "request":
+    //remove below before production 
+        console.log(error.details);
+        break;
+    case "method-not-allowed":
+        break;
+    case "amount-exceeds-limit":
+        //use this area to split payment into more than one
+        //then send the multiple payments through, 
+        //or for a temporary workaround print instructions
+        //back to the user, tell them the max and how they can
+        //debit more in sepearte transactions
+        break;
+    default:
+    //remove below before production 
+        console.log("Didn't match any case");
+        //var sendToErrorFunction = "No Match";
+        break;
+  }
+  //END Switch case block
 
-          $('#loading1').modal('hide');
-        }
-        //END error handling block for meteor call to processPayment
-
-        });
+  $('#loading1').modal('hide');
+  }
+  //END error handling block for meteor call to processPayment
+    });
         //END Meteor call block
         } else {
           form.pass = true;
           Meteor.call('createCustomer', form, function (error, result) {
-            if (error) {
+            if (_.isEmpty(result)) {
               //remove below before production 
+              $('#loading1').modal('hide');
+              var errorCode = error.error;
+              alert(errorCode);
+              handleError(errorCode);
               console.log(error.error.data.error_class);
               console.log(error.error.data.error_message);
               console.log(error.reason);
             } else {
-                $('#loading1').modal('hide');
+              $('#loading1').modal('hide');
                 Router.go('/thanks/' + form._id);
                 console.log(" Result: " + result.statusCode);
             }
@@ -225,31 +251,16 @@ if(form.paymentInformation[0].donateWith === "card") {
         }
   },
   'click [name=is_recurring]': function (e, tmpl) {
-      if ($('#recurring').is(':checked')) {
+      if ($( "#is_recurring" ).val() == 'monthly') {
         Session.set('recurring', true);
         console.log("Checked equal to true");
       }else {
         Session.set('recurring', false);
         console.log("Checked equal to false");
       }
-
-
-      //remove below before production 
-      var isRecuring = tmpl.find('#recurring').checked;
-
-/*      Donate.update({_id: id}, {
-        $set: { 'recurring.is_recurring': true }
-        });*/
-    },
+    },    
     'click [name=coverTheFees]': function (e, tmpl) {
-      var id = this._id;
-      //remove below before production 
-      console.log(id);
       var coverTheFeesBox = tmpl.find('input').checked;
-
-      Donate.update({_id: id}, {
-        $set: { 'coverTheFees': true }
-        });
     },
     'keyup [name=amount]': function() {    
       return updateTotal();
@@ -263,19 +274,24 @@ if(form.paymentInformation[0].donateWith === "card") {
     'click [name=donateWith]': function(e,tmpl) {
       var selectedValue = $("#donateWith").val();
       Session.set("paymentMethod", selectedValue);
+      updateTotal(selectedValue);      
+
     },
     'change [name=donateWith]': function(e,tmpl) {
+      setTimeout(function () {
+        uncheckThatBox(); //ugly hack to fix the box not appearing when switching between check and card
+        uncheckThatBox();
+      }, 20);
       var selectedValue = $("#donateWith").val();
       Session.set("paymentMethod", selectedValue);
+      updateTotal(selectedValue);
     }
+    
 });
 
 Template.DonationForm.helpers({
   paymentWithCard: function () {
     return Session.equals("paymentMethod", "card");
-  },
-  isRecurringChecked: function () {
-    return this.is_recurring ? 'checked' : '';
   },
   coverTheFeesChecked: function () {
     return this.coverTheFees ? 'checked' : '';
@@ -311,7 +327,13 @@ Template.DonationForm.created = function () {
 };
 
 Template.DonationForm.rendered = function () {
-         
+
+// Below is used to rewrite the style of the drop down
+  $('select[name="donateWith"]').selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse'}); 
+  $('select[name="donateTo"]').selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse'});
+  $('select[name="is_recurring"]').selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse'}); 
+  $(':checkbox').checkbox('uncheck');
+
 //remove below before production 
 //Parsley form validation setup, commented to test other things while I wait to 
 //hear back from the developer on a good example to work from.

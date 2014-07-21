@@ -21,12 +21,11 @@
 .loading1 {
     font-size: 18em;
 	color: #389ADC;
-
 }
 
 #loading1 {
 	vertical-align: middle;
-	left: 45%;
+	left: 38%;
     height: 400px;
     top: calc(50% - 150px) !important; 
     padding-left: 40px;
@@ -59,7 +58,7 @@ input {
 }
 .moveLegend {
 	border-bottom: none;
-	border-top: 1px solid #e5e5e5;
+	border-top: 3px solid #b5e5e5;
 }
 .borderBottom {
 	border-bottom: 1px solid #e5e5e5;
@@ -82,7 +81,7 @@ input {
 .bgColored1 {
 	background-color: #151515;
 }
-#total_amount {
+#total_amount_display {
 	text-align: center;
 }
 .fa-question-circle {
@@ -120,4 +119,35 @@ input {
 	width: 197px;
 	padding-right: 0;
 	display: inline-block;
+}
+body {
+	background:
+        -webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        color-stop(0.09, rgb(240,240,240)),
+        color-stop(0.55, rgb(227,227,227)),
+        color-stop(0.78, rgb(240,240,240))
+        );
+    background:
+        -moz-linear-gradient(
+        center bottom,
+        rgb(240,240,240) 9%,
+        rgb(227,227,227) 55%,
+        rgb(240,240,240) 78%
+        );
+}
+hr {
+	margin-bottom: 0;
+	margin-top: 0;
+}
+.btn-group > .btn:first-child {
+    margin-left: -14px;
+}
+.noBottomMargin {
+	margin-bottom: 0;
+}
+.dropdown-menu {
+	width: 200px
 }
