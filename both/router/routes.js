@@ -21,9 +21,6 @@ Router.map(function () {
       return {
         amount: params.amount
       }
-    },
-    onAfterAction: function () {
-      return uncheckThatBox();
     }
   });
   this.route('thanks', {path: '/thanks/:_id', 
