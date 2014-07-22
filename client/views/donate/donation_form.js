@@ -250,6 +250,7 @@ if(form.paymentInformation[0].donateWith === "card") {
           });
         }
   },
+    
   'click [name=is_recurring]': function (e, tmpl) {
       if ($( "#is_recurring" ).val() == 'monthly') {
         Session.set('recurring', true);
@@ -333,6 +334,20 @@ Template.DonationForm.rendered = function () {
   $('select[name="donateTo"]').selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse'});
   $('select[name="is_recurring"]').selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse'}); 
   $(':checkbox').checkbox('uncheck');
+  $('#amount').tooltip({container: 'body', trigger: 'hover focus', title: 'Amount', placement: 'auto top'});
+  $('#donateTo').tooltip({container: 'body', trigger: 'hover focus', title: 'Do you want to designate your gift to a specific missionary or project?', placement: 'auto top'});
+  $('#donateWith').tooltip({container: 'body', trigger: 'hover focus', title: 'How do you want to pay for your gift?', placement: 'auto top'});
+  $('#is_recurring').tooltip({container: 'body', trigger: 'hover focus', title: 'Select weather this is a one-time gift or recurring monthly.', placement: 'auto top'});
+  $('[name=email_address]').tooltip({container: 'body', trigger: 'hover focus', title: 'Email Address', placement: 'auto top'});
+  $('#phone').tooltip({container: 'body', trigger: 'hover focus', title: 'Phone Number', placement: 'auto top'});
+  $('[name=address_line1]').tooltip({container: 'body', trigger: 'hover focus', title: 'Address Line 1', placement: 'auto top'});
+  $('[name=address_line2]').tooltip({container: 'body', trigger: 'hover focus', title: 'Address Line 2', placement: 'auto top'});
+  $('[name=city]').tooltip({container: 'body', trigger: 'hover focus', title: 'City', placement: 'auto top'});
+  $('[name=region]').tooltip({container: 'body', trigger: 'hover focus', title: 'State/Region', placement: 'auto top'});
+  $('[name=postal_code]').tooltip({container: 'body', trigger: 'hover focus', title: 'Postal Code', placement: 'auto top'});
+  $('[name=country]').tooltip({container: 'body', trigger: 'hover focus', title: 'Country', placement: 'auto top'});
+  
+  
 
 //remove below before production 
 //Parsley form validation setup, commented to test other things while I wait to 
@@ -416,10 +431,20 @@ Template.checkPaymentInformation.helpers({
     }
 });
 
+//Check Payment Template mods
 Template.checkPaymentInformation.rendered = function () {
   $("#routing_number").mask("999999999");
+  $('#account_number').tooltip({container: 'body', trigger: 'hover focus', title: 'Bank Account Number', placement: 'auto top'});
+  $('#routing_number').tooltip({container: 'body', trigger: 'hover focus', title: 'Routing Number (always 9 digits long)', placement: 'auto top'});  
   }
 Template.checkPaymentInformation.created = function () {
   //$("#routing_number").mask("(999)999-9999");
   }
-  
+
+//Card Payment Template mods
+Template.cardPaymentInformation.rendered = function () {
+  $('#card_number').tooltip({container: 'body', trigger: 'hover focus', title: 'Card Number', placement: 'auto top'});
+  $('#expiry_month').tooltip({container: 'body', trigger: 'hover focus', title: 'Card Expiration Month.', placement: 'auto top'});
+  $('#expiry_year').tooltip({container: 'body', trigger: 'hover focus', title: 'Card Expiration Year, 4 Digits.', placement: 'auto top'});
+  $('#cvv').tooltip({container: 'body', trigger: 'hover focus', title: 'CVV Code', placement: 'auto top'}); 
+}

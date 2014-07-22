@@ -18,6 +18,7 @@ Template.RequestAddress.helpers({
       return {
         type: "text",
         name: "fname",
+        id: 'fname',
         class: "form-control",
         value: "John",
         placeholder: "First Name",
