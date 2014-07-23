@@ -26,7 +26,7 @@
 #loading1 {
 	vertical-align: middle;
 	left: 38%;
-    height: 400px;
+    height: 400px; 
     top: calc(50% - 150px) !important; 
     padding-left: 40px;
     padding-top: 20px;
@@ -150,4 +150,39 @@ hr {
 }
 .dropdown-menu {
 	width: 200px
+}
+.select .btn-primary {
+  width: 179px;
+  margin-top: -10px;
+  margin-left: -14px;
+}
+.select .btn-lg {
+  width: 320px;
+  margin-top: -10px;
+  margin-left: -14px;
+}
+.select .btn-lg1 {
+  width: 554px;
+}
+.btn-lg {
+  color: #ffffff;
+  background-color: #1abc9c;
+}
+.btn-lg:hover {
+	color: #ffffff;
+	background-color: #48c9b0;
+	border-color: #48c9b0;
+}
+.dropdown-arrow {
+	left: 19px;
+} 
+.tooltipWide {
+	width: 400px;
+}
+.tooltipInnerWide {
+	max-width: none;
+	width: auto;
+}
+.select .btn-lg2 {
+  width: 117px;
 }

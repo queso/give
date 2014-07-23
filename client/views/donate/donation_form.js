@@ -330,14 +330,19 @@ Template.DonationForm.created = function () {
 Template.DonationForm.rendered = function () {
 
 // Below is used to rewrite the style of the drop down
-  $('select[name="donateWith"]').selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse'}); 
-  $('select[name="donateTo"]').selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse'});
-  $('select[name="is_recurring"]').selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse'}); 
+  $('select[name=donateWith]').selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse'}); 
+  $('select[name=donateTo]').selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse'});
+  $('select[name=is_recurring]').selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse'}); 
+  $('select[name=country]').selectpicker({style: 'btn-lg btn-lg1', menuStyle: 'dropdown-inverse'}); 
   $(':checkbox').checkbox('uncheck');
-  $('#amount').tooltip({container: 'body', trigger: 'hover focus', title: 'Amount', placement: 'auto top'});
-  $('#donateTo').tooltip({container: 'body', trigger: 'hover focus', title: 'Do you want to designate your gift to a specific missionary or project?', placement: 'auto top'});
+  $('#amount').tooltip({container: 'body', trigger: 'hover focus click', title: 'Amount', placement: 'auto top'});
+  $('[name=donationSummary]').tooltip({trigger: 'hover focus', template: '<div class="tooltip tooltipWide" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner tooltipInnerWide"></div></div>',
+    title: 'Below is the summary of your donation. To change your options please use the dropdown buttons.',
+      placement: 'auto top'});
   $('#donateWith').tooltip({container: 'body', trigger: 'hover focus', title: 'How do you want to pay for your gift?', placement: 'auto top'});
   $('#is_recurring').tooltip({container: 'body', trigger: 'hover focus', title: 'Select weather this is a one-time gift or recurring monthly.', placement: 'auto top'});
+  $('[name=fname]').tooltip({container: 'body', trigger: 'hover focus', title: 'First Name', placement: 'auto left'});
+  $('[name=lname]').tooltip({container: 'body', trigger: 'hover focus', title: 'Last Name', placement: 'auto left'});
   $('[name=email_address]').tooltip({container: 'body', trigger: 'hover focus', title: 'Email Address', placement: 'auto top'});
   $('#phone').tooltip({container: 'body', trigger: 'hover focus', title: 'Phone Number', placement: 'auto top'});
   $('[name=address_line1]').tooltip({container: 'body', trigger: 'hover focus', title: 'Address Line 1', placement: 'auto top'});
@@ -433,6 +438,7 @@ Template.checkPaymentInformation.helpers({
 
 //Check Payment Template mods
 Template.checkPaymentInformation.rendered = function () {
+  $('select[name="account_type"]').selectpicker({style: 'btn-lg', menuStyle: 'dropdown-inverse'}); 
   $("#routing_number").mask("999999999");
   $('#account_number').tooltip({container: 'body', trigger: 'hover focus', title: 'Bank Account Number', placement: 'auto top'});
   $('#routing_number').tooltip({container: 'body', trigger: 'hover focus', title: 'Routing Number (always 9 digits long)', placement: 'auto top'});  
@@ -443,8 +449,10 @@ Template.checkPaymentInformation.created = function () {
 
 //Card Payment Template mods
 Template.cardPaymentInformation.rendered = function () {
+  $('select[name="expiry_month"]').selectpicker({style: 'btn-primary btn-lg2', menuStyle: 'dropdown-inverse'}); 
+  $('select[name="expiry_year"]').selectpicker({style: 'btn-primary btn-lg2', menuStyle: 'dropdown-inverse'}); 
   $('#card_number').tooltip({container: 'body', trigger: 'hover focus', title: 'Card Number', placement: 'auto top'});
   $('#expiry_month').tooltip({container: 'body', trigger: 'hover focus', title: 'Card Expiration Month.', placement: 'auto top'});
-  $('#expiry_year').tooltip({container: 'body', trigger: 'hover focus', title: 'Card Expiration Year, 4 Digits.', placement: 'auto top'});
+  $('#expiry_year').tooltip({container: 'body', trigger: 'hover focus click', title: 'Card Expiration Year, 4 Digits.', placement: 'auto top'});
   $('#cvv').tooltip({container: 'body', trigger: 'hover focus', title: 'CVV Code', placement: 'auto top'}); 
 }

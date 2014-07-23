@@ -1383,11 +1383,6 @@ fieldset[disabled] .btn-link:focus {
 .select.select-block .dropdown-menu {
   width: 100%;
 }
-.select .btn {
-  width: 179px;
-  margin-top: -10px;
-  margin-left: -14px;
-}
 .select .btn.btn-hg .filter-option {
   left: 20px;
   right: 40px;

@@ -163,7 +163,7 @@ var Future = Npm.require("fibers/future");
 	function subscribeToBillyPlan(data) {
 		var paymentType = Donate.findOne(data).debit.type;
 
-		if (paymentType === "credit") {
+		if (paymentType === "credit" || paymentType === "debit") {
 			console.log("Payment Type: " + paymentType);
 			var funding_instrument_uri = Donate.findOne(data).card.href;
 			console.log("Funding URI: " + funding_instrument_uri);
