@@ -2,10 +2,11 @@
 /* Receipt: Style */
 /*****************************************************************************/
 .evenHeight {
-	height: 280px;
+	height: 290px;
 }
 .container {
 	margin-top: 30px;
+	background-color: white;
 }
 .donateWith {
 	text-transform: capitalize;
@@ -17,4 +18,7 @@
 
  @page { 
  	size: landscape;
+}
+.recap {
+	margin-bottom: 10px;
 }

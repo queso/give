@@ -9,19 +9,26 @@ var Fiber = Npm.require('fibers');
 WebApp.connectHandlers
     .use(connect.urlencoded())  // these two replace
     .use(connect.json())        // the old bodyParser
-    .use('/callbacks', function(req, res, next) {
+    .use('/give/callbacks', function(req, res, next) {
  
         // necessary for Collection use and other wrapped methods
         Fiber(function() {
-            
+            function lastWord(o) {
+              return (""+o).replace(/[\s-]+$/,'').split(/[\s-]/).pop();
+            };
             function debitWrite(postData) {
               console.log('Callback event received type = debit: ' + postData.type + " ID: " + postData.debitID);
               var updateThis;
               try {
-                if (Donate.findOne({'debit.id': postData.debitID})._id) {
+                if (!postData.billy) {
+                  console.log("Entered the debitID exists section with debitID of: " + postData.debitID);
                 updateThis = Donate.findOne({'debit.id': postData.debitID})._id;
               } else {
-                updateThis = Donate.findOne({'recurring.subscription.guid.': postData.links.debitID})._id
+                console.log("Entered the debitID does NOT exists section with debitID of: " + postData.debitID);
+                //updateThis = Donate.findOne({'recurring.subscription.guid': postData.links.debitID})._id;
+                updateThis = Donate.findOne({'recurring.invoice.items.guid': postData.billy})._id;
+                Donate.update(updateThis, {$set: {'debit.id': postData.debitID}});
+                console.log("Invoice area id: " + updateThis);
               }
 
                 //if the debit was successful updated the debit status in the database and then 
@@ -47,7 +54,7 @@ WebApp.connectHandlers
                 console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
                 var searchForThis = postData.debitID;
                 console.log(Donate.find( { $text: { $search: searchForThis } } ));
-                console.log("There was a problem inside the try statement for the debitWrite function: " + e);
+                console.log("There was a problem inside the try statement for the debitWrite function: " + e.message);
                 res.writeHead(500, {'Content-Type': 'application/json'});
               }
             }
@@ -97,7 +104,7 @@ WebApp.connectHandlers
             var body = req.body; //request body
             try {
             var bodyType = body.events[0].type; //What type of event is coming from Balanced?
-            console.log('received an event');
+            console.log('received an event ' + bodyType );
             } catch(e) {
               console.log(e);
             }
@@ -105,7 +112,7 @@ WebApp.connectHandlers
           // var events = new Npm.require(events).EventEmitter;
           // events.on("bank_account.created", bank_accountWrite);
           // events.emit(bodyType, body.events[0]);
-          
+          try {
             switch (bodyType) {
               case "bank_account.created":
                   var sendToEnd = bank_accountWrite(body.events[0].entity.bank_accounts[0]);
@@ -125,12 +132,18 @@ WebApp.connectHandlers
                   var sendToEnd = cardWrite(body.events[0].entity.cards[0]);
                   break;
               case "debit.created":
+                  /*console.log("Let's see what is actually showing up in the body type: " + bodyType);
                   var sendToWriteFunction = [];
                   sendToWriteFunction.debitID = body.events[0].entity.debits[0].id;
                   sendToWriteFunction.status = body.events[0].entity.debits[0].status;
                   sendToWriteFunction.type = "created";
                   sendToWriteFunction.links = body.events[0].entity.debits[0].links;
-                  var sendToEnd = debitWrite(sendToWriteFunction);
+                  if (body.events[0].entity.debits[0].description) {
+                    var billyInvoiceID = lastWord(body.events[0].entity.debits[0].description);
+                    console.log("Billy invoice ID seperated from the sentence 000000000000000000000000000000 " + billyInvoiceID);
+                    sendToWriteFunction.billy = billyInvoiceID;
+                  }*/
+                  var sendToEnd; //debitWrite(sendToWriteFunction);
                   break;
               case "debit.succeeded":
                   //this area should be used to update the debit and trigger the email send
@@ -141,6 +154,11 @@ WebApp.connectHandlers
                   sendToWriteFunction.status = body.events[0].entity.debits[0].status;
                   sendToWriteFunction.type = "succeeded";
                   sendToWriteFunction.links = body.events[0].entity.debits[0].links;
+                  if (body.events[0].entity.debits[0].description) {
+                    var billyInvoiceID = lastWord(body.events[0].entity.debits[0].description);
+                    console.log("Billy invoice ID seperated from the sentence 000000000000000000000000000000 " + billyInvoiceID);
+                    sendToWriteFunction.billy = billyInvoiceID;
+                  }
                   var sendToEnd = debitWrite(sendToWriteFunction);
                   break;
               case "hold.created":
@@ -156,7 +174,11 @@ WebApp.connectHandlers
                   console.log("Didn't match any case");
                   var sendToEnd = "";
                   break;
-        }
+              }
+            }
+            catch(e) {
+              console.log("Error in switch: " + e.message);
+            }
           if (sendToEnd) {
             res.writeHead(200, {'Content-Type': 'application/json'}); //Need to make sure that the 200 is only sent if the record is found
             //otherwise balanced won't keep trying to send to us. Need to get all the errors at the beginning and send an email or I need

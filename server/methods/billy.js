@@ -77,7 +77,6 @@ var Future = Npm.require("fibers/future");
         var debitResponse = Donate.update(data._id, {$set: {
           'debit.type':   associate.type,
           'debit.customer': associate.links.customer,
-          'debit.id': associate.id
         }});    
         return 'card';
 	}
@@ -123,7 +122,6 @@ var Future = Npm.require("fibers/future");
 	          'bank_account.href': check.href,
 	          'debit.customer': associate.links.customer,
 	          //'debit.total_amount': associate.amount / 100,
-	          'debit.id': associate.id
 	        }});    
 	
 	        return 'bank_accounts';
@@ -221,11 +219,13 @@ var Future = Npm.require("fibers/future");
 
 	function getInvoice (subGUID) {
 		try {
+			console.log("inside getInvoice");
 			resultSet = HTTP.post("https://billy.balancedpayments.com/v1/subscriptions/" + subGUID + "/invoices", {
 				auth: Meteor.settings.billyKey + ':'
 			});
 			
 			console.log(resultSet.data); 
+			console.log(resultSet.data.items[0].guid);
 			return resultSet;
 		} catch (e) {
 			console.log(e);
@@ -350,7 +350,7 @@ Meteor.methods({
 
 			var billyGetInvoiceID = '';
 			billyGetInvoiceID = getInvoice(billySubscribeCustomer.data.guid);
-			console.log("Invoice id: " + billyGetInvoiceID.data.guid);
+			console.log("Invoice id: " + billyGetInvoiceID.data.items[0].guid);
 			Donate.update(data._id, {$set: {'recurring.invoice': billyGetInvoiceID.data}});
 
 			return billySubscribeCustomer;

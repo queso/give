@@ -17,8 +17,10 @@ var Future = Npm.require("fibers/future");
 
 Meteor.methods({
  processPayment: function (data) {
+      console.log('/r');
       Donate.update(data._id, {$set: {'recurring.isRecurring': data.recurring}});
-
+      
+      //initialize the balanced function with our API key.
       balanced.configure(Meteor.settings.balancedPaymentsAPI);
 
       /*var testMe1 = data.customer[0].fname;
@@ -26,9 +28,9 @@ Meteor.methods({
       console.log((testMe1).typeOf);
       check(testMe1, String);*/
       var customerInfo = data.customer[0];
-      console.log("Customer Info: " + customerInfo);
+      console.log("Customer Info: " + JSON.stringify(customerInfo));
       var paymentInfo = data.paymentInformation[0];
-      console.log("Customer Info: " + paymentInfo);
+      console.log("Payment Info: " + JSON.stringify(paymentInfo));
       var customerData;
 
       try {
@@ -103,7 +105,7 @@ Meteor.methods({
           }});
 
           //add card create response from Balanced to the database
-          var cardResponse = Donate.update(_id, {$set: {
+          var cardResponse = Donate.update(data._id, {$set: {
             'card.type': card._type,
             'card.id': card.id
           }});

@@ -29,6 +29,12 @@ Router.map(function () {
       return Donate.findOne(this.params._id);
     }
   });
+    this.route('thanks1', {path: '/thanks1/:_id', 
+    waitOn: function() { return Meteor.subscribe('donate', this.params._id)},
+    data: function () {
+      return Donate.findOne(this.params._id);
+    }
+  });
   this.route('send.email', {path: '/send_email'});
   this.route('failed', {path: '/failed/:_id'});
   this.route('charge_existing', {path: '/charge_existing'});

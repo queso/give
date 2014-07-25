@@ -1,59 +1,58 @@
 <template name="Receipt">
 	<br>
-	<div class="container">
-		<div class="receipt">
-				<div class="row header">
-					<div class="col-xs-4">
+	<div class="container receipt">
+		<div class="row clearfix">
+			<div class="col-md-12 column">
+				<div class="row clearfix">
+					<div class="col-md-12 column">
+						<div class="row clearfix">
+							<div class="col-md-3 column">
+								<div class="panel panel-default">
+									<div class="panel-body padding-horizontal evenHeight">
+										<img src="https://trashmountain.com/system/wp-content/uploads/2012/07/TMP_logo.png" class="img-rounded logo img-responsive">
+										<br>
+										<p>Receipt: <strong> {{receiptNumber}}</strong>
+										<br>Date: {{date}}</p>
+									</div>
+								</div>
+							</div><!--/col-->		
+							<div class="col-md-3 column">
+								<div class="panel panel-default">
+									<div class="panel-body padding-horizontal evenHeight">
+										<h3>To</h3>
+										<address>
+											<strong>Trash Mountain Project</strong>
+											<br>1555 NW Gage BLVD
+											<br>Topeka, KS 66618
+											<br><abbr title="Email">E:</abbr> info@trashmountain.com
+											<br><abbr title="Phone">P:</abbr> (785) 246-6845
+										</address>
+									</div>	
+								</div>
+							</div><!--/col-->
 
-						<img src="https://trashmountain.com/system/wp-content/uploads/2012/07/TMP_logo.png" class="img-rounded logo img-responsive">
-						<br>
-						<div class="panel panel-default">
-							<div class="panel-body padding-horizontal">
-								<h2>Details</h2>
-								<p>Receipt: <strong> {{receiptNumber}}</strong></p>
-								<p>Date: {{date}}</p>
-							</div>
-						</div>
-					</div><!--/col-->		
-					<div class="col-xs-4">
-						<div class="panel panel-default">
-							<div class="panel-body padding-horizontal evenHeight">
-								<h2>To</h2>
-								<address>
-									<strong>Trash Mountain Project</strong>
-									<br>1555 NW Gage BLVD
-									<br>Topeka, KS 66618
-									<br>Email: info@trashmountain.com
-									<br>Phone: 785 246 6845
-								</address>
-							</div>	
-						</div>
-					</div><!--/col-->
+							<div class="col-md-3 column">
+								<div class="panel panel-default">
+									<div class="panel-body padding-horizontal evenHeight">
+										<h3>From</h3>
+										<address>
+											<strong>{{fname}} {{lname}}</strong>
+											<br>{{address_line1}}
+											{{{address_line2}}}
+											<br>{{city}}, {{region}} {{postal_code}}
+											{{#if country}}
+												<br>{{country}}
+											{{else}}
+											{{/if}}
+											<br><abbr title="Email">E:</abbr> <span id="email">{{email_address}}</span>
+											<br>{{{phone_number}}}
+										</address>
+										&nbsp;<br>
+									</div>	
+								</div>
+							</div><!--/col-->
+						</div><!--/row-->
 
-					<div class="col-xs-4">
-						<div class="panel panel-default">
-							<div class="panel-body padding-horizontal evenHeight">
-								<h2>From</h2>
-								<address>
-									<strong>{{fname}} {{lname}}</strong>
-									<br>{{address_line1}}
-									{{{address_line2}}}
-									<br>{{city}}, {{region}} {{postal_code}}
-									{{#if country}}
-										<br>{{country}}
-									{{else}}
-									{{/if}}
-									<br>Email: <span id="email">{{email_address}}</span>
-									<br>{{phone_number}}
-								</address>
-							</div>	
-						</div>
-					</div><!--/col-->
-
-				</div><!--/row-->
-				
-				<div class="panel panel-default">
-					<div class="panel-body">
 						<table class="table table-striped table-responsive">
 							<thead>
 								<tr>
@@ -89,10 +88,11 @@
 							<a class="btn btn-info" onclick="javascript:window.print();"><i class="fa fa-print"></i> Print</a>
 							<!-- need to check that the above works on a mobile browser -->
 						</div><!--/col-->
-
 					</div><!--/row-->
 				</div>
 			</div>	
 		</div>
+
+	</div>
 	</div>
 </template>
