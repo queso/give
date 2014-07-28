@@ -1,6 +1,10 @@
 /*****************************************************************************/
 /* Client and Server Routes */
 /*****************************************************************************/
+Router.onRun(function(){
+    if(Session.equals('AnalyticsJS_loaded', true))
+        analytics.page(this.path);
+});
 Router.configure({
   layoutTemplate: 'MasterLayout',
   loadingTemplate: 'Loading',

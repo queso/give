@@ -11,7 +11,9 @@
       "font-awesome": {},
       "autoform": {},
       "bootstrap-3": {},
-      "jquery-ui": {}
+      "jquery-ui": {},
+      "analyticsjs": {},
+      "easy-check": {}
     },
     "packages": {
       "iron-router": {
@@ -51,8 +53,8 @@
       },
       "autoform": {
         "git": "https://github.com/aldeed/meteor-autoform.git",
-        "tag": "v0.15.0",
-        "commit": "ac564b091dc52250022193e437037c5eaac997a0"
+        "tag": "v0.16.1",
+        "commit": "34a447fd3a1b3164c78f865aabbac3ddc2d033fb"
       },
       "bootstrap-3": {
         "git": "https://github.com/mangasocial/meteor-bootstrap-3.git",
@@ -63,6 +65,16 @@
         "git": "https://github.com/TimHeckel/meteor-jquery-ui.git",
         "tag": "v1.9.2",
         "commit": "c437d45edcf1367df8d5ffa8bad2867758030bd2"
+      },
+      "analyticsjs": {
+        "git": "https://github.com/nate-strauser/meteor-analyticsjs.git",
+        "tag": "v0.1.8",
+        "commit": "98b3f4a538b4aac2d34aaf5783ff2b1d416fef26"
+      },
+      "easy-check": {
+        "git": "https://github.com/matteodem/meteor-easy-check.git",
+        "tag": "v0.3.1",
+        "commit": "2adbc7833f6474dfc5c8e1b00e4a2b4d5c98a2c5"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",
@@ -76,8 +88,8 @@
       },
       "collection2": {
         "git": "https://github.com/aldeed/meteor-collection2.git",
-        "tag": "v0.4.2",
-        "commit": "4ff4b707bec8be434919730bf101325adb215444"
+        "tag": "v0.4.3",
+        "commit": "cb470de2cfeebeccbf76d4cc0a39ad4afc76d553"
       }
     }
   }

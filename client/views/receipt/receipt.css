@@ -1,6 +1,18 @@
 /*****************************************************************************/
 /* Receipt: Style */
 /*****************************************************************************/
+@media print {
+
+	@page { 
+ 		size: landscape;
+ 		margin-left: -2in;
+ 		margin-right: -2in;
+	}
+	h3 {
+		margin-top: 0;
+		margin-bottom: 0; 
+	}
+}
 .evenHeight {
 	height: 290px;
 }
@@ -11,13 +23,8 @@
 .donateWith {
 	text-transform: capitalize;
 }
-
 .table th {
 	border-bottom-color: #fb7a42 !important;
-}
-
- @page { 
- 	size: landscape;
 }
 .recap {
 	margin-bottom: 10px;

@@ -9,6 +9,8 @@
     "font-awesome": {},
     "autoform": {},
     "bootstrap-3": {},
-    "jquery-ui": {}
+    "jquery-ui": {},
+    "analyticsjs": {},
+    "easy-check": {}
   }
 }

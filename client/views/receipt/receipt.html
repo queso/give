@@ -2,97 +2,93 @@
 	<br>
 	<div class="container receipt">
 		<div class="row clearfix">
-			<div class="col-md-12 column">
+            <div class="col-sm-1">
+            </div>
+			<div class="col-sm-12 column">
 				<div class="row clearfix">
-					<div class="col-md-12 column">
-						<div class="row clearfix">
-							<div class="col-md-3 column">
-								<div class="panel panel-default">
-									<div class="panel-body padding-horizontal evenHeight">
-										<img src="https://trashmountain.com/system/wp-content/uploads/2012/07/TMP_logo.png" class="img-rounded logo img-responsive">
-										<br>
-										<p>Receipt: <strong> {{receiptNumber}}</strong>
-										<br>Date: {{date}}</p>
-									</div>
-								</div>
-							</div><!--/col-->		
-							<div class="col-md-3 column">
-								<div class="panel panel-default">
-									<div class="panel-body padding-horizontal evenHeight">
-										<h3>To</h3>
-										<address>
-											<strong>Trash Mountain Project</strong>
-											<br>1555 NW Gage BLVD
-											<br>Topeka, KS 66618
-											<br><abbr title="Email">E:</abbr> info@trashmountain.com
-											<br><abbr title="Phone">P:</abbr> (785) 246-6845
-										</address>
-									</div>	
-								</div>
-							</div><!--/col-->
+					<div class="col-sm-4 column">
+						<div class="panel panel-default">
+							<div class="panel-body padding-horizontal evenHeight">
+								<p>Receipt: <strong> {{receiptNumber}}</strong>
+                                <br>Date: {{date}}</p>
+                                <img src="https://trashmountain.com/system/wp-content/uploads/2012/07/TMP_logo.png" class="logo img-responsive">
+                            </div>
+                        </div>
+                    </div><!--/col-->		
+                    <div class="col-sm-4 column">
+                        <div class="panel panel-default">
+                            <div class="panel-body padding-horizontal evenHeight">
+                                <h3>To</h3>
+                                <address>
+                                    <strong>Trash Mountain Project</strong>
+                                    <br>1555 NW Gage BLVD
+                                    <br>Topeka, KS 66618
+                                    <br><abbr title="Email">E:</abbr> info@trashmountain.com
+                                    <br><abbr title="Phone">P:</abbr> (785) 246-6845
+                                </address>
+                            </div>	
+                        </div>
+                    </div><!--/col-->
 
-							<div class="col-md-3 column">
-								<div class="panel panel-default">
-									<div class="panel-body padding-horizontal evenHeight">
-										<h3>From</h3>
-										<address>
-											<strong>{{fname}} {{lname}}</strong>
-											<br>{{address_line1}}
-											{{{address_line2}}}
-											<br>{{city}}, {{region}} {{postal_code}}
-											{{#if country}}
-												<br>{{country}}
-											{{else}}
-											{{/if}}
-											<br><abbr title="Email">E:</abbr> <span id="email">{{email_address}}</span>
-											<br>{{{phone_number}}}
-										</address>
-										&nbsp;<br>
-									</div>	
-								</div>
-							</div><!--/col-->
-						</div><!--/row-->
+                    <div class="col-sm-4 column">
+                        <div class="panel panel-default">
+                           <div class="panel-body padding-horizontal evenHeight">
+                              <h3>From</h3>
+                                <address>
+                                    <strong>{{fname}} {{lname}}</strong>
+                                    <br>{{address_line1}}
+                                    {{{address_line2}}}
+                                    <br>{{city}}, {{region}} {{postal_code}}
+                                    {{#if country}}
+                                    <br>{{country}}
+                                    {{else}}
+                                    {{/if}}
+                                    <br><abbr title="Email">E:</abbr> <span id="email">{{email_address}}</span>
+                                    <br>{{{phone_number}}}
+                                </address>
+                                &nbsp;<br>
+                            </div>	
+                        </div>
+                    </div><!--/col-->
+                </div><!--/row-->
 
-						<table class="table table-striped table-responsive">
-							<thead>
-								<tr>
-									<th>Description</th>
-									<th>Donated with</th>
-									<th class="right">Donated Amount</th>                                          
-								</tr>
-							</thead>   
-							<tbody>
-								<tr>
-									<td class="left">{{donateTo}}</td>
-									<td class="left donateWith">{{donateWith}}</td>
-									<td class="right">${{amount}}</td>
-								</tr>                      
-							</tbody>
-						</table>
+                <table class="table table-striped table-responsive">
+                    <thead>
+                        <tr>
+                           <th>Description</th>
+                           <th>Donated with</th>
+                           <th class="right">Donated Amount</th>                                          
+                       </tr>
+                    </thead>   
+                    <tbody>
+                        <tr>
+                           <td class="left">{{donateTo}}</td>
+                           <td class="left donateWith">{{donateWith}}</td>
+                           <td class="right">${{amount}}</td>
+                       </tr>                      
+                    </tbody>
+                </table>
 
-					<div class="row">
+                <div class="row">
+                    <div class="col-sm-12 notice">
+                        <div class="well">
+                            <p>Thank you for your donation of for Trash Mountain Project, Inc.! We know that our efforts are only possible because of the contributions we receive from generous donors like you, and we thank you again for believing in and supporting our mission. 
+                            </p>
+                            <p>
+                                The estimated value of any goods or services provided in return for your donation is $0.
+                                Please keep this written acknowledgment of your donation for your tax records.
+                            </p>
+                        </div>	
+                    </div><!--/col-->
+                    <div class="col-sm-3 recap">
 
-						<div class="col-lg-12 notice">
-							<div class="well">
-								<p>Thank you for your donation of for Trash Mountain Project, Inc.! We know that our efforts are only possible because of the contributions we receive from generous donors like you, and we thank you again for believing in and supporting our mission. 
-								</p>
-								<p>
-								The estimated value of any goods or services provided in return for your donation is $0.
-								Please keep this written acknowledgment of your donation for your tax records.
-								</p>
-							</div>	
-						</div><!--/col-->
-
-						<div class="col-lg-3 recap">
-							
-							<a class="btn btn-info" onclick="javascript:window.print();"><i class="fa fa-print"></i> Print</a>
-							<!-- need to check that the above works on a mobile browser -->
-						</div><!--/col-->
-					</div><!--/row-->
-				</div>
-			</div>	
-		</div>
-
-	</div>
-	</div>
+                        <a class="btn btn-info hidden-print" onclick="javascript:window.print();"><i class="fa fa-print"></i> Print</a>
+                        <!-- need to check that the above works on a mobile browser -->
+                    </div><!--/col-->
+                </div><!--/row-->
+            </div>
+            <div class="col-sm-1">
+            </div>
+        </div>	
+    </div>
 </template>
