@@ -267,7 +267,6 @@ Template.DonationForm.rendered = function () {
   $('select[name=donateWith]').selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse'}); 
   $('select[name=donateTo]').selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse'});
   $('select[name=is_recurring]').selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse'}); 
-  $('select[name=country]').selectpicker({style: 'btn-lg btn-lg1', menuStyle: 'dropdown-inverse'}); 
   $(':checkbox').checkbox('uncheck');
   $('#amount').tooltip({container: 'body', trigger: 'hover focus click', title: 'Amount', placement: 'auto top'});
   $('[name=donationSummary]').tooltip({trigger: 'hover focus', template: '<div class="tooltip tooltipWide" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner tooltipInnerWide"></div></div>',
