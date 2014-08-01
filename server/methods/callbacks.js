@@ -47,6 +47,14 @@ WebApp.connectHandlers
                 } else if (postData.status === "created") {
                    Donate.update(updateThis, {$set: {'debit.status': postData.status,
                   'debit.edited': new Date().getTime()}});
+                } else if (postData.status === "failed" && !(Donate.findOne(updateThis).debit.email_sent)) {
+                  Donate.update(updateThis, {$set: {'debit.email_sent': true}});
+                  Donate.update(updateThis, {$set: {'debit.status': 'failed',
+                    'debit.email_sent': 'sending'}});
+                  //send out the appropriate email using Mandrill
+                  Meteor.call('sendEmailOutAPI', updateThis, function (error, result) {
+                    console.log(error, result);
+                  });
                 }
                 return postData.id;
               }
@@ -59,7 +67,7 @@ WebApp.connectHandlers
               }
             }
             //END debitWrite function
-
+           
             function bank_accountWrite(postData) {
               console.log('Callback event received type = bank_account:');
               
@@ -145,6 +153,7 @@ WebApp.connectHandlers
                   }*/
                   var sendToEnd; //debitWrite(sendToWriteFunction);
                   break;
+              case "debit.failed":
               case "debit.succeeded":
                   //this area should be used to update the debit and trigger the email send
                   //add another variable here and store the debit.succeeded along with the body info, 
@@ -152,7 +161,11 @@ WebApp.connectHandlers
                   var sendToWriteFunction = [];
                   sendToWriteFunction.debitID = body.events[0].entity.debits[0].id;
                   sendToWriteFunction.status = body.events[0].entity.debits[0].status;
-                  sendToWriteFunction.type = "succeeded";
+                  if (bodyType == "debit.succeeded") {
+                    sendToWriteFunction.type = "succeeded";
+                  } else {
+                    sendToWriteFunction.type = "failed";
+                  }
                   sendToWriteFunction.links = body.events[0].entity.debits[0].links;
                   if (body.events[0].entity.debits[0].description) {
                     var billyInvoiceID = lastWord(body.events[0].entity.debits[0].description);
@@ -171,7 +184,7 @@ WebApp.connectHandlers
                   var sendToEnd = holdWrite(body.events[0].entity.card_holds[0]);
                   break;
               default:
-                  console.log("Didn't match any case");
+                  console.log("The last callback event received didn't match any case.");
                   var sendToEnd = "";
                   break;
               }

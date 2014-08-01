@@ -56,7 +56,7 @@ Template.DonationForm.events({
       visibility: 'show',
       backdrop: 'static'});
     
-    var coverTheFeesStatus =  $(e.target).find('[name=coverTheFees]').is(':checked');
+    //var coverTheFeesStatus =  $(e.target).find('[name=coverTheFees]').is(':checked');
     var form = {
       "paymentInformation": [{
       "amount":         $(e.target).find('[name=amount]').val(),
@@ -64,6 +64,7 @@ Template.DonationForm.events({
       "donateTo":       $("#donateTo").val(),
       "donateWith":     $("#donateWith").val(),
       "is_recurring":   $('#is_recurring').val(),
+      "coverTheFees":   $('#coverTheFees').is(":checked"),
       "created_at":     new Date().getTime(),
       }],
         "customer": [{
@@ -115,13 +116,15 @@ if(form.paymentInformation[0].donateWith === "card") {
     //Session.set('status', Donate.findOne(form._id).status);
     Donate.update(form._id, {$set: {
       sessionId: Meteor.default_connection._lastSessionId,
-      'recurring.isRecuring': form.is_recurring,
       'customer': form.customer[0],
       'debit.donateTo': form.paymentInformation[0].donateTo,
       'debit.donateWith': form.paymentInformation[0].donateWith,
       'debit.email_sent': false,
       'debit.type': form.paymentInformation[0].type,
-      'debit.total_amount': form.paymentInformation[0].total_amount
+      'debit.total_amount': form.paymentInformation[0].total_amount,
+      'debit.amount': form.paymentInformation[0].amount,
+      'debit.fees': form.paymentInformation[0].fees,
+      'debit.coveredTheFees': form.paymentInformation[0].coverTheFees
     }});
     //remove below before production 
     console.log("ID: " + form._id);
@@ -139,94 +142,19 @@ if(form.paymentInformation[0].donateWith === "card") {
           //Session.set('status', Donate.findOne({id: form._id}).status);
            Router.go('/thanks/' + form._id);
          } else {
+            Donate.update(form._id, {$set: {failed: error}});
+            var donateDocument = Donate.findOne({'_id': form._id});
+            var insertDoc = AllErrors.insert({name: "Failed", failedResponse: donateDocument});
             console.log("Error message: " + error.message);
             console.log(error);
             var errorCode = error.error;
             var errorDescription = error.description;
             //remove below before production 
             console.log("description: " + error.description);
-            switch (errorCode) {
-              case "500":
-                alert("Something went wrong, sorry about that. Please try again.");
-                break;
-              case "card-declined":
-                  //var sendToErrorFunction = cardDeclined();
-                  //remove below before production 
-                  console.log("Card was declined");
-                  //use this area to add the error to the errors collection,
-                  //also, send an email to me with the error printed in it
-                  //don't need to use mandrill for this (unless that would be 
-                  //easier
-                  break;
-              case "account-insufficient-funds":
-                  //var sendToErrorFunction = accountInsufficientFunds();
-                  break;
-              case "authorization-failed":
-                  //var sendToErrorFunction = authorizationFailed();
-                  break;
-              case "address-verification-failed":
-                  //var sendToErrorFunction = addressVerificationFailed();
-                  break;
-              case "bank-account-not-valid":
-                  //var sendToErrorFunction = bankAccountNotValid();
-                  break;
-              case "card-not-valid":
-              //remove below before production 
-                  console.log(error.details);
-                  //var sendToErrorFunction = cardNotValid();
-                  break;
-              case "card-not-validated":
-                  //this is the error for a card that is to short, probably for other errors too
-                  //remove below before production 
-                  console.log(error.details);
-                  //var sendToErrorFunction = cardNotValidated();
-                  break;
-              case "insufficient-funds":
-                  //var sendToErrorFunction = insufficientFunds();
-                  break;
-              case "multiple-debits":
-                  //var sendToErrorFunction = multipleDebits();
-                  break;
-              case "no-funding-destination":
-                  //var sendToErrorFunction = noFundingDestination();
-                  break;
-              case "no-funding-source":
-                  break;
-              case "unexpected-payload":
-                  break;
-              case "bank-account-authentication-forbidden":
-                  break;
-              case "incomplete-account-info":
-                  break;
-              case "invalid-amount":
-                alert((error.details));
-                  break;
-              case "invalid-bank-account-number":
-                  break;
-              case "invalid-routing-number":
-                  break;
-              case "not-found":
-                  break;
-              case "request":
-              //remove below before production 
-                  console.log(error.details);
-                  break;
-              case "method-not-allowed":
-                  break;
-              case "amount-exceeds-limit":
-                  //use this area to split payment into more than one
-                  //then send the multiple payments through, 
-                  //or for a temporary workaround print instructions
-                  //back to the user, tell them the max and how they can
-                  //debit more in sepearte transactions
-                  break;
-              default:
-              //remove below before production 
-                  console.log("Didn't match any case");
-                  //var sendToErrorFunction = "No Match";
-                  break;
-            }
-            //END Switch case block
+            
+            //handleErrors is used to check the returned error and the display a user friendly message about what happened that caused
+            //the error. 
+            handleErrors(errorCode);
 
             $('#loading1').modal('hide');
             }
@@ -236,19 +164,22 @@ if(form.paymentInformation[0].donateWith === "card") {
         } else {
           form.pass = true;
           Meteor.call('createCustomer', form, function (error, result) {
-            if (_.isEmpty(result)) {
+            if (result) {
+              $('#loading1').modal('hide');
+                Router.go('/thanks/' + form._id);
+                console.log(" Result: " + result.statusCode);
+            } else {
               //remove below before production 
               $('#loading1').modal('hide');
               var errorCode = error.error;
               alert(errorCode);
-              handleError(errorCode);
+
+              //handleErrors is used to check the returned error and the display a user friendly message about what happened that caused
+              //the error. 
+              handleErrors(errorCode);
               console.log(error.error.data.error_class);
               console.log(error.error.data.error_message);
               console.log(error.reason);
-            } else {
-              $('#loading1').modal('hide');
-                Router.go('/thanks/' + form._id);
-                console.log(" Result: " + result.statusCode);
             }
           });
         }
@@ -458,4 +389,89 @@ Template.cardPaymentInformation.rendered = function () {
   $('#expiry_month').tooltip({container: 'body', trigger: 'hover focus', title: 'Card Expiration Month.', placement: 'auto top'});
   $('#expiry_year').tooltip({container: 'body', trigger: 'hover focus click', title: 'Card Expiration Year, 4 Digits.', placement: 'auto top'});
   $('#cvv').tooltip({container: 'body', trigger: 'hover focus', title: 'CVV Code', placement: 'auto top'}); 
+}
+
+function handleErrors (data) {
+  switch (data) {
+              case "500":
+                alert("Something went wrong, sorry about that. Please try again.");
+                break;
+              case "card-declined":
+                  //var sendToErrorFunction = cardDeclined();
+                  //remove below before production 
+                  alert("Card was declined");
+                  //use this area to add the error to the errors collection,
+                  //also, send an email to me with the error printed in it
+                  //don't need to use mandrill for this (unless that would be 
+                  //easier
+                  break;
+              case "account-insufficient-funds":
+                  //var sendToErrorFunction = accountInsufficientFunds();
+                  break;
+              case "authorization-failed":
+                  //var sendToErrorFunction = authorizationFailed();
+                  break;
+              case "address-verification-failed":
+                  //var sendToErrorFunction = addressVerificationFailed();
+                  break;
+              case "bank-account-not-valid":
+                  //var sendToErrorFunction = bankAccountNotValid();
+                  break;
+              case "card-not-valid":
+              //remove below before production 
+                  console.log(error.details);
+                  //var sendToErrorFunction = cardNotValid();
+                  break;
+              case "card-not-validated":
+                  //this is the error for a card that is to short, probably for other errors too
+                  //remove below before production 
+                  console.log(error.details);
+                  //var sendToErrorFunction = cardNotValidated();
+                  break;
+              case "insufficient-funds":
+                  //var sendToErrorFunction = insufficientFunds();
+                  break;
+              case "multiple-debits":
+                  //var sendToErrorFunction = multipleDebits();
+                  break;
+              case "no-funding-destination":
+                  //var sendToErrorFunction = noFundingDestination();
+                  break;
+              case "no-funding-source":
+                  break;
+              case "unexpected-payload":
+                  break;
+              case "bank-account-authentication-forbidden":
+                  break;
+              case "incomplete-account-info":
+                  break;
+              case "invalid-amount":
+                alert((error.details));
+                  break;
+              case "invalid-bank-account-number":
+                  break;
+              case "invalid-routing-number":
+                  break;
+              case "not-found":
+                  break;
+              case "request":
+              //remove below before production 
+                  console.log(error.details);
+                  break;
+              case "method-not-allowed":
+                  break;
+              case "amount-exceeds-limit":
+                  //use this area to split payment into more than one
+                  //then send the multiple payments through, 
+                  //or for a temporary workaround print instructions
+                  //back to the user, tell them the max and how they can
+                  //debit more in sepearte transactions
+                  break;
+              default:
+              //remove below before production 
+                  console.log("Didn't match any error case");
+                  //var sendToErrorFunction = "No Match";
+                  break;
+            }
+            //END Switch case block
 }

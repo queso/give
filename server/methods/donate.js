@@ -18,7 +18,7 @@ var Future = Npm.require("fibers/future");
 Meteor.methods({
  processPayment: function (data) {
       console.log('/r');
-      Donate.update(data._id, {$set: {'recurring.isRecurring': data.recurring}});
+      //Donate.update(data._id, {$set: {'recurring.isRecurring': false}});
       
       //initialize the balanced function with our API key.
       balanced.configure(Meteor.settings.balancedPaymentsAPI);

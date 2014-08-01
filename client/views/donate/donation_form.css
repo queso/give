@@ -121,7 +121,7 @@ input {
 	display: inline-block;
 }
 body {
-    background: url(../system/wp-content/customphp/images/bg.jpg) no-repeat center center fixed; 
+    background: url(https://trashmountain.com/system/wp-content/customphp/images/bg.jpg) no-repeat center center fixed; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -174,4 +174,7 @@ hr {
 }
 .select .btn-lg2 {
   width: 117px;
+}
+.donationForm.container {
+	opacity: .1;
 }

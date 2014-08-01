@@ -13,14 +13,27 @@ Meteor.methods({
   sendEmailOutAPI: function (data) {
     try {
       console.log("started email send out with API");
+      var failed = Donate.findOne({_id: data}).debit.status;
+      var error = Donate.findOne({_id: data}).debit.status; //need to change this to have a descriptive error message
       var email_address = Donate.findOne({_id: data}).customer.email_address;
       var donateTo = Donate.findOne({_id: data}).debit.donateTo;
       var donateWith = Donate.findOne({_id: data}).debit.doanteWith;
+      var amount = Donate.findOne({_id: data}).debit.amount;
       var total_amount = Donate.findOne({_id: data}).debit.total_amount;
-
+      var fees = +total_amount - +amount;
+      var coveredTheFees = Donate.findOne({_id: data}).debit.coveredTheFees;
+      console.log("XXXXXXXXXXXXXXXXXXXXXXXXFFFFFFFFFFFFFFFFFFFFFFFFFFFFF" + coveredTheFees);
+      var slug;
+      if (failed) {
+        slug = "failedpayment";
+        } else if (coveredTheFees){
+        slug = "receiptincludesfees";
+      } else {
+        slug = "compatiblereceipt";
+      }
       Meteor.Mandrill.sendTemplate({
         key: Meteor.settings.mandrillKey,
-        templateSlug: "compatiblereceipt",
+        templateSlug: slug,
         templateContent: [
           {}
         ],
@@ -32,8 +45,20 @@ Meteor.methods({
                 "name": "DonatedTo",
                 "content": donateTo
               }, {
+                "name": "DonateWith", //eventually send the card brand and the last four instead of just this
+                "content": donateWith
+              }, {
                 "name": "GiftAmount",
+                "content": amount
+              }, {
+                "name": "GiftAmountFees",
+                "content": fees
+              }, {
+                "name": "TotalGiftAmount",
                 "content": total_amount
+              }, {
+                "name": "WhatWentWrong",
+                "content": error
               }
             ]
           }
@@ -42,7 +67,7 @@ Meteor.methods({
       });
     } //End try
     catch (e) {
-      console.log('Mandril sendEmailOutAPI Method error: ' + e);
+      console.log('Mandril sendEmailOutAPI Method error: ' + e.message);
     }
   },
   failedPaymentSendEmail: function (data) {

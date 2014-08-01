@@ -12,6 +12,8 @@ var Future = Npm.require("fibers/future");
   }
 
 	function createPaymentMethod(data) {
+		try {
+
 		var customerInfo = data.customer[0];
 		console.log("ID: " + data._id);
 		var debitType = Donate.findOne(data._id).debit.type;
@@ -21,7 +23,7 @@ var Future = Npm.require("fibers/future");
 			console.log("In createPaymentMethod card portion");
 	        //Tokenize card
 	        var card;
-	        try {
+	        
 	        	console.log("Payment info: " + JSON.stringify(data.paymentInformation[0]));
 	          card = extractFromPromise(balanced.marketplace.cards.create({
 	            "name": customerInfo.fname + " " + customerInfo.lname, 
@@ -49,44 +51,31 @@ var Future = Npm.require("fibers/future");
 	      		'card.can_debit': card.can_debit
 	      	}});
 	          console.log("Added card into collection");
-	        } 
-	        catch (e) {
-	            console.log(JSON.parse(e.message).errors[0].extras);  
-	            console.log(JSON.parse(e.message).errors[0].category_code);            
-	            var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
-	            throw new Meteor.Error(error.category_code, error.status_code, error.description, error.extras);
-	        }
+	        
+	        
 	        //Debit function
           var associate;
-          try {
+
           	var processor_uri = Donate.findOne(data._id).recurring.customer.processor_uri;
           	var cardHref = card.href;
           	console.log(cardHref + ' ' + processor_uri);
             associate = extractFromPromise(balanced.get(cardHref).associate_to_customer(processor_uri));
             console.log("Associate and debit: ");
             console.dir(JSON.stringify(associate));
-          }
-          catch (e) {
-            console.log(JSON.parse(e.message).errors[0].extras);  
-            console.log(JSON.parse(e.message).errors[0].category_code);            
-            var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
-            throw new Meteor.Error(error.category_code, error.status_code, error.description, error.extras);
-          }
 	    
 		//add debit response from Balanced to the database
         var debitResponse = Donate.update(data._id, {$set: {
           'debit.type':   associate.type,
           'debit.customer': associate.links.customer,
-        }});    
+        }});
         return 'card';
-	}
-
+       	}
+       
         //for running ACH
         else {
           console.log("In check portion of create payment Method");
           //Create bank account
           var check;
-          try {
           	console.log("Payment info: " + JSON.stringify(data.paymentInformation[0]));
             check = extractFromPromise(balanced.marketplace.bank_accounts.create({
               "routing_number": data.paymentInformation[0].routing_number, 
@@ -99,16 +88,9 @@ var Future = Npm.require("fibers/future");
             console.dir(JSON.stringify(check));
             console.log("ID: " + data._id);
 
-          }
-          catch (e) {
-          	console.log(e);
-            console.log(JSON.parse(e.message).errors[0].extras);            
-            var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
-            throw new Meteor.Error(error.status_code, error.description, error.extras);
-          }
           //Debit function
           var associate;
-          try {
+          
           	var processor_uri = Donate.findOne(data._id).recurring.customer.processor_uri;
           	var checkHref = check.href;
           	console.log(checkHref + ' ' + processor_uri);
@@ -125,17 +107,14 @@ var Future = Npm.require("fibers/future");
 	        }});    
 	
 	        return 'bank_accounts';
-	        
-          }
-          catch (e) {
-          	console.log(e);
-            console.log(JSON.parse(e.message).errors[0].extras);  
-            console.log(JSON.parse(e.message).errors[0].category_code);            
-            var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
-            throw new Meteor.Error(error.category_code, error.status_code, error.description, error.extras);
-          }
-	    
-	}
+		}	      
+	}  
+	catch (e) {
+	            console.log(JSON.parse(e.message).errors[0].extras);  
+	            console.log(JSON.parse(e.message).errors[0].category_code);            
+	            var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
+	            throw new Meteor.Error(error.category_code, error.status_code, error.description, error.extras);
+	        }
 }
 
   function createBillyCustomer(customerID) {
@@ -152,7 +131,7 @@ var Future = Npm.require("fibers/future");
 			return resultSet;
 		} catch (e) {
 			console.log(e);
-			e._id = AllErrors.insert(e.response);
+			e._id = AllErrors.insert(e);
 		    var error = (e.response);
 		    throw new Meteor.Error(error, e._id);
 		}
@@ -336,6 +315,7 @@ Meteor.methods({
 			billyCustomer = createBillyCustomer(customerData.id);
 			console.log("Customer GUID: " + JSON.stringify(billyCustomer.data));
 			Donate.update(data._id, {$set: {'recurring.customer': billyCustomer.data}});
+			Donate.update(data._id, {$set: {'recurring.isRecurring': true}});
 
 			var billyPayment = ''; 
 			billyPayment = createPaymentMethod(data);

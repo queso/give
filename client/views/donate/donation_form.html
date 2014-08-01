@@ -1,28 +1,25 @@
 <template name="DonationForm">
-	<div class="donationForm container-full v-center">
-        <div class="row">
-        <h1 class="jumboSize"><center>THANK YOU</center></h1>
+    <div class="row">
+    <h1 class="jumboSize"><center>THANK YOU</center></h1>
+    
         
-            
-    		<form onsubmit="parent.scrollTo(0, 0); return true" class="form-horizontal donation-form" role="form" id="donation_form" name="donation_form"    data-bv-feedbackicons-valid="glyphicon glyphicon-ok" data-bv-feedbackicons-invalid="glyphicon glyphicon-remove" 
-                data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
-            
+		<form onsubmit="parent.scrollTo(0, 0); return true" class="form-horizontal donation-form" role="form" id="donation_form" name="donation_form"    data-bv-feedbackicons-valid="glyphicon glyphicon-ok" data-bv-feedbackicons-invalid="glyphicon glyphicon-remove" 
+            data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+        
             <!-- Bitcoin buttons -->
             <div class='topRight'>
-                <a class="btn btn-success" href="https://coinbase.com/checkouts/08fdac022d552894dc005bf6d3450cb1">Donate Bitcoins</a>
-                <a type="button" class="btn btn-default btn-md" href="https://coinbase.com/checkouts/08fdac022d552894dc005bf6d3450cb1">
+                <a class="btn btn-success" href="https://coinbase.com/checkouts/fa14aacd4e106719e9dd6e8d20b873b3">Donate Bitcoins</a>
+                <a type="button" class="btn btn-default btn-md" href="https://coinbase.com/checkouts/fa14aacd4e106719e9dd6e8d20b873b3">
                   <span class="glyphicon glyphicon-star"></span> Donate Bitcoins
                 </a>
             </div>
 
-              <div class="col-md-6 col-md-offset-3">
-                    <h4><center>Your Donation Amount: </center></h4>
-                    <h4 id="total_amount_display" >${{amount}}</h4>
-                    <input type="hidden" id="total_amount" name="total_amount" value="{{amount}}" />
-                </div>
             <div class="col-md-6 col-md-offset-3">
-                
-            
+                <h4><center>Your Donation Amount: </center></h4>
+                <h4 id="total_amount_display" >${{amount}}</h4>
+                <input type="hidden" id="total_amount" name="total_amount" value="{{amount}}" />
+            </div>
+            <div class="col-md-6 col-md-offset-3">
     			<div class="form-group noBottomMargin">
                     <div class="col-md-12">
                         <label>Donation Type Summary:</label>&nbsp;<i class="fa fa-question-circle" name="donationSummary"></i>
@@ -43,13 +40,13 @@
                 </div>
                 {{#if paymentWithCard}}
 
-                    <!-- Checbox for Covering related fees-->
-                    <div class="checkbox marginLeft">
-                        <label>
-                          <input type="checkbox" name="coverTheFees" id="coverTheFees" data-toggle="checkbox" {{coverTheFeesChecked}} /> I'll cover the credit card processing fees.
-                        </label>
-                        <i class="fa fa-question-circle"></i>
-                    </div>
+                <!-- Checbox for Covering related fees-->
+                <div class="checkbox marginLeft">
+                    <label>
+                      <input type="checkbox" name="coverTheFees" id="coverTheFees" data-toggle="checkbox" {{coverTheFeesChecked}} /> I'll cover the credit card processing fees.
+                    </label>
+                    <i class="fa fa-question-circle"></i>
+                </div>
                 {{else}}
                 {{/if}}
     			<fieldset>
@@ -93,8 +90,7 @@
     			</fieldset>
             </div>
     	</form>	
-        </div>
-	</div>
+    </div>
     <div class="modal" id="loading1" >
         <span class="fa fa-refresh fa-spin loading1 "></span>
     </div>
@@ -131,8 +127,8 @@
 	<!-- CC Info -->
 	<div class="form-group">
         <div class="col-sm-12">
-          <input type="text" class="form-control" name="card_number" id="card_number" placeholder="Debit/Credit Card Number" value="4111111111111111">
-        </div>
+          <input type="text" class="form-control" name="card_number" id="card_number" placeholder="Debit/Credit Card Number" value="4444444444444448">
+        </div> <!-- 4111111111111111 -->
     </div>
     <div class="form-group">
         <label class="col-md-3 control-label noRightPadding" for="expiry_month">Expiration Date</label>
@@ -173,8 +169,4 @@
             <input type="text" class="form-control" name="cvv" id="cvv" value="123" placeholder="CVV">
         </div>
     </div>
-</template>
-
-<template name="building">
-
 </template>
