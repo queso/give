@@ -4,11 +4,9 @@
 # but you can also edit it by hand.
 
 standard-app-packages
-iron-router
 balanced-payments-production
 npm
 mandrill
-iron-router-progress
 email
 http
 moment
@@ -19,3 +17,6 @@ less
 bootstrap-3
 analyticsjs
 easy-check
+winston-papertrail
+iron-router
+iron-router-progress

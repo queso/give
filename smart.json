@@ -1,16 +1,17 @@
 {
   "packages": {
-    "iron-router": {},
     "balanced-payments-production": {},
     "npm": {},
     "mandrill": {},
-    "iron-router-progress": {},
     "moment": {},
     "font-awesome": {},
     "autoform": {},
     "bootstrap-3": {},
     "jquery-ui": {},
     "analyticsjs": {},
-    "easy-check": {}
+    "easy-check": {},
+    "winston-papertrail": {},
+    "iron-router": {},
+    "iron-router-progress": {}
   }
 }

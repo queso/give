@@ -2,25 +2,21 @@
   "meteor": {},
   "dependencies": {
     "basePackages": {
-      "iron-router": {},
       "balanced-payments-production": {},
       "npm": {},
       "mandrill": {},
-      "iron-router-progress": {},
       "moment": {},
       "font-awesome": {},
       "autoform": {},
       "bootstrap-3": {},
       "jquery-ui": {},
       "analyticsjs": {},
-      "easy-check": {}
+      "easy-check": {},
+      "winston-papertrail": {},
+      "iron-router": {},
+      "iron-router-progress": {}
     },
     "packages": {
-      "iron-router": {
-        "git": "https://github.com/EventedMind/iron-router.git",
-        "tag": "v0.8.1",
-        "commit": "74e867557fd9cb81173e048e5f81cf4a0a1160a8"
-      },
       "balanced-payments-production": {
         "git": "https://github.com/c316/balanced-payments-production.git",
         "tag": "v0.3.0",
@@ -35,11 +31,6 @@
         "git": "https://github.com/timmyg/meteor-mandrill.git",
         "tag": "v0.0.6",
         "commit": "211be350989440403f8171031a97dd80b6c924ec"
-      },
-      "iron-router-progress": {
-        "git": "https://github.com/Multiply/iron-router-progress.git",
-        "tag": "v0.4.1",
-        "commit": "496fcda9a6ec352b4733725f60c6f280250c3541"
       },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",
@@ -76,10 +67,20 @@
         "tag": "v0.3.1",
         "commit": "2adbc7833f6474dfc5c8e1b00e4a2b4d5c98a2c5"
       },
-      "iron-layout": {
-        "git": "https://github.com/EventedMind/iron-layout.git",
-        "tag": "v0.2.0",
-        "commit": "4a2d53e35ba036b0c189c7ceca34be494d4c6c97"
+      "winston-papertrail": {
+        "git": "https://github.com/stuartfenton/meteor-winston-papertrail.git",
+        "tag": "v0.0.5",
+        "commit": "3884fbfce55648c2717bba51ce998b9a7bf9bd80"
+      },
+      "iron-router": {
+        "git": "https://github.com/EventedMind/iron-router.git",
+        "tag": "v0.8.2",
+        "commit": "05415a8891ea87a00fb1e2388585f2ca5a38e0da"
+      },
+      "iron-router-progress": {
+        "git": "https://github.com/Multiply/iron-router-progress.git",
+        "tag": "v0.4.1",
+        "commit": "496fcda9a6ec352b4733725f60c6f280250c3541"
       },
       "simple-schema": {
         "git": "https://github.com/aldeed/meteor-simple-schema.git",
@@ -88,8 +89,13 @@
       },
       "collection2": {
         "git": "https://github.com/aldeed/meteor-collection2.git",
-        "tag": "v0.4.3",
-        "commit": "cb470de2cfeebeccbf76d4cc0a39ad4afc76d553"
+        "tag": "v0.4.4",
+        "commit": "c70deb36e10f63238b884529eea1e38cf0789903"
+      },
+      "iron-layout": {
+        "git": "https://github.com/EventedMind/iron-layout.git",
+        "tag": "v0.2.0",
+        "commit": "4a2d53e35ba036b0c189c7ceca34be494d4c6c97"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",
