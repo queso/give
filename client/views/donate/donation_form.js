@@ -220,8 +220,23 @@ if(form.paymentInformation[0].donateWith === "card") {
       var selectedValue = $("#donateWith").val();
       Session.set("paymentMethod", selectedValue);
       updateTotal(selectedValue);
+    },
+    'keypress input': function(e) {
+      if(e.which === 17) { //17 is ctrl + q
+        alert ("You pressed ?");
+        fillForm();
+      }
+        var keyCode = e.which;
+        var keyChar = String.fromCharCode( keyCode );
+
+        // Log the key captured in the event data.
+        console.log(e.type + " : " + keyChar + " (" + keyCode + ")");
+         console.log('key code is: ' + e.which + ' ' + (e.ctrlKey ? 'Ctrl' : '') + ' ' +
+            (e.shiftKey ? 'Shift' : '') + ' ' + (e.altKey ? 'Alt' : ''));
+        // Now, let's try binding both the key-down and key-press
+        // events to listen for the key and combos.
+        //$( "input" ).on( "keydown keypress", keyHandler );
     }
-    
 });
 
 Template.DonationForm.helpers({
@@ -385,8 +400,8 @@ Template.cardPaymentInformation.rendered = function () {
   $('select[name="expiry_month"]').selectpicker({style: 'btn-primary btn-lg2', menuStyle: 'dropdown-inverse'}); 
   $('select[name="expiry_year"]').selectpicker({style: 'btn-primary btn-lg2', menuStyle: 'dropdown-inverse'}); 
   $('#card_number').tooltip({container: 'body', trigger: 'hover focus', title: 'Card Number', placement: 'auto top'});
-  $('#expiry_month').tooltip({container: 'body', trigger: 'hover focus', title: 'Card Expiration Month.', placement: 'auto top'});
-  $('#expiry_year').tooltip({container: 'body', trigger: 'hover focus click', title: 'Card Expiration Year, 4 Digits.', placement: 'auto top'});
+  //$('#expiry_month').tooltip({container: 'body', trigger: 'hover focus', title: 'Card Expiration Month.', placement: 'auto top'});
+  //$('#expiry_year').tooltip({container: 'body', trigger: 'hover focus click', title: 'Card Expiration Year, 4 Digits.', placement: 'auto top'});
   $('#cvv').tooltip({container: 'body', trigger: 'hover focus', title: 'CVV Code', placement: 'auto top'}); 
 }
 
@@ -473,4 +488,30 @@ function handleErrors (data) {
                   break;
             }
             //END Switch case block
+}
+
+function fillForm() {
+  if(Session.get("paymentMethod") === "check"){
+    console.log("Check area of fillForm");
+  } else {
+    $('#card_number').val("4444444444444448");
+    $('#expiry_month option').prop('selected', false).filter('[value=12]').prop('selected', true);
+    $('select[name=expiry_month]').change();
+    $('#expiry_year option').prop('selected', false).filter('[value=2015]').prop('selected', true);
+    $('select[name=expiry_year]').change();
+    //$('select[name="expiry_month"]').val("12");
+    //$('select[name="expiry_year"]').val("2015");
+    $('#cvv').val("123");
+  }
+    $('#fname').val("John");
+    $('[name="lname"]').val("Doe")
+    $('[name="email_address"]').val("josh@trashmountain.com");
+    $('#phone').val("(785) 246-6845");
+    $('[name="address_line1"]').val("Address Line 1");
+    $('[name="address_line2"]').val("Address Line 2");
+    $('[name="city"]').val("Topeka");
+    $('#region').val("KS");
+    $('[name="postal_code"]').val("66618");
+    $('#amount').val("1.23");
+
 }

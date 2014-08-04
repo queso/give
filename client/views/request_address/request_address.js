@@ -4,13 +4,16 @@
 Template.RequestAddress.events({
 
    'change [name=country]': function(e, tmpl) {
-    if($(e.target).find('[name=country]').val() !== "US") {
+    var countryValue;
+    if($('[name=country]').val() !== "US") {
       console.log("Value of country " + $('[name=country]').val());
       $('#phone').hide().find('input, textarea').prop('disabled', true);
       $('#phone, text').val("");
       $('#phoneDiv').hide().find('input, textarea').prop('disabled', true);
     } else {
+      console.log("In else");
       $('#phoneDiv').show().find('input, textarea').prop('disabled', false);
+      $('#phone').show().find('input, textarea').prop('disabled', false);
     }
    }
 });
@@ -22,7 +25,6 @@ Template.RequestAddress.helpers({
         name: "fname",
         id: 'fname',
         class: "form-control",
-        value: "John",
         placeholder: "First Name",
         autofocus: "autofocus",
         required: true
@@ -33,7 +35,6 @@ Template.RequestAddress.helpers({
         type: "text",
         name: "lname",
         class: "form-control",
-        value: "Doe",
         placeholder: "Last Name",
         required: true
       }
@@ -43,7 +44,6 @@ Template.RequestAddress.helpers({
         type: "email",
         name: "email_address",
         class: "form-control email",
-        value: "josh@trashmountain.com",
         placeholder: "Email address",
         required: true
 
@@ -53,7 +53,6 @@ Template.RequestAddress.helpers({
       return {
         name: "phone_number",
         class: "form-control",
-        value: "785-246-6845",
         placeholder: "Phone Number",
         required: true,
         type: "tel",
@@ -65,7 +64,6 @@ Template.RequestAddress.helpers({
         type: "text",
         name: "address_line1",
         class: "form-control",
-        value: "Address Line 1",
         placeholder: "address line 1",
         required: true
       }
@@ -75,7 +73,6 @@ Template.RequestAddress.helpers({
         type: "text",
         name: "address_line2",
         class: "form-control",
-        value: "Address Line 2",
         placeholder: "address line 2"
       }
     },
@@ -84,7 +81,6 @@ Template.RequestAddress.helpers({
         type: "text",
         name: "city",
         class: "form-control",
-        value: "Topeka",
         placeholder: "city",
         required: true
       }
@@ -95,7 +91,6 @@ Template.RequestAddress.helpers({
         name: "region",
         id: "region",
         class: "form-control text-uppercase",
-        value: "KS",
         placeholder: "State",
         required: true
       }
@@ -105,7 +100,6 @@ Template.RequestAddress.helpers({
         type: "text",
         name: "postal_code",
         class: "form-control",
-        value: "66618",
         placeholder: "zip or postal code",
         required: true
       }
@@ -114,7 +108,6 @@ Template.RequestAddress.helpers({
       return {
         name: "country",
         class: "form-control",
-        value: "US",
         required: true
       }
     },

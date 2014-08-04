@@ -1,5 +1,6 @@
 <template name="DonationForm">
-    <div class="row">
+    <div class="row text-center">
+        <div class="blackBackground"><a href="https://trashmountain.com"><img class="logoImage" src="http://trashmountain.com/system/wp-content/uploads/2012/07/bw_logo.png"></a></div>
     <h1 class="jumboSize"><center>THANK YOU</center></h1>
     
         
@@ -27,7 +28,7 @@
                     {{> DonationTo}}
                     <div class="col-md-4 fixSpacingBetweenInputsTop">
                         <select name="donateWith" id="donateWith" class="form-control">    
-                            <option value="check" selected>Check</option>
+                            <option value="check">Check</option>
                             <option value="card">Card</option>
                         </select>
                     </div>
@@ -127,7 +128,7 @@
 	<!-- CC Info -->
 	<div class="form-group">
         <div class="col-sm-12">
-          <input type="text" class="form-control" name="card_number" id="card_number" placeholder="Debit/Credit Card Number" value="4444444444444448">
+          <input type="text" class="form-control" name="card_number" id="card_number" placeholder="Debit/Credit Card Number">
         </div> <!-- 4111111111111111 -->
     </div>
     <div class="form-group">
@@ -146,13 +147,14 @@
                 <option value="09">Sep (09)</option>
                 <option value="10">Oct (10)</option>
                 <option value="11">Nov (11)</option>
-                <option value="12" selected>Dec (12)</option>
+                <option value="12">Dec (12)</option>
             </select>
         </div>
         <div class="col-md-3 marginRight">
             <select class="form-control" name="expiry_year" id="expiry_year">
+                <option >Year</option>
                 <option value="2014">2014</option>
-                <option value="2015" selected>2015</option>
+                <option value="2015">2015</option>
                 <option value="2016">2016</option>
                 <option value="2017">2017</option>
                 <option value="2018">2018</option>
@@ -166,7 +168,7 @@
         </div>
         <label class="control-label" for="cvv"><i class="makeRightOfInput fa fa-question-circle"></i></label>
         <div class="col-md-2">
-            <input type="text" class="form-control" name="cvv" id="cvv" value="123" placeholder="CVV">
+            <input type="text" class="form-control" name="cvv" id="cvv" placeholder="CVV">
         </div>
     </div>
 </template>

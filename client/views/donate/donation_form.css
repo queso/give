@@ -178,3 +178,11 @@ hr {
 .donationForm.container {
 	opacity: .1;
 }
+.blackBackground {
+	background-color: #262626;
+	padding-top: 10px;
+}
+.logoImage {
+	vertical-align: baseline;
+	margin-left: 10px;
+}
