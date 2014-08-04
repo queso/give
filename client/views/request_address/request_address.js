@@ -9,6 +9,8 @@ Template.RequestAddress.events({
       $('#phone').hide().find('input, textarea').prop('disabled', true);
       $('#phone, text').val("");
       $('#phoneDiv').hide().find('input, textarea').prop('disabled', true);
+    } else {
+      $('#phoneDiv').show().find('input, textarea').prop('disabled', false);
     }
    }
 });
