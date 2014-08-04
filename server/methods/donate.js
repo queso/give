@@ -23,10 +23,6 @@ Meteor.methods({
       //initialize the balanced function with our API key.
       balanced.configure(Meteor.settings.balancedPaymentsAPI);
 
-      /*var testMe1 = data.customer[0].fname;
-      console.log(testMe1);
-      console.log((testMe1).typeOf);
-      check(testMe1, String);*/
       var customerInfo = data.customer[0];
       console.log("Customer Info: " + JSON.stringify(customerInfo));
       var paymentInfo = data.paymentInformation[0];
