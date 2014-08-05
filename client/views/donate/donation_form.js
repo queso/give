@@ -1,6 +1,9 @@
 /*****************************************************************************/
 /* DonationForm: Event Handlers and Helpers */
 /*****************************************************************************/
+// this function is used to update the displayed total
+// since we can take payment with card fees added in this is needed to update the 
+// amount that is shown to the user and passed as total_amount through the form
 function updateTotal(){
   var data = Session.get('paymentMethod');
   var donationAmount = $('#amount').val();
@@ -103,17 +106,6 @@ if(form.paymentInformation[0].donateWith === "card") {
 }
     form._id = Donate.insert(form.created_at);
 
-//remove below before production 
-    /*Deps.autorun(function(){
-      var statusValue = Donate.update(form._id, {$set: {status: 'In collection'}});
-         notif({
-          msg: "<b>" + statusValue + "</b>",
-          type: "success",
-          position: "right"
-        });
-    });*/
-
-    //Session.set('status', Donate.findOne(form._id).status);
     Donate.update(form._id, {$set: {
       sessionId: Meteor.default_connection._lastSessionId,
       'customer': form.customer[0],
@@ -209,33 +201,22 @@ if(form.paymentInformation[0].donateWith === "card") {
     'click [name=donateWith]': function(e,tmpl) {
       var selectedValue = $("#donateWith").val();
       Session.set("paymentMethod", selectedValue);
-      updateTotal(selectedValue);      
-
+      updateTotal(selectedValue);
     },
     'change [name=donateWith]': function(e,tmpl) {
       setTimeout(function () {
+        uncheckThatBox(); //call the same function twice, 
         uncheckThatBox(); //ugly hack to fix the box not appearing when switching between check and card
-        uncheckThatBox();
       }, 20);
       var selectedValue = $("#donateWith").val();
       Session.set("paymentMethod", selectedValue);
       updateTotal(selectedValue);
     },
+    //keypress input detection for autofilling form with test data
     'keypress input': function(e) {
       if(e.which === 17) { //17 is ctrl + q
-        alert ("You pressed ?");
         fillForm();
       }
-        var keyCode = e.which;
-        var keyChar = String.fromCharCode( keyCode );
-
-        // Log the key captured in the event data.
-        console.log(e.type + " : " + keyChar + " (" + keyCode + ")");
-         console.log('key code is: ' + e.which + ' ' + (e.ctrlKey ? 'Ctrl' : '') + ' ' +
-            (e.shiftKey ? 'Shift' : '') + ' ' + (e.altKey ? 'Alt' : ''));
-        // Now, let's try binding both the key-down and key-press
-        // events to listen for the key and combos.
-        //$( "input" ).on( "keydown keypress", keyHandler );
     }
 });
 
