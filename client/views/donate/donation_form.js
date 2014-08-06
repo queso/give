@@ -286,7 +286,7 @@ Template.DonationForm.rendered = function () {
   $('[name=region]').tooltip({container: 'body', trigger: 'hover focus', title: 'State/Region', placement: 'auto top'});
   $('[name=postal_code]').tooltip({container: 'body', trigger: 'hover focus', title: 'Postal Code', placement: 'auto top'});
   $('[name=country]').tooltip({container: 'body', trigger: 'hover focus', title: 'Country', placement: 'auto top'});  
-
+  $('[name=checkGraphic]').hide();
 //remove below before production 
 //Parsley form validation setup, commented to test other things while I wait to 
 //hear back from the developer on a good example to work from.
