@@ -27,19 +27,19 @@ Router.map(function () {
       }
     }
   });
-  this.route('thanks', {path: '/thanks/:_id', 
+  this.route('thanks', {path: '/give/thanks/:_id', 
     waitOn: function() { return Meteor.subscribe('donate', this.params._id)},
     data: function () {
       return Donate.findOne(this.params._id);
     }
   });
-    this.route('thanks1', {path: '/thanks1/:_id', 
+    this.route('thanks1', {path: '/give/thanks1/:_id', 
     waitOn: function() { return Meteor.subscribe('donate', this.params._id)},
     data: function () {
       return Donate.findOne(this.params._id);
     }
   });
-  this.route('send.email', {path: '/send_email'});
-  this.route('failed', {path: '/failed/:_id'});
-  this.route('charge_existing', {path: '/charge_existing'});
+  this.route('send.email', {path: '/give/send_email'});
+  this.route('failed', {path: '/give/failed/:_id'});
+  this.route('charge_existing', {path: '/give/charge_existing'});
 });

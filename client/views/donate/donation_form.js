@@ -132,7 +132,7 @@ if(form.paymentInformation[0].donateWith === "card") {
           $('#loading1').modal('hide');
 
           //Session.set('status', Donate.findOne({id: form._id}).status);
-           Router.go('/thanks/' + form._id);
+           Router.go('/give/thanks/' + form._id);
          } else {
             Donate.update(form._id, {$set: {failed: error}});
             var donateDocument = Donate.findOne({'_id': form._id});
@@ -158,7 +158,7 @@ if(form.paymentInformation[0].donateWith === "card") {
           Meteor.call('createCustomer', form, function (error, result) {
             if (result) {
               $('#loading1').modal('hide');
-                Router.go('/thanks/' + form._id);
+                Router.go('/give/thanks/' + form._id);
                 console.log(" Result: " + result.statusCode);
             } else {
               //remove below before production 
@@ -280,7 +280,7 @@ Template.DonationForm.rendered = function () {
   $('[name=region]').tooltip({container: 'body', trigger: 'hover focus', title: 'State/Region', placement: 'auto top'});
   $('[name=postal_code]').tooltip({container: 'body', trigger: 'hover focus', title: 'Postal Code', placement: 'auto top'});
   $('[name=country]').tooltip({container: 'body', trigger: 'hover focus', title: 'Country', placement: 'auto top'});
-  
+  $('#accountTypeQuestion').tooltip({container: 'body', trigger: 'hover focus', title: 'Test', placement: 'auto right', img: '/images/check_image.png'});
   
 
 //remove below before production 
