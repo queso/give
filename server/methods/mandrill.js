@@ -6,7 +6,6 @@ Meteor.startup(function() {
   });
 });
 
-
 //rewrite this to use many different templates, then store the data used to call those templates in the data var 
 //before calling this function
 Meteor.methods({

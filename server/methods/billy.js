@@ -52,7 +52,6 @@ var Future = Npm.require("fibers/future");
 	      	}});
 	          console.log("Added card into collection");
 	        
-	        
 	        //Debit function
           var associate;
 
@@ -359,73 +358,5 @@ Meteor.methods({
 		//throw new Meteor.Error(error.category_code, error.status_code, error.description, error.extras);
 		}
 
-	}/*,
-	createCustomerAsync: function (data) {
-
-		balanced.configure(Meteor.settings.balancedPaymentsAPI);
-		var customerInfo = data.customer[0];
-
-		//remove before production
-		console.dir(JSON.stringify(customerInfo));
-
-		var customerData = '';
-
-		try {
-		customerData =  Async.runSync(function (done){
-			balanced.marketplace.customers.create({
-				'name': customerInfo.fname + " " + customerInfo.lname,
-				"address": {
-				  "city": customerInfo.city,
-				  "state": customerInfo.region,
-				  "line1": customerInfo.address_line1,
-				  "line2": customerInfo.address_line2,
-				  "postal_code": customerInfo.postal_code,
-				},
-				'email': customerInfo.email_address, 
-				//need to add if statement for any fields that might be blank
-				'phone': customerInfo.phone_number
-			});
-              done(null);
-		});
-		//remove before production
-		console.log("Customer Aysnc Data: ");
-		console.dir(JSON.stringify(customerData));
-		//Donate.update(data._id, {$set: {status: 'Customer created.'}});
-		console.log("Customer created: " + customerData.id);
-
-		var customerResponse = Donate.update(data._id, {$set: {
-            'customer.type': customerData._type,
-            'customer.id': customerData.id
-          }});
-		if (data.pass) {
-			var billyCustomer = ''; 
-			billyCustomer = createBillyCustomer(customerData.id);
-
-			return billyCustomer.data.guid;
-
-            /*if (error) {
-              //remove below before production 
-              console.log(error.error.data.error_class);
-              console.log(error.error.data.error_message);
-              console.log(error.reason);
-            } else {
-              //remove below before production 
-            console.log(" Result: " + result.data.guid);
-            //console.log(" Full result: " + JSON.stringify(result));
-            console.log(" Result: " + JSON.stringify(result));
-            console.log(" Result: " + result.create_at);
-            console.log(" Result: " + result);
-            return result; //.data.guid;
-		} else {
-			return;
-		}
-		} catch (e) {
-		//console.log(JSON.parse(e.message).errors[0].extras);  
-		//console.log(JSON.parse(e.message).errors[0].category_code);            
-		//var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
-		console.log(e);
-		//throw new Meteor.Error(error.category_code, error.status_code, error.description, error.extras);
-		}
-
-	}*/
+	}
 });
