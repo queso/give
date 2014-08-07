@@ -1,12 +1,10 @@
 {
   "name": "Give",
-  "Version": "0.1",
+  "Version": "0.2",
   "engines": {
-    "node": "0.10.28"
+    "node": "0.10.30"
   },
-  "subdomain": "bechard-give",
   "scripts": {
     "start": "node server"
-  },
-  "version": "0.0.1"
+  }
 }
