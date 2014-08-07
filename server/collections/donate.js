@@ -1,10 +1,3 @@
-/*
- * Add query methods like this:
- *  Donate.findPublic = function () {
- *    return Donate.find({is_public: true});
- *  }
- */
-
 Donate.allow({
   insert: function (userId, doc) {
     return true;
