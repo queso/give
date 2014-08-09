@@ -26,7 +26,6 @@ Template.RequestAddress.helpers({
         id: 'fname',
         class: "form-control",
         placeholder: "First Name",
-        autofocus: "autofocus",
         required: true
       }
     },

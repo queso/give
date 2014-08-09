@@ -98,12 +98,12 @@ input {
 .fixSpacingBetweenInputs {
 	width: 283px;
 	padding-right: 0;
-	padding-left: 15px;
+	padding-left: 7px;
 	display: inline-block;
 }
 .fixSpacingBetweenInputs1 {
 	width: 282px;
-	padding-right: 0;
+	padding-right: 7px;
 	display: inline-block;
 }
 .fixSpacingBetweenInputsTop {
@@ -183,4 +183,7 @@ hr {
 .logoImage {
 	vertical-align: baseline;
 	margin-left: 10px;
+}
+.negativeBottomMargin {
+	margin-bottom: 0;
 }
