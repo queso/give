@@ -16,7 +16,7 @@ Meteor.methods({
       var error = Donate.findOne({_id: data}).debit.status; //need to change this to have a descriptive error message
       var email_address = Donate.findOne({_id: data}).customer.email_address;
       var donateTo = Donate.findOne({_id: data}).debit.donateTo;
-      var donateWith = Donate.findOne({_id: data}).debit.doanteWith;
+      var donateWith = Donate.findOne({_id: data}).debit.donateWith;
       var amount = Donate.findOne({_id: data}).debit.amount;
       var total_amount = Donate.findOne({_id: data}).debit.total_amount;
       var fees = +total_amount - +amount;
