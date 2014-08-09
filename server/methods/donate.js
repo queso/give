@@ -25,6 +25,7 @@ Meteor.methods({
 
       var customerInfo = data.customer[0];
       console.log("Customer Info: " + JSON.stringify(customerInfo));
+      logger.info(" =====> Customer Info "+ JSON.stringify(customerInfo) + " <=====");
       var paymentInfo = data.paymentInformation[0];
       console.log("Payment Info: " + JSON.stringify(paymentInfo));
       var customerData;
