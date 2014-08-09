@@ -390,8 +390,7 @@ Template.cardPaymentInformation.rendered = function () {
   $('select[name="expiry_month"]').selectpicker({style: 'btn-primary btn-lg2', menuStyle: 'dropdown-inverse'}); 
   $('select[name="expiry_year"]').selectpicker({style: 'btn-primary btn-lg2', menuStyle: 'dropdown-inverse'}); 
   $('#card_number').tooltip({container: 'body', trigger: 'hover focus', title: 'Card Number', placement: 'auto top'});
-  //$('#expiry_month').tooltip({container: 'body', trigger: 'hover focus', title: 'Card Expiration Month.', placement: 'auto top'});
-  //$('#expiry_year').tooltip({container: 'body', trigger: 'hover focus click', title: 'Card Expiration Year, 4 Digits.', placement: 'auto top'});
+  $('#expirationDataQuestion').tooltip({container: 'body', trigger: 'hover focus', title: 'Card expiration date', placement: 'auto top'});
   $('#cvv').tooltip({container: 'body', trigger: 'hover focus', title: 'CVV Code', placement: 'auto top'}); 
 }
 

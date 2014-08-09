@@ -96,14 +96,12 @@ input {
 	border-color: #7ecb7a;
 }
 .fixSpacingBetweenInputs {
-	width: 283px;
 	padding-right: 0;
-	padding-left: 7px;
+	padding-left: 15px;
 	display: inline-block;
 }
 .fixSpacingBetweenInputs1 {
-	width: 282px;
-	padding-right: 7px;
+	padding-right: 15px;
 	display: inline-block;
 }
 .fixSpacingBetweenInputsTop {
@@ -186,4 +184,17 @@ hr {
 }
 .negativeBottomMargin {
 	margin-bottom: 0;
+}
+.smallerHeight {
+	height: 40px;
+}
+@media (min-width: 480px) {
+	.select .btn-lg2 {
+		width: 100px;
+	}
+}
+@media (min-width: 768px) {
+	.select .btn-lg2 {
+		width: 117px;
+	}
 }

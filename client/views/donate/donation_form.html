@@ -51,7 +51,7 @@
     				<div class="form-group donation_amount">
     				    <label {{attributes_Label_Amount}} >Donation Amount</label>
     				    <div class="col-sm-12">
-    				        <div class="input-group">
+    				        <div class="input-group col-md-12 col-sm-12 col-xs-12">
     				            <span class="input-group-addon">$</span>
     				            <input {{attributes_Input_Amount}} value="{{amount}}" />
     				        </div>
@@ -101,14 +101,14 @@
 		</div>
 	</div>
     <div class="form-group">
-        <div class="col-md-7">
+        <div class="col-lg-6 col-md-7 col-sm-5 col-xs-7">
             <label class="control-label" for="account_type">Account Type <i class="makeRightOfInput fa fa-question-circle" id="accountTypeQuestion"></i></label>
             <select class="form-control" name="account_type">
               <option>Checking</option>
               <option>Savings</option>
             </select>
         </div>
-        <div name="checkGraphic" class="center-block check-graphic">
+        <div name="checkGraphic" class="center-block check-graphic col-lg-6 col-md-7 col-sm-5 col-xs-7">
         </div>
     </div>
 
@@ -123,9 +123,9 @@
         </div> <!-- 4111111111111111 -->
     </div>
     <div class="form-group">
-        <label class="col-md-3 control-label noRightPadding" for="expiry_month">Expiration Date</label>
-        <div class="col-md-3 col-sm-3">
-            <select class="form-control" name="expiry_month" id="expiry_month">
+        <label class="col-lg-3 col-md-4 col-sm-3 col-xs-6 control-label noRightPadding" for="expiry_month">Expiration Date <i class="fa fa-question-circle" id="expirationDataQuestion"></i></label>
+        <div class="col-lg-3 col-md-3 col-sm-2 col-xs-2">
+            <select class="form-control smallerHeight" name="expiry_month" id="expiry_month">
                 <option>Month</option>
                 <option value="01">Jan (01)</option>
                 <option value="02">Feb (02)</option>
@@ -141,8 +141,8 @@
                 <option value="12">Dec (12)</option>
             </select>
         </div>
-        <div class="col-md-3 col-sm-3 marginRight">
-            <select class="form-control" name="expiry_year" id="expiry_year">
+        <div class="col-md-3 col-sm-2 col-xs-2 marginRight">
+            <select class="form-control smallerHeight" name="expiry_year" id="expiry_year">
                 <option >Year</option>
                 <option value="2014">2014</option>
                 <option value="2015">2015</option>
@@ -157,8 +157,8 @@
                 <option value="2024">2024</option>
             </select>  
         </div>
-        <label class="control-label" for="cvv"><i class="makeRightOfInput fa fa-question-circle"></i></label>
-        <div class="col-md-2 col-sm-2">
+        
+        <div class="col-md-3 col-sm-5 col-xs-5">
             <input type="text" class="form-control" name="cvv" id="cvv" placeholder="CVV">
         </div>
     </div>
