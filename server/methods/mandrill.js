@@ -21,9 +21,11 @@ Meteor.methods({
       var total_amount = Donate.findOne({_id: data}).debit.total_amount;
       var fees = +total_amount - +amount;
       var coveredTheFees = Donate.findOne({_id: data}).debit.coveredTheFees;
-      console.log("XXXXXXXXXXXXXXXXXXXXXXXXFFFFFFFFFFFFFFFFFFFFFFFFFFFFF" + coveredTheFees);
+      console.log("XXXXXXXXXXXXXXXXXXXXXXXXFFFFFFFFFFFFFFFFF Cover the fees? " + '\n' + coveredTheFees);
+      console.log("debit.status: " + failed);
       var slug;
-      if (failed) {
+      if (failed === "failed") {
+        console.log(failed);
         slug = "failedpayment";
         } else if (coveredTheFees){
         slug = "receiptincludesfees";
