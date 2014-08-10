@@ -7,14 +7,13 @@
       "mandrill": {},
       "moment": {},
       "font-awesome": {},
-      "autoform": {},
-      "bootstrap-3": {},
       "jquery-ui": {},
       "analyticsjs": {},
       "easy-check": {},
       "winston-papertrail": {},
       "iron-router": {},
-      "iron-router-progress": {}
+      "iron-router-progress": {},
+      "bootstrap-3": {}
     },
     "packages": {
       "balanced-payments-production": {
@@ -41,16 +40,6 @@
         "git": "https://github.com/nate-strauser/meteor-font-awesome.git",
         "tag": "v4.1.0",
         "commit": "ce6b1e92715d1938babc5d69c655c17e387f5926"
-      },
-      "autoform": {
-        "git": "https://github.com/aldeed/meteor-autoform.git",
-        "tag": "v0.16.1",
-        "commit": "34a447fd3a1b3164c78f865aabbac3ddc2d033fb"
-      },
-      "bootstrap-3": {
-        "git": "https://github.com/mangasocial/meteor-bootstrap-3.git",
-        "tag": "v3.2.0-1",
-        "commit": "17a63902fc6cf1096c5289d963c66cf28b474727"
       },
       "jquery-ui": {
         "git": "https://github.com/TimHeckel/meteor-jquery-ui.git",
@@ -82,15 +71,10 @@
         "tag": "v0.4.1",
         "commit": "496fcda9a6ec352b4733725f60c6f280250c3541"
       },
-      "simple-schema": {
-        "git": "https://github.com/aldeed/meteor-simple-schema.git",
-        "tag": "v0.6.0",
-        "commit": "418ec496612fb2afc853e342f0d2269b6674a2fe"
-      },
-      "collection2": {
-        "git": "https://github.com/aldeed/meteor-collection2.git",
-        "tag": "v0.4.4",
-        "commit": "c70deb36e10f63238b884529eea1e38cf0789903"
+      "bootstrap-3": {
+        "git": "https://github.com/mangasocial/meteor-bootstrap-3.git",
+        "tag": "v3.2.0-1",
+        "commit": "17a63902fc6cf1096c5289d963c66cf28b474727"
       },
       "iron-layout": {
         "git": "https://github.com/EventedMind/iron-layout.git",

@@ -12,11 +12,9 @@ http
 moment
 webapp
 font-awesome
-autoform
 less
-bootstrap-3
 analyticsjs
-easy-check
 winston-papertrail
 iron-router
 iron-router-progress
+bootstrap-3

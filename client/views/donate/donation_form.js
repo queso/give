@@ -56,6 +56,7 @@ Template.DonationForm.events({
     //'click [name=submitThisForm]': function (e, tmpl) {
   'submit form': function (e, tmpl) {
     e.preventDefault();
+    /*$donation_form.find(':submit').click();*/
     
     //Start the bootstrap modal with the awesome font refresh logo
     //Also, backdrop: 'static' sets the modal to not be exited when 
@@ -222,13 +223,31 @@ if(form.paymentInformation[0].donateWith === "card") {
       if(e.which === 17) { //17 is ctrl + q
         fillForm();
       }
-    }/*,
+    },/*
     'mouseover #accountTypeQuestion': function(e,tmpl) {
       $('[name=checkGraphic]').toggle();
     },
     'click #accountTypeQuestion': function(e,tmpl) {
       $('[name=checkGraphic]').toggle();
     }*/
+    // disable mousewheel on a input number field when in focus
+    // (to prevent Cromium browsers change the value when scrolling)
+    'focus #amount': function (e,tmpl){
+      $('#amount').on('mousewheel.disableScroll', function (e) {
+        e.preventDefault();
+      });
+    },
+    'blur #amount': function (e,tmpl){
+      $('#amount').on('mousewheel.disableScroll', function (e) {
+      });
+    },
+    'keyup #cvv': function (e, tmpl) {
+      var testThis = $("#cvv").val();
+      console.log("Value: " + testThis);
+      if(testThis.match(/[0-9]*/)){
+        return testThis;
+      }
+    }
 });
 
 Template.DonationForm.helpers({
@@ -270,14 +289,22 @@ Template.DonationForm.created = function () {
 
 Template.DonationForm.rendered = function () {
 
-// Below is used to rewrite the style of the drop down
+  //Set the checkboxes to unchecked 
+  $(':checkbox').checkbox('uncheck');
+
+  //Set the tooltips for the question mark icons.
+  $('[name=donationSummary]').tooltip({trigger: 'hover focus', template: '<div class="tooltip tooltipWide" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner tooltipInnerWide"></div></div>',
+    title: 'Below is the summary of your donation. To change your options please use the dropdown buttons.', placement: 'auto top'});
+  $('#accountTypeQuestion').tooltip({container: 'body', trigger: 'hover focus', template: '<div class="tooltip tooltipWide" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner tooltipInnerWide"></div></div>',
+    title: 'Give by ACH. There are usually 3 sets of numbers at the bottom of a check. The short check number, the 9 digit routing number and the account number.',
+    placement: 'auto top'});  
+
+  
+  //Change the select elements to button style dropdowns
   $('select[name=donateWith]').selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse'}); 
   $('select[name=donateTo]').selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse'});
   $('select[name=is_recurring]').selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse'}); 
-  $(':checkbox').checkbox('uncheck');
-  $('#amount').tooltip({container: 'body', trigger: 'hover focus click', title: 'Amount', placement: 'auto top'});
-  $('[name=donationSummary]').tooltip({trigger: 'hover focus', template: '<div class="tooltip tooltipWide" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner tooltipInnerWide"></div></div>',
-    title: 'Below is the summary of your donation. To change your options please use the dropdown buttons.', placement: 'auto top'});
+  /*$('#amount').tooltip({container: 'body', trigger: 'hover focus click', title: 'Amount', placement: 'auto top'});
   $('#donateWith').tooltip({container: 'body', trigger: 'hover focus', title: 'How do you want to pay for your gift?', placement: 'auto top'});
   $('#is_recurring').tooltip({container: 'body', trigger: 'hover focus', title: 'Select weather this is a one-time gift or recurring monthly.', placement: 'auto top'});
   $('[name=fname]').tooltip({container: 'body', trigger: 'hover focus', title: 'First Name', placement: 'auto top'});
@@ -289,10 +316,8 @@ Template.DonationForm.rendered = function () {
   $('[name=city]').tooltip({container: 'body', trigger: 'hover focus', title: 'City', placement: 'auto top'});
   $('[name=region]').tooltip({container: 'body', trigger: 'hover focus', title: 'State/Region', placement: 'auto top'});
   $('[name=postal_code]').tooltip({container: 'body', trigger: 'hover focus', title: 'Postal Code', placement: 'auto top'});
-  $('[name=country]').tooltip({container: 'body', trigger: 'hover focus', title: 'Country', placement: 'auto top'});  
-  $('#accountTypeQuestion').tooltip({container: 'body', trigger: 'hover focus', template: '<div class="tooltip tooltipWide" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner tooltipInnerWide"></div></div>',
-    title: 'Give by ACH. There are usually 3 sets of numbers at the bottom of a check. The short check number, the 9 digit routing number and the account number.',
-    placement: 'auto top'});  
+  $('[name=country]').tooltip({container: 'body', trigger: 'hover focus', title: 'Country', placement: 'auto top'});  */
+
   //$('[name=checkGraphic]').hide();
 //remove below before production 
 //Parsley form validation setup, commented to test other things while I wait to 
@@ -389,9 +414,10 @@ Template.checkPaymentInformation.created = function () {
 Template.cardPaymentInformation.rendered = function () {
   $('select[name="expiry_month"]').selectpicker({style: 'btn-primary btn-lg2', menuStyle: 'dropdown-inverse'}); 
   $('select[name="expiry_year"]').selectpicker({style: 'btn-primary btn-lg2', menuStyle: 'dropdown-inverse'}); 
-  $('#card_number').tooltip({container: 'body', trigger: 'hover focus', title: 'Card Number', placement: 'auto top'});
   $('#expirationDataQuestion').tooltip({container: 'body', trigger: 'hover focus', title: 'Card expiration date', placement: 'auto top'});
-  $('#cvv').tooltip({container: 'body', trigger: 'hover focus', title: 'CVV Code', placement: 'auto top'}); 
+  $('#coverTheFeesQuestion').tooltip({container: 'body', trigger: 'hover focus', template: '<div class="tooltip tooltipWide" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner tooltipInnerWide"></div></div>',
+    title: 'Our credit card processor charges 2.9% + .30 per transaction. If you check the box to cover these fees we\'ll do the math and round to the nearest whole dollar.',
+    placement: 'auto top'});  
 }
 
 function handleErrors (data) {

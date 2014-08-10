@@ -45,7 +45,6 @@ Template.RequestAddress.helpers({
         class: "form-control email",
         placeholder: "Email address",
         required: true
-
       }
     },
     attributes_Input_Phone_Number: function () {
@@ -143,7 +142,7 @@ Template.RequestAddress.created = function () {
 };
 
 Template.RequestAddress.rendered = function () {
- $("#phone").mask("(999) 999-9999");   
+    $("#phone").mask("(999) 999-9999");
  };
 
 Template.RequestAddress.destroyed = function () {
