@@ -169,7 +169,7 @@ hr {
 	width: auto;
 }
 .select .btn-lg2 {
-  width: 117px;
+  width: 130px;
 }
 .donationForm.container {
 	opacity: .1;
@@ -188,19 +188,6 @@ hr {
 .smallerHeight {
 	height: 40px;
 }
-@media (min-width: 480px) {
-	.select .btn-lg2 {
-		width: 100px;
-	}
-}
-@media (min-width: 768px) {
-	.select .btn-lg2 {
-		width: 117px;
-	}
-}
-@media (min-width: 992px) {
-	.fixSpacingBetweenInputs {
-		padding-right: 15px;
-		display: block;
-	}
+.noBorder {
+	border: none;
 }
