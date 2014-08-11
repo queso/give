@@ -2,8 +2,8 @@
     <div class="row text-center">
         <div class="blackBackground"><a href="https://trashmountain.com"><img class="logoImage" src="https://trashmountain.com/system/wp-content/uploads/2012/07/bw_logo.png"></a></div>
     <h1 class="jumboSize"><center>THANK YOU</center></h1>
-    
-		<form onsubmit="parent.scrollTo(0, 0); return true" class="form-horizontal donation-form" role="form" id="donation_form" name="donation_form"    data-bv-feedbackicons-valid="glyphicon glyphicon-ok" data-bv-feedbackicons-invalid="glyphicon glyphicon-remove" 
+
+		<form onsubmit="parent.scrollTo(0, 0); return true" class="form-horizontal donation-form" role="form" id="donation_form" name="donation_form"    data-bv-feedbackicons-valid="glyphicon glyphicon-ok" data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
             data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
 
             <div class="col-md-6 col-md-offset-3">
@@ -18,13 +18,13 @@
                     </div>
                     {{> DonationTo}}
                     <div class="col-md-4 fixSpacingBetweenInputsTop">
-                        <select name="donateWith" id="donateWith" class="form-control">    
+                        <select name="donateWith" id="donateWith" class="form-control noBorder">
                             <option value="check">Check</option>
                             <option value="card">Card</option>
                         </select>
                     </div>
                     <div class="col-md-4 fixSpacingBetweenInputsTop" name="is_recurring">
-                        <select name="is_recurring" id="is_recurring" class="form-control" >    
+                        <select name="is_recurring" id="is_recurring" class="form-control noBorder" >
                             <option value="one_time" selected>One-Time</option>
                             <option value="monthly">Monthly</option>
                         </select>
@@ -58,7 +58,7 @@
     				    </div>
     				</div>
 
-                    <!-- Total Amount, which includes the fees if the user selected that checkbox 
+                    <!-- Total Amount, which includes the fees if the user selected that checkbox
                     {{> TotalDonation}}-->
 
     				<!--call the address portion of the form -->
@@ -67,7 +67,7 @@
                     <p class="moveLegend"><strong>PAYMENT DETAILS</strong></p>
 
                     {{#if paymentWithCard}}
-    					
+
     					{{> cardPaymentInformation}}
                     {{else}}
     					{{> checkPaymentInformation}}
@@ -78,10 +78,10 @@
     			        <div class="col-sm-offset-2 col-sm-8">
     			          <button name="submitThisForm" type="submit" class="btn btn-block btn-hg btn-primary submitThisForm" data-toggle="modal" data-target=".bs-example-modal-lg">Submit Donation</button>
                         </div>
-                    </div> 
+                    </div>
     			</fieldset>
             </div>
-    	</form>	
+    	</form>
     </div>
     <div class="modal" id="loading1" >
         <span class="fa fa-refresh fa-spin loading1 "></span>
@@ -155,9 +155,9 @@
                 <option value="2022">2022</option>
                 <option value="2023">2023</option>
                 <option value="2024">2024</option>
-            </select>  
+            </select>
         </div>
-        
+
         <div class="col-md-3 col-sm-5 col-xs-6">
             <input type="number" required class="form-control" name="cvv" id="cvv" placeholder="CVV" minlength="3">
         </div>

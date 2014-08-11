@@ -13,7 +13,8 @@
       "winston-papertrail": {},
       "iron-router": {},
       "iron-router-progress": {},
-      "bootstrap-3": {}
+      "bootstrap-3": {},
+      "kadira": {}
     },
     "packages": {
       "balanced-payments-production": {
@@ -75,6 +76,11 @@
         "git": "https://github.com/mangasocial/meteor-bootstrap-3.git",
         "tag": "v3.2.0-1",
         "commit": "17a63902fc6cf1096c5289d963c66cf28b474727"
+      },
+      "kadira": {
+        "git": "https://github.com/meteorhacks/kadira.git",
+        "tag": "v2.4.12",
+        "commit": "08c1f65bec94094f17f5df3ebd65cfcc298e5368"
       },
       "iron-layout": {
         "git": "https://github.com/EventedMind/iron-layout.git",

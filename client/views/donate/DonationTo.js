@@ -1,10 +1,10 @@
 Template.DonationTo.helpers({
-		
+
 	attributes_Input_DonationTo: function () {
 	    return {
 	        name: "donateTo",
 	        id: "donateTo",
-	        class: "form-control",
+	        class: "form-control noBorder",
 	        required: true
 	    }
 	  },

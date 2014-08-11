@@ -11,6 +11,7 @@
     "winston-papertrail": {},
     "iron-router": {},
     "iron-router-progress": {},
-    "bootstrap-3": {}
+    "bootstrap-3": {},
+    "kadira": {}
   }
 }

@@ -24,8 +24,8 @@
 #loading1 {
 	vertical-align: middle;
 	left: 38%;
-    height: 400px; 
-    top: calc(50% - 150px) !important; 
+    height: 400px;
+    top: calc(50% - 150px) !important;
     padding-left: 40px;
     padding-top: 20px;
 }
@@ -117,7 +117,7 @@ input {
 	display: inline-block;
 }
 body {
-    background: url(https://trashmountain.com/system/wp-content/customphp/images/bg.jpg) no-repeat center center fixed; 
+    background: url(https://trashmountain.com/system/wp-content/customphp/images/bg.jpg) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -160,7 +160,7 @@ hr {
 }
 .dropdown-arrow {
 	left: 19px;
-} 
+}
 .tooltipWide {
 	width: 400px;
 }
@@ -191,3 +191,11 @@ hr {
 .noBorder {
 	border: none;
 }
+/*==========  Mobile First Method  ==========*/
+
+	/* Custom, iPhone Retina */
+	@media only screen and (min-width : 320px) {
+		.addSomePaddingLeft {
+			padding-left: 10px;
+		}
+	}
