@@ -1,6 +1,12 @@
 /*****************************************************************************/
 /* DonationForm: Event Handlers and Helpers */
 /*****************************************************************************/
+function runWithError() {
+  console.log("ERROR");
+  console.log(this);
+}
+
+
 // this function is used to update the displayed total
 // since we can take payment with card fees added in this is needed to update the 
 // amount that is shown to the user and passed as total_amount through the form
@@ -55,6 +61,17 @@ Template.DonationForm.events({
     },*/
     //'click [name=submitThisForm]': function (e, tmpl) {
   'submit form': function (e, tmpl) {
+/*    var $this;
+    $this = $(this);
+    if ($this.parsley('validate')) {
+        console.log('yes');
+    } else {
+        console.log('no');
+    }
+
+    e.preventDefault();
+    return false;*/
+
     e.preventDefault();
     /*$donation_form.find(':submit').click();*/
     
@@ -272,12 +289,6 @@ Template.DonationForm.helpers({
           class: "col-md-4 control-label",
           for: "amount"
       }
-  },
-  attributes_Label_Name: function () {
-    return {
-      class: "col-sm-3 control-label",
-      for: "name"
-    }
   }
 });
 
@@ -288,6 +299,9 @@ Template.DonationForm.created = function () {
 };
 
 Template.DonationForm.rendered = function () {
+
+  // Setup parsley form validation
+  //$('#donation_form').parsley();
 
   //Set the checkboxes to unchecked 
   $(':checkbox').checkbox('uncheck');
@@ -304,29 +318,16 @@ Template.DonationForm.rendered = function () {
   $('select[name=donateWith]').selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse'}); 
   $('select[name=donateTo]').selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse'});
   $('select[name=is_recurring]').selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse'}); 
-  /*$('#amount').tooltip({container: 'body', trigger: 'hover focus click', title: 'Amount', placement: 'auto top'});
-  $('#donateWith').tooltip({container: 'body', trigger: 'hover focus', title: 'How do you want to pay for your gift?', placement: 'auto top'});
-  $('#is_recurring').tooltip({container: 'body', trigger: 'hover focus', title: 'Select weather this is a one-time gift or recurring monthly.', placement: 'auto top'});
-  $('[name=fname]').tooltip({container: 'body', trigger: 'hover focus', title: 'First Name', placement: 'auto top'});
-  $('[name=lname]').tooltip({container: 'body', trigger: 'hover focus', title: 'Last Name', placement: 'auto top'});
-  $('[name=email_address]').tooltip({container: 'body', trigger: 'hover focus', title: 'Email Address', placement: 'auto top'});
-  $('#phone').tooltip({container: 'body', trigger: 'hover focus', title: 'Phone Number', placement: 'auto top'});
-  $('[name=address_line1]').tooltip({container: 'body', trigger: 'hover focus', title: 'Address Line 1', placement: 'auto top'});
-  $('[name=address_line2]').tooltip({container: 'body', trigger: 'hover focus', title: 'Address Line 2', placement: 'auto top'});
-  $('[name=city]').tooltip({container: 'body', trigger: 'hover focus', title: 'City', placement: 'auto top'});
-  $('[name=region]').tooltip({container: 'body', trigger: 'hover focus', title: 'State/Region', placement: 'auto top'});
-  $('[name=postal_code]').tooltip({container: 'body', trigger: 'hover focus', title: 'Postal Code', placement: 'auto top'});
-  $('[name=country]').tooltip({container: 'body', trigger: 'hover focus', title: 'Country', placement: 'auto top'});  */
 
   //$('[name=checkGraphic]').hide();
 //remove below before production 
 //Parsley form validation setup, commented to test other things while I wait to 
 //hear back from the developer on a good example to work from.
-/*  $('#donation_form').parsley(parsleyOptions);
-  parsleyOptions = {
+$('#donation_form').parsley({trigger: 'change'});
+/*{
   // Sets success and error class to Bootstrap class names
   successClass: '',//'has-success',
-  errorClass: 'has-error has-feedback',
+  errorClass: 'has-error has-feedback parsley-error',
   trigger: 'change',
 
   // Bootsrap needs success/error class to be set on parent element
@@ -336,10 +337,10 @@ Template.DonationForm.rendered = function () {
      return $(elem).parents(".form-group");
    },
    // Set these to empty to make sure the default Parsley elements are not rendered
-   errorsWrapper: '',
-   errorElem: ''
+   //errorsWrapper: '',
+   //errorElem: ''
+  //},
   },
-
   listeners: {
    onFieldValidate: function ( elem ) {
      // remove the X from onFieldError if it's there
@@ -350,14 +351,14 @@ Template.DonationForm.rendered = function () {
      // add the Bootstrap X glyphicon to the right side of the form element
      elem.after( '<span class="glyphicon glyphicon-remove form-control-feedback"></span>' );
      // access the data-required-message="xx" attribute on the field
-     throwError( 000, "", elem.data('required-message' ) );
+     $.error( 000, "", elem.data('required-message' ) );
     },
 
     // onFieldSuccess: function(elem, constraints, parsleyField) {
     //   elem.next().remove( 'form-control-feedback' );
     // }
   }
-};*/
+});*/
 };
 
 Template.DonationForm.destroyed = function () {
@@ -372,7 +373,8 @@ Template.checkPaymentInformation.helpers({
         name: "account_number",
         id: "account_number",
         class: "form-control",
-        placeholder: "Bank Account Number"
+        placeholder: "Bank Account Number",
+        required: true
       }
     },
     attributes_Input_RoutingNumber: function () {
@@ -403,8 +405,6 @@ Template.checkPaymentInformation.helpers({
 Template.checkPaymentInformation.rendered = function () {
   $('select[name="account_type"]').selectpicker({style: 'btn-lg', menuStyle: 'dropdown-inverse'}); 
   $("#routing_number").mask("999999999");
-  $('#account_number').tooltip({container: 'body', trigger: 'hover focus', title: 'Bank Account Number', placement: 'auto top'});
-  $('#routing_number').tooltip({container: 'body', trigger: 'hover focus', title: 'Routing Number (always 9 digits long)', placement: 'auto top'});  
   }
 Template.checkPaymentInformation.created = function () {
   //$("#routing_number").mask("(999)999-9999");
