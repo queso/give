@@ -108,30 +108,6 @@ Template.RequestAddress.helpers({
         class: "form-control",
         required: true
       }
-    },
-    attributes_Label_FName: function () {
-      return {
-        class: "control-label",
-        for: "fname"
-      }
-    },
-    attributes_Label_LName: function () {
-      return {
-        class: "control-label",
-        for: "lname"
-      }
-    },
-    attributes_Label_Email_Address: function () {
-      return {
-        class: "col-sm-3 control-label",
-        for: "email_address"
-      }
-    },
-    attributes_Label_Phone_Number: function () {
-      return {
-        class: "col-sm-3 control-label",
-        for: "phone_number"
-      }
     }
 });
 
