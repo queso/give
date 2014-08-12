@@ -162,7 +162,7 @@ hr {
 	left: 19px;
 }
 .tooltipWide {
-	width: 400px;
+	width: 350px;
 }
 .tooltipInnerWide {
 	max-width: none;
@@ -259,3 +259,4 @@ textarea.parsley-error {
 }
 
 /* End Parsley CSS*/
+
