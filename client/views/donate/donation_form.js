@@ -222,18 +222,21 @@ if(form.paymentInformation[0].donateWith === "card") {
       return updateTotal();
     },
     'click [name=donateWith]': function(e,tmpl) {
-      var selectedValue = $("#donateWith").val();
-      Session.set("paymentMethod", selectedValue);
-      updateTotal(selectedValue);
+      console.log("Clicked");
+      var selectedValue = $("[name=donateWith]").val();
+      console.log(selectedValue);
+      Session.set("paymentMethod", selectedValue);/*
+      updateTotal(selectedValue);*/
     },
     'change [name=donateWith]': function(e,tmpl) {
       setTimeout(function () {
         uncheckThatBox(); //call the same function twice, 
         uncheckThatBox(); //ugly hack to fix the box not appearing when switching between check and card
       }, 20);
-      var selectedValue = $("#donateWith").val();
-      Session.set("paymentMethod", selectedValue);
-      updateTotal(selectedValue);
+      var selectedValue = $("[name=donateWith]").val();
+      console.log(selectedValue);
+      Session.set("paymentMethod", selectedValue);/*
+      updateTotal(selectedValue);*/
     },
     //keypress input detection for autofilling form with test data
     'keypress input': function(e) {
@@ -301,7 +304,7 @@ Template.DonationForm.created = function () {
 Template.DonationForm.rendered = function () {
 
   // Setup parsley form validation
-  //$('#donation_form').parsley();
+  $('#donation_form').parsley();
 
   //Set the checkboxes to unchecked 
   $(':checkbox').checkbox('uncheck');
@@ -323,7 +326,7 @@ Template.DonationForm.rendered = function () {
 //remove below before production 
 //Parsley form validation setup, commented to test other things while I wait to 
 //hear back from the developer on a good example to work from.
-$('#donation_form').parsley({trigger: 'change'});
+
 /*{
   // Sets success and error class to Bootstrap class names
   successClass: '',//'has-success',
@@ -373,8 +376,7 @@ Template.checkPaymentInformation.helpers({
         name: "account_number",
         id: "account_number",
         class: "form-control",
-        placeholder: "Bank Account Number",
-        required: true
+        placeholder: "Bank Account Number"
       }
     },
     attributes_Input_RoutingNumber: function () {
@@ -383,20 +385,7 @@ Template.checkPaymentInformation.helpers({
         name: "routing_number",
         id: "routing_number",
         class: "form-control",
-        required: true,
         placeholder: "Routing numbers are 9 digits long"
-      }
-    },
-    attributes_Label_AccountNumber: function () {
-      return {
-        class: "col-sm-3 control-label",
-        for: "account_number"
-      }
-    },
-    attributes_Label_RoutingNumber: function () {
-      return {
-        class: "col-sm-3 control-label",
-        for: "routing_number"
       }
     }
 });
