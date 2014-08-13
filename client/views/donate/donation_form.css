@@ -38,9 +38,6 @@ input {
 .email {
     text-transform: none;
 }
- #region {
-    text-transform: uppercase;
-}
 .modal {
 	overflow:hidden;
 }
