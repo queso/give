@@ -317,9 +317,7 @@ Template.DonationForm.rendered = function () {
   //Set the tooltips for the question mark icons.
   $('[name=donationSummary]').tooltip({trigger: 'hover focus', template: '<div class="tooltip tooltipWide" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner tooltipInnerWide"></div></div>',
     title: 'Below is the summary of your donation. To change your options please use the dropdown buttons.', placement: 'auto top'});
-  $('#accountTypeQuestion').tooltip({container: 'body', trigger: 'hover focus', template: '<div class="tooltip tooltipWide" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner tooltipInnerWide"></div></div>',
-    title: 'Give by ACH. There are usually 3 sets of numbers at the bottom of a check. The short check number, the 9 digit routing number and the account number.',
-    placement: 'auto top'});  
+
 
   
   //Change the select elements to button style dropdowns
@@ -361,6 +359,9 @@ Template.checkPaymentInformation.helpers({
 Template.checkPaymentInformation.rendered = function () {
   $('select[name="account_type"]').selectpicker({style: 'btn-lg', menuStyle: 'dropdown-inverse', 'min-height': '80px'}); 
   $("#routing_number").mask("999999999");
+  $('#accountTypeQuestion').tooltip({container: 'body', trigger: 'hover focus', template: '<div class="tooltip tooltipWide" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner tooltipInnerWide"></div></div>',
+    title: 'Give by ACH. There are usually 3 sets of numbers at the bottom of a check. The short check number, the 9 digit routing number and the account number.',
+    placement: 'auto top'});  
   }
 Template.checkPaymentInformation.created = function () {
   }
