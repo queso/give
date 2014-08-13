@@ -91,10 +91,6 @@ select {
 .form-horizontal .control-label {
     text-align: left;
 }
-.submitThisForm {
-	background-color: #7ecb7a;
-	border-color: #7ecb7a;
-}
 .fixSpacingBetweenInputs {
 	padding-right: 0;
 	padding-left: 15px;
