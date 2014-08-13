@@ -3,7 +3,7 @@
         <div class="blackBackground"><a href="https://trashmountain.com"><img class="logoImage" src="https://trashmountain.com/system/wp-content/uploads/2012/07/bw_logo.png"></a></div>
     <h1 class="jumboSize"><center>THANK YOU</center></h1>
 
-		<form class="form-horizontal donation-form" role="form" id="donation_form" name="donation_form" data-parsley-focus="first" data-parsley-excluded="input[type=button], input[type=submit], input[type=reset], input[type=hidden], [disabled], :hidden">
+		<form class="form-horizontal donation-form" role="form" id="donation_form" name="donation_form" data-parsley-focus="first" data-parsley-excluded="input[type=submit], input[type=reset], input[type=hidden], [disabled], :hidden">
 
             <div class="col-md-6 col-md-offset-3">
                 <h4><center>Your Donation Amount: </center></h4>
@@ -116,14 +116,17 @@
 <template name="cardPaymentInformation">
 	<!-- CC Info -->
 	<div class="form-group">
-        <div class="col-sm-12">
-          <input type="number" class="form-control" name="card_number" id="card_number" placeholder="Debit/Credit Card Number" data-parsley-length="[16,16]">
+        <div class="col-md-9 col-sm-9 col-xs-9">
+          <input type="number" class="form-control" name="card_number" id="card_number" placeholder="Debit/Credit Card Number" data-parsley-length="[16,16]" required>
         </div> <!-- 4111111111111111 -->
+        <div class="col-md-3 col-sm-3 col-xs-3">
+            <input type="number" class="form-control" name="cvv" id="cvv" placeholder="CVV" data-parsley-minlength="3" required>
+        </div>
     </div>
     <div class="form-group">
-        <label class="col-lg-3 col-md-4 col-sm-3 col-xs-6 control-label noRightPadding" for="expiry_month">Expiration Date <i class="fa fa-question-circle" id="expirationDataQuestion"></i></label>
-        <div class="col-lg-3 col-md-3 col-sm-2 col-xs-12" name="expiry_monthDiv">
-            <select class="form-control smallerHeight noBorder" name="expiry_month" id="expiry_month" required>
+        <label class="col-lg-3 col-md-4 col-sm-4 col-xs-3 control-label noRightPadding" for="expiry_month">Expiration Date <i class="fa fa-question-circle" id="expirationDataQuestion"></i></label>
+        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-4" id="expiry_monthDiv">
+            <select class="form-control smallerHeight" name="expiry_month" id="expiry_month" required="true">
                 <option value="">Month</option>
                 <option value="01">Jan (01)</option>
                 <option value="02">Feb (02)</option>
@@ -139,8 +142,8 @@
                 <option value="12">Dec (12)</option>
             </select>
         </div>
-        <div class="col-md-3 col-sm-2 col-xs-12 marginRight" name="expiry_yearDiv">
-            <select class="form-control smallerHeight noBorder" name="expiry_year" id="expiry_year" data-parsley-no-focus required>
+        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-4 marginRight" name="expiry_yearDiv">
+            <select class="form-control smallerHeight" name="expiry_year" id="expiry_year" required="true">
                 <option value="">Year</option>
                 <option value="2014">2014</option>
                 <option value="2015">2015</option>
@@ -156,8 +159,6 @@
             </select>
         </div>
 
-        <div class="col-md-3 col-sm-5 col-xs-6">
-            <input type="number" required class="form-control" name="cvv" id="cvv" placeholder="CVV" data-parsley-minlength="3" required>
-        </div>
+        
     </div>
 </template>

@@ -394,7 +394,7 @@ Template.checkPaymentInformation.helpers({
 
 //Check Payment Template mods
 Template.checkPaymentInformation.rendered = function () {
-  $('select[name="account_type"]').selectpicker({style: 'btn-lg', menuStyle: 'dropdown-inverse'}); 
+  $('select[name="account_type"]').selectpicker({style: 'btn-lg', menuStyle: 'dropdown-inverse', 'min-height': '80px'}); 
   $("#routing_number").mask("999999999");
   }
 Template.checkPaymentInformation.created = function () {
@@ -403,12 +403,22 @@ Template.checkPaymentInformation.created = function () {
 
 //Card Payment Template mods
 Template.cardPaymentInformation.rendered = function () {
-  $('select[name="expiry_month"]').selectpicker({style: 'btn-primary btn-lg2', menuStyle: 'dropdown-inverse'}); 
-  $('select[name="expiry_year"]').selectpicker({style: 'btn-primary btn-lg2', menuStyle: 'dropdown-inverse'}); 
+  //$('select[name="expiry_month"]').selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse', container: 'body'}); 
+  //$('select[name="expiry_year"]').selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse'});  
   $('#expirationDataQuestion').tooltip({container: 'body', trigger: 'hover focus', title: 'Card expiration date', placement: 'auto top'});
   $('#coverTheFeesQuestion').tooltip({container: 'body', trigger: 'hover focus', template: '<div class="tooltip tooltipWide" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner tooltipInnerWide"></div></div>',
     title: 'Our credit card processor charges 2.9% + .30 per transaction. If you check the box to cover these fees we\'ll do the math and round to the nearest whole dollar.',
     placement: 'auto top'});  
+/*
+  $('#expiry_month option').prop('selected', false).filter('[value=12]').prop('selected', true);
+  $('select[name=expiry_month]').change();
+  $('#expiry_year option').prop('selected', false).filter('[value=2015]').prop('selected', true);
+  $('select[name=expiry_year]').change();
+
+  $('#expiry_month option').prop('selected', false).filter('[value=]').prop('selected', true);
+  $('select[name=expiry_month]').change();
+  $('#expiry_year option').prop('selected', false).filter('[value=]').prop('selected', true);
+  $('select[name=expiry_year]').change();*/
 }
 
 function handleErrors (data) {
