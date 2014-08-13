@@ -13,6 +13,8 @@ function runWithError() {
 function updateTotal(){
   var data = Session.get('paymentMethod');
   var donationAmount = $('#amount').val();
+  donationAmount = donationAmount.replace(/[^\d\.\-\ ]/g, '');
+  console.log(donationAmount);
   donationAmount = donationAmount.replace(/^0+/, '');
   console.log(donationAmount);
   console.log(data);
@@ -85,8 +87,8 @@ Template.DonationForm.events({
     //var coverTheFeesStatus =  $(e.target).find('[name=coverTheFees]').is(':checked');
     var form = {
       "paymentInformation": [{
-      "amount":         $(e.target).find('[name=amount]').val(),
-      "total_amount":   $(e.target).find('[name=total_amount]').val(),
+      "amount":         $('#amount').val().replace(/[^\d\.\-\ ]/g, ''),
+      "total_amount":   $('[name=total_amount]').val(),
       "donateTo":       $("#donateTo").val(),
       "donateWith":     $("#donateWith").val(),
       "is_recurring":   $('#is_recurring').val(),
@@ -94,41 +96,43 @@ Template.DonationForm.events({
       "created_at":     new Date().getTime(),
       }],
         "customer": [{
-        "fname":          $(e.target).find('[name=fname]').val(),
-        "lname":          $(e.target).find('[name=lname]').val(),
-        "email_address":  $(e.target).find('[name=email_address]').val(),
-        "phone_number":   $(e.target).find('[name=phone_number]').val(),
-        "address_line1":  $(e.target).find('[name=address_line1]').val(),
-        "address_line2":  $(e.target).find('[name=address_line2]').val(),
-        "region":         $(e.target).find('[name=region]').val(),
-        "city":           $(e.target).find('[name=city]').val(),
-        "postal_code":    $(e.target).find('[name=postal_code]').val(),
-        "country":        $(e.target).find('[name=country]').val(),
+        "fname":          $('[name=fname]').val(),
+        "lname":          $('[name=lname]').val(),
+        "email_address":  $('[name=email_address]').val(),
+        "phone_number":   $('[name=phone_number]').val(),
+        "address_line1":  $('[name=address_line1]').val(),
+        "address_line2":  $('[name=address_line2]').val(),
+        "region":         $('[name=region]').val(),
+        "city":           $('[name=city]').val(),
+        "postal_code":    $('[name=postal_code]').val(),
+        "country":        $('[name=country]').val(),
         "created_at":     new Date().getTime()
       }]
     };
 //remove below before production    
+console.log(form.paymentInformation[0].amount);
+console.log(form.paymentInformation[0].total_amount);
 console.log(form.paymentInformation[0].donateTo);
 console.log(form.paymentInformation[0].is_recurring);
 if(form.paymentInformation[0].donateWith === "card") {
-  form.paymentInformation[0].card_number =     $(e.target).find('[name=card_number]').val();
-  form.paymentInformation[0].expiry_month =    $(e.target).find('[name=expiry_month]').val();
-  form.paymentInformation[0].expiry_year =     $(e.target).find('[name=expiry_year]').val();
-  form.paymentInformation[0].cvv =             $(e.target).find('[name=cvv]').val();
+  form.paymentInformation[0].card_number =     $('[name=card_number]').val();
+  form.paymentInformation[0].expiry_month =    $('[name=expiry_month]').val();
+  form.paymentInformation[0].expiry_year =     $('[name=expiry_year]').val();
+  form.paymentInformation[0].cvv =             $('[name=cvv]').val();
 
   //set the form type so the server side method knows what to do with the data.
   form.paymentInformation[0].type = "card";
 } else {
-  form.paymentInformation[0].account_number =  $(e.target).find('[name=account_number]').val();
-  form.paymentInformation[0].routing_number =  $(e.target).find('[name=routing_number]').val();
-  form.paymentInformation[0].account_type =    $(e.target).find('[name=account_type]').val();
+  form.paymentInformation[0].account_number =  $('[name=account_number]').val();
+  form.paymentInformation[0].routing_number =  $('[name=routing_number]').val();
+  form.paymentInformation[0].account_type =    $('[name=account_type]').val();
 
   //set the form type so the server side method knows what to do with the data.
   form.paymentInformation[0].type = "check";
   Session.equals("paymentMethod", "check");
 }
     form._id = Donate.insert(form.created_at);
-
+    console.log(form._id);
     Donate.update(form._id, {$set: {
       sessionId: Meteor.default_connection._lastSessionId,
       'customer': form.customer[0],
@@ -287,8 +291,7 @@ Template.DonationForm.helpers({
         name: "amount",
         id: "amount",
         class: "form-control",
-        min: "1",
-        type: "number",
+        type: "text",
         required: true
     }
   },
@@ -310,6 +313,12 @@ Template.DonationForm.rendered = function () {
 
   // Setup parsley form validation
   $('#donation_form').parsley();
+
+  //Set the mask for the input field lZero is used to deny leading zeros
+  //https://github.com/BobKnothe/autoNumeric
+  $('#amount').autoNumeric({
+    lZero: 'deny',
+    vMin: 1}); 
 
   //Set the checkboxes to unchecked 
   $(':checkbox').checkbox('uncheck');
