@@ -206,6 +206,10 @@ hr {
 			padding-right: 0;
 			display: inline-block;
 		}
+		.fixQuestionLocaiton {
+			margin-left: -60px;
+			margin-top: 8px;
+		}
 	}
 
 
@@ -278,3 +282,4 @@ input::-webkit-inner-spin-button {
 .fixTopMargin {
 	margin-top: 10px;
 } 
+
