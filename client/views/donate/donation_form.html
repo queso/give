@@ -15,18 +15,20 @@
                     <div class="col-md-12">
                         <label>Donation Summary:</label>&nbsp;<i class="fa fa-question-circle" name="donationSummary"></i>
                     </div>
-                    {{> DonationTo}}
-                    <div class="col-md-4 fixSpacingBetweenInputsTop">
-                        <select name="donateWith" id="donateWith" class="form-control noBorder">
-                            <option value="check">Check</option>
-                            <option value="card">Card</option>
-                        </select>
-                    </div>
-                    <div class="col-md-4 fixSpacingBetweenInputsTop" name="is_recurring">
-                        <select name="is_recurring" id="is_recurring" class="form-control noBorder" >
-                            <option value="one_time" selected>One-Time</option>
-                            <option value="monthly">Monthly</option>
-                        </select>
+                    <div class="col-md-12">
+                        {{> DonationTo}}
+                        <div class="fixSpacingBetweenInputsTop">
+                            <select name="donateWith" id="donateWith" class="form-control noBorder">
+                                <option value="check">Check</option>
+                                <option value="card">Card</option>
+                            </select>
+                        </div>
+                        <div class="fixSpacingBetweenInputsTop" name="is_recurring">
+                            <select name="is_recurring" id="is_recurring" class="form-control noBorder" >
+                                <option value="one_time" selected>One-Time</option>
+                                <option value="monthly">Monthly</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 {{#if paymentWithCard}}

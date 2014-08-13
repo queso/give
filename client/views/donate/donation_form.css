@@ -47,7 +47,7 @@ input {
 .check-graphic {
 	background: url(/give/images/check_image.png) no-repeat right center;
 	height: 110px;
-	background-size: 280px;
+	background-size: 285px;
 }
 .topRight {
 	position: absolute;
@@ -100,22 +100,7 @@ input {
 	padding-left: 15px;
 	display: inline-block;
 }
-.fixSpacingBetweenInputs1 {
-	padding-right: 15px;
-	display: inline-block;
-}
-.fixSpacingBetweenInputsTop {
-	width: 184px;
-	padding-right: 0;
-	padding-left: 5px;
-	display: inline-block;
-}
-.addSomePaddingLeft {
-	padding-left: 18px;
-	width: 197px;
-	padding-right: 0;
-	display: inline-block;
-}
+
 body {
     background: url(https://trashmountain.com/system/wp-content/customphp/images/bg.jpg) no-repeat center center fixed;
     -webkit-background-size: cover;
@@ -191,33 +176,38 @@ hr {
 .noBorder {
 	border: none;
 }
+.fixSpacingBetweenInputs1 {
+	padding-right: 15px;
+	display: inline-block;
+}
+.fixSpacingBetweenInputsTop {
+	width: 184px;
+	padding-right: 0;
+	margin-left: -7px;
+	display: inline-block;
+}
+
 /*==========  Mobile First Method  ==========*/
 
 	/* Custom, iPhone Retina */
-	@media only screen and (min-width : 320px) {
+	@media only screen and (min-width: 320px) {
 		.addSomePaddingLeft {
-			padding-left: 10px;
+			padding-left: 0;
+			width: 190px;
+			padding-right: 0;
+			display: inline-block;
+		}
+	}
+	/* Custom, iPhone Retina */
+	@media only screen and (min-width: 480px) {
+		.addSomePaddingLeft {
+			padding-left: 0;
+			width: 184px;
+			padding-right: 0;
+			display: inline-block;
 		}
 	}
 
-/* .parsley-error ,.parsley-error:focus, .parsley-required{
-	color: red;
-	border: 2px solid red;
-}
-.parsley-error-list {
-	color: red;
-	text-align: left;
-	list-style-type: none;
-}
-.parsley-error-list ul li {
-	color: red;
-	text-align: left;
-	list-style-type: none;
-}
-.parsley-length{
-	color: red;
-	list-style-type: none;
-} */
 
 /* Parsley CSS */
 input.parsley-success,
@@ -265,6 +255,7 @@ textarea.parsley-error {
 	border-bottom-right-radius: 6px;
 }
 
+/* For dropdown button menu, divides up the optgroup better */
 dt {
 	color: black;
 	background-color: seagreen;

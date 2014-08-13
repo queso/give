@@ -243,13 +243,7 @@ if(form.paymentInformation[0].donateWith === "card") {
       if(e.which === 17) { //17 is ctrl + q
         fillForm();
       }
-    },/*
-    'mouseover #accountTypeQuestion': function(e,tmpl) {
-      $('[name=checkGraphic]').toggle();
     },
-    'click #accountTypeQuestion': function(e,tmpl) {
-      $('[name=checkGraphic]').toggle();
-    }*/
     // disable mousewheel on a input number field when in focus
     // (to prevent Cromium browsers change the value when scrolling)
     'focus #amount': function (e,tmpl){
@@ -321,47 +315,7 @@ Template.DonationForm.rendered = function () {
   $('select[name=donateWith]').selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse'}); 
   $('select[name=donateTo]').selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse'});
   $('select[name=is_recurring]').selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse'}); 
-
-  //$('[name=checkGraphic]').hide();
-//remove below before production 
-//Parsley form validation setup, commented to test other things while I wait to 
-//hear back from the developer on a good example to work from.
-
-/*{
-  // Sets success and error class to Bootstrap class names
-  successClass: '',//'has-success',
-  errorClass: 'has-error has-feedback parsley-error',
-  trigger: 'change',
-
-  // Bootsrap needs success/error class to be set on parent element
-  errors: {
-   classHandler: function ( elem, isRadioOrCheckbox ) {
-     // specify where parsley error-success classes are set
-     return $(elem).parents(".form-group");
-   },
-   // Set these to empty to make sure the default Parsley elements are not rendered
-   //errorsWrapper: '',
-   //errorElem: ''
-  //},
-  },
-  listeners: {
-   onFieldValidate: function ( elem ) {
-     // remove the X from onFieldError if it's there
-     elem.next( ".glyphicon-remove" ).remove();
-   },
-
-   onFieldError: function ( elem, constraints, parsleyField ) {
-     // add the Bootstrap X glyphicon to the right side of the form element
-     elem.after( '<span class="glyphicon glyphicon-remove form-control-feedback"></span>' );
-     // access the data-required-message="xx" attribute on the field
-     $.error( 000, "", elem.data('required-message' ) );
-    },
-
-    // onFieldSuccess: function(elem, constraints, parsleyField) {
-    //   elem.next().remove( 'form-control-feedback' );
-    // }
-  }
-});*/
+ 
 };
 
 Template.DonationForm.destroyed = function () {
@@ -398,27 +352,15 @@ Template.checkPaymentInformation.rendered = function () {
   $("#routing_number").mask("999999999");
   }
 Template.checkPaymentInformation.created = function () {
-  //$("#routing_number").mask("(999)999-9999");
   }
 
 //Card Payment Template mods
 Template.cardPaymentInformation.rendered = function () {
-  //$('select[name="expiry_month"]').selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse', container: 'body'}); 
-  //$('select[name="expiry_year"]').selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse'});  
+
   $('#expirationDataQuestion').tooltip({container: 'body', trigger: 'hover focus', title: 'Card expiration date', placement: 'auto top'});
   $('#coverTheFeesQuestion').tooltip({container: 'body', trigger: 'hover focus', template: '<div class="tooltip tooltipWide" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner tooltipInnerWide"></div></div>',
     title: 'Our credit card processor charges 2.9% + .30 per transaction. If you check the box to cover these fees we\'ll do the math and round to the nearest whole dollar.',
     placement: 'auto top'});  
-/*
-  $('#expiry_month option').prop('selected', false).filter('[value=12]').prop('selected', true);
-  $('select[name=expiry_month]').change();
-  $('#expiry_year option').prop('selected', false).filter('[value=2015]').prop('selected', true);
-  $('select[name=expiry_year]').change();
-
-  $('#expiry_month option').prop('selected', false).filter('[value=]').prop('selected', true);
-  $('select[name=expiry_month]').change();
-  $('#expiry_year option').prop('selected', false).filter('[value=]').prop('selected', true);
-  $('select[name=expiry_year]').change();*/
 }
 
 function handleErrors (data) {
