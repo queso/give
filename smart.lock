@@ -14,7 +14,8 @@
       "iron-router": {},
       "iron-router-progress": {},
       "bootstrap-3": {},
-      "kadira": {}
+      "kadira": {},
+      "parsley.js": {}
     },
     "packages": {
       "balanced-payments-production": {
@@ -81,6 +82,11 @@
         "git": "https://github.com/meteorhacks/kadira.git",
         "tag": "v2.4.12",
         "commit": "08c1f65bec94094f17f5df3ebd65cfcc298e5368"
+      },
+      "parsley.js": {
+        "git": "https://github.com/amrali/parsleyjs-meteor.git",
+        "tag": "v2.0.3",
+        "commit": "2608796c7851759a9ee62461fe07a0c32d6e8f31"
       },
       "iron-layout": {
         "git": "https://github.com/EventedMind/iron-layout.git",
