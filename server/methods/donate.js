@@ -52,7 +52,7 @@ Meteor.methods({
       console.log(JSON.parse(e.message).errors[0].extras);  
       console.log(JSON.parse(e.message).errors[0].category_code);            
       var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
-      throw new Meteor.Error(error.category_code, error.status_code, error.description, error.extras);
+      throw new Meteor.Error("Line 55: " + error.category_code, error.status_code, error.description, error.extras);
     }
 
       //Runs if the form used was the credit card form, which sets type as part of the array which is passed to this server
@@ -75,7 +75,7 @@ Meteor.methods({
             console.log(JSON.parse(e.message).errors[0].extras);  
             console.log(JSON.parse(e.message).errors[0].category_code);            
             var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
-            throw new Meteor.Error(error.category_code, error.status_code, error.description, error.extras);
+            throw new Meteor.Error("Line 78: " + error.category_code, error.status_code, error.description, error.extras);
           }
 
           //Debit function
@@ -92,7 +92,7 @@ Meteor.methods({
             console.log(JSON.parse(e.message).errors[0].extras);  
             console.log(JSON.parse(e.message).errors[0].category_code);            
             var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
-            throw new Meteor.Error(error.category_code, error.status_code, error.description, error.extras);
+            throw new Meteor.Error("Line 95: " + error.category_code, error.status_code, error.description, error.extras);
           }
         
         //add customer create response from Balanced to the database
@@ -136,7 +136,7 @@ Meteor.methods({
           catch (e) {
             console.log(JSON.parse(e.message).errors[0].extras);            
             var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
-            throw new Meteor.Error(error.status_code, error.description, error.extras);
+            throw new Meteor.Error("Line 139: " + error.status_code, error.description, error.extras);
           }
 
           //Debit function
@@ -153,7 +153,7 @@ Meteor.methods({
           catch (e) {
             console.log(JSON.parse(e.message).errors[0].extras);            
             var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
-            throw new Meteor.Error(error.status_code, error.description, error.extras);
+            throw new Meteor.Error(error.category_code, error.status_code, error.description, error.extras + " Line 156 ");
           }
 
           //add customer create response from Balanced to the database

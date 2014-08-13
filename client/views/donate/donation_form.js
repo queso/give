@@ -167,13 +167,11 @@ if(form.paymentInformation[0].donateWith === "card") {
             console.log("Error message: " + error.message);
             console.log(error);
             var errorCode = error.error;
-            var errorDescription = error.description;
-            //remove below before production 
-            console.log("description: " + error.description);
+            console.log("category_code: " + error.category_code);
             
             //handleErrors is used to check the returned error and the display a user friendly message about what happened that caused
             //the error. 
-            handleErrors(errorCode);
+            handleErrors(error.error);
 
             $('#loading1').modal('hide');
             }
@@ -190,12 +188,10 @@ if(form.paymentInformation[0].donateWith === "card") {
             } else {
               //remove below before production 
               $('#loading1').modal('hide');
-              var errorCode = error.error;
-              alert(errorCode);
 
               //handleErrors is used to check the returned error and the display a user friendly message about what happened that caused
               //the error. 
-              handleErrors(errorCode);
+              handleErrors(error.error);
               console.log(error.error.data.error_class);
               console.log(error.error.data.error_message);
               console.log(error.reason);
@@ -384,8 +380,8 @@ Template.cardPaymentInformation.rendered = function () {
     placement: 'auto top'});  
 }
 
-function handleErrors (data) {
-  switch (data) {
+function handleErrors (error) {
+  switch (error.error) {
               case "500":
                 alert("Something went wrong, sorry about that. Please try again.");
                 break;
@@ -439,7 +435,7 @@ function handleErrors (data) {
               case "incomplete-account-info":
                   break;
               case "invalid-amount":
-                alert((error.details));
+                alert(error.details);
                   break;
               case "invalid-bank-account-number":
                   break;
@@ -460,6 +456,9 @@ function handleErrors (data) {
                   //back to the user, tell them the max and how they can
                   //debit more in sepearte transactions
                   break;
+              case "funding-source-not-debitable": 
+                  console.log(error.details);
+                  break;
               default:
               //remove below before production 
                   console.log("Didn't match any error case");
@@ -468,7 +467,6 @@ function handleErrors (data) {
             }
             //END Switch case block
 }
-
 function fillForm() {
   if(Session.get("paymentMethod") === "check"){
     console.log("Check area of fillForm");
@@ -493,6 +491,5 @@ function fillForm() {
     $('[name="city"]').val("Topeka");
     $('#region').val("KS");
     $('[name="postal_code"]').val("66618");
-    $('#amount').val("1.23");
-
+    $('#amount').val("1.03");
 }
