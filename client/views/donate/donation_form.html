@@ -123,8 +123,8 @@
     <div class="form-group">
         <label class="col-lg-3 col-md-4 col-sm-3 col-xs-6 control-label noRightPadding" for="expiry_month">Expiration Date <i class="fa fa-question-circle" id="expirationDataQuestion"></i></label>
         <div class="col-lg-3 col-md-3 col-sm-2 col-xs-12" name="expiry_monthDiv">
-            <select class="form-control smallerHeight noBorder" name="expiry_month" id="expiry_month">
-                <option selected value="">Choose...</option>
+            <select class="form-control smallerHeight noBorder" name="expiry_month" id="expiry_month" required>
+                <option value="">Month</option>
                 <option value="01">Jan (01)</option>
                 <option value="02">Feb (02)</option>
                 <option value="03">Mar (03)</option>
@@ -140,8 +140,8 @@
             </select>
         </div>
         <div class="col-md-3 col-sm-2 col-xs-12 marginRight" name="expiry_yearDiv">
-            <select class="form-control smallerHeight noBorder" name="expiry_year" id="expiry_year" data-parsley-no-focus>
-                <option selected value="">Year</option>
+            <select class="form-control smallerHeight noBorder" name="expiry_year" id="expiry_year" data-parsley-no-focus required>
+                <option value="">Year</option>
                 <option value="2014">2014</option>
                 <option value="2015">2015</option>
                 <option value="2016">2016</option>
@@ -157,7 +157,7 @@
         </div>
 
         <div class="col-md-3 col-sm-5 col-xs-6">
-            <input type="number" required class="form-control" name="cvv" id="cvv" placeholder="CVV" minlength="3">
+            <input type="number" required class="form-control" name="cvv" id="cvv" placeholder="CVV" data-parsley-minlength="3" required>
         </div>
     </div>
 </template>

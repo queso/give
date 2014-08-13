@@ -376,7 +376,8 @@ Template.checkPaymentInformation.helpers({
         name: "account_number",
         id: "account_number",
         class: "form-control",
-        placeholder: "Bank Account Number"
+        placeholder: "Bank Account Number",
+        required: true
       }
     },
     attributes_Input_RoutingNumber: function () {
@@ -385,7 +386,8 @@ Template.checkPaymentInformation.helpers({
         name: "routing_number",
         id: "routing_number",
         class: "form-control",
-        placeholder: "Routing numbers are 9 digits long"
+        placeholder: "Routing numbers are 9 digits long",
+        required: true
       }
     }
 });
