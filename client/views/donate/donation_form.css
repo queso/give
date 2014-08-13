@@ -35,6 +35,9 @@
 input {
     text-transform: capitalize;
 }
+select {
+	text-transform:capitalize
+}
 .email {
     text-transform: none;
 }
