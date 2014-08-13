@@ -7,7 +7,10 @@ Template.Thanks.helpers({
  				return true;
  			}
  		return false;
- 	}
+ 	},
+  	paymentWithCard: function () {
+    	return Session.equals("paymentMethod", "card");
+  	}
 });
 
 Template.Thanks.rendered = function () {

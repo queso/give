@@ -6,15 +6,22 @@
 	    <div class="row vertical-center-row">
 	        <div class="col-lg-12">
 	        <h3 class="text-center">Thank you for your gift!</h3>
-                <p class="text-center alert alert-success">
-	            	You will receive an email acknowledgement immediately and an email receipt after your gift has been successfully processed.
-	            </p>
-	            <p class="text-center alert alert-warning">
-	                This page will automatically show your gift receipt once the payment has been approved. 
-					<br>For ACH gifts it may take up to a few days to receive an email receipt. 
-					<br>
-	               	<i class="fa fa-check-square"></i>
-	            </p>
+            	{{#if paymentWithCard}}
+	            		<p class="text-center alert alert-success">
+	            			<i class="fa fa-check-square"></i>
+	            		</p>
+	            	{{else}}
+	               	<p class="text-center alert alert-success">
+		            	You will receive an email acknowledgement immediately and an email receipt after your gift has been successfully processed.
+   		            </p>
+		            <p class="text-center alert alert-warning">
+		                This page will automatically show your gift receipt once the payment has been approved. 
+	            		<br>For ACH gifts it may take up to a few days to receive an email receipt. 
+	            		<br>
+	            		<i class="fa fa-check-square"></i>
+	            	</p>
+	            	{{/if}}
+	            
 	        </div>
 	    </div>
 	</div>
