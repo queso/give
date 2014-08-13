@@ -255,12 +255,23 @@ if(form.paymentInformation[0].donateWith === "card") {
       $('#amount').on('mousewheel.disableScroll', function (e) {
       });
     },
-    'keyup #cvv': function (e, tmpl) {
-      var testThis = $("#cvv").val();
-      console.log("Value: " + testThis);
-      if(testThis.match(/[0-9]*/)){
-        return testThis;
-      }
+    'focus #cvv': function (e,tmpl){
+      $('#cvv').on('mousewheel.disableScroll', function (e) {
+        e.preventDefault();
+      });
+    },
+    'blur #cvv': function (e,tmpl){
+      $('#cvv').on('mousewheel.disableScroll', function (e) {
+      });
+    },
+    'focus #card_number': function (e,tmpl){
+      $('#card_number').on('mousewheel.disableScroll', function (e) {
+        e.preventDefault();
+      });
+    },
+    'blur #card_number': function (e,tmpl){
+      $('#card_number').on('mousewheel.disableScroll', function (e) {
+      });
     }
 });
 

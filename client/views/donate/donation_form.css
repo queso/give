@@ -260,3 +260,21 @@ dt {
 	color: black;
 	background-color: seagreen;
 }
+
+/* Remove spinner arrows for number fields */
+input[type='number'] {
+    -moz-appearance:textfield;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+/* End Remove spinner arrows for number fields */
+
+/* Fix marin between the legend hr and text */
+.fixTopMargin {
+	margin-top: 10px;
+} 
