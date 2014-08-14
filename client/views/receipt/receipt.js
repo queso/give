@@ -82,7 +82,17 @@ Template.Receipt.created = function () {
 };
 
 Template.Receipt.rendered = function () {
+$.fn.scrollView = function () {
+    return this.each(function () {
+        $('html, body').animate({
+            scrollTop: $(this).offset().top
+        }, 1000);
+    });
+}
+$('#receipt').scrollView();
+
 };
 
 Template.Receipt.destroyed = function () {
 };
+

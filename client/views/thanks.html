@@ -2,10 +2,7 @@
 	<div class="row text-center hidden-print">
         <div class="blackBackground"><a href="https://trashmountain.com"><img class="logoImage" src="https://trashmountain.com/system/wp-content/uploads/2012/07/bw_logo.png"></a></div>
     </div>
-	{{#if displayReceipt}}
- 		{{> Receipt}}
- 	{{else}}
-	<div class="container">
+	<div class="container hidden-print">
 	    <div class="row vertical-center-row">
 	        <div class="col-lg-12">
             	{{#if paymentWithCard}}
@@ -20,10 +17,12 @@
 	            		<br>
 	            		<i class="fa fa-check-square"></i>
 	            	</p>
-	            	{{/if}}
-	            
+	            {{/if}}
 	        </div>
 	    </div>
 	</div>
-	{{/if}}
+	{{#if displayReceipt}}
+ 		{{> Receipt}}
+ 	{{else}}
+ 	{{/if}}
 </template>
