@@ -164,11 +164,10 @@ if(form.paymentInformation[0].donateWith === "card") {
             Donate.update(form._id, {$set: {failed: error}});
             var donateDocument = Donate.findOne({'_id': form._id});
             var insertDoc = AllErrors.insert({name: "Failed", failedResponse: donateDocument});
-            console.log("Error message: " + error.message);
-            console.log(error);
-            var errorCode = error.error;
-            console.log("category_code: " + error.category_code);
-            
+            var storedError = error.error;
+            console.log(JSON.stringify(storedError, null, 4));
+            console.log("category_code: " + error.error.category_code);
+                        
             //handleErrors is used to check the returned error and the display a user friendly message about what happened that caused
             //the error. 
             handleErrors(error.error);
@@ -381,7 +380,7 @@ Template.cardPaymentInformation.rendered = function () {
 }
 
 function handleErrors (error) {
-  switch (error.error) {
+  switch (error.category_code) {
               case "500":
                 alert("Something went wrong, sorry about that. Please try again.");
                 break;

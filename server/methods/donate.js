@@ -89,10 +89,11 @@ Meteor.methods({
             console.dir(JSON.stringify(associate));
           }
           catch (e) {
-            console.log(JSON.parse(e.message).errors[0].extras);  
-            console.log(JSON.parse(e.message).errors[0].category_code);            
+            console.log("Extras: " + JSON.parse(e.message).errors[0].extras);  
+            console.log("Category Code: " + JSON.parse(e.message).errors[0].category_code);            
+            console.log("All Errors: " + JSON.parse(e.message).errors[0]);
             var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
-            throw new Meteor.Error("Line 95: " + error.category_code, error.status_code, error.description, error.extras);
+            throw new Meteor.Error(error);
           }
         
         //add customer create response from Balanced to the database
