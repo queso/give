@@ -156,9 +156,9 @@ var Future = Npm.require("fibers/future");
 			resultSet = HTTP.post("https://billy.balancedpayments.com/v1/subscriptions", {
 				//customer URI below is missing the last character, 'f' so that I can test errors
 				params: {"customer_guid": Donate.findOne(data).recurring.customer.guid,
-						"plan_guid": "PLE82F3xLmCozuNBCSR34ZSd",//this is the daily plan GUID
+						"plan_guid": Meteor.settings.billyMonthlyGUID,//this is the monthly plan GUID
 						//fix below
-						"funding_instrument_uri": "/v1/marketplaces/TEST-MP2YcEwiMjhT1jmtW33ptC6N" + funding_instrument_uri,
+						"funding_instrument_uri": Meteor.settings.balancedPaymentsURI + funding_instrument_uri,
 						"appears_on_statement_as": "Trash Mountain",
 						"amount": billyAmount},						
 				auth: Meteor.settings.billyKey + ':'
