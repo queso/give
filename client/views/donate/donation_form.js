@@ -63,20 +63,8 @@ Template.DonationForm.events({
     },*/
     //'click [name=submitThisForm]': function (e, tmpl) {
   'submit form': function (e, tmpl) {
-/*    var $this;
-    $this = $(this);
-    if ($this.parsley('validate')) {
-        console.log('yes');
-    } else {
-        console.log('no');
-    }
-
     e.preventDefault();
-    return false;*/
 
-    e.preventDefault();
-    /*$donation_form.find(':submit').click();*/
-    
     //Start the bootstrap modal with the awesome font refresh logo
     //Also, backdrop: 'static' sets the modal to not be exited when 
     //a user clicks in the background.
@@ -107,7 +95,8 @@ Template.DonationForm.events({
         "postal_code":    $('[name=postal_code]').val(),
         "country":        $('[name=country]').val(),
         "created_at":     new Date().getTime()
-      }]
+      }],
+      "URL": document.URL
     };
 //remove below before production    
 console.log(form.paymentInformation[0].amount);
@@ -135,6 +124,7 @@ if(form.paymentInformation[0].donateWith === "card") {
     console.log(form._id);
     Donate.update(form._id, {$set: {
       sessionId: Meteor.default_connection._lastSessionId,
+      URL: form.URL,
       'customer': form.customer[0],
       'debit.donateTo': form.paymentInformation[0].donateTo,
       'debit.donateWith': form.paymentInformation[0].donateWith,
@@ -192,7 +182,7 @@ if(form.paymentInformation[0].donateWith === "card") {
             Donate.update(form._id, {$set: {failed: error}});
             var donateDocument = Donate.findOne({'_id': form._id});
             var insertDoc = AllErrors.insert({name: "Failed", failedResponse: donateDocument});
-            
+
             var storedError = error.error;
             console.log(JSON.stringify(storedError, null, 4));
             console.log("category_code: " + error.error.category_code);

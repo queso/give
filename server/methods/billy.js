@@ -11,6 +11,15 @@ var Future = Npm.require("fibers/future");
     return fut.wait();
   }
 
+  function throwTheError(e){
+		console.log("Extras: " + JSON.parse(e.message).errors[0].extras);  
+		console.log("Category Code: " + JSON.parse(e.message).errors[0].category_code);            
+		console.log("All Errors: " + JSON.parse(e.message).errors[0]);
+		var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
+		logger.error(JSON.stringify(error, null, 4));
+		throw new Meteor.Error(error);
+	}
+
 	function createPaymentMethod(data) {
 		try {
 
@@ -109,11 +118,8 @@ var Future = Npm.require("fibers/future");
 		}	      
 	}  
 	catch (e) {
-	            console.log(JSON.parse(e.message).errors[0].extras);  
-	            console.log(JSON.parse(e.message).errors[0].category_code);            
-	            var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
-	            throw new Meteor.Error(error.category_code, error.status_code, error.description, error.extras);
-	        }
+        throwTheError(e);
+    }
 }
 
   function createBillyCustomer(customerID) {
@@ -158,7 +164,7 @@ var Future = Npm.require("fibers/future");
 				params: {"customer_guid": Donate.findOne(data).recurring.customer.guid,
 						"plan_guid": Meteor.settings.billyMonthlyGUID,//this is the monthly plan GUID
 						//fix below
-						"funding_instrument_uri": Meteor.settings.balancedPaymentsURI + funding_instrument_uri,
+						"funding_instrument_uri": "/" + Meteor.settings.balancedPaymentsURI + funding_instrument_uri,
 						"appears_on_statement_as": "Trash Mountain",
 						"amount": billyAmount},						
 				auth: Meteor.settings.billyKey + ':'
@@ -338,11 +344,8 @@ Meteor.methods({
 			return;
 		}
 		} catch (e) {
-		//console.log(JSON.parse(e.message).errors[0].extras);  
-		//console.log(JSON.parse(e.message).errors[0].category_code);            
-		//var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
-		console.log(e);
-		//throw new Meteor.Error(error.category_code, error.status_code, error.description, error.extras);
+			console.log("line: " + err.lineNumber);
+			throwTheError(e);
 		}
 
 	}

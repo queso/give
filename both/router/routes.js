@@ -31,9 +31,9 @@ Router.map(function () {
     waitOn: function() { return Meteor.subscribe('donate', this.params._id)},
     data: function () {
       return Donate.findOne(this.params._id);
-    }
+    }    
   });
-    this.route('thanks1', {path: '/give/thanks1/:_id', 
+  this.route('thanks1', {path: '/give/thanks1/:_id', 
     waitOn: function() { return Meteor.subscribe('donate', this.params._id)},
     data: function () {
       return Donate.findOne(this.params._id);

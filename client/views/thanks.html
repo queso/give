@@ -8,11 +8,8 @@
 	<div class="container">
 	    <div class="row vertical-center-row">
 	        <div class="col-lg-12">
-	        <h3 class="text-center">Thank you for your gift!</h3>
             	{{#if paymentWithCard}}
-	            		<p class="text-center alert alert-success">
-	            			<i class="fa fa-check-square"></i>
-	            		</p>
+            			{{{statusOfTrans}}}
 	            	{{else}}
 	               	<p class="text-center alert alert-success">
 		            	You will receive an email acknowledgement immediately and an email receipt after your gift has been successfully processed.
