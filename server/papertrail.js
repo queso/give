@@ -3,10 +3,24 @@ logger = Meteor.require('winston');
 
 var Papertrail = Meteor.require('winston-papertrail').Papertrail;
 logger.add(Papertrail, {
-  host: "logs.papertrailapp.com",
-  port: 17342, //this will be change from the papertrail account to account
-  logFormat: function(level, message) {
-      return '[' + level + '] ' + message;
+	levels: {
+			debug: 0,
+			info: 1,
+			warn: 2,
+			error: 3,
+			auth: 4
+		},
+		colors: {
+			debug: 'blue',
+			info: 'green',
+			warn: 'red',
+			error: 'red',
+			auth: 'red'
+		},
+		host: "logs.papertrailapp.com",
+		port: 17342, //this will be change from the papertrail account to account
+		logFormat: function(level, message) {
+		return '[' + level + '] ' + message;
   },
   inlineMeta: true
 });
