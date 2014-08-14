@@ -15,6 +15,15 @@ var Future = Npm.require("fibers/future");
     return fut.wait();
   }
 
+function throwTheError(e){
+  console.log("Extras: " + JSON.parse(e.message).errors[0].extras);  
+  console.log("Category Code: " + JSON.parse(e.message).errors[0].category_code);            
+  console.log("All Errors: " + JSON.parse(e.message).errors[0]);
+  var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
+  logger.error(JSON.stringify(error, null, 4));
+  throw new Meteor.Error(error);
+}
+
 Meteor.methods({
  processPayment: function (data) {
       console.log('/r');
@@ -49,10 +58,7 @@ Meteor.methods({
       Donate.update(data._id, {$set: {status: 'Customer created.'}});
       console.log("Customer created." + data._id);
     } catch (e) {
-      console.log(JSON.parse(e.message).errors[0].extras);  
-      console.log(JSON.parse(e.message).errors[0].category_code);            
-      var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
-      throw new Meteor.Error("Line 55: " + error.category_code, error.status_code, error.description, error.extras);
+      throwTheError(e);
     }
 
       //Runs if the form used was the credit card form, which sets type as part of the array which is passed to this server
@@ -72,10 +78,7 @@ Meteor.methods({
             console.log(customerData.href);
           } 
           catch (e) {
-            console.log(JSON.parse(e.message).errors[0].extras);  
-            console.log(JSON.parse(e.message).errors[0].category_code);            
-            var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
-            throw new Meteor.Error("Line 78: " + error.category_code, error.status_code, error.description, error.extras);
+            throwTheError(e);
           }
 
           //Debit function
@@ -89,11 +92,8 @@ Meteor.methods({
             console.dir(JSON.stringify(associate));
           }
           catch (e) {
-            console.log("Extras: " + JSON.parse(e.message).errors[0].extras);  
-            console.log("Category Code: " + JSON.parse(e.message).errors[0].category_code);            
-            console.log("All Errors: " + JSON.parse(e.message).errors[0]);
-            var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
-            throw new Meteor.Error(error);
+            throwTheError(e);
+
           }
         
         //add customer create response from Balanced to the database
@@ -135,9 +135,7 @@ Meteor.methods({
             console.log(customerData.href);
           }
           catch (e) {
-            console.log(JSON.parse(e.message).errors[0].extras);            
-            var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
-            throw new Meteor.Error("Line 139: " + error.status_code, error.description, error.extras);
+            throwTheError(e);
           }
 
           //Debit function
@@ -152,9 +150,7 @@ Meteor.methods({
             console.dir(JSON.stringify(associate));
           }
           catch (e) {
-            console.log(JSON.parse(e.message).errors[0].extras);            
-            var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
-            throw new Meteor.Error(error.category_code, error.status_code, error.description, error.extras + " Line 156 ");
+            throwTheError(e);
           }
 
           //add customer create response from Balanced to the database

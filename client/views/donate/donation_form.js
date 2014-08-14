@@ -161,18 +161,18 @@ if(form.paymentInformation[0].donateWith === "card") {
           //Session.set('status', Donate.findOne({id: form._id}).status);
            Router.go('/give/thanks/' + form._id);
          } else {
+            $('#loading1').modal('hide');
+            
+            //handleErrors is used to check the returned error and the display a user friendly message about what happened that caused
+            //the error. 
             Donate.update(form._id, {$set: {failed: error}});
             var donateDocument = Donate.findOne({'_id': form._id});
             var insertDoc = AllErrors.insert({name: "Failed", failedResponse: donateDocument});
+            
             var storedError = error.error;
             console.log(JSON.stringify(storedError, null, 4));
             console.log("category_code: " + error.error.category_code);
-                        
-            //handleErrors is used to check the returned error and the display a user friendly message about what happened that caused
-            //the error. 
             handleErrors(error.error);
-
-            $('#loading1').modal('hide');
             }
             //END error handling block for meteor call to processPayment
         });
@@ -185,15 +185,21 @@ if(form.paymentInformation[0].donateWith === "card") {
                 Router.go('/give/thanks/' + form._id);
                 console.log(" Result: " + result.statusCode);
             } else {
-              //remove below before production 
               $('#loading1').modal('hide');
-
-              //handleErrors is used to check the returned error and the display a user friendly message about what happened that caused
-              //the error. 
-              handleErrors(error.error);
-              console.log(error.error.data.error_class);
-              console.log(error.error.data.error_message);
-              console.log(error.reason);
+            
+            //handleErrors is used to check the returned error and the display a user friendly message about what happened that caused
+            //the error. 
+            Donate.update(form._id, {$set: {failed: error}});
+            var donateDocument = Donate.findOne({'_id': form._id});
+            var insertDoc = AllErrors.insert({name: "Failed", failedResponse: donateDocument});
+            
+            var storedError = error.error;
+            console.log(JSON.stringify(storedError, null, 4));
+            console.log("category_code: " + error.error.category_code);
+                        
+            //handleErrors is used to check the returned error and the display a user friendly message about what happened that caused
+            //the error. 
+            handleErrors(error.error);
             }
           });
         }
