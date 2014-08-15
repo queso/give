@@ -6,7 +6,7 @@ Template.Thanks.helpers({
     } else if (statusOfTrans === "succeeded") {
       Session.set("status", 'succeeded');
       return true;
-    } else if (statusOfTrans === "failed") {
+    } else {
       Session.set("status", 'failed');
       return false;  
     }
@@ -18,6 +18,7 @@ Template.Thanks.helpers({
       return true; 
     }
     else{ 
+      console.log()
       return false;
     }
   },

@@ -11,7 +11,7 @@ Meteor.startup(function() {
 Meteor.methods({
   sendEmailOutAPI: function (data) {
     try {
-      console.log("started email send out with API");
+      logger.info("Started email send out with API");
       var failed = Donate.findOne({_id: data}).debit.status;
       var error = Donate.findOne({_id: data}).debit.status; //need to change this to have a descriptive error message
       var email_address = Donate.findOne({_id: data}).customer.email_address;
@@ -21,8 +21,8 @@ Meteor.methods({
       var total_amount = Donate.findOne({_id: data}).debit.total_amount;
       var fees = +total_amount - +amount;
       var coveredTheFees = Donate.findOne({_id: data}).debit.coveredTheFees;
-      console.log("XXXXXXXXXXXXXXXXXXXXXXXXFFFFFFFFFFFFFFFFF Cover the fees? " + '\n' + coveredTheFees);
-      console.log("debit.status: " + failed);
+      logger.info("Cover the fees? " + '\n' + coveredTheFees);
+      logger.info("debit.status: " + failed);
       var slug;
       if (failed === "failed") {
         console.log(failed);

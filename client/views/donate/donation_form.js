@@ -182,7 +182,6 @@ Template.DonationForm.events({
       });
       //END Meteor call block
     } else {
-      form.pass = true;
       Meteor.call('createCustomer', form, function(error, result) {
         if (result) {
           $('#loading1').modal('hide');

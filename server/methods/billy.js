@@ -4,23 +4,24 @@ var Future = Npm.require("fibers/future");
     promise.then(function (result) {
        fut.return(result);
      }, function (error) { 
-       console.log(error);      
+       logger.info(error);      
        fut.throw(error);
     });
     return fut.wait();
   }
 function throwTheError(e) {
-	console.log("Extras: " + JSON.parse(e.message).errors[0].extras);
-	console.log("Category Code: " + JSON.parse(e.message).errors[0].category_code);
-	console.log("All Errors: " + JSON.parse(e.message).errors[0]);
-	var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
 	logger.error(JSON.stringify(error, null, 4));
 	throw new Meteor.Error(error);
 }
 
+function logIt() {
+	logger.info("Started " + arguments.callee.caller.name);
+}
+
 function createPaymentMethod(data) {
 	try {
-		// Setup variables for data from form inputs
+		logIt();
+		logger.info("Setup variables for data from form inputs inside the billy createPaymentMethod method.");
 		var customerInfo = data.customer[0];
 		var debitType = Donate.findOne(data._id).debit.type;
 		logger.info("ID: " + data._id);
@@ -74,16 +75,17 @@ function createPaymentMethod(data) {
 				$set: {
 					'debit.type': associate.type,
 					'debit.customer': associate.links.customer,
+					'debit.status': 'pending'
 				}
 			});
 			return 'card';
 		}
 		//for running ACH
 		else {
-			console.log("In check portion of create payment Method");
+			logger.info("In check portion of create payment Method");
 			//Create bank account
 			var check;
-			console.log("Payment info: " + JSON.stringify(data.paymentInformation[0]));
+			logger.info("Payment info: " + JSON.stringify(data.paymentInformation[0]));
 			check = extractFromPromise(balanced.marketplace.bank_accounts.create({
 				"routing_number": data.paymentInformation[0].routing_number,
 				"account_type": data.paymentInformation[0].account_type,
@@ -91,23 +93,24 @@ function createPaymentMethod(data) {
 				"account_number": data.paymentInformation[0].account_number,
 				"appears_on_statement_as": "Trash Mountain"
 			}));
-			console.log("Check: ");
+			logger.info("Check: ");
 			console.dir(JSON.stringify(check));
-			console.log("ID: " + data._id);
+			logger.info("ID: " + data._id);
 			//Debit function
 			var associate;
 			var processor_uri = Donate.findOne(data._id).recurring.customer.processor_uri;
 			var checkHref = check.href;
-			console.log(checkHref + ' ' + processor_uri);
-			console.log("Associate uri: " + processor_uri);
+			logger.info(checkHref + ' ' + processor_uri);
+			logger.info("Associate uri: " + processor_uri);
 			associate = extractFromPromise(balanced.get(checkHref).associate_to_customer(processor_uri));
-			console.log("Associate and debit: ");
+			logger.info("Associate and debit: ");
 			console.dir(JSON.stringify(associate));
 			Donate.update(data._id, {
 				$set: {
 					'bank_account.id': check.id,
 					'bank_account.href': check.href,
-					'debit.customer': associate.links.customer
+					'debit.customer': associate.links.customer,
+					'debit.status': 'pending'
 				}
 			});
 			return 'bank_accounts';
@@ -118,9 +121,11 @@ function createPaymentMethod(data) {
 }
 
 function createBillyCustomer(customerID) {
-	console.log('Customer ID from balanced: ' + customerID);
-	var resultSet = '';
 	try {
+		logIt();
+		logger.info('Customer ID from balanced: ' + customerID);
+		var resultSet = '';
+
 		resultSet = HTTP.post("https://billy.balancedpayments.com/v1/customers", {
 			//customer URI below is missing the last character, 'f' so that I can test errors
 			params: {
@@ -128,10 +133,10 @@ function createBillyCustomer(customerID) {
 			},
 			auth: Meteor.settings.billyKey + ':'
 		});
-		console.log(resultSet.data.company_guid);
+		logger.info(resultSet.data.company_guid);
 		return resultSet;
 	} catch (e) {
-		console.log(e);
+		logger.info(e);
 		e._id = AllErrors.insert(e);
 		var error = (e.response);
 		throw new Meteor.Error(error, e._id);
@@ -139,20 +144,21 @@ function createBillyCustomer(customerID) {
 }
 
 function subscribeToBillyPlan(data) {
-	var paymentType = Donate.findOne(data).debit.type;
-	if (paymentType === "credit" || paymentType === "debit") {
-		console.log("Payment Type: " + paymentType);
-		var funding_instrument_uri = Donate.findOne(data).card.href;
-		console.log("Funding URI: " + funding_instrument_uri);
-	} else {
-		console.log("Payment Type: " + paymentType);
-		var funding_instrument_uri = Donate.findOne(data).bank_account.href;
-		console.log("Funding URI: " + funding_instrument_uri);
-	}
-	console.log("Amount: " + (Donate.findOne(data).debit.total_amount * 100));
-	var billyAmount = (Donate.findOne(data).debit.total_amount * 100);
-	var resultSet = '';
 	try {
+		logIt();
+		var paymentType = Donate.findOne(data).debit.type;
+		if (paymentType === "credit" || paymentType === "debit") {
+			logger.info("Payment Type: " + paymentType);
+			var funding_instrument_uri = Donate.findOne(data).card.href;
+			logger.info("Funding URI: " + funding_instrument_uri);
+		} else {
+			logger.info("Payment Type: " + paymentType);
+			var funding_instrument_uri = Donate.findOne(data).bank_account.href;
+			logger.info("Funding URI: " + funding_instrument_uri);
+		}
+		logger.info("Amount: " + (Donate.findOne(data).debit.total_amount * 100));
+		var billyAmount = (Donate.findOne(data).debit.total_amount * 100);
+		var resultSet = '';
 		resultSet = HTTP.post("https://billy.balancedpayments.com/v1/subscriptions", {
 			//customer URI below is missing the last character, 'f' so that I can test errors
 			params: {
@@ -166,18 +172,18 @@ function subscribeToBillyPlan(data) {
 			auth: Meteor.settings.billyKey + ':'
 		});
 		if (resultSet.statusCode == 200) {
-			console.log(JSON.stringify(resultSet.data));
-			console.log("content: " + resultSet.content);
-			console.log("Subscription GUID: " + resultSet.data.guid);
-			console.log("Effective amount: " + resultSet.data.effective_amount);
-			console.log("statusCode: " + resultSet.statusCode);
+			logger.info(JSON.stringify(resultSet.data));
+			logger.info("content: " + resultSet.content);
+			logger.info("Subscription GUID: " + resultSet.data.guid);
+			logger.info("Effective amount: " + resultSet.data.effective_amount);
+			logger.info("statusCode: " + resultSet.statusCode);
 			console.dir("data next invoice at: " + resultSet.data.next_invoice_at);
 			return resultSet;
 		} else {
 			Meteor.error(resultSet.statusCode);
 		}
 	} catch (e) {
-		console.log(e);
+		logger.info(e);
 		e._id = AllErrors.insert(e.response);
 		var error = (e.response);
 		throw new Meteor.Error(error, e._id);
@@ -186,87 +192,46 @@ function subscribeToBillyPlan(data) {
 
 function getInvoice(subGUID) {
 	try {
-		console.log("inside getInvoice");
+		logIt();
+		logger.info("inside getInvoice");
 		resultSet = HTTP.post("https://billy.balancedpayments.com/v1/subscriptions/" + subGUID + "/invoices", {
 			auth: Meteor.settings.billyKey + ':'
 		});
-		console.log(resultSet.data);
-		console.log(resultSet.data.items[0].guid);
+		logger.info(resultSet.data);
+		logger.info(resultSet.data.items[0].guid);
 		return resultSet;
 	} catch (e) {
-		console.log(e);
+		logger.info(e);
 		e._id = AllErrors.insert(e.response);
 		var error = (e.response);
 		throw new Meteor.Error(error, e._id);
 	}
 }
 Meteor.methods({
-	testBillyFunction: function(dataFromOther) {
-		var resultSet = '';
-		try {
-			resultSet = HTTP.post("https://billy.balancedpayments.com/v1/customers", {
-				//customer URI below is missing the last character, 'f' so that I can test errors
-				params: {
-					"processor_uri": "/customers/CU7Jy94eIBTFFE1h2JiPuaZn"
-				},
-				auth: Meteor.settings.billyKey + ':'
-			});
-			console.log(resultSet.data.company_guid);
-			return resultSet;
-		} catch (e) {
-			e._id = AllErrors.insert(e.response);
-			var error = (e.response);
-			throw new Meteor.Error(error, e._id);
-		}
-	},
-	testBillyFunctionForReal: function(data) {
-			var resultSet = '';
-			resultSet = createBillyCustomer(data);
-			console.log(resultSet);
-		}
-		/*,
-	createBillyCustomer: function (data) {
-    var resultSet = '';
-
-		resultSet = HTTP.post(
-		"https://billy.balancedpayments.com/v1/customers",{
-		params: {"processor_uri": '/customers/' + data.customer.id},
-		auth: Meteor.settings.billyKey + ':'
-	});
-
-    
-
-		//this is the layout, need to convert this to HTTP.post instead of curl
-		//POST request looks like this. basic authentication with the the billyKey
-		//body processor_uri=data.customer.href
-		//content-type:application/x-www-form-urlencoded
-		/*curl https://billy.balancedpayments.com/v1/customers \
-    -X POST \
-    -u Meteor.settings.billyKey: \
-    -d "processor_uri=" + data.customer.href
-	}*/
-		,
-	createBillyPlan: function(data) {
-		//this is the layout, need to convert this to HTTP.post instead of curl
-		/*curl https://billy.balancedpayments.com/v1/plans \
+	/*createBillyPlan: function(data) {
+		logIt();	
+		this is the layout, need to convert this to HTTP.post instead of curl
+		curl https://billy.balancedpayments.com/v1/plans \
     -X POST \
     -u Meteor.settings.billyKey: \
     -d "plan_type=debit" \
     -d "amount=500" \
-    -d "frequency=monthly"*/
+    -d "frequency=monthly"
 	},
 	cancelBillySubscription: function(data) {
+		logIt();
 		//this is the layout, need to convert this to HTTP.post instead of curl
 		/*curl https://billy.balancedpayments.com/v1/subscriptions/SU4ST39srWVLGbiTg174QyfF/cancel \
     -X POST \
-    -u Meteor.settings.billyKey:*/
-	},
+    -u Meteor.settings.billyKey:
+	},*/
 	createCustomer: function(data) {
-		//Donate.update(data._id, {$set: {status: 'Creating Customer'}});
+		logger.info("Started billy method calls.")
+		logIt();
 		balanced.configure(Meteor.settings.balancedPaymentsAPI);
 		var customerInfo = data.customer[0];
 		//remove before production
-		console.log("Customer Info: " + customerInfo);
+		logger.info("Customer Info: " + customerInfo);
 		var customerData = '';
 		try {
 			customerData = extractFromPromise(balanced.marketplace.customers.create({
@@ -283,10 +248,10 @@ Meteor.methods({
 				'phone': customerInfo.phone_number
 			}));
 			//remove before production
-			console.log("Customer: ");
+			logger.info("Customer: ");
 			console.dir(JSON.stringify(customerData));
 			//Donate.update(data._id, {$set: {status: 'Customer created.'}});
-			console.log("Customer created: " + customerData.id);
+			logger.info("Customer created: " + customerData.id);
 			var customerResponse = Donate.update(data._id, {
 				$set: {
 					'customer.type': customerData._type,
@@ -295,7 +260,7 @@ Meteor.methods({
 			});
 			var billyCustomer = '';
 			billyCustomer = createBillyCustomer(customerData.id);
-			console.log("Customer GUID: " + JSON.stringify(billyCustomer.data));
+			logger.info("Customer GUID: " + JSON.stringify(billyCustomer.data));
 			Donate.update(data._id, {
 				$set: {
 					'recurring.customer': billyCustomer.data
@@ -308,12 +273,12 @@ Meteor.methods({
 			});
 			var billyPayment = '';
 			billyPayment = createPaymentMethod(data);
-			console.log("Customer Payment Type: " + billyPayment);
+			logger.info("Customer Payment Type: " + billyPayment);
 			//Donate.update(data._id, {$set: {'recurring.payment': billyPayment.data}});
 			var billySubscribeCustomer = '';
-			console.log("subscribe this mongo id: " + data._id);
+			logger.info("subscribe this mongo id: " + data._id);
 			billySubscribeCustomer = subscribeToBillyPlan(data._id);
-			console.log("Subscription: " + billySubscribeCustomer.statusCode);
+			logger.info("Subscription: " + billySubscribeCustomer.statusCode);
 			Donate.update(data._id, {
 				$set: {
 					'recurring.subscription': billySubscribeCustomer.data
@@ -321,7 +286,7 @@ Meteor.methods({
 			});
 			var billyGetInvoiceID = '';
 			billyGetInvoiceID = getInvoice(billySubscribeCustomer.data.guid);
-			console.log("Invoice id: " + billyGetInvoiceID.data.items[0].guid);
+			logger.info("Invoice id: " + billyGetInvoiceID.data.items[0].guid);
 			Donate.update(data._id, {
 				$set: {
 					'recurring.invoice': billyGetInvoiceID.data
@@ -329,9 +294,9 @@ Meteor.methods({
 			});
 			return billySubscribeCustomer;
 		} catch (e) {
-			console.log(e);
-			console.log(e.error_message);
-			console.log(e.reason);
+			logger.info(e);
+			logger.info(e.error_message);
+			logger.info(e.reason);
 			throw new Meteor.Error(e);
 		}
 	}
