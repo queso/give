@@ -35,6 +35,9 @@ Template.Thanks.helpers({
   },
   failedTrans: function () {
     var referrer = Donate.findOne(this).URL;
+    if(!referrer) {
+      return '';
+    }
     return "<h3 class='text-center badText'>Something went wrong.</h3>\
           <p class='text-center alert alert-error'>\
             We weren't able to process your gift. Please <a href='" + referrer + "'>go back</a> and try again.\
@@ -45,6 +48,4 @@ Template.Thanks.helpers({
 });
 
 Template.Thanks.rendered = function () {
-  var setStatus = Donate.findOne(this).debit.status;
-  Session.set('status', setStatus);
 };

@@ -5,6 +5,7 @@ Router.onRun(function(){
     if(Session.equals('AnalyticsJS_loaded', true))
         analytics.page(this.path);
 });
+
 Router.configure({
   layoutTemplate: 'MasterLayout',
   loadingTemplate: 'Loading',
@@ -27,11 +28,13 @@ Router.map(function () {
       }
     }
   });
-  this.route('thanks', {path: '/give/thanks/:_id', 
+  this.route('thanks', 
+    {path: '/give/thanks/:_id', 
     waitOn: function() { return Meteor.subscribe('donate', this.params._id)},
     data: function () {
       return Donate.findOne(this.params._id);
-    }    
+    },
+       
   });
   this.route('thanks1', {path: '/give/thanks1/:_id', 
     waitOn: function() { return Meteor.subscribe('donate', this.params._id)},
