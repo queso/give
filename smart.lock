@@ -7,9 +7,7 @@
       "mandrill": {},
       "moment": {},
       "font-awesome": {},
-      "jquery-ui": {},
       "analyticsjs": {},
-      "easy-check": {},
       "winston-papertrail": {},
       "iron-router": {},
       "iron-router-progress": {},
@@ -35,28 +33,18 @@
       },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",
-        "tag": "v2.6.0",
-        "commit": "26156df681750fd6e6ed77043eef32b6653ebbdf"
+        "tag": "v2.8.1",
+        "commit": "722ea63783d594341023836b7d418ab2567dab8c"
       },
       "font-awesome": {
         "git": "https://github.com/nate-strauser/meteor-font-awesome.git",
         "tag": "v4.1.0",
         "commit": "ce6b1e92715d1938babc5d69c655c17e387f5926"
       },
-      "jquery-ui": {
-        "git": "https://github.com/TimHeckel/meteor-jquery-ui.git",
-        "tag": "v1.9.2",
-        "commit": "c437d45edcf1367df8d5ffa8bad2867758030bd2"
-      },
       "analyticsjs": {
         "git": "https://github.com/nate-strauser/meteor-analyticsjs.git",
         "tag": "v0.1.8",
         "commit": "98b3f4a538b4aac2d34aaf5783ff2b1d416fef26"
-      },
-      "easy-check": {
-        "git": "https://github.com/matteodem/meteor-easy-check.git",
-        "tag": "v0.3.1",
-        "commit": "2adbc7833f6474dfc5c8e1b00e4a2b4d5c98a2c5"
       },
       "winston-papertrail": {
         "git": "https://github.com/stuartfenton/meteor-winston-papertrail.git",
@@ -80,8 +68,8 @@
       },
       "kadira": {
         "git": "https://github.com/meteorhacks/kadira.git",
-        "tag": "v2.4.12",
-        "commit": "08c1f65bec94094f17f5df3ebd65cfcc298e5368"
+        "tag": "v2.4.13",
+        "commit": "1f3c1a427084af5a2eca2e299eb65bc01387df8a"
       },
       "parsley.js": {
         "git": "https://github.com/amrali/parsleyjs-meteor.git",
