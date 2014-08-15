@@ -13,7 +13,7 @@ Template.Thanks.helpers({
   	},
   	statusOfTrans: function () {
   		var referrer = Donate.findOne(this).URL;
-  		if (Donate.findOne(this).debit.status === "succeeded") {
+  		if (Donate.findOne(this).debit.status === "succeeded" || "pending") {
         	return "<h3 class='text-center'>Thank you for your gift!</h3>\
         			<p class='text-center alert alert-success'>\
         				<i class='fa fa-check-square'></i>\
