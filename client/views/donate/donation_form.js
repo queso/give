@@ -1,10 +1,7 @@
 /*****************************************************************************/
 /* DonationForm: Event Handlers and Helpers */
 /*****************************************************************************/
-function runWithError() {
-    console.log("ERROR");
-    console.log(this);
-  }
+
   // this function is used to update the displayed total
   // since we can take payment with card fees added in this is needed to update the 
   // amount that is shown to the user and passed as total_amount through the form
