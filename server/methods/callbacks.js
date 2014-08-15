@@ -3,12 +3,12 @@
 //will never come back to this side
 
 // necessary to parse POST data
-var connect = Meteor.require('connect');
+var bodyParser = Meteor.require('body-parser');
 // necessary for Collection use and other wrapped methods
 var Fiber = Npm.require('fibers');
 WebApp.connectHandlers
-    .use(connect.urlencoded())  // these two replace
-    .use(connect.json())        // the old bodyParser
+    .use(bodyParser.urlencoded({extended: false}))  // these two replace
+    .use(bodyParser.json())        // the old bodyParser
     .use('/callbacks/', function(req, res, next) {
  
         // necessary for Collection use and other wrapped methods
