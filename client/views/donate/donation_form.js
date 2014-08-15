@@ -327,7 +327,7 @@ Template.DonationForm.rendered = function() {
     vMin: 1
   });
   //Set the checkboxes to unchecked 
-  $(':checkbox').checkbox('uncheck');
+  //$(':checkbox').checkbox('uncheck');
   //Set the tooltips for the question mark icons.
   $('[name=donationSummary]').tooltip({
     trigger: 'hover focus',
