@@ -96,7 +96,7 @@
 	<!-- Bank Info -->
 	<div class="form-group">
 		<div class="col-sm-12">
-			<input {{attributes_Input_AccountNumber}} />
+			<input {{attributes_Input_AccountNumber}} data-parsley-type="number" />
 		</div>
 	</div>
 	<div class="form-group">
@@ -123,10 +123,10 @@
 	<!-- CC Info -->
 	<div class="form-group">
         <div class="col-md-9 col-sm-9 col-xs-8">
-          <input type="number" class="form-control" name="card_number" id="card_number" placeholder="Debit/Credit Card Number" data-parsley-length="[16,16]" required>
+          <input type="text" class="form-control" name="card_number" id="card_number" placeholder="Debit/Credit Card Number" data-parsley-type="number" data-parsley-length="[16,16]" required>
         </div> <!-- 4111111111111111 -->
         <div class="col-md-3 col-sm-3 col-xs-4">
-            <input type="number" class="form-control" name="cvv" id="cvv" placeholder="CVV" data-parsley-minlength="3" required>
+            <input type="text" class="form-control" name="cvv" id="cvv" placeholder="CVV" data-parsley-type="number" data-parsley-minlength="3" required>
         </div>
     </div>
     <div class="form-group">

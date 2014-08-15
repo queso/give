@@ -353,7 +353,7 @@ Template.DonationForm.destroyed = function() {};
 Template.checkPaymentInformation.helpers({
   attributes_Input_AccountNumber: function() {
     return {
-      type: "number",
+      type: "text",
       name: "account_number",
       id: "account_number",
       class: "form-control",
