@@ -63,7 +63,8 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
               });
               logger.ingo("Callback.js : Sending out the appropriate email using Mandrill");
               Meteor.call('sendEmailOutAPI', updateThis, function(error, result) {
-                logger.info('Callback.js : 'error, result);
+                logger.info('Callback.js : ');
+                logger.info(error, result);
               });
             } else if (postData.status === "created") {
               Donate.update(updateThis, {
@@ -86,13 +87,13 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
               });
               logger.warning('Callback.js : Sending out the failed email using Mandrill.');
               Meteor.call('sendEmailOutAPI', updateThis, function(error, result) {
-                logger.info('Callback.js : 'error, result);
+                logger.info('Callback.js : '+ error, result);
               });
             }
             return postData.id;
           } catch (e) {
             var searchForThis = postData.debitID;
-            logger.error('Callback.js catch error area: 'Donate.find({
+            logger.error('Callback.js catch error area: '+ Donate.find({
               $text: {
                 $search: searchForThis
               }
