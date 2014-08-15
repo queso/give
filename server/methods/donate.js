@@ -113,7 +113,8 @@ Meteor.methods({
             'debit.type':   associate.type,
             'debit.customer': associate.links.customer,
             'debit.total_amount': associate.amount / 100,
-            'debit.id': associate.id
+            'debit.id': associate.id,
+            'debit.status': associate.status
           }});      
         } 
 
@@ -166,11 +167,13 @@ Meteor.methods({
           }});
 
           //add debit response from Balanced to the database
+
           var debitReponse = Donate.update(data._id, {$set: {
             'debit.type':   associate.type,
             'debit.customer': associate.links.customer,
             'debit.total_amount': associate.amount / 100,
-            'debit.id': associate.id
+            'debit.id': associate.id,
+            'debit.status': associate.status
           }}); 
         }
       return associate;
