@@ -3,7 +3,7 @@
         <div class="blackBackground"><a href="https://trashmountain.com"><img class="logoImage" src="https://trashmountain.com/system/wp-content/uploads/2012/07/bw_logo.png"></a></div>
     <h1 class="jumboSize"><center>THANK YOU</center></h1>
 
-		<form class="form-horizontal donation-form" role="form" id="donation_form" name="donation_form" data-parsley-focus="first" data-parsley-excluded="input[type=submit], input[type=reset], input[type=hidden], input[type=checkbox] [disabled], :hidden">
+		<form class="form-horizontal donation-form" role="form" id="donation_form" name="donation_form" data-parsley-focus="first" data-parsley-excluded="input[type=submit], input[type=reset], input[type=hidden], [disabled], :hidden">
 
             <div class="col-md-6 col-md-offset-3">
                 <h4><center>Your Donation Amount: </center></h4>
@@ -35,9 +35,9 @@
 
                 <!-- Checbox for Covering related fees-->
                 <div class="row">
-                    <div class="col-lg-8 col-md-8 col-md-offset-2 col-sm-10 col-xs-11 col-xs-offset-1 checkbox">
-                        <label class="checkbox">
-                          <input type="checkbox" value="" id="coverTheFees" data-toggle="checkbox" {{coverTheFeesChecked}} > I'll cover the credit card processing fees.
+                    <div class="col-lg-8 col-md-8 col-md-offset-2 col-sm-10 col-xs-11">
+                        <label for="coverTheFees">
+                          <input type="checkbox" name="coverTheFees" id="coverTheFees" data-toggle="checkbox" {{coverTheFeesChecked}} > I'll cover the credit card processing fees.
                         </label>
                     </div>
                     <div class="col-md-1 fixQuestionLocaiton">

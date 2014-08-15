@@ -226,9 +226,6 @@ Template.DonationForm.events({
       console.log("Checked equal to false");
     }
   },
-  'click [name=coverTheFees]': function(e, tmpl) {
-    var coverTheFeesBox = tmpl.find('input').checked;
-  },
   'keyup [name=amount]': function() {
     return updateTotal();
   },
@@ -327,7 +324,7 @@ Template.DonationForm.rendered = function() {
     vMin: 1
   });
   //Set the checkboxes to unchecked 
-  //$(':checkbox').checkbox('uncheck');
+  $(':checkbox').checkbox('uncheck');
   //Set the tooltips for the question mark icons.
   $('[name=donationSummary]').tooltip({
     trigger: 'hover focus',
