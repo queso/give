@@ -317,9 +317,9 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button {
 }
 
 /*==========  Checkbox and radio icons  ==========*/
-/* .checkbox .icons,.radio .icons {
+.checkbox .icons,.radio .icons {
 	color:#1abc9c
-} */
+}
 
 /*Padding the bottom of the page, not much white space down there.*/
 .padBottom {
