@@ -2,289 +2,326 @@
 /* CardForm: Style */
 /*****************************************************************************/
 .control-width {
-	width: 180px;
-	display: inline-block;
+	width:180px;
+	display:inline-block
 }
+
 .control-width-smaller {
-	width: 145px;
-	display: inline-block;
+	width:145px;
+	display:inline-block
 }
+
 .control-width-xs {
-	width: 90px;
-	display: inline-block;
+	width:90px;
+	display:inline-block
 }
+
 .control-width-xxs {
-	width: 68px;
-	display: inline-block;
+	width:68px;
+	display:inline-block
 }
+
 .loading1 {
-    font-size: 18em;
-	color: #389ADC;
+	font-size:18em;
+	color:#389ADC
 }
+
 #loading1 {
-	vertical-align: middle;
-	left: 38%;
-    height: 400px;
-    top: calc(50% - 150px) !important;
-    padding-left: 40px;
-    padding-top: 20px;
+	vertical-align:middle;
+	left:38%;
+	height:400px;
+	top:calc(50% - 150px)!important;
+	padding-left:40px;
+	padding-top:20px
 }
+
 .modal-backdrop.in {
-   opacity: 0.01;
+	opacity:.01
 }
+
 input {
-    text-transform: capitalize;
+	text-transform:capitalize
 }
+
 select {
 	text-transform:capitalize
 }
+
 .email {
-    text-transform: none;
+	text-transform:none
 }
+
 .modal {
-	overflow:hidden;
+	overflow:hidden
 }
+
 .check-graphic {
-	background: url(/give/images/check_image.png) no-repeat right center;
-	height: 110px;
-	background-size: 285px;
+	background:url(/give/images/check_image.png) no-repeat right center;
+	height:110px;
+	background-size:285px
 }
+
 .topRight {
-	position: absolute;
-	top: 15px;
-	right: 15px;
+	position:absolute;
+	top:15px;
+	right:15px
 }
+
 .moveLegend {
-	border-bottom: none;
-	border-top: 3px solid #b5e5e5;
+	border-bottom:none;
+	border-top:3px solid #b5e5e5
 }
+
 .borderBottom {
-	border-bottom: 1px solid #e5e5e5;
+	border-bottom:1px solid #e5e5e5
 }
+
 .marginRight {
-	margin-right: 5px;
+	margin-right:5px
 }
+
 .marginLeft {
-	margin-left: 10px;
+	margin-left:10px
 }
+
 .jumboSize {
-	font-size: 4em;
-	font-weight: bold;
-	letter-spacing: 2px;
-	margin-bottom: -20px;
+	font-size:4em;
+	font-weight:700;
+	letter-spacing:2px;
+	margin-bottom:-20px
 }
+
 .bgColored {
-	background-color: grey;
+	background-color:grey
 }
+
 .bgColored1 {
-	background-color: #151515;
+	background-color:#151515
 }
+
 #total_amount_display {
-	text-align: center;
+	text-align:center
 }
+
 .fa-question-circle {
-    color: #2a94d6;
+	color:#2a94d6
 }
+
 .noRightPadding {
-	padding-right: 0;
+	padding-right:0
 }
+
 .form-horizontal .control-label {
-    text-align: left;
+	text-align:left
 }
+
 .fixSpacingBetweenInputs {
-	padding-right: 0;
-	padding-left: 15px;
-	display: inline-block;
+	padding-right:0;
+	padding-left:15px;
+	display:inline-block
 }
 
 body {
-    background: url(https://trashmountain.com/system/wp-content/customphp/images/bg.jpg) no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+	background:url(https://trashmountain.com/system/wp-content/customphp/images/bg.jpg) no-repeat center center fixed;
+	-webkit-background-size:cover;
+	-moz-background-size:cover;
+	-o-background-size:cover;
+	background-size:cover
 }
+
 hr {
-	margin-bottom: 0;
-	margin-top: 0;
+	margin-bottom:0;
+	margin-top:0
 }
+
 .btn-group > .btn:first-child {
-    margin-left: -14px;
+	margin-left:-14px
 }
+
 .noBottomMargin {
-	margin-bottom: 0;
+	margin-bottom:0
 }
+
 .dropdown-menu {
-	width: 200px
+	width:200px
 }
+
 .select .btn-primary {
-  width: 179px;
-  margin-top: -10px;
-  margin-left: -14px;
+	width:179px;
+	margin-top:-10px;
+	margin-left:-14px
 }
+
 .select .btn-lg {
-  width: 320px;
-  margin-top: -10px;
-  margin-left: -14px;
+	width:320px;
+	margin-top:-10px;
+	margin-left:-14px
 }
+
 .select .btn-lg1 {
-  width: 554px;
+	width:554px
 }
+
 .btn-lg {
-  color: #ffffff;
-  background-color: #1abc9c;
+	color:#fff;
+	background-color:#1abc9c
 }
+
 .btn-lg:hover {
-	color: #ffffff;
-	background-color: #48c9b0;
-	border-color: #48c9b0;
+	color:#fff;
+	background-color:#48c9b0;
+	border-color:#48c9b0
 }
+
 .dropdown-arrow {
-	left: 19px;
+	left:19px
 }
+
 .tooltipWide {
-	width: 350px;
+	width:350px
 }
+
 .tooltipInnerWide {
-	max-width: none;
-	width: auto;
+	max-width:none;
+	width:auto
 }
+
 .select .btn-lg2 {
-  width: 130px;
+	width:130px
 }
+
 .donationForm.container {
-	opacity: .1;
+	opacity:.1
 }
+
 .blackBackground {
-	background-color: #262626;
-	padding-top: 10px;
+	background-color:#262626;
+	padding-top:10px
 }
+
 .logoImage {
-	vertical-align: baseline;
-	margin-left: 10px;
+	vertical-align:baseline;
+	margin-left:10px
 }
+
 .negativeBottomMargin {
-	margin-bottom: 0;
+	margin-bottom:0
 }
+
 .smallerHeight {
-	height: 40px;
+	height:40px
 }
+
 .noBorder {
-	border: none;
+	border:none
 }
+
 .fixSpacingBetweenInputs1 {
-	padding-right: 15px;
-	display: inline-block;
+	padding-right:15px;
+	display:inline-block
 }
+
 .fixSpacingBetweenInputsTop {
-	width: 184px;
-	padding-right: 0;
-	margin-left: -7px;
-	display: inline-block;
+	width:184px;
+	padding-right:0;
+	margin-left:-7px;
+	display:inline-block
 }
 
 /*==========  Mobile First Method  ==========*/
-
-	/* Custom, iPhone Retina */
-	@media only screen and (min-width: 320px) {
-		.addSomePaddingLeft {
-			padding-left: 0;
-			width: 190px;
-			padding-right: 0;
-			display: inline-block;
-		}
-	}
-	/* Custom, iPhone Retina */
-	@media only screen and (min-width: 480px) {
-		.addSomePaddingLeft {
-			padding-left: 0;
-			width: 184px;
-			padding-right: 0;
-			display: inline-block;
-		}
-		.fixQuestionLocaiton {
-			margin-left: -60px;
-			margin-top: 8px;
-		}
-	}
-
-
-/* Parsley CSS */
-input.parsley-success,
-select.parsley-success,
-textarea.parsley-success {
-  color: #468847;
-  background-color: #DFF0D8;
-  border: 1px solid #D6E9C6;
+/* Custom, iPhone Retina */
+@media only screen and (min-width: 320px) {
+.addSomePaddingLeft {
+	padding-left:0;
+	width:190px;
+	padding-right:0;
+	display:inline-block
+}
 }
 
-input.parsley-error,
-select.parsley-error,
-textarea.parsley-error {
-  color: #B94A48;
-  background-color: #F2DEDE;
-  border: 1px solid #EED3D7;
+/* Custom, iPhone Retina */
+@media only screen and (min-width: 480px) {
+.addSomePaddingLeft {
+	padding-left:0;
+	width:184px;
+	padding-right:0;
+	display:inline-block
+}
+
+.fixQuestionLocaiton {
+	margin-left:-60px;
+	margin-top:8px
+}
+}
+
+/* Parsley CSS */
+input.parsley-success,select.parsley-success,textarea.parsley-success {
+	color:#468847;
+	background-color:#DFF0D8;
+	border:1px solid #D6E9C6
+}
+
+input.parsley-error,select.parsley-error,textarea.parsley-error {
+	color:#B94A48;
+	background-color:#F2DEDE;
+	border:1px solid #EED3D7
 }
 
 .parsley-errors-list {
-  margin: 2px 0 3px 0;
-  color: red;
-  padding: 0;
-  list-style-type: none;
-  font-size: 0.9em;
-  line-height: 0.9em;
-  opacity: 0;
-  -moz-opacity: 0;
-  -webkit-opacity: 0;
-
-  transition: all .3s ease-in;
-  -o-transition: all .3s ease-in;
-  -ms-transition: all .3s ease-in;
-  -moz-transition: all .3s ease-in;
-  -webkit-transition: all .3s ease-in;
+	margin:2px 0 3px;
+	color:red;
+	padding:0;
+	list-style-type:none;
+	font-size:.9em;
+	line-height:.9em;
+	opacity:0;
+	-moz-opacity:0;
+	-webkit-opacity:0;
+	transition:all .3s ease-in;
+	-o-transition:all .3s ease-in;
+	-ms-transition:all .3s ease-in;
+	-moz-transition:all .3s ease-in;
+	-webkit-transition:all .3s ease-in
 }
 
 .parsley-errors-list.filled {
-  opacity: 1;
+	opacity:1
 }
 
 /* End Parsley CSS*/
-
 .input-group .form-control:not(:first-child):not(:last-child) {
-	border-top-right-radius: 6px;
-	border-bottom-right-radius: 6px;
+	border-top-right-radius:6px;
+	border-bottom-right-radius:6px
 }
 
 /* For dropdown button menu, divides up the optgroup better */
 dt {
-	color: black;
-	background-color: seagreen;
+	color:#000;
+	background-color:#2e8b57
 }
 
 /* Remove spinner arrows for number fields */
 input[type='number'] {
-    -moz-appearance:textfield;
+	-moz-appearance:textfield
 }
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    /* display: none; <- Crashes Chrome on hover */
-    -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+
+input::-webkit-outer-spin-button,input::-webkit-inner-spin-button {
+	-webkit-appearance:none;
+	margin:0
 }
 
 /* End Remove spinner arrows for number fields */
-
 /* Fix marin between the legend hr and text */
 .fixTopMargin {
-	margin-top: 10px;
-} 
+	margin-top:10px
+}
 
 /*==========  Checkbox and radio icons  ==========*/
-.checkbox .icons, .radio .icons {
-	color: #1abc9c;
+.checkbox .icons,.radio .icons {
+	color:#1abc9c
 }
 
 /*Padding the bottom of the page, not much white space down there.*/
 .padBottom {
-	padding-bottom: 20px;
+	padding-bottom:20px
 }
