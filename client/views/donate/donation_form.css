@@ -1,5 +1,5 @@
 /*****************************************************************************/
-/* CardForm: Style */
+/* Donation Form: Style */
 /*****************************************************************************/
 .control-width {
 	width:180px;
@@ -149,7 +149,8 @@ hr {
 .select .btn-primary {
 	width:179px;
 	margin-top:-10px;
-	margin-left:-14px
+	margin-left:-14px;
+	font-size: 14px;
 }
 
 .select .btn-lg {
