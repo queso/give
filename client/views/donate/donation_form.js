@@ -64,15 +64,10 @@ uncheckThatBox = function() {
   $(':checkbox').checkbox('toggle');
 }
 Template.DonationForm.events({
-  /*'keypress form': function(e, tmpl) {
-      var keycode = (event.keyCode ? event.keyCode : event.which);
-      if (keycode == '13') {
-        $('button[name="submitThisForm"]').trigger('click');
-      }
-    },*/
-  //'click [name=submitThisForm]': function (e, tmpl) {
+
   'submit form': function(e, tmpl) {
     e.preventDefault();
+
     //Start the bootstrap modal with the awesome font refresh logo
     //Also, backdrop: 'static' sets the modal to not be exited when 
     //a user clicks in the background.
@@ -80,6 +75,7 @@ Template.DonationForm.events({
       visibility: 'show',
       backdrop: 'static'
     });
+
     //var coverTheFeesStatus =  $(e.target).find('[name=coverTheFees]').is(':checked');
     var form = {
       "paymentInformation": [{
@@ -104,13 +100,16 @@ Template.DonationForm.events({
         "country": $('[name=country]').val(),
         "created_at": new Date().getTime()
       }],
-      "URL": document.URL
+      "URL": document.URL,
+      sessionId: Meteor.default_connection._lastSessionId
     };
+
     //remove below before production    
     console.log(form.paymentInformation[0].amount);
     console.log(form.paymentInformation[0].total_amount);
     console.log(form.paymentInformation[0].donateTo);
     console.log(form.paymentInformation[0].is_recurring);
+
     if (form.paymentInformation[0].donateWith === "card") {
       form.paymentInformation[0].card_number = $('[name=card_number]').val();
       form.paymentInformation[0].expiry_month = $('[name=expiry_month]').val();
@@ -126,53 +125,39 @@ Template.DonationForm.events({
       form.paymentInformation[0].type = "check";
       Session.equals("paymentMethod", "check");
     }
-    form._id = Donate.insert(form.created_at);
-    console.log(form._id);
-    Donate.update(form._id, {
-      $set: {
-        sessionId: Meteor.default_connection._lastSessionId,
-        URL: form.URL,
-        'customer': form.customer[0],
-        'debit.donateTo': form.paymentInformation[0].donateTo,
-        'debit.donateWith': form.paymentInformation[0].donateWith,
-        'debit.email_sent': false,
-        'debit.type': form.paymentInformation[0].type,
-        'debit.total_amount': form.paymentInformation[0].total_amount,
-        'debit.amount': form.paymentInformation[0].amount,
-        'debit.fees': form.paymentInformation[0].fees,
-        'debit.coveredTheFees': form.paymentInformation[0].coverTheFees
-      }
-    });
-    //remove below before production 
-    console.log("ID: " + form._id);
-    console.log("Session ID: " + Meteor.default_connection._lastSessionId);
-    /*    Meteor.call('createBillyCustomer', 1, function (error, result) {
-      console.log(error);
-      console.log(result);
-    });*/
+
+    //Move inert and update from here. 
+
     console.log($('#is_recurring').val());
-    if ($('#is_recurring').val() == 'one_time') {
+    if ($('#is_recurring').val() === 'one_time') {
       Meteor.call("processPayment", form, function(error, result) {
         if (result) {
           $('#loading1').modal('hide');
+          console.log(result);
           //Session.set('status', Donate.findOne({id: form._id}).status);
-          Router.go('/give/thanks/' + form._id);
+          Router.go('/give/thanks/' + result);
         } else {
           $('#loading1').modal('hide');
           //handleErrors is used to check the returned error and the display a user friendly message about what happened that caused
           //the error. 
+          
+          //Call error method when catching the error. Need to remove the below update. 
           Donate.update(form._id, {
             $set: {
               failed: error
             }
           });
+
           var donateDocument = Donate.findOne({
             '_id': form._id
           });
+          
+          // Need to move this into the catch area or a specific error function, can't be called from the client. 
           var insertDoc = AllErrors.insert({
             name: "Failed",
             failedResponse: donateDocument
           });
+
           var storedError = error.error;
           console.log(JSON.stringify(storedError, null, 4));
           console.log("category_code: " + error.error.category_code);
@@ -185,17 +170,21 @@ Template.DonationForm.events({
       Meteor.call('createCustomer', form, function(error, result) {
         if (result) {
           $('#loading1').modal('hide');
-          Router.go('/give/thanks/' + form._id);
-          console.log(" Result: " + result.statusCode);
+          Router.go('/give/thanks/' + result);
+
+          //Need to log the result on the server side, this result should just be the id of the document. 
+          console.log(" Result: " + result);
         } else {
           $('#loading1').modal('hide');
-          //handleErrors is used to check the returned error and the display a user friendly message about what happened that caused
-          //the error. 
+
+          // Need to move this into the server side. 
           Donate.update(form._id, {
             $set: {
               failed: error
             }
           });
+
+
           var donateDocument = Donate.findOne({
             '_id': form._id
           });

@@ -21,14 +21,56 @@ function throwTheError(e){
   console.log("All Errors: " + JSON.parse(e.message).errors[0]);
   var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
   logger.error(JSON.stringify(error, null, 4));
+
   throw new Meteor.Error(error);
 }
+
+
+// ********************************************* Pickup here, not working. 
+function failTheRecord(data) {
+
+  console.log("<<<<<<<<<<<<<<<<<<<<<<<<LOOK HERE>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+  //var errorFromMethod = JSON.parse(data.message).errors[0]; // Update this to handle multiple errors?
+  logger.error(JSON.stringify(errorFromMethod, null, 4));
+
+  console.log("THIS IS THIS: " + data.id);
+      Donate.update(data.id, {
+        $set: {
+          failed: 'Failed'
+        }
+      });  
+}
+
 
 Meteor.methods({
  processPayment: function (data) {
       console.log('/r');
       //Donate.update(data._id, {$set: {'recurring.isRecurring': false}});
       
+
+      // Move the below from client side to here.  
+      data._id = Donate.insert(data.created_at);
+      
+      console.log(data._id);
+      
+      Donate.update(data._id, {
+      $set: {
+        sessionId: data.sessionId,
+        URL: data.URL,
+        'customer': data.customer[0],
+        'debit.donateTo': data.paymentInformation[0].donateTo,
+        'debit.donateWith': data.paymentInformation[0].donateWith,
+        'debit.email_sent': false,
+        'debit.type': data.paymentInformation[0].type,
+        'debit.total_amount': data.paymentInformation[0].total_amount,
+        'debit.amount': data.paymentInformation[0].amount,
+        'debit.fees': data.paymentInformation[0].fees,
+        'debit.coveredTheFees': data.paymentInformation[0].coverTheFees
+        }
+      });
+
+      // ^^^^^^^^^^^^^^^ Moved the above from the client side to here. 
+
       //initialize the balanced function with our API key.
       balanced.configure(Meteor.settings.balancedPaymentsAPI);
 
@@ -58,6 +100,9 @@ Meteor.methods({
       Donate.update(data._id, {$set: {status: 'Customer created.'}});
       console.log("Customer created." + data._id);
     } catch (e) {
+      var error = {};
+      error.e = e;
+      error.id = data._id;
       throwTheError(e);
     }
 
@@ -78,6 +123,9 @@ Meteor.methods({
             console.log(customerData.href);
           } 
           catch (e) {
+            var error = {};
+            error.e = e;
+            error.id = data._id;
             throwTheError(e);
           }
 
@@ -92,8 +140,11 @@ Meteor.methods({
             console.dir(JSON.stringify(associate));
           }
           catch (e) {
+            var error = {};
+            error.e = e;
+            error.id = data._id;
+            failTheRecord(error);
             throwTheError(e);
-
           }
         
         //add customer create response from Balanced to the database
@@ -136,6 +187,10 @@ Meteor.methods({
             console.log(customerData.href);
           }
           catch (e) {
+            var error = {};
+            error.e = e;
+            error.id = data._id;
+            failTheRecord(error);
             throwTheError(e);
           }
 
@@ -151,6 +206,10 @@ Meteor.methods({
             console.dir(JSON.stringify(associate));
           }
           catch (e) {
+            var error = {};
+            error.e = e;
+            error.id = data._id;
+            failTheRecord(error);
             throwTheError(e);
           }
 
@@ -176,20 +235,6 @@ Meteor.methods({
             'debit.status': associate.status
           }}); 
         }
-      return associate;
-    },
-
-    chargeExistingCard: function (data) {
-      console.log("Started Charge Existing Card Method");
-
-      balanced.configure(Meteor.settings.balancedPaymentsAPI);
-      
-      
-      var debit = extractFromPromise(balanced.get(data.paymentInformation[0].href).debit({
-        "amount": data.paymentInformation[0].total_amount * 100,
-        "appears_on_statement_as": "Trash Mountain",
-        "description": data.paymentInformation[0].donateTo
-      }));
-
+      return data._id;
     }
 });
