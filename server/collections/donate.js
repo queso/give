@@ -8,7 +8,7 @@ Donate.allow({
   },
 
   remove: function (userId, doc) {
-    return true;
+    return false;
   }
 });
 
@@ -22,6 +22,6 @@ Donate.deny({
   },
 
   remove: function (userId, doc) {
-    return false;
+    return true;
   }
 });
