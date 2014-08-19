@@ -98,17 +98,12 @@ Template.DonationForm.events({
         "city": $('[name=city]').val(),
         "postal_code": $('[name=postal_code]').val(),
         "country": $('[name=country]').val(),
-        "created_at": new Date().getTime()
+        "created_at": new Date().now
       }],
       "URL": document.URL,
       sessionId: Meteor.default_connection._lastSessionId
     };
 
-    //remove below before production    
-    console.log(form.paymentInformation[0].amount);
-    console.log(form.paymentInformation[0].total_amount);
-    console.log(form.paymentInformation[0].donateTo);
-    console.log(form.paymentInformation[0].is_recurring);
 
     if (form.paymentInformation[0].donateWith === "card") {
       form.paymentInformation[0].card_number = $('[name=card_number]').val();
@@ -133,34 +128,14 @@ Template.DonationForm.events({
       Meteor.call("processPayment", form, function(error, result) {
         if (result) {
           $('#loading1').modal('hide');
-          console.log(result);
-          //Session.set('status', Donate.findOne({id: form._id}).status);
-          Router.go('/give/thanks/' + result);
+          Meteor.call('logNewGift', result, function (error, result) {
+            console.log(error, result);
+          }); 
+          Router.go('/give/thanks/' + result);  
         } else {
           $('#loading1').modal('hide');
-          //handleErrors is used to check the returned error and the display a user friendly message about what happened that caused
-          //the error. 
-          
-          //Call error method when catching the error. Need to remove the below update. 
-          Donate.update(form._id, {
-            $set: {
-              failed: error
-            }
-          });
-
-          var donateDocument = Donate.findOne({
-            '_id': form._id
-          });
-          
-          // Need to move this into the catch area or a specific error function, can't be called from the client. 
-          var insertDoc = AllErrors.insert({
-            name: "Failed",
-            failedResponse: donateDocument
-          });
 
           var storedError = error.error;
-          console.log(JSON.stringify(storedError, null, 4));
-          console.log("category_code: " + error.error.category_code);
           handleErrors(error.error);
         }
         //END error handling block for meteor call to processPayment
@@ -170,31 +145,12 @@ Template.DonationForm.events({
       Meteor.call('createCustomer', form, function(error, result) {
         if (result) {
           $('#loading1').modal('hide');
+          Meteor.call('logNewGift', result, function (error, result) {});
           Router.go('/give/thanks/' + result);
-
-          //Need to log the result on the server side, this result should just be the id of the document. 
-          console.log(" Result: " + result);
         } else {
           $('#loading1').modal('hide');
 
-          // Need to move this into the server side. 
-          Donate.update(form._id, {
-            $set: {
-              failed: error
-            }
-          });
-
-
-          var donateDocument = Donate.findOne({
-            '_id': form._id
-          });
-          var insertDoc = AllErrors.insert({
-            name: "Failed",
-            failedResponse: donateDocument
-          });
           var storedError = error.error;
-          console.log(JSON.stringify(storedError, null, 4));
-          console.log("category_code: " + error.error.category_code);
           //handleErrors is used to check the returned error and the display a user friendly message about what happened that caused
           //the error. 
           handleErrors(error.error);
@@ -389,75 +345,123 @@ Template.cardPaymentInformation.rendered = function() {
 }
 
 function handleErrors(error) {
+  var messageGiven;
   switch (error.category_code) {
-    case "500":
-      alert("Something went wrong, sorry about that. Please try again.");
+      case "500":
+      messageGiven = "Something went wrong, sorry about that. Please try again.";
+      alert(messageGiven);
+      Meteor.call('logError', error, messageGiven, function (error, result) {});
       break;
     case "card-declined":
-      //var sendToErrorFunction = cardDeclined();
-      //remove below before production 
-      alert("Card was declined");
+      messageGiven = "The card was declined. This might be because the account is frozen."
+      Meteor.call('logError', error, messageGiven, function (error, result) {});
+      alert(messageGiven);
       //use this area to add the error to the errors collection,
       //also, send an email to me with the error printed in it
       //don't need to use mandrill for this (unless that would be 
       //easier
+      messageGiven = "Something went wrong, sorry about that. Please try again.";
+      alert(messageGiven);
+      Meteor.call('logError', error, messageGiven, function (error, result) {});
       break;
     case "account-insufficient-funds":
-      //var sendToErrorFunction = accountInsufficientFunds();
       break;
     case "authorization-failed":
-      //var sendToErrorFunction = authorizationFailed();
+      messageGiven = "Something went wrong, sorry about that. Please try again.";
+      alert(messageGiven);
+      Meteor.call('logError', error, messageGiven, function (error, result) {});
       break;
     case "address-verification-failed":
-      //var sendToErrorFunction = addressVerificationFailed();
+      messageGiven = "Something went wrong, sorry about that. Please try again.";
+      alert(messageGiven);
+      Meteor.call('logError', error, messageGiven, function (error, result) {});
       break;
     case "bank-account-not-valid":
-      //var sendToErrorFunction = bankAccountNotValid();
+      messageGiven = "Something went wrong, sorry about that. Please try again.";
+      alert(messageGiven);
+      Meteor.call('logError', error, messageGiven, function (error, result) {});
       break;
     case "card-not-valid":
-      //remove below before production 
-      console.log(error.details);
-      //var sendToErrorFunction = cardNotValid();
+      messageGiven = "Something went wrong, sorry about that. Please try again.";
+      alert(messageGiven);
+      Meteor.call('logError', error, messageGiven, function (error, result) {});
       break;
     case "card-not-validated":
+      messageGiven = "Something went wrong, sorry about that. Please try again.";
+      alert(messageGiven);
+      Meteor.call('logError', error, messageGiven, function (error, result) {});
       //this is the error for a card that is to short, probably for other errors too
-      //remove below before production 
-      console.log(error.details);
-      //var sendToErrorFunction = cardNotValidated();
       break;
     case "insufficient-funds":
-      //var sendToErrorFunction = insufficientFunds();
+      messageGiven = "Something went wrong, sorry about that. Please try again.";
+      alert(messageGiven);
+      Meteor.call('logError', error, messageGiven, function (error, result) {});
       break;
     case "multiple-debits":
-      //var sendToErrorFunction = multipleDebits();
+      messageGiven = "Something went wrong, sorry about that. Please try again.";
+      alert(messageGiven);
+      Meteor.call('logError', error, messageGiven, function (error, result) {});
       break;
     case "no-funding-destination":
-      //var sendToErrorFunction = noFundingDestination();
+      messageGiven = "Something went wrong, sorry about that. Please try again.";
+      alert(messageGiven);
+      Meteor.call('logError', error, messageGiven, function (error, result) {});
       break;
     case "no-funding-source":
+      messageGiven = "Something went wrong, sorry about that. Please try again.";
+      alert(messageGiven);
+      Meteor.call('logError', error, messageGiven, function (error, result) {});
       break;
     case "unexpected-payload":
+      messageGiven = "Something went wrong, sorry about that. Please try again.";
+      alert(messageGiven);
+      Meteor.call('logError', error, messageGiven, function (error, result) {});
       break;
     case "bank-account-authentication-forbidden":
+      messageGiven = "Something went wrong, sorry about that. Please try again.";
+      alert(messageGiven);
+      Meteor.call('logError', error, messageGiven, function (error, result) {});
       break;
     case "incomplete-account-info":
+      messageGiven = "Something went wrong, sorry about that. Please try again.";
+      alert(messageGiven);
+      Meteor.call('logError', error, messageGiven, function (error, result) {});
       break;
     case "invalid-amount":
+      messageGiven = "Something went wrong, sorry about that. Please try again.";
+      alert(messageGiven);
+      Meteor.call('logError', error, messageGiven, function (error, result) {});
       alert(error.details);
       break;
     case "invalid-bank-account-number":
+      messageGiven = "Something went wrong, sorry about that. Please try again.";
+      alert(messageGiven);
+      Meteor.call('logError', error, messageGiven, function (error, result) {});
       break;
     case "invalid-routing-number":
+      messageGiven = "Something went wrong, sorry about that. Please try again.";
+      alert(messageGiven);
+      Meteor.call('logError', error, messageGiven, function (error, result) {});
       break;
     case "not-found":
+      messageGiven = "Something went wrong, sorry about that. Please try again.";
+      alert(messageGiven);
+      Meteor.call('logError', error, messageGiven, function (error, result) {});
       break;
     case "request":
-      //remove below before production 
-      console.log(error.details);
+      messageGiven = "Something went wrong, sorry about that. Please try again.";
+      alert(messageGiven);
+      Meteor.call('logError', error, messageGiven, function (error, result) {});
       break;
     case "method-not-allowed":
+      messageGiven = "Something went wrong, sorry about that. Please try again.";
+      alert(messageGiven);
+      Meteor.call('logError', error, messageGiven, function (error, result) {});
       break;
     case "amount-exceeds-limit":
+      messageGiven = "Something went wrong, sorry about that. Please try again.";
+      alert(messageGiven);
+      Meteor.call('logError', error, messageGiven, function (error, result) {});
       //use this area to split payment into more than one
       //then send the multiple payments through, 
       //or for a temporary workaround print instructions
@@ -465,12 +469,16 @@ function handleErrors(error) {
       //debit more in sepearte transactions
       break;
     case "funding-source-not-debitable":
-      console.log(error.details);
+      messageGiven = "Something went wrong, sorry about that. Please try again.";
+      alert(messageGiven);
+      Meteor.call('logError', error, messageGiven, function (error, result) {});
       break;
     default:
+      messageGiven = "Something went wrong, sorry about that. Please try again.";
+      alert(messageGiven);
+      Meteor.call('logError', error, messageGiven, function (error, result) {});
       //remove below before production 
       console.log("Didn't match any error case");
-      //var sendToErrorFunction = "No Match";
       break;
   }
   //END Switch case block
@@ -489,8 +497,6 @@ function fillForm() {
     $('#expiry_year option').prop('selected', false).filter('[value=2015]').prop(
       'selected', true);
     $('select[name=expiry_year]').change();
-    //$('select[name="expiry_month"]').val("12");
-    //$('select[name="expiry_year"]').val("2015");
     $('#cvv').val("123");
   }
   $('#fname').val("John");

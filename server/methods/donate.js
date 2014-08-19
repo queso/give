@@ -26,29 +26,30 @@ function throwTheError(e){
 }
 
 
-// ********************************************* Pickup here, not working. 
 function failTheRecord(data) {
+  logger.error("Error for this ID: " + data.id);
+  logger.error(JSON.stringify(data.e, null, 4));
 
-  console.log("<<<<<<<<<<<<<<<<<<<<<<<<LOOK HERE>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-  //var errorFromMethod = JSON.parse(data.message).errors[0]; // Update this to handle multiple errors?
-  logger.error(JSON.stringify(errorFromMethod, null, 4));
-
-  console.log("THIS IS THIS: " + data.id);
+      // Update this record to reflect failed status. 
       Donate.update(data.id, {
         $set: {
-          failed: 'Failed'
+          failed: data.e
         }
-      });  
+      }); 
+      return;
 }
 
 
-Meteor.methods({
- processPayment: function (data) {
-      console.log('/r');
-      //Donate.update(data._id, {$set: {'recurring.isRecurring': false}});
-      
 
-      // Move the below from client side to here.  
+function logIt() {
+  logger.info("Started " + arguments.callee.caller.name);
+}
+
+Meteor.methods({
+  processPayment: function (data) {
+  logIt();
+
+      // Moved the below from client side to here.  
       data._id = Donate.insert(data.created_at);
       
       console.log(data._id);
@@ -100,9 +101,12 @@ Meteor.methods({
       Donate.update(data._id, {$set: {status: 'Customer created.'}});
       console.log("Customer created." + data._id);
     } catch (e) {
-      var error = {};
-      error.e = e;
-      error.id = data._id;
+            var error = {};
+            error.e = JSON.parse(e.message).errors[0];
+            error.id = data._id;
+            failTheRecord(error);
+
+
       throwTheError(e);
     }
 
@@ -124,8 +128,10 @@ Meteor.methods({
           } 
           catch (e) {
             var error = {};
-            error.e = e;
+            error.e = JSON.parse(e.message).errors[0];
             error.id = data._id;
+            failTheRecord(error);
+
             throwTheError(e);
           }
 
@@ -141,9 +147,10 @@ Meteor.methods({
           }
           catch (e) {
             var error = {};
-            error.e = e;
+            error.e = JSON.parse(e.message).errors[0];
             error.id = data._id;
             failTheRecord(error);
+
             throwTheError(e);
           }
         
@@ -188,9 +195,10 @@ Meteor.methods({
           }
           catch (e) {
             var error = {};
-            error.e = e;
+            error.e = JSON.parse(e.message).errors[0];
             error.id = data._id;
             failTheRecord(error);
+           
             throwTheError(e);
           }
 
@@ -207,9 +215,10 @@ Meteor.methods({
           }
           catch (e) {
             var error = {};
-            error.e = e;
+            error.e = JSON.parse(e.message).errors[0];
             error.id = data._id;
             failTheRecord(error);
+
             throwTheError(e);
           }
 
@@ -236,5 +245,14 @@ Meteor.methods({
           }}); 
         }
       return data._id;
+    },
+    logNewGift: function(id) {
+      try {
+        var amount = Donate.findOne(id).debit.total_amount;
+        logger.info("**********************NEW GIFT******************** id: " + id + " Total Amount: $" + amount)
+      }
+      catch (e) {
+        throw new Meteor.error(error);
+      }
     }
 });

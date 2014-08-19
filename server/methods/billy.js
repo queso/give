@@ -14,6 +14,19 @@ function throwTheError(e) {
 	throw new Meteor.Error(error);
 }
 
+function failTheRecord(data) {
+  logger.error("Error for this ID: " + data.id);
+  logger.error(JSON.stringify(data.e, null, 4));
+
+      // Update this record to reflect failed status. 
+      Donate.update(data.id, {
+        $set: {
+          failed: data.e
+        }
+      }); 
+      return;
+}
+
 function logIt() {
 	logger.info("Started " + arguments.callee.caller.name);
 }
