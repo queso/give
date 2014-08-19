@@ -106,9 +106,7 @@ Meteor.methods({
             error.e = JSON.parse(e.message).errors[0];
             error.id = data._id;
             failTheRecord(error);
-
-
-      throwTheError(e);
+            throwTheError(e);
     }
 
       //Runs if the form used was the credit card form, which sets type as part of the array which is passed to this server

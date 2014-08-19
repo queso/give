@@ -195,12 +195,20 @@ function subscribeToBillyPlan(data) {
 			console.dir("data next invoice at: " + resultSet.data.next_invoice_at);
 			return resultSet;
 		} else {
+			var error = {};
+            error.e = JSON.stringify(resultSet.data);
+            error.id = data._id;
+            failTheRecord(error);
+
 			Meteor.error(resultSet.statusCode);
 		}
 	} catch (e) {
-		logger.info(e);
+		logger.error(e);
 		e._id = AllErrors.insert(e.response);
-		var error = (e.response);
+		var error = {};
+        error.e = JSON.stringify(resultSet.data);
+        error.id = data._id;
+        failTheRecord(error);
 		throw new Meteor.Error(error, e._id);
 	}
 }
@@ -212,8 +220,8 @@ function getInvoice(subGUID) {
 		resultSet = HTTP.post("https://billy.balancedpayments.com/v1/subscriptions/" + subGUID + "/invoices", {
 			auth: Meteor.settings.billyKey + ':'
 		});
-		logger.info(resultSet.data);
-		logger.info(resultSet.data.items[0].guid);
+		logger.info("getInvoice " + resultSet.data);
+		logger.info("getInvoice " + resultSet.data.items[0].guid);
 		return resultSet;
 	} catch (e) {
 		logger.info(e);
@@ -330,6 +338,7 @@ Meteor.methods({
 					'recurring.invoice': billyGetInvoiceID.data
 				}
 			});
+			console.log("End result ID: " + data._id);
 			return data._id;
 		} catch (e) {
 			logger.info(e);

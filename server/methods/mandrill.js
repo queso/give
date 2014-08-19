@@ -15,7 +15,7 @@ Meteor.methods({
       logger.info("Started email send out with API for id: ");
       logger.info(data);
       var statusOfDebit = Donate.findOne({_id: data}).debit.status;
-      var error = 0;
+      var error;
       var email_address = Donate.findOne({_id: data}).customer.email_address;
       var donateTo = Donate.findOne({_id: data}).debit.donateTo;
       var donateWith = Donate.findOne({_id: data}).debit.donateWith;
@@ -23,7 +23,7 @@ Meteor.methods({
       var total_amount = Donate.findOne({_id: data}).debit.total_amount;
       var fees = +total_amount - +amount;
       var coveredTheFees = Donate.findOne({_id: data}).debit.coveredTheFees;
-      logger.info("Cover the fees? " + '\n' + coveredTheFees);
+      logger.info("Cover the fees = " + coveredTheFees);
       logger.info("debit.status: " + statusOfDebit);
       var slug;
       if (statusOfDebit === "failed") {
