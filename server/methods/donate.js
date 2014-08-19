@@ -253,7 +253,7 @@ Meteor.methods({
         logger.info("**********************NEW GIFT******************** id: " + id + " Total Amount: $" + amount)
       }
       catch (e) {
-        throw new Meteor.error(error);
+        throw new Meteor.error(e);
       }
     }
 });

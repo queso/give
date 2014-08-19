@@ -34,9 +34,11 @@ function logIt() {
 function createPaymentMethod(data) {
 	try {
 		logIt();
+		
+
 		logger.info("Setup variables for data from form inputs inside the billy createPaymentMethod method.");
 		var customerInfo = data.customer[0];
-		var debitType = Donate.findOne(data._id).debit.type;
+		var debitType = data.paymentInformation[0].type;
 		logger.info("ID: " + data._id);
 		logger.info("In create Payment Method before if: " + debitType);
 		if (debitType === "card") {
@@ -241,10 +243,33 @@ Meteor.methods({
 	createCustomer: function(data) {
 		logger.info("Started billy method calls.")
 		logIt();
+		// Moved the below from client side to here.  
+      	data._id = Donate.insert(data.created_at);
+		console.log(data);
+
+		console.log(data._id);
+
+		Donate.update(data._id, {
+			$set: {
+				sessionId: data.sessionId,
+				URL: data.URL,
+				'customer': data.customer[0],
+				'debit.donateTo': data.paymentInformation[0].donateTo,
+				'debit.donateWith': data.paymentInformation[0].donateWith,
+				'debit.email_sent': false,
+				'debit.type': data.paymentInformation[0].type,
+				'debit.total_amount': data.paymentInformation[0].total_amount,
+				'debit.amount': data.paymentInformation[0].amount,
+				'debit.fees': data.paymentInformation[0].fees,
+				'debit.coveredTheFees': data.paymentInformation[0].coverTheFees
+			}
+		});
+
 		balanced.configure(Meteor.settings.balancedPaymentsAPI);
 		var customerInfo = data.customer[0];
 		//remove before production
 		logger.info("Customer Info: " + customerInfo);
+		logger.info("Customer First Name: " + customerInfo.fname);
 		var customerData = '';
 		try {
 			customerData = extractFromPromise(balanced.marketplace.customers.create({
@@ -273,7 +298,7 @@ Meteor.methods({
 			});
 			var billyCustomer = '';
 			billyCustomer = createBillyCustomer(customerData.id);
-			logger.info("Customer GUID: " + JSON.stringify(billyCustomer.data));
+			logger.info("Customer GUID: " + JSON.stringify(billyCustomer.data.guid));
 			Donate.update(data._id, {
 				$set: {
 					'recurring.customer': billyCustomer.data
@@ -305,7 +330,7 @@ Meteor.methods({
 					'recurring.invoice': billyGetInvoiceID.data
 				}
 			});
-			return billySubscribeCustomer;
+			return data._id;
 		} catch (e) {
 			logger.info(e);
 			logger.info(e.error_message);

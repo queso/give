@@ -118,7 +118,6 @@ Template.DonationForm.events({
       form.paymentInformation[0].account_type = $('[name=account_type]').val();
       //set the form type so the server side method knows what to do with the data.
       form.paymentInformation[0].type = "check";
-      Session.equals("paymentMethod", "check");
     }
 
     //Move inert and update from here. 
@@ -145,7 +144,9 @@ Template.DonationForm.events({
       Meteor.call('createCustomer', form, function(error, result) {
         if (result) {
           $('#loading1').modal('hide');
-          Meteor.call('logNewGift', result, function (error, result) {});
+          Meteor.call('logNewGift', result, function (error, result) {
+            console.log(error, result);
+          });
           Router.go('/give/thanks/' + result);
         } else {
           $('#loading1').modal('hide');
