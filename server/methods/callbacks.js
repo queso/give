@@ -31,8 +31,6 @@ function failTheRecord(data) {
       return;
 }
 
-
-
 var bodyParser = Meteor.require('body-parser');
 // necessary for Collection use and other wrapped methods
 var Fiber = Npm.require('fibers');
