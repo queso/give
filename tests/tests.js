@@ -31,6 +31,6 @@ suite('Donate', function() {
     });
 
     client.eval(function() {
-      Donate.insert({fname: 'George'});
+      !Donate.insert({fname: 'George'});
     });
   });

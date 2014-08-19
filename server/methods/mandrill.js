@@ -14,9 +14,9 @@ Meteor.methods({
       logger.info("EMAIL:");
       logger.info("Started email send out with API");
       var testValue = Donate.find(data);
-      console.log(testValue.URL);
-      var failed = Donate.findOne({_id: data}).debit.status;
-      var error = Donate.findOne({_id: data}).debit.status; //need to change this to have a descriptive error message
+      logger.info(testValue.URL);
+      var status = Donate.findOne({_id: data}).debit.status;
+      var error = Donate.findOne({_id: data}).failed.status;
       var email_address = Donate.findOne({_id: data}).customer.email_address;
       var donateTo = Donate.findOne({_id: data}).debit.donateTo;
       var donateWith = Donate.findOne({_id: data}).debit.donateWith;
@@ -25,10 +25,9 @@ Meteor.methods({
       var fees = +total_amount - +amount;
       var coveredTheFees = Donate.findOne({_id: data}).debit.coveredTheFees;
       logger.info("Cover the fees? " + '\n' + coveredTheFees);
-      logger.info("debit.status: " + failed);
+      logger.info("debit.status: " + status);
       var slug;
-      if (failed === "failed") {
-        console.log(failed);
+      if (status === "failed") {
         slug = "failedpayment";
         } else if (coveredTheFees){
         slug = "receiptincludesfees";
@@ -71,18 +70,19 @@ Meteor.methods({
       });
     } //End try
     catch (e) {
-      logger.error('Mandril sendEmailOutAPI Method error: ' + e.message);
+      logger.error('Mandril sendEmailOutAPI Method error message: ' + e.message);
+      logger.error('Mandril sendEmailOutAPI Method error: ' + e);
     }
-  },
+  }/*,
   failedPaymentSendEmail: function (data) {
     try {
-      console.log("Started email send out with API for failed payment. " + data);
+      logger.info("Started email send out with API for failed payment. " + data);
       var email_address = Donate.findOne({'_id': data}).customer.email_address;
-      console.log("Email: " + email_address);
+      logger.info("Email: " + email_address);
       var failureReason = 'Test failure'; //Donate.findOne({_id: data}).debit.failureReason;
       var donateWith = Donate.findOne({'_id': data}).debit.donateWith;
       var total_amount = Donate.findOne({'_id': data}).debit.total_amount;
-      console.log("Donate With: " + donateWith);
+      logger.info("Donate With: " + donateWith);
       if (donateWith == 'card') {
         donateWith = 'credit or debit card';
       } else {
@@ -116,7 +116,7 @@ Meteor.methods({
       });
     } //End Try
     catch (e) {
-      console.log('Mandril failedPaymentSendEmail Method error: ' + e);
+      logger.info('Mandril failedPaymentSendEmail Method error: ' + e);
     }
-  }
+  }*/
 });
