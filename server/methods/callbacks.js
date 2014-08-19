@@ -33,6 +33,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
               updateThis = Donate.findOne({
                 'debit.id': postData.debitID
               })._id;
+              logger.info("Callback.js : Invoice area id: " + updateThis);
             } else {
               logger.info("Callback.js : Entered the debitID does NOT exists section with debitID of: " + postData.debitID);
               //updateThis = Donate.findOne({'recurring.subscription.guid': postData.links.debitID})._id;
