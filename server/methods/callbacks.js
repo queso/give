@@ -61,7 +61,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                   'debit.email_sent': 'sending'
                 }
               });
-              logger.ingo("Callback.js : Sending out the appropriate email using Mandrill");
+              logger.info("Callback.js : Sending out the appropriate email using Mandrill");
               Meteor.call('sendEmailOutAPI', updateThis, function(error, result) {
                 logger.info('Callback.js : ');
                 logger.info(error, result);

@@ -68,7 +68,7 @@ Meteor.methods({
       });
     } //End try
     catch (e) {
-      console.log('Mandril sendEmailOutAPI Method error: ' + e.message);
+      logger.error('Mandril sendEmailOutAPI Method error: ' + e.message);
     }
   },
   failedPaymentSendEmail: function (data) {

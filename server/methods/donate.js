@@ -51,6 +51,7 @@ Meteor.methods({
 
       // Moved the below from client side to here.  
       data._id = Donate.insert(data.created_at);
+      console.log(data);
       
       console.log(data._id);
       
@@ -77,7 +78,7 @@ Meteor.methods({
 
       var customerInfo = data.customer[0];
       console.log("Customer Info: " + JSON.stringify(customerInfo));
-      logger.info(" =====> Customer Info "+ JSON.stringify(customerInfo) + " <=====");
+      logger.info(" =====> Customer "+ JSON.stringify(customerInfo) + " <=====");
       var paymentInfo = data.paymentInformation[0];
       console.log("Payment Info: " + JSON.stringify(paymentInfo));
       var customerData;
