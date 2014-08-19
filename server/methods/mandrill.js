@@ -12,9 +12,8 @@ Meteor.methods({
   sendEmailOutAPI: function (data) {
     try {
       logger.info("EMAIL:");
-      logger.info("Started email send out with API");
-      var testValue = Donate.find(data);
-      logger.info(testValue.URL);
+      logger.info("Started email send out with API for id: ");
+      logger.info(data);
       var status = Donate.findOne({_id: data}).debit.status;
       var error = Donate.findOne({_id: data}).failed.status;
       var email_address = Donate.findOne({_id: data}).customer.email_address;
