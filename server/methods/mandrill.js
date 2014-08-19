@@ -11,7 +11,10 @@ Meteor.startup(function() {
 Meteor.methods({
   sendEmailOutAPI: function (data) {
     try {
+      logger.info("EMAIL:");
       logger.info("Started email send out with API");
+      var testValue = Donate.find(data);
+      console.log(testValue.URL);
       var failed = Donate.findOne({_id: data}).debit.status;
       var error = Donate.findOne({_id: data}).debit.status; //need to change this to have a descriptive error message
       var email_address = Donate.findOne({_id: data}).customer.email_address;
