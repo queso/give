@@ -11,15 +11,14 @@ var EventEmitter = Npm.require('events').EventEmitter;
             Fiber(function() {
                 function getEvents(c) {
                     var e = new EventEmitter();
-                    setImmediate(function () {
+                    process.nextTick(function () {
                         e.emit('start');
                         e.emit('data', c);
                         e.emit('end');
                     });
                     return(e);
                 }
-				var body = req.body;
-                var evt = getEvents(body);
+				var evt = getEvents(req.body);
 
                 evt.on('start', function () {
                     console.log("Started");
@@ -28,7 +27,9 @@ var EventEmitter = Npm.require('events').EventEmitter;
                 evt.on('data', function (d) {
 		            //What type of event is coming from Balanced?
 		            //var bodyType = d.events[0].type;
-			        logger.info('Callback.js : received an event of type: ' + d);
+			        logger.info('Callback.js : received an event of type: ' + d.events[0].type);
+	                console.dir(d);
+	                //logger.info('Callback.js : received an event of type: ' + bodyType);
 
                 });
 
