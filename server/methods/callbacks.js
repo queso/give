@@ -43,12 +43,12 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
     Fiber(function() {
       
 
-function lastWord(o) {
+        function lastWord(o) {
         logIt();
         return ("" + o).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
 }
 
-      function debitWrite(postData) {
+        function debitWrite(postData) {
          /* try {*/
             logIt();
             logger.info('Callback.js : event received type = ' + postData.type + " ID: " + postData.debitID);
@@ -144,12 +144,12 @@ function lastWord(o) {
         }
         //END debitWrite function
 
-      function debitFailed(postData) {
+        function debitFailed(postData) {
          /* try {*/
             logIt();
             logger.info('Callback.js : event received type = ' + postData.type + " ID: " + postData.debitID);
             var updateThis;
-          
+
             if (!postData.billy) {
               logger.info("Callback.js : Entered the debitID exists section with debitID of: " + postData.debitID);
               updateThis = Donate.findOne({
@@ -169,7 +169,7 @@ function lastWord(o) {
               });
               logger.info("Callback.js : Invoice area id: " + updateThis);
             }
-            
+
              if (!(Donate.findOne(updateThis).debit.email_sent)) {
               logger.info("In debit failed area and under the email sent if statement.").
               Donate.update(updateThis, {
@@ -186,13 +186,13 @@ function lastWord(o) {
                 }
               });
 
-              // Update this record to reflect failed status. 
+              // Update this record to reflect failed status.
               Donate.update(data.id, {
                 $set: {
                   failed: postData.debit
                 }
-              }); 
-              
+              });
+
               logger.warn('Callback.js : Sending out the failed email using Mandrill.');
               Meteor.call('sendEmailOutAPI', updateThis, function(error, result) {
                 logger.info('Callback.js : '+ error, result);
@@ -206,7 +206,7 @@ function lastWord(o) {
                 $search: searchForThis
               }
 
-            }); 
+            });
             res.writeHead(500, {
               'Content-Type': 'application/json'
             });
@@ -215,12 +215,12 @@ function lastWord(o) {
             logger.error(JSON.stringify(error, null, 4));
             logger.error('Callback.js catch error area: There was a problem inside the try statement for the debitWrite function: ' + e.message);
             logger.error('Callback.js catch error area: Wrote 500 header');
-            
+
           }*/
         }
         //END debitFailed function
 
-      function bank_accountWrite(postData) {
+        function bank_accountWrite(postData) {
           logIt();
           logger.info('Callback.js : event received type = bank_account:');
           var updateThis = Donate.findOne({
@@ -235,7 +235,7 @@ function lastWord(o) {
         }
         //END bank_accountWrite function
 
-      function accountWrite(postData) {
+        function accountWrite(postData) {
           logIt();
           logger.info('Callback.js : event received type = account:');
           var updateThis = Donate.findOne({
@@ -251,7 +251,7 @@ function lastWord(o) {
         }
         //END accountWrite function
 
-      function holdWrite(postData) {
+        function holdWrite(postData) {
           logIt();
           logger.info('Callback.js : event received type = hold:');
           var updateThis = Donate.findOne({
@@ -267,7 +267,7 @@ function lastWord(o) {
         }
         //END holdWrite function
 
-      function cardWrite(postData) {
+        function cardWrite(postData) {
           logIt();
           logger.info('Callback.js : event received type = cards:');
           var updateThis = Donate.findOne({
@@ -281,12 +281,13 @@ function lastWord(o) {
           return postData.id;
         }
         //END cardWrite function
-      var body = req.body; //request body
-      try {
+
+        var body = req.body; //request body
+        try {
         var bodyType = body.events[0].type; //What type of event is coming from Balanced?
         logger.info('Callback.js : received an event of type: ' + bodyType);
       } catch (e) {
-        logger.error("Callback.js : Threw and error for a received event.")
+        logger.error("Callback.js : Threw and error for a received event.");
         logger.error(e);
       }
       // var events = new Npm.require(events).EventEmitter;
