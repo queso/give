@@ -1,5 +1,5 @@
 {
-  "body-parser": "1.6.4",
-  "winston": "0.7.3",
-  "winston-papertrail": "0.1.4"
+    "body-parser": "1.6.4",
+    "winston": "0.7.3",
+    "winston-papertrail": "0.1.4"
 }

@@ -360,7 +360,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
             }
             var sendToEnd = debitWrite(sendToWriteFunction);
             break;
-          case "hold.created":
+          case " ":
             var sendToEnd = holdWrite(body.events[0].entity.card_holds[0]);
             break;
           case "hold.updated":
