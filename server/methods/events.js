@@ -43,17 +43,51 @@ var EventEmitter = Npm.require('events').EventEmitter;
 
 		            evt.on('select', function (bodyType) {
 			            console.log("There was a bodyType " + bodyType);
-			            console.log(body);
-			            /*var sendTo = */
+
+			            //replace the period in the funcName with an underscore
 			            var funcName = bodyType.replace(/\./g,'_');
 			            console.log(funcName);
-			            //var testMe = JSONSelect(body.events[0].entity:first-child); //TODO: would really like to find
-			            //the equivalent of this.
-			            //this.emit([funcName], ; //Then pass that to the func name as an arg. 
-			            //console.log("Function is now " + sendTo);
-			            //bodyType();
+
+			            //Send to the evt.on of the same name
+			            this.emit([funcName]);
 		            });
-		            evt.on('debit_created', function (status) {
+
+		            evt.on('checkBilly', function (baseData) {
+			            try {
+				            var getBillyInvoiceID = baseData.meta["billy.transaction_guid"] != null ? findBillyInvoiceID(baseData) :  false;
+				            return getBillyInvoiceID;
+
+				            function findBillyInvoiceID(baseData) {
+					            //return the last word in the description, which is the invoice ID.
+					            return ("" + baseData.description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
+				            }
+
+			            }catch(e) {
+				            logger.error(e);
+			            }
+
+		            });
+
+		            evt.on('checkFailed', function (refFunc) {
+			           /* body.events[0].entity.[refFunc] = req.body; //request body
+			            try {
+				            body.events[0]. != null ? runEvents(body) : noBody();
+			            }catch(e) {
+				            logger.error(e);
+			            }
+
+			            d && This()*/
+		            });
+
+		            evt.on('debit_created', function () {
+			            var baseData = body.events[0].entity.debits[0];
+			            function runChecks() {
+				            var billy = this.emit('checkBilly', baseData);
+				            //var failed = this.emit('checkFailed', 'debits', baseData);
+			            }
+
+			            (status == null) ? runChecks() : (status == true) ? runTrue() : runFalse();
+
 			            console.log("Got to the debit_created func");
 		            });
 		            evt.on('debit_succeeded', function (status) {
@@ -112,11 +146,7 @@ var EventEmitter = Npm.require('events').EventEmitter;
 
 	            var body = req.body; //request body
 	            try {
-		            if (body.events != null) {
-			            runEvents(body);
-		            } else {
-			            noBody();
-		            }
+		            body.events != null ? runEvents(body) : noBody();
 	            }catch(e) {
 		            logger.error(e);
 	            }
