@@ -1,8 +1,22 @@
 var bodyParser = Meteor.require('body-parser');
 // Fiber is necessary for Collection use and other wrapped methods
-var Fiber = Npm.require('fibers');
-var EventEmitter = Npm.require('events').EventEmitter;
-    WebApp.connectHandlers.use(bodyParser.urlencoded({
+var Fiber = Meteor.require('fibers');
+var EventEmitter = Meteor.require('events').EventEmitter;
+
+var Future = Npm.require("fibers/future");
+
+function extractFromPromise(promise) {
+	var fut = new Future(function() {
+		promise.then(function (result) {
+			fut.return(result);
+		}, function (error) {
+			console.log(error);
+			fut.throw(error);
+		});
+		return fut.wait();
+	});
+}
+	WebApp.connectHandlers.use(bodyParser.urlencoded({
 	    extended: false}))
 	    .use(bodyParser.json())
 	    .use('/events/', function(req, res, next) {
@@ -17,6 +31,21 @@ var EventEmitter = Npm.require('events').EventEmitter;
                     });
                     return(e);
                 }
+
+	            //This function may be needed if it turns out that events are coming in out of order, or if
+	            // success and failures are both coming in for the same event types, in which case the client could
+	            // get conflicting emails. 
+	            function fetchLatestStatus(eventID){ //TODO: figure out if this part is even necessary, doesn't seem to do much,
+		            //except that it checks the status is correct.
+		            /*try {*/
+			            fetchStatus = extractFromPromise(balanced.marketplace.get('/events/EVa48561f6274d11e4ae5502d2dca51d8a'));
+			            console.log("Status: " + fetchStatus);
+			            Donate.update({'events[0].id': eventID}, {$set: {event_status: fetchStatus}});
+		            /*}catch(e) {
+			            logger.error("Inside fetchLatestStatus: " + e);
+		            }*/
+	            }
+
 	            // Separated the evt var because otherwise any invalid call to the website would still run any of the
 	            // events after checking the body.
 	            function runEvents (body) {
@@ -52,7 +81,7 @@ var EventEmitter = Npm.require('events').EventEmitter;
 			            this.emit([funcName]);
 		            });
 
-		            evt.on('checkBilly', function (baseData) {
+		           /* evt.on('checkBilly', function (baseData) {
 			            try {
 				            var getBillyInvoiceID = baseData.meta["billy.transaction_guid"] != null ? findBillyInvoiceID(baseData) :  false;
 				            return getBillyInvoiceID;
@@ -69,32 +98,69 @@ var EventEmitter = Npm.require('events').EventEmitter;
 		            });
 
 		            evt.on('checkFailed', function (refFunc) {
-			           /* body.events[0].entity.[refFunc] = req.body; //request body
+			           *//* body.events[0].entity.[refFunc] = req.body; //request body
 			            try {
 				            body.events[0]. != null ? runEvents(body) : noBody();
 			            }catch(e) {
 				            logger.error(e);
 			            }
 
-			            d && This()*/
-		            });
+			            d && This()*//*
+		            });*/
 
 		            evt.on('debit_created', function () {
-			            var baseData = body.events[0].entity.debits[0];
+			            console.log("Got to the debit_created func"); //TODO: Remove
+
+			            var debitID = body.events[0].entity.debits[0].id;
+			            console.log(debitID);
+
+			            // Put this event into the document linked to the passed id and into the debit_status property.
+			            new Fiber(function() {
+				            Donate.update({'debit.id': debitID},
+					            {$push: {events: body}
+					            });
+			            }).run();
+
+			            /*var baseData = body.events[0].entity.debits[0];
 			            function runChecks() {
 				            var billy = this.emit('checkBilly', baseData);
 				            //var failed = this.emit('checkFailed', 'debits', baseData);
 			            }
 
-			            (status == null) ? runChecks() : (status == true) ? runTrue() : runFalse();
+			            (billy == false) ? addRecord(false) : (status == true) ? runTrue() : runFalse();*/
 
-			            console.log("Got to the debit_created func");
 		            });
 		            evt.on('debit_succeeded', function (status) {
-			            console.log("Got to the debit_succeeded func");
+			            console.log("Got to the debit_succeeded func"); //TODO: Remove
+
+			            var debitID = body.events[0].entity.debits[0].id;
+			            console.log(debitID);
+
+			            // Put this event into the document linked to the passed id and into the debit_status property.
+			            new Fiber(function() {
+				            Donate.update({'debit.id': debitID},
+					            {$push: {events: body}
+					            });
+
+				            fetchLatestStatus(body.events[0].id);
+			            }).run();
+
+
+
 		            });
 		            evt.on('debit_failed', function (status) {
-			            console.log("Got to the debit_failed func");
+			            console.log("Got to the debit_failed func"); //TODO: Remove
+
+			            var debitID = body.events[0].entity.debits[0].id;
+			            console.log(debitID);
+
+			            // Put this event into the document linked to the passed id and into the debit_status property.
+			            new Fiber(function() {
+				            Donate.update({'debit.id': debitID},
+					            {$push: {events: body}
+					            });
+			            }).run();
+
 		            });
 		            evt.on('hold_created', function (status) {
 			            console.log("Got to the hold_created func");

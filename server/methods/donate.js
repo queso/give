@@ -8,8 +8,8 @@ var Future = Npm.require("fibers/future");
     var fut = new Future();
     promise.then(function (result) {
        fut.return(result);
-     }, function (error) { 
-       console.log(error);      
+     }, function (error) {
+       console.log(error);
        fut.throw(error);
     });
     return fut.wait();
