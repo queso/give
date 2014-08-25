@@ -34,7 +34,7 @@ function extractFromPromise(promise) {
 
 	            //This function may be needed if it turns out that events are coming in out of order, or if
 	            // success and failures are both coming in for the same event types, in which case the client could
-	            // get conflicting emails. 
+	            // get conflicting emails.
 	            function fetchLatestStatus(eventID){ //TODO: figure out if this part is even necessary, doesn't seem to do much,
 		            //except that it checks the status is correct.
 		            /*try {*/

@@ -15,22 +15,3 @@ suite('Donate', function() {
     });
   });
 });
-
-  test('using both client and the server', function(done, server, client) {
-    server.eval(function() {
-      Donate.find().observe({
-        added: addedNewDonate
-      });
-
-      function addedNewDonate(donate) {
-        emit('donate', donate);
-      }
-    }).once('donate', function(donate) {
-      assert.equal(donate.fname, 'George');
-      done();
-    });
-
-    client.eval(function() {
-      Donate.insert({fname: 'George'});
-    });
-  });
