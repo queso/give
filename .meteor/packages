@@ -4,19 +4,20 @@
 # but you can also edit it by hand.
 
 standard-app-packages
-balanced-payments-production
-npm
-mandrill
+j4507:balanced-payments-production@0.3.0
+meteorhacks:npm
+timmyg13:mandrill@0.0.6
 email
 http
-moment
 webapp
-font-awesome
+natestrauser:font-awesome@4.1.0
 less
-analyticsjs
-winston-papertrail
-iron-router
-iron-router-progress
-bootstrap-3
-kadira
-parsley.js
+natestrauser:analyticsjs
+mrt:parsley.js
+meteorhacks:kadira
+iron:router
+mrt:moment
+mizzao:bootstrap-3
+
+
+npm-container
