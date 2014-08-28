@@ -13,11 +13,9 @@ webapp
 natestrauser:font-awesome@4.1.0
 less
 natestrauser:analyticsjs
-mrt:parsley.js
+amr:parsley.js
 meteorhacks:kadira
 iron:router
 mrt:moment
 mizzao:bootstrap-3
-
-
 npm-container
