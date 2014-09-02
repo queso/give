@@ -1,4 +1,4 @@
-var Future = Npm.require("fibers/future");
+var Future = Meteor.npmRequire("fibers/future");
   function extractFromPromise(promise) {
     var fut = new Future();
     promise.then(function (result) {

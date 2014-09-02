@@ -1,7 +1,7 @@
 //creating a global server logger
-logger = Meteor.require('winston');
+logger = Meteor.npmRequire('winston');
 
-var Papertrail = Meteor.require('winston-papertrail').Papertrail;
+var Papertrail = Meteor.npmRequire('winston-papertrail').Papertrail;
 logger.add(Papertrail, {
 	levels: {
 			debug: 0,

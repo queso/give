@@ -31,9 +31,9 @@ function failTheRecord(data) {
       return;
 }
 
-var bodyParser = Meteor.require('body-parser');
+var bodyParser = Meteor.npmRequire('body-parser');
 // necessary for Collection use and other wrapped methods
-var Fiber = Npm.require('fibers');
+var Fiber = Meteor.npmRequire('fibers');
 WebApp.connectHandlers.use(bodyParser.urlencoded({
     extended: false
   })) // these two replace
@@ -290,7 +290,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
         logger.error("Callback.js : Threw and error for a received event.");
         logger.error(e);
       }
-      // var events = new Npm.require(events).EventEmitter;
+      // var events = new Meteor.npmRequire(events).EventEmitter;
       // events.on("bank_account.created", bank_accountWrite);
       // events.emit(bodyType, body.events[0]);
       /*try {*/

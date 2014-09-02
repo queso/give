@@ -1,9 +1,9 @@
-var bodyParser = Meteor.require('body-parser');
+var bodyParser = Meteor.npmRequire('body-parser');
 // Fiber is necessary for Collection use and other wrapped methods
-var Fiber = Meteor.require('fibers');
-var EventEmitter = Meteor.require('events').EventEmitter;
+var Fiber = Meteor.npmRequire('fibers');
+var EventEmitter = Meteor.npmRequire('events').EventEmitter;
 
-var Future = Npm.require("fibers/future");
+var Future = Meteor.npmRequire("fibers/future");
 
 function extractFromPromise(promise) {
 	var fut = new Future(function() {
@@ -238,6 +238,6 @@ var body = req.body; //request body
         logger.error("Callback.js : Threw and error for a received event.")
         logger.error(e);
       }
-      // var events = new Npm.require(events).EventEmitter;
+      // var events = new Meteor.npmRequire(events).EventEmitter;
       // events.on("bank_account.created", bank_accountWrite);
       // events.emit(bodyType, body.events[0]);*/
