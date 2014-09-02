@@ -1,26 +1,9 @@
 Template.Thanks.helpers({
 	displayReceipt: function () {
-    var statusOfTrans = Donate.findOne(this._id).debit.status;
-    if (statusOfTrans === "pending") {
-      Session.set("status", 'pending');
-    } else if (statusOfTrans === "succeeded") {
-      Session.set("status", 'succeeded');
-      return true;
-    } else {
-      Session.set("status", 'failed');
-      return false;  
-    }
+    return (this.debit.status === 'succeeded');
   },
-  successOrPendingPayment: function () {
-    if(Session.equals('status', 'succeeded')) {
-      return true;
-    } else if (Session.equals('status', 'pending')) {
-      return true; 
-    }
-    else{ 
-      console.log()
-      return false;
-    }
+	successOrPendingPayment: function () {
+      return (this.debit.status === 'succeeded' || this.debit.status === 'pending');
   },
 	successOrPendingTrans: function () {
   	return "<h3 class='text-center'>Thank you for your gift!</h3>\
@@ -34,7 +17,7 @@ Template.Thanks.helpers({
   			</p>";
   },
   failedTrans: function () {
-    var referrer = Donate.findOne(this).URL;
+    var referrer = this.URL;
     if(!referrer) {
       return '';
     }

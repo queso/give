@@ -30,7 +30,8 @@ Router.map(function () {
   });
   this.route('thanks', 
     {path: '/give/thanks/:_id', 
-    waitOn: function() { return Meteor.subscribe('donate', this.params._id)},
+    waitOn: function() { console.log(this.params._id);
+	    return Meteor.subscribe('donate', this.params._id)},
     data: function () {
       return Donate.findOne(this.params._id);
     },

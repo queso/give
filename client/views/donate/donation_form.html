@@ -90,6 +90,41 @@
     <div class="modal" id="loading1" >
         <span class="fa fa-refresh fa-spin loading1 "></span>
     </div>
+
+    <div class="modal fade" id="modal_for_initial_donation_error">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title"><strong>Sorry</strong>, that didn't work.</h4>
+                </div>
+                <div class="modal-body">
+                    Please check the listed error and try again. If you continue to have problems processing your
+                    donation please contact <a href="mailto:support@trashmountain.com?Subject=Donation Problem">support@trashmountain.com.</a>
+                </div>
+                <div class="alert alert-warning">
+                    <p><strong>Error category:</strong> <span id="errorCategory"></span></p>
+                    <p><strong>Error Description:</strong> <span id="errorDescription"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal for Learn More on the attend page -->
+    <!--<div class="modal" id="modal_for_initial_donation_error">
+        <div class="text-left">
+            <p><strong>Sorry</strong>, that didn't work. Please check the listed error and try again. If you continue to
+                have problems processing your donation please contact support@trashmountain.com</p>
+            <div class="alert alert-danger" role="alert">
+                <div class="modal-footer">
+                    <p>{{errorCategory}}</p>
+                    <p>{{errorDescription}}</p>
+                </div>
+                <p>{{errorCategory}}</p>
+                <p>{{errorDescription}}</p>
+            </div>
+        </div>
+    </div>-->
 </template>
 
 <template name="checkPaymentInformation">

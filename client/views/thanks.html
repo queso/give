@@ -8,14 +8,13 @@
     			{{#if successOrPendingPayment}}
 		 			{{{successOrPendingTrans}}}
 		 		{{else}}
-		 			{{{failedTrans}}}
+                    {{{failedTrans}}}
 		 		{{/if}}
-
 	        </div>
 	    </div>
 	</div>
 	{{#if displayReceipt}}
- 		{{> Receipt}}
- 	{{else}} 		
+    {{> Receipt}}
+    {{else}}
  	{{/if}}
 </template>

@@ -85,7 +85,7 @@ Template.DonationForm.events({
         "donateWith": $("#donateWith").val(),
         "is_recurring": $('#is_recurring').val(),
         "coverTheFees": $('#coverTheFees').is(":checked"),
-        "created_at": new Date().getTime(),
+        "created_at": moment().format('MM/DD/YYYY, hh:mm')
       }],
       "customer": [{
         "fname": $('[name=fname]').val(),
@@ -98,7 +98,7 @@ Template.DonationForm.events({
         "city": $('[name=city]').val(),
         "postal_code": $('[name=postal_code]').val(),
         "country": $('[name=country]').val(),
-        "created_at": new Date().now
+        "created_at": moment().format('MM/DD/YYYY, hh:mm')
       }],
       "URL": document.URL,
       sessionId: Meteor.default_connection._lastSessionId
@@ -123,6 +123,7 @@ Template.DonationForm.events({
     //Move inert and update from here. 
 
     console.log($('#is_recurring').val());
+	console.log(moment().format('MM/DD/YYYY, hh:mm'));
     if ($('#is_recurring').val() === 'one_time') {
       Meteor.call("processPayment", form, function(error, result) {
         if (result) {
@@ -251,7 +252,13 @@ Template.DonationForm.helpers({
       class: "col-md-4 control-label",
       for: "amount"
     }
-  }
+  },
+	errorCategory: function () {
+		return 'Error Category';
+	},
+	errorDescription: function () {
+		return 'Error Description';
+	}
 });
 /*****************************************************************************/
 /* DonationForm: Lifecycle Hooks */
@@ -345,124 +352,132 @@ Template.cardPaymentInformation.rendered = function() {
     placement: 'auto top'
   });
 }
-
 function handleErrors(error) {
+	console.log(error);
+	$('#modal_for_initial_donation_error').modal({
+		show: true
+	});
+	$('#errorCategory').text(error.category_code);
+	$('#errorDescription').text(error.description);
+}
+
+/*function handleErrors(error) {
   var messageGiven;
   switch (error.category_code) {
       case "500":
       messageGiven = "Something went wrong, sorry about that. Please try again.";
-      alert(messageGiven);
       Meteor.call('logError', error, messageGiven, function (error, result) {});
+	  return alert(messageGiven);
       break;
     case "card-declined":
       messageGiven = "The card was declined. This might be because the account is frozen."
       Meteor.call('logError', error, messageGiven, function (error, result) {});
-      alert(messageGiven);
+      return alert(messageGiven);
       //use this area to add the error to the errors collection,
       //also, send an email to me with the error printed in it
       //don't need to use mandrill for this (unless that would be 
       //easier
       messageGiven = "Something went wrong, sorry about that. Please try again.";
-      alert(messageGiven);
-      Meteor.call('logError', error, messageGiven, function (error, result) {});
+	    Meteor.call('logError', error, messageGiven, function (error, result) {});
+	    return alert(messageGiven);
       break;
     case "account-insufficient-funds":
       break;
     case "authorization-failed":
       messageGiven = "Something went wrong, sorry about that. Please try again.";
-      alert(messageGiven);
       Meteor.call('logError', error, messageGiven, function (error, result) {});
+	  return alert(messageGiven);
       break;
     case "address-verification-failed":
       messageGiven = "Something went wrong, sorry about that. Please try again.";
-      alert(messageGiven);
-      Meteor.call('logError', error, messageGiven, function (error, result) {});
-      break;
+	    Meteor.call('logError', error, messageGiven, function (error, result) {});
+	    return alert(messageGiven);
+	break;
     case "bank-account-not-valid":
-      messageGiven = "Something went wrong, sorry about that. Please try again.";
-      alert(messageGiven);
-      Meteor.call('logError', error, messageGiven, function (error, result) {});
-      break;
+		messageGiven = "Something went wrong, sorry about that. Please try again.";
+		Meteor.call('logError', error, messageGiven, function (error, result) {});
+		return alert(messageGiven);
+		break;
     case "card-not-valid":
       messageGiven = "Something went wrong, sorry about that. Please try again.";
-      alert(messageGiven);
-      Meteor.call('logError', error, messageGiven, function (error, result) {});
-      break;
+	    Meteor.call('logError', error, messageGiven, function (error, result) {});
+	    return alert(messageGiven);
+		break;
     case "card-not-validated":
       messageGiven = "Something went wrong, sorry about that. Please try again.";
-      alert(messageGiven);
-      Meteor.call('logError', error, messageGiven, function (error, result) {});
+	    Meteor.call('logError', error, messageGiven, function (error, result) {});
+	    return alert(messageGiven);
       //this is the error for a card that is to short, probably for other errors too
       break;
     case "insufficient-funds":
       messageGiven = "Something went wrong, sorry about that. Please try again.";
-      alert(messageGiven);
-      Meteor.call('logError', error, messageGiven, function (error, result) {});
-      break;
+	    Meteor.call('logError', error, messageGiven, function (error, result) {});
+	    return alert(messageGiven);
+	    break;
     case "multiple-debits":
       messageGiven = "Something went wrong, sorry about that. Please try again.";
-      alert(messageGiven);
-      Meteor.call('logError', error, messageGiven, function (error, result) {});
-      break;
+	    Meteor.call('logError', error, messageGiven, function (error, result) {});
+	    return alert(messageGiven);
+	    break;
     case "no-funding-destination":
       messageGiven = "Something went wrong, sorry about that. Please try again.";
-      alert(messageGiven);
-      Meteor.call('logError', error, messageGiven, function (error, result) {});
-      break;
+	    Meteor.call('logError', error, messageGiven, function (error, result) {});
+	    return alert(messageGiven);
+	    break;
     case "no-funding-source":
       messageGiven = "Something went wrong, sorry about that. Please try again.";
-      alert(messageGiven);
-      Meteor.call('logError', error, messageGiven, function (error, result) {});
-      break;
+	    Meteor.call('logError', error, messageGiven, function (error, result) {});
+	    return alert(messageGiven);
+	    break;
     case "unexpected-payload":
       messageGiven = "Something went wrong, sorry about that. Please try again.";
-      alert(messageGiven);
-      Meteor.call('logError', error, messageGiven, function (error, result) {});
-      break;
+	    Meteor.call('logError', error, messageGiven, function (error, result) {});
+	    return alert(messageGiven);
+	    break;
     case "bank-account-authentication-forbidden":
       messageGiven = "Something went wrong, sorry about that. Please try again.";
-      alert(messageGiven);
-      Meteor.call('logError', error, messageGiven, function (error, result) {});
-      break;
+	    Meteor.call('logError', error, messageGiven, function (error, result) {});
+	    return alert(messageGiven);
+	    break;
     case "incomplete-account-info":
       messageGiven = "Something went wrong, sorry about that. Please try again.";
-      alert(messageGiven);
-      Meteor.call('logError', error, messageGiven, function (error, result) {});
-      break;
+	    Meteor.call('logError', error, messageGiven, function (error, result) {});
+	    return alert(messageGiven);
+	    break;
     case "invalid-amount":
       messageGiven = "Something went wrong, sorry about that. Please try again.";
-      alert(messageGiven);
-      Meteor.call('logError', error, messageGiven, function (error, result) {});
-      alert(error.details);
+      return alert(messageGiven);
+	    Meteor.call('logError', error, messageGiven, function (error, result) {});
+	    return alert(error.description);
       break;
     case "invalid-bank-account-number":
       messageGiven = "Something went wrong, sorry about that. Please try again.";
-      alert(messageGiven);
+      return alert(messageGiven);
       Meteor.call('logError', error, messageGiven, function (error, result) {});
       break;
     case "invalid-routing-number":
       messageGiven = "Something went wrong, sorry about that. Please try again.";
-      alert(messageGiven);
+      return alert(messageGiven);
       Meteor.call('logError', error, messageGiven, function (error, result) {});
       break;
     case "not-found":
       messageGiven = "Something went wrong, sorry about that. Please try again.";
-      alert(messageGiven);
+      return alert(messageGiven);
       Meteor.call('logError', error, messageGiven, function (error, result) {});
       break;
     case "request":
       messageGiven = "Something went wrong, sorry about that. Please try again.";
-      alert(messageGiven);
+      return alert(messageGiven);
       Meteor.call('logError', error, messageGiven, function (error, result) {});
       break;
     case "method-not-allowed":
       messageGiven = "Something went wrong, sorry about that. Please try again.";
-      alert(messageGiven);
+      return alert(messageGiven);
       Meteor.call('logError', error, messageGiven, function (error, result) {});
       break;
     case "amount-exceeds-limit":
       messageGiven = "Something went wrong, sorry about that. Please try again.";
-      alert(messageGiven);
+      return alert(messageGiven);
       Meteor.call('logError', error, messageGiven, function (error, result) {});
       //use this area to split payment into more than one
       //then send the multiple payments through, 
@@ -472,19 +487,19 @@ function handleErrors(error) {
       break;
     case "funding-source-not-debitable":
       messageGiven = "Something went wrong, sorry about that. Please try again.";
-      alert(messageGiven);
+      return alert(messageGiven);
       Meteor.call('logError', error, messageGiven, function (error, result) {});
       break;
     default:
       messageGiven = "Something went wrong, sorry about that. Please try again.";
-      alert(messageGiven);
+      return alert(messageGiven);
       Meteor.call('logError', error, messageGiven, function (error, result) {});
       //remove below before production 
       console.log("Didn't match any error case");
       break;
   }
   //END Switch case block
-}
+}*/
 
 function fillForm() {
   if (Session.get("paymentMethod") === "check") {
