@@ -22,11 +22,15 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
     .use('/events/', function(req, res, next) {
     Fiber(function() {
 
+	    function lastWord(description) {
+		    return ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
+	    }
 	    //These events will run every time
         function getEvents(body) {
             var e = new EventEmitter();
             //var a = new EventEmitter(); TODO: remove this line, or find a use for it.
             setImmediate(function () {
+	            e.setMaxListeners(20);
                 e.emit('start');
                 e.emit('checkBody', body);
                 e.emit('end', body.events[0].type);
@@ -53,12 +57,13 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
             var evt = getEvents(body);
 
             evt.on('start', function () {
-	            logger.info("Received an event");
+	            logger.info("*****************Received an event");
             });
 
             evt.on('checkBody', function (d) {
+	            logger.info("Got to checkBody");
 	            var bodyType = d.events[0].type; //What type of event is coming from Balanced?
-	            logger.info('events.js : received an event of type: ' + bodyType);
+	            logger.info('Body type: ' + bodyType);
 	            this.emit('select', bodyType);
             });
 
@@ -71,21 +76,56 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
             });
 
             evt.on('select', function (bodyType) {
-	            logger.info("There was a bodyType " + bodyType);
+	            logger.info("Received type: " + bodyType);
 
 	            //replace the period in the funcName with an underscore
 	            var funcName = bodyType.replace(/\./g,'_');
-	            logger.info(funcName);
+	            logger.info("Sending to: " + funcName);
 
 	            //Send to the evt.on of the same name
 	            this.emit([funcName]);
             });
 
+	        /*************************************************************/
+	        /**************        UPDATE STATUS            **************/
+	        /*************************************************************/
+	        evt.on('update_from_event', function (id, type, status) {
+		        logger.info("Got to update_from_event");
+		        logger.info("The ID is: " + id + " The type is: " + type + " This status is: " + status);
+
+		        try{
+			        new Fiber(function () {
+				        Donate.update({'[type]id': id}, {$set: {'[type].status': status}});
+			        }).run();
+		        } catch(e){
+			        Logger.warn(e);
+		        }
+	        });
+	        //Duplicate is intentional and a feature of events that allows us to run multiple events from one call
+	        evt.on('update_from_event', function(id, type, status) {
+		        logger.info("Got to update_from_event (2nd)");
+		        logger.info("(2nd) The ID is: " + id + " The type is: " + type + " This status is: " + status);
+		        /*try{*/
+			        if (body.events[0].entity[type][0].meta['billy.transaction_guid']) {
+				        console.log("Inside If statment");
+				        var description = body.events[0].entity[type][0].description;
+				        var invoiceID = ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
+				        new Fiber(function () {
+					        var id = Donate.findOne({'recurring.invoice.items.guid': invoiceID})._id;
+					        Donate.update({'[type].id': body.events[0].entity[type][0].id});
+			            }).run();
+			        } else {Logger.info("Nothing to update, not a Billy transaction.")}
+		        /*} catch(e){
+			        logger.error(e);
+		        }*/
+	        });
+	        //UPDATE STATUS END
+
 			/*************************************************************/
 	        /***************         DEBIT AREA             **************/
 	        /*************************************************************/
             evt.on('debit_created', function () {
-	            logger.info("Got to the debit_created func");
+	            logger.info("Got to debit_created");
 	            if (body.events[0].entity.debits[0].description !== null) {
 		            var description = body.events[0].entity.debits[0].description;
 		            logger.info(description);
@@ -95,7 +135,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	            }
             });
             evt.on('debit_succeeded', function (status) {
-	            logger.info("Got to the debit_succeeded func");
+	            logger.info("Got to debit_succeeded");
 	            if (body.events[0].entity.debits[0].description !== null) {
 		            var description = body.events[0].entity.debits[0].description;
 		            logger.info(description);
@@ -118,7 +158,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 
 	        /*********** Debit update collection events **************/
 	        evt.on('debit_update_collection_billy', function (description){
-		        logger.info("Got to the debit_update_collection_billy func");
+		        logger.info("Got to debit_update_collection_billy");
 		        var invoiceID = ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
 		        new Fiber(function() {
 			        var id = Donate.findOne({'recurring.invoice.items.guid': invoiceID})._id;
@@ -127,7 +167,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        }).run();
 	        });
 	        evt.on('debit_update_collection', function (debitID){
-		        logger.info("Got to the debit_update_collection func");
+		        logger.info("Got to debit_update_collection");
 		        new Fiber(function() {
 			        Donate.update({'debit.id': debitID}, {$set: {'debit.status': body.events[0].entity.debits[0].status}});
 		        }).run();
@@ -136,16 +176,29 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	        /***************         END DEBIT AREA         **************/
 	        /*************************************************************/
 
+	        /*************************************************************/
+	        /***************         Hold AREA             **************/
+	        /*************************************************************/
             evt.on('hold_created', function (status) {
-	            console.log("Got to the hold_created func");
+	            logger.info("Got to hold_created");
+	            this.emit('update_from_event', body.events[0].entity.card_holds[0].id, 'card_holds',
+		            body.events[0].entity.card_holds[0].status);
             });
             evt.on('hold_updated', function (status) {
-	            console.log("Got to the hold_updated func");
+	            logger.info("Got to hold_updated");
+	            this.emit('update_status', body.events[0].entity.card_holds[0].id, 'card_holds',
+		            body.events[0].entity.card_holds[0].status);
             });
             evt.on('hold_captured', function (status) {
-	            console.log("Got to the hold_captured func");
+	            logger.info("Got to hold_captured");
+	            this.emit('update_from_event', body.events[0].entity.card_holds[0].id, 'card_holds',
+		            body.events[0].entity.card_holds[0].status);
             });
-            evt.on('card_updated', function (status) {
+	        /*************************************************************/
+	        /***************         END HOLDS AREA         **************/
+	        /*************************************************************/
+
+	        evt.on('card_updated', function (status) {
 	            console.log("Got to the card_updated func");
             });
             evt.on('card_created', function (status) {
@@ -182,23 +235,23 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
         /*function debit_created(){
             console.log("Worked");
         };*/
+// Check the body otherwise any invalid call to the website would still run any of the events after checking the body.
+	        // TODO: This might not be necessary in the long run because I'll be restricting traffic to /events by IP, but this is still good practice
+	        body = req.body; //request body
+	        try {
+		        body.events !== null ? runEvents(body) : noBody();
+	        }catch(e) {
+		        logger.error(e);
+	        }
 
-	    // Check the body otherwise any invalid call to the website would still run any of the events after checking the body.
-	    // TODO: This might not be necessary in the long run because I'll be restricting traffic to /events by IP, but this is still good practice
-        var body = req.body; //request body
-        try {
-            body.events != null ? runEvents(body) : noBody();
-        }catch(e) {
-            logger.error(e);
-        }
+	        function noBody() {
+		        logger.warn('No events found in the body, exited.');
+		        res.writeHead(404, {
+			        'Content-Type': 'application/json'
+		        });
+		        res.end("404");//TODO: Remove Got it text, just leave blank when this is live.
+	        };
 
-        function noBody() {
-            logger.warn('No events found in the body, exited.');
-            res.writeHead(404, {
-	            'Content-Type': 'application/json'
-            });
-            res.end("404");//TODO: Remove Got it text, just leave blank when this is live.
-        }
 
     }).run();
 });

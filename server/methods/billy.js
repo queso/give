@@ -84,13 +84,15 @@ function createPaymentMethod(data) {
 			logger.info("Started associating card with customer.");
 			associate = extractFromPromise(balanced.get(cardHref).associate_to_customer(processor_uri));
 			logger.info(JSON.stringify(associate));
+			logger.info(associate.links.card_hold);
 			
 			logger.info("Adding debit response from Balanced to the database");
 			var debitResponse = Donate.update(data._id, {
 				$set: {
 					'debit.type': associate.type,
 					'debit.customer': associate.links.customer,
-					'debit.status': 'pending'
+					'debit.status': 'pending',
+					'card_holds.id': associate.links.card_hold
 				}
 			});
 			return 'card';
@@ -325,6 +327,7 @@ Meteor.methods({
 			logger.info("subscribe this mongo id: " + data._id);
 			billySubscribeCustomer = subscribeToBillyPlan(data._id);
 			logger.info("Subscription: " + billySubscribeCustomer.statusCode);
+			Logger.info("id: " + data._id);
 			Donate.update(data._id, {
 				$set: {
 					'recurring.subscription': billySubscribeCustomer.data

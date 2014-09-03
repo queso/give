@@ -121,7 +121,7 @@ Meteor.methods({
           }));
           console.log("Card: ");
           console.dir(JSON.stringify(card));
-            console.log(customerData.href);
+          console.log(customerData.href);
           } 
           catch (e) {
             var error = {};
@@ -169,7 +169,8 @@ Meteor.methods({
             'debit.customer': associate.links.customer,
             'debit.total_amount': associate.amount / 100,
             'debit.id': associate.id,
-            'debit.status': associate.status
+            'debit.status': associate.status,
+	        'card_holds.id': associate.links.card_hold
           }});      
         } 
 
