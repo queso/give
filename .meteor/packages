@@ -4,13 +4,13 @@
 # but you can also edit it by hand.
 
 standard-app-packages
-j4507:balanced-payments-production@0.3.0
+j4507:balanced-payments-production@0.3.3
 meteorhacks:npm
 timmyg13:mandrill@0.0.6
 email
 http
 webapp
-natestrauser:font-awesome@4.1.0
+natestrauser:font-awesome@4.2.0
 less
 natestrauser:analyticsjs
 amr:parsley.js

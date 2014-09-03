@@ -20,7 +20,6 @@
 	width:68px;
 	display:inline-block
 }
-
 .loading1 {
 	font-size:18em;
 	color:#389ADC
@@ -325,4 +324,8 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button {
 /*Padding the bottom of the page, not much white space down there.*/
 .padBottom {
 	padding-bottom:20px
+}
+.loading1 {
+    font-size:18em;
+    color:#389ADC
 }

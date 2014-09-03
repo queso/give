@@ -37,23 +37,23 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
         //This function may be needed if it turns out that events are coming in out of order, or if
         // success and failures are both coming in for the same event types, in which case the client could
         // get conflicting emails.
-        function fetchLatestStatus(eventID){ //TODO: figure out if this part is even necessary, doesn't seem to do much, except that it checks the status is correct.
-            /*try {*/ //TODO: turn try and catch back on
+        /*function fetchLatestStatus(eventID){ //TODO: figure out if this part is even necessary, doesn't seem to do much, except that it checks the status is correct.
+            *//*try {*//* //TODO: turn try and catch back on
 	            //TODO: change /events/ URL to something extracted from the POST event call here.
 	            fetchStatus = extractFromPromise(balanced.marketplace.get('/events/EVa48561f6274d11e4ae5502d2dca51d8a'));
 	            console.log("Status: " + fetchStatus);
 	            Donate.update({'events[0].id': eventID}, {$set: {event_status: fetchStatus}});
-            /*}catch(e) {
+            *//*}catch(e) {
 	            logger.error("Inside fetchLatestStatus: " + e);
-            }*/
-        }
+            }*//*
+        }*/
 
         //Get Events started
         function runEvents (body) {
             var evt = getEvents(body);
 
             evt.on('start', function () {
-	            console.log("Started");
+	            logger.info("Received an event");
             });
 
             evt.on('checkBody', function (d) {
@@ -63,7 +63,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
             });
 
             evt.on('end', function (t) {
-	            console.log('Done with ' + t + ' data events.');
+	            logger.info('Done with ' + t + ' data events.');
 	            res.writeHead(200, {
 		            'Content-Type': 'application/json'
 	            });
@@ -71,108 +71,71 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
             });
 
             evt.on('select', function (bodyType) {
-	            console.log("There was a bodyType " + bodyType);
+	            logger.info("There was a bodyType " + bodyType);
 
 	            //replace the period in the funcName with an underscore
 	            var funcName = bodyType.replace(/\./g,'_');
-	            console.log(funcName);
+	            logger.info(funcName);
 
 	            //Send to the evt.on of the same name
 	            this.emit([funcName]);
             });
 
-           /* evt.on('checkBilly', function (baseData) {
-	            try {
-		            var getBillyInvoiceID = baseData.meta["billy.transaction_guid"] != null ? findBillyInvoiceID(baseData) :  false;
-		            return getBillyInvoiceID;
-
-		            function findBillyInvoiceID(baseData) {
-			            //return the last word in the description, which is the invoice ID.
-			            return ("" + baseData.description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
-		            }
-
-	            }catch(e) {
-		            logger.error(e);
-	            }
-
-            });
-
-            evt.on('checkFailed', function (refFunc) {
-	           *//* body.events[0].entity.[refFunc] = req.body; //request body
-	            try {
-		            body.events[0]. != null ? runEvents(body) : noBody();
-	            }catch(e) {
-		            logger.error(e);
-	            }
-
-	            d && This()*//*
-            });*/
-
+			/*************************************************************/
+	        /***************         DEBIT AREA             **************/
+	        /*************************************************************/
             evt.on('debit_created', function () {
-	            console.log("Got to the debit_created func"); //TODO: Remove
-
-	            var debitID = body.events[0].entity.debits[0].id;
-	            console.log(debitID);
-
-	            // Put this event into the document linked to the passed id and into the debit_status property.
-	            new Fiber(function() {
-		            Donate.update({'debit.id': debitID},
-			            {$push: {events: body}
-			            });
-	            }).run();
-
-	            /*var baseData = body.events[0].entity.debits[0];
-	            function runChecks() {
-		            var billy = this.emit('checkBilly', baseData);
-		            //var failed = this.emit('checkFailed', 'debits', baseData);
+	            logger.info("Got to the debit_created func");
+	            if (body.events[0].entity.debits[0].description !== null) {
+		            var description = body.events[0].entity.debits[0].description;
+		            logger.info(description);
+		            this.emit('debit_update_collection_billy', description);
+	            } else {
+		            this.emit('debit_update_collection', body.events[0].entity.debits[0].id);
 	            }
-
-	            (billy == false) ? addRecord(false) : (status == true) ? runTrue() : runFalse();*/
-
             });
             evt.on('debit_succeeded', function (status) {
-	            console.log("Got to the debit_succeeded func"); //TODO: Remove
-
-	            var debitID = body.events[0].entity.debits[0].id;
-	            console.log(debitID);
-
-	            // Put this event into the document linked to the passed id and into the debit_status property.
-	            new Fiber(function() {
-		            Donate.update({'debit.id': debitID},
-			            {$push: {events: body}
-			            });
-
-		            fetchLatestStatus(body.events[0].id);
-	            }).run();
-
-
-
+	            logger.info("Got to the debit_succeeded func");
+	            if (body.events[0].entity.debits[0].description !== null) {
+		            var description = body.events[0].entity.debits[0].description;
+		            logger.info(description);
+		            this.emit('debit_update_collection_billy', description);
+	            } else {
+		            this.emit('debit_update_collection', body.events[0].entity.debits[0].id);
+	            }
             });
             evt.on('debit_failed', function (status) {
-	            console.log("Got to the debit_failed func"); //TODO: Remove
-
-	            var invoiceID = lastWord(body.events[0].entity.debits[0].id)
-
-	            var updateThis = Donate.findOne({
-		            'recurring.invoice.items.guid': invoiceID
-	            })._id;
-	            Donate.update(updateThis, {
-		            $set: {
-			            'debit.id': postData.debitID
-		            }
-	            });
-				//TODO: figure out if you want to use a lastWord function like in callbacks.js, or use an event. 
-	            var invoiceID = lastWord(body.events[0].entity.debits[0].id);
-	            console.log(debitID);
-
-	            // Put this event into the document linked to the passed id and into the debit_status property.
-	            new Fiber(function() {
-		            Donate.update({'debit.id': debitID},
-			            {$push: {events: body}
-			            });
-	            }).run();
-
+	            logger.info("Got to the debit_failed func");
+	            logger.info(body.events[0].entity.debits[0].description);
+	            if (body.events[0].entity.debits[0].description !== null) {
+		            var description = body.events[0].entity.debits[0].description;
+		            logger.info(description);
+		            this.emit('debit_update_collection_billy', description);
+	            } else {
+		            this.emit('debit_update_collection', body.events[0].entity.debits[0].id);
+	            }
             });
+
+	        /*********** Debit update collection events **************/
+	        evt.on('debit_update_collection_billy', function (description){
+		        logger.info("Got to the debit_update_collection_billy func");
+		        var invoiceID = ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
+		        new Fiber(function() {
+			        var id = Donate.findOne({'recurring.invoice.items.guid': invoiceID})._id;
+			        Donate.update(id, {$set: {'debit.status': body.events[0].entity.debits[0].status,
+				        'debit.id': body.events[0].entity.debits[0].id}});
+		        }).run();
+	        });
+	        evt.on('debit_update_collection', function (debitID){
+		        logger.info("Got to the debit_update_collection func");
+		        new Fiber(function() {
+			        Donate.update({'debit.id': debitID}, {$set: {'debit.status': body.events[0].entity.debits[0].status}});
+		        }).run();
+	        });
+	        /*************************************************************/
+	        /***************         END DEBIT AREA         **************/
+	        /*************************************************************/
+
             evt.on('hold_created', function (status) {
 	            console.log("Got to the hold_created func");
             });
