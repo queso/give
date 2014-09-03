@@ -229,18 +229,18 @@
       <file leaf-file-name="donation_form.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/views/donate/donation_form.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="5710" max-vertical-offset="9078">
-              <caret line="355" column="23" selection-start-line="355" selection-start-column="23" selection-end-line="355" selection-end-column="23" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="2395" max-vertical-offset="9078">
+              <caret line="353" column="1" selection-start-line="353" selection-start-column="1" selection-end-line="353" selection-end-column="1" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="billy.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="billy.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/methods/billy.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.68194443" vertical-offset="971" max-vertical-offset="6086">
-              <caret line="86" column="51" selection-start-line="86" selection-start-column="51" selection-end-line="86" selection-end-column="51" />
+            <state vertical-scroll-proportion="-15.04" vertical-offset="1256" max-vertical-offset="6086">
+              <caret line="96" column="15" selection-start-line="96" selection-start-column="15" selection-end-line="96" selection-end-column="15" />
               <folding />
             </state>
           </provider>
@@ -266,11 +266,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="events.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="events.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server/methods/events.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-39.52" vertical-offset="2327" max-vertical-offset="4692">
-              <caret line="195" column="15" selection-start-line="195" selection-start-column="15" selection-end-line="195" selection-end-column="15" />
+            <state vertical-scroll-proportion="0.30972221" vertical-offset="2684" max-vertical-offset="3944">
+              <caret line="171" column="74" selection-start-line="171" selection-start-column="74" selection-end-line="171" selection-end-column="74" />
               <folding />
             </state>
           </provider>
@@ -312,8 +312,8 @@
         <option value="$PROJECT_DIR$/client/views/donate/donation_form.html" />
         <option value="$PROJECT_DIR$/client/views/donate/donation_form.css" />
         <option value="$PROJECT_DIR$/server/methods/donate.js" />
-        <option value="$PROJECT_DIR$/server/methods/events.js" />
         <option value="$PROJECT_DIR$/server/methods/billy.js" />
+        <option value="$PROJECT_DIR$/server/methods/events.js" />
       </list>
     </option>
   </component>
@@ -1021,14 +1021,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/views/donate/donation_form.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="5710" max-vertical-offset="9078">
-          <caret line="355" column="23" selection-start-line="355" selection-start-column="23" selection-end-line="355" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/views/thanks.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.11409396" vertical-offset="0" max-vertical-offset="745">
@@ -1058,14 +1050,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/methods/donate.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-22.0" vertical-offset="3734" max-vertical-offset="4454">
-          <caret line="252" column="21" selection-start-line="252" selection-start-column="18" selection-end-line="252" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/methods/callbacks.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-9.6" vertical-offset="1256" max-vertical-offset="6647">
@@ -1074,18 +1058,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/methods/events.js">
+    <entry file="file://$PROJECT_DIR$/server/methods/billy.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-39.52" vertical-offset="2327" max-vertical-offset="4692">
-          <caret line="195" column="15" selection-start-line="195" selection-start-column="15" selection-end-line="195" selection-end-column="15" />
+        <state vertical-scroll-proportion="-15.04" vertical-offset="1256" max-vertical-offset="6086">
+          <caret line="96" column="15" selection-start-line="96" selection-start-column="15" selection-end-line="96" selection-end-column="15" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/methods/billy.js">
+    <entry file="file://$PROJECT_DIR$/client/views/donate/donation_form.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.68194443" vertical-offset="971" max-vertical-offset="6086">
-          <caret line="86" column="51" selection-start-line="86" selection-start-column="51" selection-end-line="86" selection-end-column="51" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="2395" max-vertical-offset="9078">
+          <caret line="353" column="1" selection-start-line="353" selection-start-column="1" selection-end-line="353" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/methods/donate.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-22.0" vertical-offset="3734" max-vertical-offset="4454">
+          <caret line="252" column="21" selection-start-line="252" selection-start-column="18" selection-end-line="252" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/methods/events.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.30972221" vertical-offset="2684" max-vertical-offset="3944">
+          <caret line="171" column="74" selection-start-line="171" selection-start-column="74" selection-end-line="171" selection-end-column="74" />
           <folding />
         </state>
       </provider>

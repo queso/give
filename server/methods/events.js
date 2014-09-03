@@ -54,37 +54,37 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 
         //Get Events started
         function runEvents (body) {
-            var evt = getEvents(body);
+	        var evt = getEvents(body);
 
-            evt.on('start', function () {
-	            logger.info("*****************Received an event");
-            });
+	        evt.on('start', function () {
+		        logger.info("*****************Received an event");
+	        });
 
-            evt.on('checkBody', function (d) {
-	            logger.info("Got to checkBody");
-	            var bodyType = d.events[0].type; //What type of event is coming from Balanced?
-	            logger.info('Body type: ' + bodyType);
-	            this.emit('select', bodyType);
-            });
+	        evt.on('checkBody', function (d) {
+		        logger.info("Got to checkBody");
+		        var bodyType = d.events[0].type; //What type of event is coming from Balanced?
+		        logger.info('Body type: ' + bodyType);
+		        this.emit('select', bodyType);
+	        });
 
-            evt.on('end', function (t) {
-	            logger.info('Done with ' + t + ' data events.');
-	            res.writeHead(200, {
-		            'Content-Type': 'application/json'
-	            });
-	            res.end("Got it");//TODO: Remove Got it text, just leave blank when this is live.
-            });
+	        evt.on('end', function (t) {
+		        logger.info('Done with ' + t + ' data events.');
+		        res.writeHead(200, {
+			        'Content-Type': 'application/json'
+		        });
+		        res.end("Got it");//TODO: Remove Got it text, just leave blank when this is live.
+	        });
 
-            evt.on('select', function (bodyType) {
-	            logger.info("Received type: " + bodyType);
+	        evt.on('select', function (bodyType) {
+		        logger.info("Received type: " + bodyType);
 
-	            //replace the period in the funcName with an underscore
-	            var funcName = bodyType.replace(/\./g,'_');
-	            logger.info("Sending to: " + funcName);
+		        //replace the period in the funcName with an underscore
+		        var funcName = bodyType.replace(/\./g, '_');
+		        logger.info("Sending to: " + funcName);
 
-	            //Send to the evt.on of the same name
-	            this.emit([funcName]);
-            });
+		        //Send to the evt.on of the same name
+		        this.emit([funcName]);
+	        });
 
 	        /*************************************************************/
 	        /**************        UPDATE STATUS            **************/
@@ -93,19 +93,19 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        logger.info("Got to update_from_event");
 		        logger.info("The ID is: " + id + " The type is: " + type + " This status is: " + status);
 
-		        try{
+		        try {
 			        new Fiber(function () {
 				        Donate.update({'[type]id': id}, {$set: {'[type].status': status}});
 			        }).run();
-		        } catch(e){
+		        } catch (e) {
 			        Logger.warn(e);
 		        }
 	        });
 	        //Duplicate is intentional and a feature of events that allows us to run multiple events from one call
-	        evt.on('update_from_event', function(id, type, status) {
+	        evt.on('update_from_event', function (id, type, status) {
 		        logger.info("Got to update_from_event (2nd)");
 		        logger.info("(2nd) The ID is: " + id + " The type is: " + type + " This status is: " + status);
-		        /*try{*/
+		        try {
 			        if (body.events[0].entity[type][0].meta['billy.transaction_guid']) {
 				        console.log("Inside If statment");
 				        var description = body.events[0].entity[type][0].description;
@@ -113,64 +113,33 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 				        new Fiber(function () {
 					        var id = Donate.findOne({'recurring.invoice.items.guid': invoiceID})._id;
 					        Donate.update({'[type].id': body.events[0].entity[type][0].id});
-			            }).run();
-			        } else {Logger.info("Nothing to update, not a Billy transaction.")}
-		        /*} catch(e){
+				        }).run();
+			        } else {
+				        Logger.info("Nothing to update, not a Billy transaction.")
+			        }
+		        } catch (e) {
 			        logger.error(e);
-		        }*/
+		        }
 	        });
 	        //UPDATE STATUS END
 
-			/*************************************************************/
+	        /*************************************************************/
 	        /***************         DEBIT AREA             **************/
 	        /*************************************************************/
-            evt.on('debit_created', function () {
-	            logger.info("Got to debit_created");
-	            if (body.events[0].entity.debits[0].description !== null) {
-		            var description = body.events[0].entity.debits[0].description;
-		            logger.info(description);
-		            this.emit('debit_update_collection_billy', description);
-	            } else {
-		            this.emit('debit_update_collection', body.events[0].entity.debits[0].id);
-	            }
-            });
-            evt.on('debit_succeeded', function (status) {
-	            logger.info("Got to debit_succeeded");
-	            if (body.events[0].entity.debits[0].description !== null) {
-		            var description = body.events[0].entity.debits[0].description;
-		            logger.info(description);
-		            this.emit('debit_update_collection_billy', description);
-	            } else {
-		            this.emit('debit_update_collection', body.events[0].entity.debits[0].id);
-	            }
-            });
-            evt.on('debit_failed', function (status) {
-	            logger.info("Got to the debit_failed func");
-	            logger.info(body.events[0].entity.debits[0].description);
-	            if (body.events[0].entity.debits[0].description !== null) {
-		            var description = body.events[0].entity.debits[0].description;
-		            logger.info(description);
-		            this.emit('debit_update_collection_billy', description);
-	            } else {
-		            this.emit('debit_update_collection', body.events[0].entity.debits[0].id);
-	            }
-            });
-
-	        /*********** Debit update collection events **************/
-	        evt.on('debit_update_collection_billy', function (description){
-		        logger.info("Got to debit_update_collection_billy");
-		        var invoiceID = ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
-		        new Fiber(function() {
-			        var id = Donate.findOne({'recurring.invoice.items.guid': invoiceID})._id;
-			        Donate.update(id, {$set: {'debit.status': body.events[0].entity.debits[0].status,
-				        'debit.id': body.events[0].entity.debits[0].id}});
-		        }).run();
+	        evt.on('debit_created', function () {
+		        logger.info("Got to the debit_created");
+		        this.emit('update_from_event', body.events[0].entity.debits[0].id, 'debits',
+			        body.events[0].entity.debits[0].status);
 	        });
-	        evt.on('debit_update_collection', function (debitID){
-		        logger.info("Got to debit_update_collection");
-		        new Fiber(function() {
-			        Donate.update({'debit.id': debitID}, {$set: {'debit.status': body.events[0].entity.debits[0].status}});
-		        }).run();
+	        evt.on('debit_succeeded', function () {
+		        logger.info("Got to the debit_succeeded");
+		        this.emit('update_from_event', body.events[0].entity.debits[0].id, 'debits',
+			        body.events[0].entity.debits[0].status);
+	        });
+	        evt.on('debit_failed', function () {
+		        logger.info("Got to the debit_failed");
+		        this.emit('update_from_event', body.events[0].entity.debits[0].id, 'debits',
+			        body.events[0].entity.debits[0].status);
 	        });
 	        /*************************************************************/
 	        /***************         END DEBIT AREA         **************/
@@ -179,68 +148,57 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	        /*************************************************************/
 	        /***************         Hold AREA             **************/
 	        /*************************************************************/
-            evt.on('hold_created', function (status) {
-	            logger.info("Got to hold_created");
-	            this.emit('update_from_event', body.events[0].entity.card_holds[0].id, 'card_holds',
-		            body.events[0].entity.card_holds[0].status);
-            });
-            evt.on('hold_updated', function (status) {
-	            logger.info("Got to hold_updated");
-	            this.emit('update_status', body.events[0].entity.card_holds[0].id, 'card_holds',
-		            body.events[0].entity.card_holds[0].status);
-            });
-            evt.on('hold_captured', function (status) {
-	            logger.info("Got to hold_captured");
-	            this.emit('update_from_event', body.events[0].entity.card_holds[0].id, 'card_holds',
-		            body.events[0].entity.card_holds[0].status);
-            });
+	        evt.on('hold_created', function () {
+		        logger.info("Got to hold_created");
+		        this.emit('update_from_event', body.events[0].entity.card_holds[0].id, 'card_holds',
+			        body.events[0].entity.card_holds[0].status);
+	        });
+	        evt.on('hold_updated', function () {
+		        logger.info("Got to hold_updated");
+		        this.emit('update_status', body.events[0].entity.card_holds[0].id, 'card_holds',
+			        body.events[0].entity.card_holds[0].status);
+	        });
+	        evt.on('hold_captured', function () {
+		        logger.info("Got to hold_captured");
+		        this.emit('update_from_event', body.events[0].entity.card_holds[0].id, 'card_holds',
+			        body.events[0].entity.card_holds[0].status);
+	        });
 	        /*************************************************************/
 	        /***************         END HOLDS AREA         **************/
 	        /*************************************************************/
 
-	        evt.on('card_updated', function (status) {
-	            console.log("Got to the card_updated func");
-            });
-            evt.on('card_created', function (status) {
-	            console.log("Got to the card_created func");
-            });
-            evt.on('account_created', function (status) {
-	            console.log("Got to the account_created func");
-            });
-            evt.on('bank_account_updated', function (status) {
-	            console.log("Got to the bank_account_updated func");
-            });
-            evt.on('bank_account_created', function (status) {
-	            console.log("Got to the bank_account_created func");
-            });
-
-           /* //Send to this event if failed
-            evt.on('bank_account_updated', function () {
-	            console.log("Got to the bank_account_updated func");
-            });
-
-            //Send to this event if succeeded
-            evt.on('bank_account_created', function () {
-	            console.log("Got to the bank_account_created func");
-            });
-
-            //Send to this event if succeeded
-            evt.on('bank_account_created', function () {
-	            console.log("Got to the bank_account_created func");
-            });*/
-
-            //TODO: Map out different request paths, then write the emitters based on these paths.
+	        evt.on('card_updated', function () {
+		        logger.info("Got to the card_updated");
+		        this.emit('update_from_event', body.events[0].entity.cards[0].id, 'cards',
+			        body.events[0].entity.cards[0].status);
+	        });
+	        evt.on('card_created', function () {
+		        logger.info("Got to the card_updated");
+		        this.emit('update_from_event', body.events[0].entity.cards[0].id, 'cards',
+			        body.events[0].entity.cards[0].status);
+	        });
+	        evt.on('account_created', function () {
+		        logger.info("Got to the account_created");
+		        this.emit('update_from_event', body.events[0].entity.customers[0].id, 'customers',
+			        body.events[0].entity.customers[0].status);
+	        });
+	        evt.on('bank_account_updated', function () {
+		        logger.info("Got to the bank_account_updated");
+		        this.emit('update_from_event', body.events[0].entity.bank_accounts[0].id, 'bank_accounts',
+			        body.events[0].entity.bank_accounts[0].status);
+	        });
+	        evt.on('bank_account_created', function () {
+		        logger.info("Got to the card_updated");
+		        this.emit('update_from_event', body.events[0].entity.bank_accounts[0].id, 'bank_accounts',
+			        body.events[0].entity.bank_accounts[0].status);
+	        });
         }
-
-        /*function debit_created(){
-            console.log("Worked");
-        };*/
-// Check the body otherwise any invalid call to the website would still run any of the events after checking the body.
+	        // Check the body otherwise any invalid call to the website would still run any of the events after checking the body.
 	        // TODO: This might not be necessary in the long run because I'll be restricting traffic to /events by IP, but this is still good practice
 	        body = req.body; //request body
 	        try {
 		        body.events !== null ? runEvents(body) : noBody();
-	        }catch(e) {
+	        } catch (e) {
 		        logger.error(e);
 	        }
 
@@ -250,10 +208,8 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 			        'Content-Type': 'application/json'
 		        });
 		        res.end("404");//TODO: Remove Got it text, just leave blank when this is live.
-	        };
-
-
-    }).run();
+	        }
+        }).run();
 });
 
 /*
