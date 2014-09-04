@@ -19,7 +19,7 @@ function extractFromPromise(promise) {
 WebApp.connectHandlers.use(bodyParser.urlencoded({
     extended: false}))
     .use(bodyParser.json())
-    .use('/give/events/', function(req, res, next) {
+    .use('/events/', function(req, res, next) {
     Fiber(function() {
 
 	    function lastWord(description) {
