@@ -69,8 +69,7 @@ Meteor.methods({
         }
       });
 
-      // ^^^^^^^^^^^^^^^ Moved the above from the client side to here. 
-
+      // ^^^^^^^^^^^^^^^ Moved the above from the client side to here.
       //initialize the balanced function with our API key.
       balanced.configure(Meteor.settings.balancedPaymentsAPI);
 
@@ -97,11 +96,11 @@ Meteor.methods({
         }));
       console.log("Customer: ");
       console.dir(JSON.stringify(customerData));
-      Donate.update(data._id, {$set: {status: 'Customer created.'}});
-      console.log("Customer created." + data._id);
+      Donate.update(data._id, {$set: {status: 'Customer created.'}}); //TODO: Use this status inside the spinner to show that real things are happening.
+      console.log("Customer created: " + data._id);
     } catch (e) {
             var error = {};
-            error.e = JSON.parse(e.message).errors[0];
+            error.e = JSON.stringify(e.message).errors[0];
             error.id = data._id;
             failTheRecord(error);
             throwTheError(e);
@@ -121,33 +120,32 @@ Meteor.methods({
           }));
           console.log("Card: ");
           console.dir(JSON.stringify(card));
-          console.log(customerData.href);
-          } 
+          }
           catch (e) {
             var error = {};
-            error.e = JSON.parse(e.message).errors[0];
+            error.e = JSON.stringify(e.message).errors[0];
             error.id = data._id;
             failTheRecord(error);
-
             throwTheError(e);
           }
 
           //Debit function
           var associate;
           try {
+	          console.log('********Total Amount = '  + data.paymentInformation[0].total_amount * 100);
             associate = extractFromPromise(card.associate_to_customer(customerData.href).debit({
 
             "amount": data.paymentInformation[0].total_amount * 100,
             "appears_on_statement_as": "Trash Mountain"}));
             console.log("Associate and debit: ");
             console.dir(JSON.stringify(associate));
+
           }
           catch (e) {
             var error = {};
             error.e = JSON.parse(e.message).errors[0];
             error.id = data._id;
             failTheRecord(error);
-
             throwTheError(e);
           }
         
@@ -196,7 +194,6 @@ Meteor.methods({
             error.e = JSON.parse(e.message).errors[0];
             error.id = data._id;
             failTheRecord(error);
-           
             throwTheError(e);
           }
 
@@ -204,6 +201,7 @@ Meteor.methods({
           var associate;
 
           try {
+			console.log('*********Total Amount = ' + data.paymentInformation[0].total_amount * 100);
             associate = extractFromPromise(check.associate_to_customer(customerData.href).debit({
 
             "amount": data.paymentInformation[0].total_amount * 100,
@@ -216,7 +214,6 @@ Meteor.methods({
             error.e = JSON.parse(e.message).errors[0];
             error.id = data._id;
             failTheRecord(error);
-
             throwTheError(e);
           }
 
@@ -250,6 +247,7 @@ Meteor.methods({
         logger.info("**********************NEW GIFT******************** id: " + id + " Total Amount: $" + amount)
       }
       catch (e) {
+        logger.error(e);
         throw new Meteor.error(e);
       }
     }

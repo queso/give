@@ -6,18 +6,50 @@
   // since we can take payment with card fees added in this is needed to update the 
   // amount that is shown to the user and passed as total_amount through the form
 
+//display error modal if there is an error while initially submitting data from the form.
+function handleErrors(error) {
+	console.log(error);
+	$('#modal_for_initial_donation_error').modal({
+		show: true
+	});
+	$('#errorCategory').text(error.category_code);
+	$('#errorDescription').text(error.description);
+}
+
+function fillForm() {
+	if (Session.get("paymentMethod") === "check") {
+		$('#routing_number').val("321174851");
+		$('#account_number').val("9900000003");
+	} else {
+		$('#card_number').val("4444444444444448");
+		$('#expiry_month option').prop('selected', false).filter('[value=12]').prop(
+			'selected', true);
+		$('select[name=expiry_month]').change();
+		$('#expiry_year option').prop('selected', false).filter('[value=2015]').prop(
+			'selected', true);
+		$('select[name=expiry_year]').change();
+		$('#cvv').val("123");
+	}
+	$('#fname').val("John");
+	$('[name="lname"]').val("Doe");
+	$('[name="email_address"]').val("josh@trashmountain.com");
+	$('#phone').val("(785) 246-6845");
+	$('[name="address_line1"]').val("Address Line 1");
+	$('[name="address_line2"]').val("Address Line 2");
+	$('[name="city"]').val("Topeka");
+	$('#region').val("KS");
+	$('[name="postal_code"]').val("66618");
+	$('#amount').val("1.03");
+}
+
 function updateTotal() {
   var data = Session.get('paymentMethod');
   var donationAmount = $('#amount').val();
   donationAmount = donationAmount.replace(/[^\d\.\-\ ]/g, '');
-  console.log(donationAmount);
   donationAmount = donationAmount.replace(/^0+/, '');
-  console.log(donationAmount);
-  console.log(data);
   if (data == 'check') {
     if ($.isNumeric(donationAmount)) {
       $("#total_amount").val(donationAmount);
-      console.log($("#total_amount").val());
       var testValueTransfer = $("#total_amount").val();
       $("#total_amount_display").text("$" + donationAmount).css({
         'color': '#34495e'
@@ -64,10 +96,9 @@ uncheckThatBox = function() {
   $(':checkbox').checkbox('toggle');
 }
 Template.DonationForm.events({
-
   'submit form': function(e, tmpl) {
     e.preventDefault();
-
+	updateTotal();
     //Start the bootstrap modal with the awesome font refresh logo
     //Also, backdrop: 'static' sets the modal to not be exited when 
     //a user clicks in the background.
@@ -80,7 +111,7 @@ Template.DonationForm.events({
     var form = {
       "paymentInformation": [{
         "amount": $('#amount').val().replace(/[^\d\.\-\ ]/g, ''),
-        "total_amount": $('[name=total_amount]').val(),
+        "total_amount": $('#total_amount').val(),
         "donateTo": $("#donateTo").val(),
         "donateWith": $("#donateWith").val(),
         "is_recurring": $('#is_recurring').val(),
@@ -121,19 +152,17 @@ Template.DonationForm.events({
     }
 
     //Move inert and update from here. 
-
-    console.log($('#is_recurring').val());
-	console.log(moment().format('MM/DD/YYYY, hh:mm'));
     if ($('#is_recurring').val() === 'one_time') {
       Meteor.call("processPayment", form, function(error, result) {
         if (result) {
           $('#loading1').modal('hide');
           Meteor.call('logNewGift', result, function (error, result) {
-            console.log(error, result);
           });
           Router.go('/give/thanks/' + result);
         } else {
           $('#loading1').modal('hide');
+	      //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
+	      updateTotal();
 
           var storedError = error.error;
           handleErrors(error.error);
@@ -147,12 +176,12 @@ Template.DonationForm.events({
           $('#loading1').modal('hide');
           // In the recurring gifts section we won't know if the gift was successful until after Billy returns this data (at a later time)
           /*Meteor.call('logNewGift', result, function (error, result) {
-            console.log(error, result);
           });*/
           Router.go('/give/thanks/' + result);
         } else {
           $('#loading1').modal('hide');
-
+	      //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
+	      updateTotal();
           var storedError = error.error;
           //handleErrors is used to check the returned error and the display a user friendly message about what happened that caused
           //the error. 
@@ -164,25 +193,31 @@ Template.DonationForm.events({
   'click [name=is_recurring]': function(e, tmpl) {
     if ($("#is_recurring").val() == 'monthly') {
       Session.set('recurring', true);
-      console.log("Checked equal to true");
     } else {
       Session.set('recurring', false);
-      console.log("Checked equal to false");
     }
   },
-  'keyup [name=amount]': function() {
+  'keyup, change #amount': function() {
     return updateTotal();
-  },
-  'change [name=amount]': function() {
+  },/*
+  'change #amount': function() {
     return updateTotal();
-  },
+  },*/// disable mousewheel on a input number field when in focus
+	// (to prevent Cromium browsers change the value when scrolling)
+	'focus #amount': function(e, tmpl) {
+		$('#amount').on('mousewheel.disableScroll', function(e) {
+			e.preventDefault();
+		});
+	},
+	'blur #amount': function(e, tmpl) {
+		$('#amount').on('mousewheel.disableScroll', function(e) {});
+		return updateTotal();
+	},
   'change [name=coverTheFees]': function() {
     return updateTotal();
   },
   'click [name=donateWith]': function(e, tmpl) {
-    console.log("Clicked");
     var selectedValue = $("[name=donateWith]").val();
-    console.log(selectedValue);
     Session.set("paymentMethod", selectedValue);
     /*
       updateTotal(selectedValue);*/
@@ -193,7 +228,6 @@ Template.DonationForm.events({
       uncheckThatBox(); //ugly hack to fix the box not appearing when switching between check and card
     }, 20);
     var selectedValue = $("[name=donateWith]").val();
-    console.log(selectedValue);
     Session.set("paymentMethod", selectedValue);
     /*
       updateTotal(selectedValue);*/
@@ -203,16 +237,6 @@ Template.DonationForm.events({
     if (e.which === 17) { //17 is ctrl + q
       fillForm();
     }
-  },
-  // disable mousewheel on a input number field when in focus
-  // (to prevent Cromium browsers change the value when scrolling)
-  'focus #amount': function(e, tmpl) {
-    $('#amount').on('mousewheel.disableScroll', function(e) {
-      e.preventDefault();
-    });
-  },
-  'blur #amount': function(e, tmpl) {
-    $('#amount').on('mousewheel.disableScroll', function(e) {});
   },
   'focus #cvv': function(e, tmpl) {
     $('#cvv').on('mousewheel.disableScroll', function(e) {
@@ -351,179 +375,4 @@ Template.cardPaymentInformation.rendered = function() {
     title: 'Our credit card processor charges 2.9% + .30 per transaction. If you check the box to cover these fees we\'ll do the math and round to the nearest whole dollar.',
     placement: 'auto top'
   });
-}
-function handleErrors(error) {
-	console.log(error);
-	$('#modal_for_initial_donation_error').modal({
-		show: true
-	});
-	$('#errorCategory').text(error.category_code);
-	$('#errorDescription').text(error.description);
-}
-
-/*function handleErrors(error) {
-  var messageGiven;
-  switch (error.category_code) {
-      case "500":
-      messageGiven = "Something went wrong, sorry about that. Please try again.";
-      Meteor.call('logError', error, messageGiven, function (error, result) {});
-	  return alert(messageGiven);
-      break;
-    case "card-declined":
-      messageGiven = "The card was declined. This might be because the account is frozen."
-      Meteor.call('logError', error, messageGiven, function (error, result) {});
-      return alert(messageGiven);
-      //use this area to add the error to the errors collection,
-      //also, send an email to me with the error printed in it
-      //don't need to use mandrill for this (unless that would be 
-      //easier
-      messageGiven = "Something went wrong, sorry about that. Please try again.";
-	    Meteor.call('logError', error, messageGiven, function (error, result) {});
-	    return alert(messageGiven);
-      break;
-    case "account-insufficient-funds":
-      break;
-    case "authorization-failed":
-      messageGiven = "Something went wrong, sorry about that. Please try again.";
-      Meteor.call('logError', error, messageGiven, function (error, result) {});
-	  return alert(messageGiven);
-      break;
-    case "address-verification-failed":
-      messageGiven = "Something went wrong, sorry about that. Please try again.";
-	    Meteor.call('logError', error, messageGiven, function (error, result) {});
-	    return alert(messageGiven);
-	break;
-    case "bank-account-not-valid":
-		messageGiven = "Something went wrong, sorry about that. Please try again.";
-		Meteor.call('logError', error, messageGiven, function (error, result) {});
-		return alert(messageGiven);
-		break;
-    case "card-not-valid":
-      messageGiven = "Something went wrong, sorry about that. Please try again.";
-	    Meteor.call('logError', error, messageGiven, function (error, result) {});
-	    return alert(messageGiven);
-		break;
-    case "card-not-validated":
-      messageGiven = "Something went wrong, sorry about that. Please try again.";
-	    Meteor.call('logError', error, messageGiven, function (error, result) {});
-	    return alert(messageGiven);
-      //this is the error for a card that is to short, probably for other errors too
-      break;
-    case "insufficient-funds":
-      messageGiven = "Something went wrong, sorry about that. Please try again.";
-	    Meteor.call('logError', error, messageGiven, function (error, result) {});
-	    return alert(messageGiven);
-	    break;
-    case "multiple-debits":
-      messageGiven = "Something went wrong, sorry about that. Please try again.";
-	    Meteor.call('logError', error, messageGiven, function (error, result) {});
-	    return alert(messageGiven);
-	    break;
-    case "no-funding-destination":
-      messageGiven = "Something went wrong, sorry about that. Please try again.";
-	    Meteor.call('logError', error, messageGiven, function (error, result) {});
-	    return alert(messageGiven);
-	    break;
-    case "no-funding-source":
-      messageGiven = "Something went wrong, sorry about that. Please try again.";
-	    Meteor.call('logError', error, messageGiven, function (error, result) {});
-	    return alert(messageGiven);
-	    break;
-    case "unexpected-payload":
-      messageGiven = "Something went wrong, sorry about that. Please try again.";
-	    Meteor.call('logError', error, messageGiven, function (error, result) {});
-	    return alert(messageGiven);
-	    break;
-    case "bank-account-authentication-forbidden":
-      messageGiven = "Something went wrong, sorry about that. Please try again.";
-	    Meteor.call('logError', error, messageGiven, function (error, result) {});
-	    return alert(messageGiven);
-	    break;
-    case "incomplete-account-info":
-      messageGiven = "Something went wrong, sorry about that. Please try again.";
-	    Meteor.call('logError', error, messageGiven, function (error, result) {});
-	    return alert(messageGiven);
-	    break;
-    case "invalid-amount":
-      messageGiven = "Something went wrong, sorry about that. Please try again.";
-      return alert(messageGiven);
-	    Meteor.call('logError', error, messageGiven, function (error, result) {});
-	    return alert(error.description);
-      break;
-    case "invalid-bank-account-number":
-      messageGiven = "Something went wrong, sorry about that. Please try again.";
-      return alert(messageGiven);
-      Meteor.call('logError', error, messageGiven, function (error, result) {});
-      break;
-    case "invalid-routing-number":
-      messageGiven = "Something went wrong, sorry about that. Please try again.";
-      return alert(messageGiven);
-      Meteor.call('logError', error, messageGiven, function (error, result) {});
-      break;
-    case "not-found":
-      messageGiven = "Something went wrong, sorry about that. Please try again.";
-      return alert(messageGiven);
-      Meteor.call('logError', error, messageGiven, function (error, result) {});
-      break;
-    case "request":
-      messageGiven = "Something went wrong, sorry about that. Please try again.";
-      return alert(messageGiven);
-      Meteor.call('logError', error, messageGiven, function (error, result) {});
-      break;
-    case "method-not-allowed":
-      messageGiven = "Something went wrong, sorry about that. Please try again.";
-      return alert(messageGiven);
-      Meteor.call('logError', error, messageGiven, function (error, result) {});
-      break;
-    case "amount-exceeds-limit":
-      messageGiven = "Something went wrong, sorry about that. Please try again.";
-      return alert(messageGiven);
-      Meteor.call('logError', error, messageGiven, function (error, result) {});
-      //use this area to split payment into more than one
-      //then send the multiple payments through, 
-      //or for a temporary workaround print instructions
-      //back to the user, tell them the max and how they can
-      //debit more in sepearte transactions
-      break;
-    case "funding-source-not-debitable":
-      messageGiven = "Something went wrong, sorry about that. Please try again.";
-      return alert(messageGiven);
-      Meteor.call('logError', error, messageGiven, function (error, result) {});
-      break;
-    default:
-      messageGiven = "Something went wrong, sorry about that. Please try again.";
-      return alert(messageGiven);
-      Meteor.call('logError', error, messageGiven, function (error, result) {});
-      //remove below before production 
-      console.log("Didn't match any error case");
-      break;
-  }
-  //END Switch case block
-}*/
-
-function fillForm() {
-  if (Session.get("paymentMethod") === "check") {
-    console.log("Check area of fillForm");
-    $('#routing_number').val("321174851");
-    $('#account_number').val("9900000003");
-  } else {
-    $('#card_number').val("4444444444444448");
-    $('#expiry_month option').prop('selected', false).filter('[value=12]').prop(
-      'selected', true);
-    $('select[name=expiry_month]').change();
-    $('#expiry_year option').prop('selected', false).filter('[value=2015]').prop(
-      'selected', true);
-    $('select[name=expiry_year]').change();
-    $('#cvv').val("123");
-  }
-  $('#fname').val("John");
-  $('[name="lname"]').val("Doe");
-  $('[name="email_address"]').val("josh@trashmountain.com");
-  $('#phone').val("(785) 246-6845");
-  $('[name="address_line1"]').val("Address Line 1");
-  $('[name="address_line2"]').val("Address Line 2");
-  $('[name="city"]').val("Topeka");
-  $('#region').val("KS");
-  $('[name="postal_code"]').val("66618");
-  $('#amount').val("1.03");
 }

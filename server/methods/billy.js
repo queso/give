@@ -34,7 +34,6 @@ function logIt() {
 function createPaymentMethod(data) {
 	try {
 		logIt();
-		
 
 		logger.info("Setup variables for data from form inputs inside the billy createPaymentMethod method.");
 		var customerInfo = data.customer[0];
@@ -47,7 +46,7 @@ function createPaymentMethod(data) {
 			// Start Tokenize card
 			var card;
 			logger.info("Payment info: " + JSON.stringify(data.paymentInformation[0]));
-			card = extractFromPromise(balanced.marketplace.cards.create({
+			card = extractFromPromise(balanced.marketplace.card.create({
 				"name": customerInfo.fname + " " + customerInfo.lname,
 				'number': data.paymentInformation[0].card_number,
 				'expiration_year': data.paymentInformation[0].expiry_year,
@@ -84,8 +83,8 @@ function createPaymentMethod(data) {
 			logger.info("Started associating card with customer.");
 			associate = extractFromPromise(balanced.get(cardHref).associate_to_customer(processor_uri));
 			logger.info(JSON.stringify(associate));
-			logger.info(associate.links.card_hold);
-			
+			logger.info("LOOK HERE ****************" + associate.links.card_hold);
+
 			logger.info("Adding debit response from Balanced to the database");
 			var debitResponse = Donate.update(data._id, {
 				$set: {
@@ -226,7 +225,6 @@ function getInvoice(subGUID) {
 		logger.info("getInvoice " + resultSet.data.items[0].guid);
 		return resultSet;
 	} catch (e) {
-		logger.info(e);
 		e._id = AllErrors.insert(e.response);
 		var error = (e.response);
 		throw new Meteor.Error(error, e._id);
@@ -298,8 +296,6 @@ Meteor.methods({
 			//remove before production
 			logger.info("Customer: ");
 			console.dir(JSON.stringify(customerData));
-			//Donate.update(data._id, {$set: {status: 'Customer created.'}});
-			logger.info("Customer created: " + customerData.id);
 			var customerResponse = Donate.update(data._id, {
 				$set: {
 					'customer.type': customerData._type,
@@ -308,7 +304,6 @@ Meteor.methods({
 			});
 			var billyCustomer = '';
 			billyCustomer = createBillyCustomer(customerData.id);
-			logger.info("Customer GUID: " + JSON.stringify(billyCustomer.data.guid));
 			Donate.update(data._id, {
 				$set: {
 					'recurring.customer': billyCustomer.data
@@ -321,13 +316,8 @@ Meteor.methods({
 			});
 			var billyPayment = '';
 			billyPayment = createPaymentMethod(data);
-			logger.info("Customer Payment Type: " + billyPayment);
-			//Donate.update(data._id, {$set: {'recurring.payment': billyPayment.data}});
 			var billySubscribeCustomer = '';
-			logger.info("subscribe this mongo id: " + data._id);
 			billySubscribeCustomer = subscribeToBillyPlan(data._id);
-			logger.info("Subscription: " + billySubscribeCustomer.statusCode);
-			Logger.info("id: " + data._id);
 			Donate.update(data._id, {
 				$set: {
 					'recurring.subscription': billySubscribeCustomer.data
@@ -335,13 +325,11 @@ Meteor.methods({
 			});
 			var billyGetInvoiceID = '';
 			billyGetInvoiceID = getInvoice(billySubscribeCustomer.data.guid);
-			logger.info("Invoice id: " + billyGetInvoiceID.data.items[0].guid);
 			Donate.update(data._id, {
 				$set: {
 					'recurring.invoice': billyGetInvoiceID.data
 				}
 			});
-			console.log("End result ID: " + data._id);
 			return data._id;
 		} catch (e) {
 			logger.info(e);

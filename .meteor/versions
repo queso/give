@@ -37,10 +37,10 @@ mizzao:bootstrap-3@3.2.0
 mongo-livedata@1.0.3
 mrt:moment@2.8.1
 natestrauser:analyticsjs@0.1.9
-natestrauser:font-awesome@4.2.0
 npm-container@1.0.0
 observe-sequence@1.0.1
 ordered-dict@1.0.0
+pfafman:font-awesome-4@4.2.0
 random@1.0.0
 reactive-dict@1.0.0
 reload@1.0.0

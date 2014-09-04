@@ -10,7 +10,7 @@ function extractFromPromise(promise) {
 		promise.then(function (result) {
 			fut.return(result);
 		}, function (error) {
-			console.log(error);
+			logger.error(error);
 			fut.throw(error);
 		});
 		return fut.wait();
@@ -95,10 +95,15 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 
 		        try {
 			        new Fiber(function () {
+				        var lookup = type;
+				        if (lookup === 'debits') {
+
+					        lookup = 'debit'; //lookup = lookup.replace(/s([^s]*)$/,'$1');
+				        }
 				        Donate.update({'[type]id': id}, {$set: {'[type].status': status}});
 			        }).run();
 		        } catch (e) {
-			        Logger.warn(e);
+			        console.log(e);
 		        }
 	        });
 	        //Duplicate is intentional and a feature of events that allows us to run multiple events from one call
@@ -107,18 +112,28 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        logger.info("(2nd) The ID is: " + id + " The type is: " + type + " This status is: " + status);
 		        try {
 			        if (body.events[0].entity[type][0].meta['billy.transaction_guid']) {
-				        console.log("Inside If statment");
-				        var description = body.events[0].entity[type][0].description;
-				        var invoiceID = ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
-				        new Fiber(function () {
-					        var id = Donate.findOne({'recurring.invoice.items.guid': invoiceID})._id;
-					        Donate.update({'[type].id': body.events[0].entity[type][0].id});
+
+				        Fiber(function () {
+					        try {
+						        var description = body.events[0].entity[type][0].description;
+						        var invoiceID = ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
+						        var id = Donate.findOne({'recurring.invoice.items.guid': invoiceID})._id;
+						        var lookup = type;
+						        if (lookup === 'debits') {
+
+							        lookup = 'debit'; //lookup = lookup.replace(/s([^s]*)$/,'$1');
+						        }
+						        Donate.update({'[lookup]id': body.events[0].entity[type][0].id});
+					        }catch(e) {
+						        console.log(e.message);
+						        console.log(e);
+					        }
 				        }).run();
 			        } else {
-				        Logger.info("Nothing to update, not a Billy transaction.")
+				        logger.info("Nothing to update, not a Billy transaction.");
 			        }
 		        } catch (e) {
-			        logger.error(e);
+			        console.log(e);
 		        }
 	        });
 	        //UPDATE STATUS END
@@ -169,28 +184,18 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 
 	        evt.on('card_updated', function () {
 		        logger.info("Got to the card_updated");
-		        this.emit('update_from_event', body.events[0].entity.cards[0].id, 'cards',
-			        body.events[0].entity.cards[0].status);
 	        });
 	        evt.on('card_created', function () {
 		        logger.info("Got to the card_updated");
-		        this.emit('update_from_event', body.events[0].entity.cards[0].id, 'cards',
-			        body.events[0].entity.cards[0].status);
 	        });
 	        evt.on('account_created', function () {
 		        logger.info("Got to the account_created");
-		        this.emit('update_from_event', body.events[0].entity.customers[0].id, 'customers',
-			        body.events[0].entity.customers[0].status);
 	        });
 	        evt.on('bank_account_updated', function () {
 		        logger.info("Got to the bank_account_updated");
-		        this.emit('update_from_event', body.events[0].entity.bank_accounts[0].id, 'bank_accounts',
-			        body.events[0].entity.bank_accounts[0].status);
 	        });
 	        evt.on('bank_account_created', function () {
 		        logger.info("Got to the card_updated");
-		        this.emit('update_from_event', body.events[0].entity.bank_accounts[0].id, 'bank_accounts',
-			        body.events[0].entity.bank_accounts[0].status);
 	        });
         }
 	        // Check the body otherwise any invalid call to the website would still run any of the events after checking the body.
@@ -199,7 +204,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	        try {
 		        body.events !== null ? runEvents(body) : noBody();
 	        } catch (e) {
-		        logger.error(e);
+		        console.log(e);
 	        }
 
 	        function noBody() {
