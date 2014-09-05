@@ -63,7 +63,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	        evt.on('checkBody', function (d) {
 		        logger.info("Got to checkBody");
 		        var bodyType = d.events[0].type; //What type of event is coming from Balanced?
-		        logger.info('Body type: ' + bodyType);
+		        console.log('Body type: ' + bodyType);
 		        this.emit('select', bodyType);
 	        });
 
@@ -200,9 +200,9 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
         }
 	        // Check the body otherwise any invalid call to the website would still run any of the events after checking the body.
 	        // TODO: This might not be necessary in the long run because I'll be restricting traffic to /events by IP, but this is still good practice
-	        body = req.body; //request body
+	        var body = req.body; //request body
 	        try {
-		        body.events !== null ? runEvents(body) : noBody();
+		        body.events ? runEvents(body) : noBody();
 	        } catch (e) {
 		        console.log(e);
 	        }
