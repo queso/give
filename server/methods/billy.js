@@ -11,8 +11,8 @@ var Future = Meteor.npmRequire("fibers/future");
   }
 
 function throwTheError(e) {
-	logger.error(JSON.stringify(error, null, 4));
-	throw new Meteor.Error(error);
+	logger.error(JSON.stringify(e, null, 4));
+	throw new Meteor.Error(e);
 }
 
 function failTheRecord(data) {

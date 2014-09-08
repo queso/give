@@ -3,12 +3,12 @@
 /*****************************************************************************/
 
   // this function is used to update the displayed total
-  // since we can take payment with card fees added in this is needed to update the 
+  // since we can take payment with card fees added in this is needed to update the
   // amount that is shown to the user and passed as total_amount through the form
 
 //display error modal if there is an error while initially submitting data from the form.
 function handleErrors(error) {
-	console.log(error);
+	//console.log(error.errors[0]);
 	$('#modal_for_initial_donation_error').modal({
 		show: true
 	});
@@ -100,7 +100,7 @@ Template.DonationForm.events({
     e.preventDefault();
 	updateTotal();
     //Start the bootstrap modal with the awesome font refresh logo
-    //Also, backdrop: 'static' sets the modal to not be exited when 
+    //Also, backdrop: 'static' sets the modal to not be exited when
     //a user clicks in the background.
     $('#loading1').modal({
       visibility: 'show',
@@ -151,7 +151,7 @@ Template.DonationForm.events({
       form.paymentInformation[0].type = "check";
     }
 
-    //Move inert and update from here. 
+    //Move inert and update from here.
     if ($('#is_recurring').val() === 'one_time') {
       Meteor.call("processPayment", form, function(error, result) {
         if (result) {
@@ -160,12 +160,13 @@ Template.DonationForm.events({
           });
           Router.go('/give/thanks/' + result);
         } else {
-          $('#loading1').modal('hide');
+            console.log(error);
 	      //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
 	      updateTotal();
-            var storedError = error.error;
-            console.log(storedError);
-            handleErrors(storedError);
+             $('#loading1').modal('hide');
+
+             var storedError = error.error;
+             handleErrors(error.error);
         }
         //END error handling block for meteor call to processPayment
       });
@@ -179,14 +180,15 @@ Template.DonationForm.events({
           });*/
           Router.go('/give/thanks/' + result);
         } else {
-          $('#loading1').modal('hide');
+            console.log(error);
 	      //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
 	      updateTotal();
-          var storedError = error.error;
-          //handleErrors is used to check the returned error and the display a user friendly message about what happened that caused
-          //the error.
-            console.log(storedError);
-          handleErrors(storedError);
+            $('#loading1').modal('hide');
+
+            var storedError = error.error;
+            //handleErrors is used to check the returned error and the display a user friendly message about what happened that caused
+            //the error.
+            handleErrors(error.error);
         }
       });
     }
@@ -225,7 +227,7 @@ Template.DonationForm.events({
   },
   'change [name=donateWith]': function(e, tmpl) {
     setTimeout(function() {
-      uncheckThatBox(); //call the same function twice, 
+      uncheckThatBox(); //call the same function twice,
       uncheckThatBox(); //ugly hack to fix the box not appearing when switching between check and card
     }, 20);
     var selectedValue = $("[name=donateWith]").val();
@@ -298,7 +300,7 @@ Template.DonationForm.rendered = function() {
     lZero: 'deny',
     vMin: 1
   });
-  //Set the checkboxes to unchecked 
+  //Set the checkboxes to unchecked
   $(':checkbox').checkbox('uncheck');
   //Set the tooltips for the question mark icons.
   $('[name=donationSummary]').tooltip({

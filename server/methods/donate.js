@@ -16,8 +16,8 @@ var Future = Meteor.npmRequire("fibers/future");
   }
 
 function throwTheError(e){
-  console.log("Extras: " + JSON.parse(e.message).errors[0].extras);  
-  console.log("Category Code: " + JSON.parse(e.message).errors[0].category_code);            
+  console.log("Extras: " + JSON.parse(e.message).errors[0].extras);
+  console.log("Category Code: " + JSON.parse(e.message).errors[0].category_code);
   console.log("All Errors: " + JSON.parse(e.message).errors[0]);
   var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
   logger.error(JSON.stringify(error, null, 4));
@@ -30,12 +30,12 @@ function failTheRecord(data) {
   logger.error("Error for this ID: " + data.id);
   logger.error(JSON.stringify(data.e, null, 4));
 
-      // Update this record to reflect failed status. 
+      // Update this record to reflect failed status.
       Donate.update(data.id, {
         $set: {
           failed: data.e
         }
-      }); 
+      });
       return;
 }
 
@@ -124,10 +124,10 @@ Meteor.methods({
                     console.dir(JSON.stringify(associate));
                 } else {
                     var e = {};
-                    error.e = JSON.parse(e.message).errors[0];
-                    error.id = data._id;
-                    failTheRecord(error);
-                    throwTheError(e);
+                    e.e = JSON.parse(error.message).errors[0];
+                    e.id = data._id;
+                    failTheRecord(e);
+                    throwTheError(error);
                 }
             });
 
