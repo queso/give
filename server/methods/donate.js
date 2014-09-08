@@ -74,41 +74,27 @@ Meteor.methods({
       balanced.configure(Meteor.settings.balancedPaymentsAPI);
 
       var customerInfo = data.customer[0];
-      console.log("Customer Info: " + JSON.stringify(customerInfo));
-      logger.info(" =====> Customer "+ JSON.stringify(customerInfo) + " <=====");
       var paymentInfo = data.paymentInformation[0];
-      console.log("Payment Info: " + JSON.stringify(paymentInfo));
       var customerData;
-
-      try {
-        customerData =  extractFromPromise(balanced.marketplace.customers.create({
-        'name': customerInfo.fname + " " + customerInfo.lname,
-        "address": {
-          "city": customerInfo.city,
-          "state": customerInfo.region,
-          "line1": customerInfo.address_line1,
-          "line2": customerInfo.address_line2,
-          "postal_code": customerInfo.postal_code,
-        },
-        'email': customerInfo.email_address, 
-        //need to add if statement for any fields that might be blank
-        'phone': customerInfo.phone_number
-        }));
-      console.log("Customer: ");
-      console.dir(JSON.stringify(customerData));
-      Donate.update(data._id, {$set: {status: 'Customer created.'}}); //TODO: Use this status inside the spinner to show that real things are happening.
-      console.log("Customer created: " + data._id);
-    } catch (e) {
-            var error = {};
-            error.e = JSON.stringify(e.message).errors[0];
-            error.id = data._id;
-            failTheRecord(error);
-            throwTheError(e);
-    }
+        Meteor.call('create_customer', customerInfo, function (error, result) {
+            if (result) {
+                customerData = result;
+                console.log("Customer: ");
+                console.dir(JSON.stringify(customerData));
+                Donate.update(data._id, {$set: {status: 'Customer created.'}}); //TODO: Use this status inside the spinner to show that real things are happening.
+                console.log("Customer created: " + data._id);
+            } else {
+                var error = {};
+                error.e = JSON.stringify(e.message).errors[0];
+                error.id = data._id;
+                failTheRecord(error);
+                throwTheError(e);
+            }
+        });
 
       //Runs if the form used was the credit card form, which sets type as part of the array which is passed to this server
       // side function
-      if (data.paymentInformation[0].type === "card") {
+      if (paymentInfo.type === "card") {
         //Tokenize card
         var card;
           Meteor.call('card_create', data, function (error, result) {
@@ -123,21 +109,23 @@ Meteor.methods({
 
           //Debit function
           var associate;
-          try {
-	          console.log('********Total Amount = '  + data.paymentInformation[0].total_amount * 100);
-            associate = extractFromPromise(card.associate_to_customer(customerData.href).debit({
-            "amount": data.paymentInformation[0].total_amount * 100,
-            "appears_on_statement_as": "Trash Mountain"}));
-            console.log("Associate and debit: ");
-            console.dir(JSON.stringify(associate));
-          }
-          catch (e) {
-            var error = {};
-            error.e = JSON.parse(e.message).errors[0];
-            error.id = data._id;
-            failTheRecord(error);
-            throwTheError(e);
-          }
+          Meteor.call('create_association', data, card.href, customerData.href, function(error, result) {
+              if(result) {
+                  associate = result;
+                  console.log('********Total Amount = '  + data.paymentInformation[0].total_amount * 100);
+                  associate = extractFromPromise(card.associate_to_customer(customerData.href).debit({
+                      "amount": data.paymentInformation[0].total_amount * 100,
+                      "appears_on_statement_as": "Trash Mountain"}));
+                  console.log("Associate and debit: ");
+                  console.dir(JSON.stringify(associate));
+              }else {
+                  var e = {};
+                  error.e = JSON.parse(e.message).errors[0];
+                  error.id = data._id;
+                  failTheRecord(error);
+                  throwTheError(e);
+              }
+          });
         
         //add customer create response from Balanced to the database
           var customerResponse = Donate.update(data._id, {$set: {
