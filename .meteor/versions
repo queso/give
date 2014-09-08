@@ -9,7 +9,7 @@ check@1.0.0
 ctl-helper@1.0.3
 ctl@1.0.1
 ddp@1.0.8
-deps@1.0.2
+deps@1.0.3
 ejson@1.0.1
 email@1.0.2
 follower-livedata@1.0.1
@@ -26,13 +26,14 @@ j4507:balanced-payments-production@0.3.3
 jquery@1.0.0
 json@1.0.0
 less@1.0.7
-livedata@1.0.8
+livedata@1.0.9
+localstorage@1.0.0
 logging@1.0.2
-meteor-platform@1.0.1
+meteor-platform@1.0.2
 meteor@1.0.3
-meteorhacks:kadira-binary-deps@1.0.0
-meteorhacks:kadira@2.5.2
-meteorhacks:npm@1.1.3
+meteorhacks:kadira-binary-deps@1.0.1
+meteorhacks:kadira@2.7.1
+meteorhacks:npm@1.1.4
 minifiers@1.0.2
 minimongo@1.0.2
 mizzao:bootstrap-3@3.2.0
@@ -45,7 +46,7 @@ observe-sequence@1.0.2
 ordered-dict@1.0.0
 pfafman:font-awesome-4@4.2.0
 random@1.0.0
-reactive-dict@1.0.1
+reactive-dict@1.0.2
 reactive-var@1.0.1
 reload@1.0.1
 retry@1.0.0
@@ -57,6 +58,6 @@ standard-app-packages@1.0.1
 templating@1.0.5
 timmyg13:mandrill@0.0.6
 tracker@1.0.2
-ui@1.0.1
+ui@1.0.2
 underscore@1.0.0
 webapp@1.0.3

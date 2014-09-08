@@ -9,6 +9,7 @@ var Future = Meteor.npmRequire("fibers/future");
     });
     return fut.wait();
   }
+
 function throwTheError(e) {
 	logger.error(JSON.stringify(error, null, 4));
 	throw new Meteor.Error(error);
@@ -32,7 +33,7 @@ function logIt() {
 }
 
 function createPaymentMethod(data) {
-	try {
+	/*try {*/
 		logIt();
 
 		logger.info("Setup variables for data from form inputs inside the billy createPaymentMethod method.");
@@ -41,38 +42,37 @@ function createPaymentMethod(data) {
 		logger.info("ID: " + data._id);
 		logger.info("In create Payment Method before if: " + debitType);
 		if (debitType === "card") {
-			logger.info("Stepped into createPaymentMethod card if statment");
-			
-			// Start Tokenize card
-			var card;
-			logger.info("Payment info: " + JSON.stringify(data.paymentInformation[0]));
-			card = extractFromPromise(balanced.marketplace.card.create({
-				"name": customerInfo.fname + " " + customerInfo.lname,
-				'number': data.paymentInformation[0].card_number,
-				'expiration_year': data.paymentInformation[0].expiry_year,
-				'expiration_month': data.paymentInformation[0].expiry_month,
-				'cvv': data.paymentInformation[0].cvv,
-				"appears_on_statement_as": "Trash Mountain"
-			}));
-			logger.info("Card reponse from balanced: " + JSON.stringify(card));
-			logger.info("ID passed from form is = " + data._id);
+			logger.info("Stepped into createPaymentMethod card if statement");
 
-			logger.info("Adding card create response from Balanced to the collection.");
-			Donate.update(data._id, {
-				$set: {
-					'card.fingerprint': card.fingerprint,
-					'card.id': card.id,
-					'card.type': card.type,
-					'card.cvv_result': card.cvv_result,
-					'card.number': card.number,
-					'card.expiration_month': card.expiration_month,
-					'card.expiration_year': card.expiration_year,
-					'card.href': card.href,
-					'card.bank_name': card.bank_name,
-					'card.created_at': card.created_at,
-					'card.can_debit': card.can_debit
-				}
-			});
+            //Tokenize card
+            var card;
+            Meteor.call('card_create', data, function (error, result) {
+                console.log(error);
+                console.log(result);
+
+                if (result) {
+                    card = result;
+                    console.log("Card: ");
+                    console.dir(JSON.stringify(card));
+                    console.log("Adding card create response from Balanced to the collection.");
+                    Donate.update(data._id, {
+                        $set: {
+                            'card.fingerprint': card.fingerprint,
+                            'card.id': card.id,
+                            'card.type': card.type,
+                            'card.cvv_result': card.cvv_result,
+                            'card.number': card.number,
+                            'card.expiration_month': card.expiration_month,
+                            'card.expiration_year': card.expiration_year,
+                            'card.href': card.href,
+                            'card.bank_name': card.bank_name,
+                            'card.created_at': card.created_at,
+                            'card.can_debit': card.can_debit
+                        }
+                    });
+                }
+            });
+
 			logger.info("Finished adding card into the collection.");
 
 			logger.info("Started Debit Function.");
@@ -101,39 +101,34 @@ function createPaymentMethod(data) {
 			logger.info("In check portion of create payment Method");
 			//Create bank account
 			var check;
-			logger.info("Payment info: " + JSON.stringify(data.paymentInformation[0]));
-			check = extractFromPromise(balanced.marketplace.bank_accounts.create({
-				"routing_number": data.paymentInformation[0].routing_number,
-				"account_type": data.paymentInformation[0].account_type,
-				"name": customerInfo.fname + " " + customerInfo.lname,
-				"account_number": data.paymentInformation[0].account_number,
-				"appears_on_statement_as": "Trash Mountain"
-			}));
-			logger.info("Check: ");
-			console.dir(JSON.stringify(check));
-			logger.info("ID: " + data._id);
-			//Debit function
-			var associate;
-			var processor_uri = Donate.findOne(data._id).recurring.customer.processor_uri;
-			var checkHref = check.href;
-			logger.info(checkHref + ' ' + processor_uri);
-			logger.info("Associate uri: " + processor_uri);
-			associate = extractFromPromise(balanced.get(checkHref).associate_to_customer(processor_uri));
-			logger.info("Associate and debit: ");
-			console.dir(JSON.stringify(associate));
-			Donate.update(data._id, {
-				$set: {
-					'bank_account.id': check.id,
-					'bank_account.href': check.href,
-					'debit.customer': associate.links.customer,
-					'debit.status': 'pending'
-				}
-			});
+            Meteor.call('check_create', data, function (error, result) {
+                console.log(error);
+                console.log(result);
+                if (result) {
+                    check = result;
+                    console.log("Check: ");
+                    console.dir(JSON.stringify(check));
+                    console.log("Adding check create response from Balanced to the collection.");
+                }
+            });
+            Meteor.call('debit_create', data, check.href, function (error, result) {
+                console.log(error, result);
+                if(result){
+                    Donate.update(data._id, {
+                        $set: {
+                            'bank_account.id': check.id,
+                            'bank_account.href': check.href,
+                            'debit.customer': check.links.customer,
+                            'debit.status': 'pending'
+                        }
+                    });
+                }
+            });
 			return 'bank_accounts';
-		}
+		}/*
 	} catch (e) {
 		throwTheError(e);
-	}
+	}*/
 }
 
 function createBillyCustomer(customerID) {

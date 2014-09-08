@@ -111,35 +111,25 @@ Meteor.methods({
       if (data.paymentInformation[0].type === "card") {
         //Tokenize card
         var card;
-        try {
-          card = extractFromPromise(balanced.marketplace.cards.create({
-            'number': data.paymentInformation[0].card_number,
-            'expiration_year': data.paymentInformation[0].expiry_year,
-            'expiration_month': data.paymentInformation[0].expiry_month,
-            'cvv': data.paymentInformation[0].cvv
-          }));
-          console.log("Card: ");
-          console.dir(JSON.stringify(card));
-          }
-          catch (e) {
-            var error = {};
-            error.e = JSON.stringify(e.message).errors[0];
-            error.id = data._id;
-            failTheRecord(error);
-            throwTheError(e);
-          }
+          Meteor.call('card_create', data, function (error, result) {
+              console.log(error);
+              console.log(result);
+              if (result) {
+                  card = result;
+                  console.log("Card: ");
+                  console.dir(JSON.stringify(card));
+              }
+          });
 
           //Debit function
           var associate;
           try {
 	          console.log('********Total Amount = '  + data.paymentInformation[0].total_amount * 100);
             associate = extractFromPromise(card.associate_to_customer(customerData.href).debit({
-
             "amount": data.paymentInformation[0].total_amount * 100,
             "appears_on_statement_as": "Trash Mountain"}));
             console.log("Associate and debit: ");
             console.dir(JSON.stringify(associate));
-
           }
           catch (e) {
             var error = {};
@@ -174,48 +164,40 @@ Meteor.methods({
 
         //for running ACH
         else {
-          
+
           //Create bank account
           var check;
-          try {
-            check = extractFromPromise(balanced.marketplace.bank_accounts.create({
-              "routing_number": data.paymentInformation[0].routing_number, 
-              "account_type": data.paymentInformation[0].account_type, 
-              "name": customerInfo.fname + " " + customerInfo.lname, 
-              "account_number": data.paymentInformation[0].account_number,
-              "appears_on_statement_as": "Trash Mountain"
-            }));
-            console.log("Check: ");
-            console.dir(JSON.stringify(check));
-            console.log(customerData.href);
-          }
-          catch (e) {
-            var error = {};
-            error.e = JSON.parse(e.message).errors[0];
-            error.id = data._id;
-            failTheRecord(error);
-            throwTheError(e);
-          }
-
-          //Debit function
+          Meteor.call('check_create', data, function (error, result) {
+              console.log(error);
+              console.log(result);
+              if (result) {
+                  check = result;
+                  console.log("Check: ");
+                  //console.dir(JSON.stringify(check));
+                  console.log("Adding check create response from Balanced to the collection.");
+              } else {
+                  var e = {};
+                  e.e = JSON.stringify(error.message).errors[0];
+                  e.id = data._id;
+                  failTheRecord(e);
+                  throwTheError(error);
+              }
+          });
+          var checkVerify;
           var associate;
-
-          try {
-			console.log('*********Total Amount = ' + data.paymentInformation[0].total_amount * 100);
-            associate = extractFromPromise(check.associate_to_customer(customerData.href).debit({
-
-            "amount": data.paymentInformation[0].total_amount * 100,
-            "appears_on_statement_as": "Trash Mountain"}));
-            console.log("Associate and debit: ");
-            console.dir(JSON.stringify(associate));
-          }
-          catch (e) {
-            var error = {};
-            error.e = JSON.parse(e.message).errors[0];
-            error.id = data._id;
-            failTheRecord(error);
-            throwTheError(e);
-          }
+                  Meteor.call('create_association', data, check.href, customerData.href, function(error, result){
+                      console.log("Back from create_association function: " + error, result);
+                          if (result) {
+                              associate = result;
+                          }
+                  else {
+                  var e = {};
+                  e.e = JSON.stringify(error.message).errors[0];
+                  e.id = data._id;
+                  failTheRecord(e);
+                  throwTheError(error);
+              }
+          });
 
           //add customer create response from Balanced to the database
           var customerResponse = Donate.update(data._id, {$set: {
