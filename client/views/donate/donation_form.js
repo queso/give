@@ -163,9 +163,9 @@ Template.DonationForm.events({
           $('#loading1').modal('hide');
 	      //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
 	      updateTotal();
-
-          var storedError = error.error;
-          handleErrors(error.error);
+            var storedError = error.error;
+            console.log(storedError);
+            handleErrors(storedError);
         }
         //END error handling block for meteor call to processPayment
       });
@@ -184,8 +184,9 @@ Template.DonationForm.events({
 	      updateTotal();
           var storedError = error.error;
           //handleErrors is used to check the returned error and the display a user friendly message about what happened that caused
-          //the error. 
-          handleErrors(error.error);
+          //the error.
+            console.log(storedError);
+          handleErrors(storedError);
         }
       });
     }

@@ -41,7 +41,9 @@ function createPaymentMethod(data) {
 		var debitType = data.paymentInformation[0].type;
 		logger.info("ID: " + data._id);
 		logger.info("In create Payment Method before if: " + debitType);
-		if (debitType === "card") {
+    var associate;
+    var processor_uri = Donate.findOne(data._id).recurring.customer.processor_uri;
+    if (debitType === "card") {
 			logger.info("Stepped into createPaymentMethod card if statement");
 
             //Tokenize card
@@ -74,8 +76,6 @@ function createPaymentMethod(data) {
             });
 			logger.info("Finished adding card into the collection.");
 			logger.info("Started Associate Function.");
-            var associate;
-            var processor_uri = Donate.findOne(data._id).recurring.customer.processor_uri;
             var cardHref = card.href;
             Meteor.call('create_association', data, cardHref, processor_uri, function(error, result){
                 console.log(error, result);
@@ -113,8 +113,7 @@ function createPaymentMethod(data) {
                     });
                 }
             });
-            var associate;
-            var processor_uri = Donate.findOne(data._id).recurring.customer.processor_uri;
+
             var checkHref = check.href;
             Meteor.call('create_association', data, checkHref, processor_uri, function(error, result){
                 console.log(error, result);
