@@ -20,4 +20,5 @@ mrt:moment
 mizzao:bootstrap-3
 npm-container
 meteorhacks:zones
+mrt:modernizr-meteor
 
