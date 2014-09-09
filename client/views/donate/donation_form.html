@@ -43,6 +43,10 @@
                     <div class="col-md-1 fixQuestionLocaiton">
                         <i id="coverTheFeesQuestion" class="fa fa-question-circle"></i>
                     </div>
+                    <label class="checkbox" for="checkbox2">
+                        <input type="checkbox" value="" id="checkbox2" checked="checked" data-toggle="checkbox" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                        Checkbox
+                    </label>
                 </div>
                     
                 {{else}}
@@ -109,22 +113,6 @@
             </div>
         </div>
     </div>
-
-    <!-- modal for Learn More on the attend page -->
-    <!--<div class="modal" id="modal_for_initial_donation_error">
-        <div class="text-left">
-            <p><strong>Sorry</strong>, that didn't work. Please check the listed error and try again. If you continue to
-                have problems processing your donation please contact support@trashmountain.com</p>
-            <div class="alert alert-danger" role="alert">
-                <div class="modal-footer">
-                    <p>{{errorCategory}}</p>
-                    <p>{{errorDescription}}</p>
-                </div>
-                <p>{{errorCategory}}</p>
-                <p>{{errorDescription}}</p>
-            </div>
-        </div>
-    </div>-->
 </template>
 
 <template name="checkPaymentInformation">
@@ -150,6 +138,7 @@
         <div name="checkGraphic" class="center-block check-graphic col-lg-6 col-md-7 col-sm-5 col-xs-10">
         </div>
     </div>
+
 
 </template>
 
