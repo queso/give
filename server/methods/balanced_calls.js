@@ -12,7 +12,7 @@ function extractFromPromise(promise) {
 
 Meteor.methods({
     card_create: function (data) {
-        console.log("Inside card create: " + data);
+        console.log("Inside card create.");
         var card;
         card = extractFromPromise(balanced.card.create({
             "name": data.customer[0].fname + " " + data.customer[0].lname,
@@ -22,7 +22,7 @@ Meteor.methods({
             'cvv': data.paymentInformation[0].cvv,
             "appears_on_statement_as": "Trash Mountain"
         }));
-        console.log(card);
+        console.log("Finished balanced card create");
         return card;
     },
     check_create: function (data) {
@@ -47,21 +47,23 @@ Meteor.methods({
         console.dir(JSON.stringify(associate));
     },
     create_association: function (data, paymentHref, otherHref) {
+            console.log("Inside create_association function");
             var associate;
-        console.log(data.paymentInformation[0].is_recurring);
-        if(data.paymentInformation[0].is_recurring === 'one_time') {
-            // var type = data.paymentInformation[0].type;
-            associate = extractFromPromise(balanced.get(paymentHref).associate_to_customer(otherHref).debit({
-                "amount": data.paymentInformation[0].total_amount * 100,
-                "appears_on_statement_as": "Trash Mountain"}));
-            console.log("Associate and debit: ");
-            console.dir(JSON.stringify(associate));
-            return associate;
-        } else {
-            associate = extractFromPromise(balanced.get(paymentHref).associate_to_customer(otherHref));
-            logger.info("Associate and debit: ");
-            return associate;
-        }
+            if (data.paymentInformation[0].is_recurring === 'one_time') {
+                console.log("One time gift.");
+                // var type = data.paymentInformation[0].type;
+                associate = extractFromPromise(balanced.get(paymentHref).associate_to_customer(otherHref).debit({
+                    "amount": data.paymentInformation[0].total_amount * 100,
+                    "appears_on_statement_as": "Trash Mountain"}));
+                console.log("Associate and debit: ");
+                console.dir(JSON.stringify(associate));
+                return associate;
+            } else {
+                console.log("Recurring gift");
+                associate = extractFromPromise(balanced.get(paymentHref).associate_to_customer(otherHref));
+                logger.info("Associate and debit: ");
+                return associate;
+            }
     },
     create_customer: function(customerInfo) {
         var customerData;

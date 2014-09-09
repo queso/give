@@ -112,7 +112,8 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        logger.info("(2nd) The ID is: " + id + " The type is: " + type + " This status is: " + status);
 		        try {
 			        if (body.events[0].entity[type][0].meta['billy.transaction_guid']) {
-
+                        // UPDATE THIS, Need to debug locallys to get the whole JSON and figure out what is happening.
+                        // console.log("Billy Transaction GUID" + body.events[0].entity[type][0].meta['billy.transaction_guid']);
 				        Fiber(function () {
 					        try {
 						        var description = body.events[0].entity[type][0].description;
