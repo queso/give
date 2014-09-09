@@ -1,9 +1,11 @@
 Template.Thanks.helpers({
 	displayReceipt: function () {
-    return (this.debit.status === 'succeeded');
+        var debitStatus = this.debit.status;
+    return (debitStatus === 'succeeded');
   },
 	successOrPendingPayment: function () {
-      return (this.debit.status === 'succeeded' || this.debit.status === 'pending');
+        var debitStatus = this.debit.status;
+      return (debitStatus === 'succeeded' || debitStatus === 'pending');
   },
 	successOrPendingTrans: function () {
   	return "<h3 class='text-center'>Thank you for your gift!</h3>\
@@ -19,7 +21,7 @@ Template.Thanks.helpers({
   failedTrans: function () {
     var referrer = this.URL;
     if(!referrer) {
-      return '';
+      return;
     }
     return "<h3 class='text-center badText'>Something went wrong.</h3>\
           <p class='text-center alert alert-error'>\

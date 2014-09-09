@@ -4,16 +4,16 @@
 
 var Future = Meteor.npmRequire("fibers/future");
 
-  function extractFromPromise(promise) {
+function extractFromPromise(promise) {
     var fut = new Future();
     promise.then(function (result) {
-       fut.return(result);
-     }, function (error) {
-       console.log(error);
-       fut.throw(error);
+        fut.return(result);
+    }, function (error) {
+        console.log(error);
+        fut.throw(error);
     });
     return fut.wait();
-  }
+}
 
 function throwTheError(e){
   console.log("Extras: " + JSON.parse(e.message).errors[0].extras);
@@ -29,7 +29,6 @@ function throwTheError(e){
 function failTheRecord(data) {
   logger.error("Error for this ID: " + data.id);
   logger.error(JSON.stringify(data.e, null, 4));
-
       // Update this record to reflect failed status.
       Donate.update(data.id, {
         $set: {
@@ -122,13 +121,13 @@ Meteor.methods({
                         "appears_on_statement_as": "Trash Mountain"}));
                     console.log("Associate and debit: ");
                     console.dir(JSON.stringify(associate));
-                } else {
+                } /*else {
                     var e = {};
                     e.e = JSON.parse(error.message).errors[0];
                     e.id = data._id;
                     failTheRecord(e);
                     throwTheError(error);
-                }
+                }*/
             });
 
             //add customer create response from Balanced to the database
