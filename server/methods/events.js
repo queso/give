@@ -89,25 +89,27 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	        /*************************************************************/
 	        /**************        UPDATE STATUS            **************/
 	        /*************************************************************/
-            evt.on('update_debit_event', function (id, type, status) {
-                logger.info("Got to update_debit_event");
-                logger.info("The Debit ID is: " + id + " The type is: " + type + " This status is: " + status);
-                try {
-                    new Fiber(function () {
-                        Donate.update({}, {
-                            $set: {
-                                'debit.status': status
-                            }
-                        });
-                    }).run();
-                } catch (e) {
-                    console.log(e);
-                }
-            });
+	        evt.on('update_from_event', function (id, type, status) {
+		        logger.info("Got to update_from_event");
+		        logger.info("The ID is: " + id + " The type is: " + type + " This status is: " + status);
+                var lookup = type;
+		        try {
+			        new Fiber(function () {
+                        if(lookup === 'debits') {
+                            lookup = 'debit';
+                            Donate.update({'[lookup]id': id}, {$set: {'[lookup].status': status}});
+                        } else{
+                            Donate.update({'[lookup]id': id}, {$set: {'[lookup].status': status}});
+                        }
+			        }).run();
+		        } catch (e) {
+			        console.log(e);
+		        }
+	        });
 	        //Duplicate is intentional and a feature of events that allows us to run multiple events from one call
-	        evt.on('update_billy_debit_event', function (debitID, type, status) {
-		        logger.info("Got to update_billy_debit_event");
-		        logger.info("The Billy Debit ID is: " + debitID + " The type is: " + type + " This status is: " + status);
+	        evt.on('update_from_event', function (debitID, type, status) {
+		        logger.info("Got to update_from_event (2nd)");
+		        logger.info("(2nd) The ID is: " + debitID + " The type is: " + type + " This status is: " + status);
 		        try {
 			        if (body.events[0].entity[type][0].meta['billy.transaction_guid']) {
                         // UPDATE THIS, Need to debug locally to get the whole JSON and figure out what is happening.
@@ -117,11 +119,18 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 						        var description = body.events[0].entity[type][0].description;
 						        var invoiceID = ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
 						        var id = Donate.findOne({'recurring.invoice.items.guid': invoiceID})._id;
-                                Donate.update(id, {
-                                    $set: {
-                                        '[type]id': id
-                                    }
-                                });
+                                console.log("InvoiceID lookup found: " + id);
+                                var lookup;
+                                if (type === 'debits'){
+                                    lookup = 'debit';
+
+                                }
+                                var setModifierID = { $set: {} };
+                                var setModifierStatus = { $set: {} };
+                                setModifierID.$set[lookup + '.id'] = debitID;
+                                setModifierStatus.$set[lookup + '.status'] = status;
+                                Donate.update(id, setModifierID);
+                                Donate.update(id, setModifierStatus);
 					        }catch(e) {
 						        console.log(e.message);
 						        console.log(e);
@@ -141,34 +150,16 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	        /*************************************************************/
 	        evt.on('debit_created', function () {
 		        logger.info("Got to the debit_created");
-                var goTo;
-                if (body.events[0].entity[type][0].meta['billy.transaction_guid']) {
-                    goTo = 'update_billy_debit_event';
-                }else{
-                    goTo = 'update_debit_event';
-                }
-		        this.emit('[goTo]', body.events[0].entity.debits[0].id, 'debits',
+		        this.emit('update_from_event', body.events[0].entity.debits[0].id, 'debits',
 			        body.events[0].entity.debits[0].status);
 	        });
 	        evt.on('debit_succeeded', function () {
 		        logger.info("Got to the debit_succeeded");
-                var goTo;
-                if (body.events[0].entity[type][0].meta['billy.transaction_guid']) {
-                    goTo = 'update_billy_debit_event';
-                }else{
-                    goTo = 'update_debit_event';
-                }
 		        this.emit('update_from_event', body.events[0].entity.debits[0].id, 'debits',
 			        body.events[0].entity.debits[0].status);
 	        });
 	        evt.on('debit_failed', function () {
 		        logger.info("Got to the debit_failed");
-                var goTo;
-                if (body.events[0].entity[type][0].meta['billy.transaction_guid']) {
-                    goTo = 'update_billy_debit_event';
-                }else{
-                    goTo = 'update_debit_event';
-                }
 		        this.emit('update_from_event', body.events[0].entity.debits[0].id, 'debits',
 			        body.events[0].entity.debits[0].status);
 	        });
