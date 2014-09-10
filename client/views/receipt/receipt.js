@@ -55,7 +55,7 @@ Template.Receipt.helpers({
    },
    phone_number: function () {
       if(this.customer.phone_number !== '') {
-         return "<abbr title='Phone'>P:</abbr> " + this.customer.phone_number;
+         return this.customer.phone_number;
       } else {
          return false;
       }   		

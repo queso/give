@@ -33,4 +33,7 @@ Template.Thanks.helpers({
 });
 
 Template.Thanks.rendered = function () {
+    $('head').append('<link rel="stylesheet" href="/css/reset.css"/>');
+    $('head').append('<link rel="stylesheet" href="/css/style.css"/>')
+    $('head').append('<link rel="stylesheet" href="/css/print.css"/>')
 };

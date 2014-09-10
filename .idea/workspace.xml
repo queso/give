@@ -5,6 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="27e4598c-2a9c-49c2-a07a-73dfe4cbb72d" name="Default" comment="">
+      <change type="DELETED" beforePath="Z:\give\client\views\thanks.html" afterPath="" />
+      <change type="DELETED" beforePath="Z:\give\client\views\thanks.js" afterPath="" />
+      <change type="DELETED" beforePath="Z:\give\client\views\thanks.less" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/bg.jpg" afterPath="$PROJECT_DIR$/public/images/bg.jpg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/check_image.png" afterPath="$PROJECT_DIR$/public/images/check_image.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/credit_card.png" afterPath="$PROJECT_DIR$/public/images/credit_card.png" />
@@ -187,9 +190,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/storage.svg" afterPath="$PROJECT_DIR$/public/images/icons/storage.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/support.svg" afterPath="$PROJECT_DIR$/public/images/icons/support.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/tests.js" afterPath="$PROJECT_DIR$/tests/tests.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/thanks.html" afterPath="$PROJECT_DIR$/client/views/thanks.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/thanks.js" afterPath="$PROJECT_DIR$/client/views/thanks.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/thanks.less" afterPath="$PROJECT_DIR$/client/views/thanks.less" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/ticket.svg" afterPath="$PROJECT_DIR$/public/images/icons/ticket.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/toilet-paper.svg" afterPath="$PROJECT_DIR$/public/images/icons/toilet-paper.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/donate/total_donation/total_donation.html" afterPath="$PROJECT_DIR$/client/views/donate/total_donation/total_donation.html" />
@@ -231,10 +231,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="donation_form.html" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="donation_form.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/views/donate/donation_form.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.43669987" vertical-offset="424" max-vertical-offset="3315">
+            <state vertical-scroll-proportion="-11.807693" vertical-offset="424" max-vertical-offset="3315">
               <caret line="43" column="31" selection-start-line="43" selection-start-column="31" selection-end-line="43" selection-end-column="31" />
               <folding />
             </state>
@@ -251,47 +251,57 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="donation_form.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/views/donate/donation_form.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2525" max-vertical-offset="6562">
-              <caret line="160" column="46" selection-start-line="160" selection-start-column="46" selection-end-line="160" selection-end-column="46" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="events.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/methods/events.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2354" max-vertical-offset="4420">
-              <caret line="173" column="83" selection-start-line="173" selection-start-column="83" selection-end-line="173" selection-end-column="83" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1904" max-vertical-offset="4267">
+              <caret line="140" column="75" selection-start-line="140" selection-start-column="75" selection-end-line="140" selection-end-column="75" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="donate.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/methods/donate.js">
+      <file leaf-file-name="thanks.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/views/thanks/thanks.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-17.04" vertical-offset="118" max-vertical-offset="4029">
-              <caret line="32" column="6" selection-start-line="32" selection-start-column="6" selection-end-line="36" selection-end-column="9" />
+            <state vertical-scroll-proportion="-11.769231" vertical-offset="0" max-vertical-offset="425">
+              <caret line="18" column="11" selection-start-line="18" selection-start-column="11" selection-end-line="18" selection-end-column="11" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="receipt.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/views/receipt/receipt.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-2.6666667" vertical-offset="0" max-vertical-offset="4250">
+              <caret line="8" column="49" selection-start-line="8" selection-start-column="49" selection-end-line="8" selection-end-column="49" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="thanks.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/views/thanks.js">
+        <entry file="file://$PROJECT_DIR$/client/views/thanks/thanks.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="17" max-vertical-offset="697">
-              <caret line="1" column="33" selection-start-line="1" selection-start-column="33" selection-end-line="1" selection-end-column="33" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="748">
+              <caret line="37" column="55" selection-start-line="37" selection-start-column="55" selection-end-line="37" selection-end-column="55" />
               <folding>
-                <marker date="1410233794142" expanded="true" signature="459:849" placeholder="..." />
-                <marker date="1410233794142" expanded="true" signature="722:824" placeholder="..." />
-                <marker date="1410233794142" expanded="true" signature="899:952" placeholder="..." />
-                <marker date="1410233794142" expanded="true" signature="1181:1249" placeholder="..." />
+                <marker date="1410380198355" expanded="true" signature="459:849" placeholder="..." />
+                <marker date="1410380198355" expanded="true" signature="722:824" placeholder="..." />
+                <marker date="1410380198355" expanded="true" signature="899:952" placeholder="..." />
+                <marker date="1410380198355" expanded="true" signature="1181:1249" placeholder="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="donate.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/server/methods/donate.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.4414169" vertical-offset="1869" max-vertical-offset="3961">
+              <caret line="129" column="62" selection-start-line="129" selection-start-column="62" selection-end-line="129" selection-end-column="62" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -299,18 +309,8 @@
       <file leaf-file-name="receipt.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/views/receipt/receipt.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="510" max-vertical-offset="1768">
-              <caret line="30" column="11" selection-start-line="30" selection-start-column="7" selection-end-line="30" selection-end-column="11" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="thanks.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/views/thanks.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="425">
-              <caret line="15" column="24" selection-start-line="15" selection-start-column="24" selection-end-line="15" selection-end-column="24" />
+            <state vertical-scroll-proportion="-10.92" vertical-offset="696" max-vertical-offset="1768">
+              <caret line="57" column="16" selection-start-line="57" selection-start-column="16" selection-end-line="57" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -319,8 +319,8 @@
       <file leaf-file-name="balanced_calls.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/methods/balanced_calls.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="788" max-vertical-offset="1530">
-              <caret line="66" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="720" max-vertical-offset="1530">
+              <caret line="67" column="45" selection-start-line="67" selection-start-column="45" selection-end-line="67" selection-end-column="45" />
               <folding />
             </state>
           </provider>
@@ -349,23 +349,27 @@
         <option value="$PROJECT_DIR$/.meteor/packages" />
         <option value="$PROJECT_DIR$/server/papertrail.js" />
         <option value="$PROJECT_DIR$/settings.json" />
-        <option value="$PROJECT_DIR$/client/views/donate/donation_form.js" />
         <option value="$PROJECT_DIR$/server/methods/balanced_calls.js" />
-        <option value="$PROJECT_DIR$/server/methods/donate.js" />
         <option value="$PROJECT_DIR$/client/views/thanks.html" />
         <option value="$PROJECT_DIR$/client/views/thanks.js" />
         <option value="$PROJECT_DIR$/server/methods/billy.js" />
-        <option value="$PROJECT_DIR$/server/methods/events.js" />
         <option value="$PROJECT_DIR$/client/views/donate/donation_form.css" />
         <option value="$PROJECT_DIR$/client/views/donate/donation_form.html" />
+        <option value="$PROJECT_DIR$/client/views/thanks/thanks.js" />
+        <option value="$PROJECT_DIR$/client/views/thanks/thanks.html" />
+        <option value="$PROJECT_DIR$/client/views/receipt/receipt.js" />
+        <option value="$PROJECT_DIR$/client/views/receipt/receipt.html" />
+        <option value="$PROJECT_DIR$/server/methods/events.js" />
+        <option value="$PROJECT_DIR$/client/views/donate/donation_form.js" />
+        <option value="$PROJECT_DIR$/server/methods/donate.js" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
+    <option name="x" value="1592" />
     <option name="y" value="-8" />
     <option name="width" value="1616" />
-    <option name="height" value="876" />
+    <option name="height" value="916" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -493,6 +497,38 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="public" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="give" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="give" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="public" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="css" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="give" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="give" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="packages" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -547,6 +583,50 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="thanks" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="give" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="give" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="receipt" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="give" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="give" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="donate" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -579,6 +659,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="Z:\give\public\css" />
       <recent name="Z:\give\server" />
       <recent name="Z:\give\both" />
       <recent name="Z:\give" />
@@ -641,15 +722,35 @@
     </task>
     <servers />
   </component>
+  <component name="TodoView" selected-index="0">
+    <todo-panel id="selected-file">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+    <todo-panel id="default-changelist">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+  </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
+    <frame x="1592" y="-8" width="1616" height="916" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3294423" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1992238" sideWeight="0.49968335" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3299363" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1875" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18999366" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3292232" sideWeight="0.5003167" order="7" side_tool="true" content_ui="tabs" />
@@ -886,13 +987,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/views/receipt/receipt.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35095447" vertical-offset="1019" max-vertical-offset="1700">
-          <caret line="74" column="141" selection-start-line="74" selection-start-column="139" selection-end-line="74" selection-end-column="141" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/methods/donate.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="785">
@@ -991,55 +1085,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/views/donate/donation_form.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2525" max-vertical-offset="6562">
-          <caret line="160" column="46" selection-start-line="160" selection-start-column="46" selection-end-line="160" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/both/router/routes.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="153" max-vertical-offset="935">
           <caret line="19" column="22" selection-start-line="19" selection-start-column="22" selection-end-line="19" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/views/thanks.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="425">
-          <caret line="15" column="24" selection-start-line="15" selection-start-column="24" selection-end-line="15" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/views/receipt/receipt.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="510" max-vertical-offset="1768">
-          <caret line="30" column="11" selection-start-line="30" selection-start-column="7" selection-end-line="30" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/views/thanks.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="697">
-          <caret line="1" column="33" selection-start-line="1" selection-start-column="33" selection-end-line="1" selection-end-column="33" />
-          <folding>
-            <marker date="1410233794142" expanded="true" signature="459:849" placeholder="..." />
-            <marker date="1410233794142" expanded="true" signature="722:824" placeholder="..." />
-            <marker date="1410233794142" expanded="true" signature="899:952" placeholder="..." />
-            <marker date="1410233794142" expanded="true" signature="1181:1249" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/methods/donate.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-17.04" vertical-offset="118" max-vertical-offset="4029">
-          <caret line="32" column="6" selection-start-line="32" selection-start-column="6" selection-end-line="36" selection-end-column="9" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1059,18 +1108,55 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/methods/events.js">
+    <entry file="file://$PROJECT_DIR$/client/views/donate/donation_form.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2354" max-vertical-offset="4420">
-          <caret line="173" column="83" selection-start-line="173" selection-start-column="83" selection-end-line="173" selection-end-column="83" />
+        <state vertical-scroll-proportion="-11.807693" vertical-offset="424" max-vertical-offset="3315">
+          <caret line="43" column="31" selection-start-line="43" selection-start-column="31" selection-end-line="43" selection-end-column="31" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/methods/balanced_calls.js">
+    <entry file="file://$PROJECT_DIR$/client/views/thanks/thanks.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="645" max-vertical-offset="1530">
-          <caret line="66" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="748">
+          <caret line="37" column="55" selection-start-line="37" selection-start-column="55" selection-end-line="37" selection-end-column="55" />
+          <folding>
+            <marker date="1410380198355" expanded="true" signature="459:849" placeholder="..." />
+            <marker date="1410380198355" expanded="true" signature="722:824" placeholder="..." />
+            <marker date="1410380198355" expanded="true" signature="899:952" placeholder="..." />
+            <marker date="1410380198355" expanded="true" signature="1181:1249" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/views/receipt/receipt.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-10.92" vertical-offset="696" max-vertical-offset="1768">
+          <caret line="57" column="16" selection-start-line="57" selection-start-column="16" selection-end-line="57" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/views/thanks/thanks.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-11.769231" vertical-offset="0" max-vertical-offset="425">
+          <caret line="18" column="11" selection-start-line="18" selection-start-column="11" selection-end-line="18" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/views/receipt/receipt.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.6666667" vertical-offset="0" max-vertical-offset="4250">
+          <caret line="8" column="49" selection-start-line="8" selection-start-column="49" selection-end-line="8" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/views/donate/donation_form.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33287102" vertical-offset="151" max-vertical-offset="6562">
+          <caret line="23" column="47" selection-start-line="23" selection-start-column="47" selection-end-line="23" selection-end-column="47" />
           <folding />
         </state>
       </provider>
@@ -1083,10 +1169,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/views/donate/donation_form.html">
+    <entry file="file://$PROJECT_DIR$/server/methods/events.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.43669987" vertical-offset="424" max-vertical-offset="3315">
-          <caret line="43" column="31" selection-start-line="43" selection-start-column="31" selection-end-line="43" selection-end-column="31" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1904" max-vertical-offset="4267">
+          <caret line="140" column="75" selection-start-line="140" selection-start-column="75" selection-end-line="140" selection-end-column="75" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/methods/balanced_calls.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="720" max-vertical-offset="1530">
+          <caret line="67" column="45" selection-start-line="67" selection-start-column="45" selection-end-line="67" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/methods/donate.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4414169" vertical-offset="1869" max-vertical-offset="3961">
+          <caret line="129" column="62" selection-start-line="129" selection-start-column="62" selection-end-line="129" selection-end-column="62" />
           <folding />
         </state>
       </provider>

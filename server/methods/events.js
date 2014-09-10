@@ -38,20 +38,6 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
             return(e);
         }
 
-        //This function may be needed if it turns out that events are coming in out of order, or if
-        // success and failures are both coming in for the same event types, in which case the client could
-        // get conflicting emails.
-        /*function fetchLatestStatus(eventID){ //TODO: figure out if this part is even necessary, doesn't seem to do much, except that it checks the status is correct.
-            *//*try {*//* //TODO: turn try and catch back on
-	            //TODO: change /events/ URL to something extracted from the POST event call here.
-	            fetchStatus = extractFromPromise(balanced.marketplace.get('/events/EVa48561f6274d11e4ae5502d2dca51d8a'));
-	            console.log("Status: " + fetchStatus);
-	            Donate.update({'events[0].id': eventID}, {$set: {event_status: fetchStatus}});
-            *//*}catch(e) {
-	            logger.error("Inside fetchLatestStatus: " + e);
-            }*//*
-        }*/
-
         //Get Events started
         function runEvents (body) {
 	        var evt = getEvents(body);
@@ -63,7 +49,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	        evt.on('checkBody', function (d) {
 		        logger.info("Got to checkBody");
 		        var bodyType = d.events[0].type; //What type of event is coming from Balanced?
-		        console.log('Body type: ' + bodyType);
+		        logger.info('Body type: ' + bodyType);
 		        this.emit('select', bodyType);
 	        });
 
@@ -97,13 +83,16 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 			        new Fiber(function () {
                         if(lookup === 'debits') {
                             lookup = 'debit';
+                            console.log("Show see this.");
+                            var setModifierID = { $set: {} };
+                            setModifierID.$set[lookup + '.id'] = id;
                             Donate.update({'[lookup]id': id}, {$set: {'[lookup].status': status}});
                         } else{
                             Donate.update({'[lookup]id': id}, {$set: {'[lookup].status': status}});
                         }
 			        }).run();
 		        } catch (e) {
-			        console.log(e);
+			        logger.error(e);
 		        }
 	        });
 	        //Duplicate is intentional and a feature of events that allows us to run multiple events from one call
@@ -112,14 +101,13 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        logger.info("(2nd) The ID is: " + eventID + " The type is: " + type + " This status is: " + status);
 		        try {
 			        if (body.events[0].entity[type][0].meta['billy.transaction_guid']) {
-                        // UPDATE THIS, Need to debug locally to get the whole JSON and figure out what is happening.
-                        // console.log("Billy Transaction GUID" + body.events[0].entity[type][0].meta['billy.transaction_guid']);
+                        console.log("Inside Billy update function of update_from_events 2nd.");
 				        Fiber(function () {
 					        try {
 						        var description = body.events[0].entity[type][0].description;
 						        var invoiceID = ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
 						        var id = Donate.findOne({'recurring.invoice.items.guid': invoiceID})._id;
-                                console.log("InvoiceID lookup found: " + id);
+                                logger.info("InvoiceID lookup found: " + id);
                                 var lookup = type;
                                 if (type === 'debits'){
                                     lookup = 'debit';
@@ -131,32 +119,38 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                                 Donate.update(id, setModifierID);
                                 Donate.update(id, setModifierStatus);
 					        }catch(e) {
-						        console.log(e.message);
-						        console.log(e);
+						        logger.error("Error Message: " + e.message);
+                                logger.error(e);
 					        }
 				        }).run();
 			        } else {
 				        logger.info("Nothing to update, not a Billy transaction.");
 			        }
 		        } catch (e) {
-			        console.log(e);
+                    logger.error(e);
 		        }
 	        });
 	        //UPDATE STATUS END
             evt.on('send_email', function (eventID, type, status) {
-                console.log("GOT TO TEST AREA!" + status);
                 Fiber(function () {
-                if (body.events[0].entity[type][0].meta['billy.transaction_guid']) {
-                    updateThis = Donate.findOne({'debit.id': eventID})._id;
-                } else {
+                    /*try{*/
+                    console.log(body.events[0].entity[type][0].meta['billy.transaction_guid']);
+                if (body.events[0].entity[type][0].meta['billy.transaction_guid'] !== undefined) {
                     updateThis = Donate.findOne({'recurring.subscription.guid.': eventID})._id
+                } else {
+                    updateThis = Donate.findOne({'debit.id': eventID})._id;
                 }
                     Donate.update(updateThis, {$set: {'debit.email_sent': 'sending'}});
                     //send out the appropriate email using Mandrill
                     Meteor.call('sendEmailOutAPI', updateThis, function (error, result) {
-                        console.log(error, result);
+                        logger.info("Completed Email send out API");
                     });
-                }).run();
+                    /*}
+                    catch(e) {
+                        logger.error(e);
+                    }*/
+
+                    }).run();
 
             });
 	        /*************************************************************/
@@ -186,25 +180,22 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	        /*************************************************************/
 	        /***************         Hold AREA             **************/
 	        /*************************************************************/
+            //TODO: Need to send these to a special event that adds these to the database. Look below for a link to an example.
+            //https://www.runscope.com/share/kqnnt5wx1akd/970ea5ab-ea91-476e-9fe3-6a97f272c519
 	        evt.on('hold_created', function () {
 		        logger.info("Got to hold_created");
-		        this.emit('update_from_event', body.events[0].entity.card_holds[0].id, 'card_holds',
-			        body.events[0].entity.card_holds[0].status);
 	        });
 	        evt.on('hold_updated', function () {
 		        logger.info("Got to hold_updated");
-		        this.emit('update_status', body.events[0].entity.card_holds[0].id, 'card_holds',
-			        body.events[0].entity.card_holds[0].status);
 	        });
 	        evt.on('hold_captured', function () {
 		        logger.info("Got to hold_captured");
-		        this.emit('update_from_event', body.events[0].entity.card_holds[0].id, 'card_holds',
-			        body.events[0].entity.card_holds[0].status);
 	        });
 	        /*************************************************************/
 	        /***************         END HOLDS AREA         **************/
 	        /*************************************************************/
-
+            //TODO: Need to send these to a special event that adds these to the database. Look below for a link to an example.
+            //https://www.runscope.com/share/kqnnt5wx1akd/aed288ff-a1f3-49a0-8dc5-37bc2b3102a9
 	        evt.on('card_updated', function () {
 		        logger.info("Got to the card_updated");
 	        });
@@ -227,7 +218,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	        try {
 		        body.events ? runEvents(body) : noBody();
 	        } catch (e) {
-		        console.log(e);
+		        logger.error(e);
 	        }
 
 	        function noBody() {

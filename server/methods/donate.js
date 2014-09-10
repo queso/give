@@ -116,19 +116,26 @@ Meteor.methods({
                 if (result) {
                     associate = result;
                     console.log('********Total Amount = ' + data.paymentInformation[0].total_amount * 100);
-                    associate = extractFromPromise(card.associate_to_customer(customerData.href).debit({
-                        "amount": data.paymentInformation[0].total_amount * 100,
-                        "appears_on_statement_as": "Trash Mountain"}));
-                    console.log("Associate and debit: ");
-                    console.dir(JSON.stringify(associate));
-                } /*else {
-                    var e = {};
-                    e.e = JSON.parse(error.message).errors[0];
-                    e.id = data._id;
-                    failTheRecord(e);
-                    throwTheError(error);
-                }*/
+
+                }
+                /*else {
+                 var e = {};
+                 e.e = JSON.parse(error.message).errors[0];
+                 e.id = data._id;
+                 failTheRecord(e);
+                 throwTheError(error);
+                 }*/
             });
+
+            //add debit response from Balanced to the database
+            var debitReponse = Donate.update(data._id, {$set: {
+                'debit.type': associate.type,
+                'debit.customer': associate.links.customer,
+                'debit.total_amount': associate.amount / 100,
+                'debit.id': associate.id,
+                'debit.status': associate.status,
+                'card_holds.id': associate.links.card_hold
+            }});
 
             //add customer create response from Balanced to the database
             var customerResponse = Donate.update(data._id, {$set: {
@@ -141,18 +148,7 @@ Meteor.methods({
                 'card.type': card._type,
                 'card.id': card.id
             }});
-
-            //add debit response from Balanced to the database
-            var debitReponse = Donate.update(data._id, {$set: {
-                'debit.type': associate.type,
-                'debit.customer': associate.links.customer,
-                'debit.total_amount': associate.amount / 100,
-                'debit.id': associate.id,
-                'debit.status': associate.status,
-                'card_holds.id': associate.links.card_hold
-            }});
         }
-
         //for running ACH
         else {
 

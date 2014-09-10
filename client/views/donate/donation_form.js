@@ -21,7 +21,7 @@ function fillForm() {
 		$('#routing_number').val("321174851");
 		$('#account_number').val("9900000003");
 	} else {
-		$('#card_number').val("4444444444444448");
+		$('#card_number').val("4111111111111111");
 		$('#expiry_month option').prop('selected', false).filter('[value=12]').prop(
 			'selected', true);
 		$('select[name=expiry_month]').change();

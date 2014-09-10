@@ -91,4 +91,154 @@
             </div>
         </div>	
     </div>
+    <!-- begin markup -->
+
+
+
+    <div id="invoice" class="paid">
+
+
+        <div class="this-is">
+            <strong>Donation</strong>
+        </div><!-- invoice headline -->
+
+
+        <header id="header">
+            <div class="invoice-intro">
+                <h1>Trash Mountain Project</h1>
+                <p>Developing Christ centered environments for children and families living and working in trash dump communities wordldwide.</p>
+            </div>
+
+            <dl class="invoice-meta">
+                <dt class="invoice-number">Donation #</dt>
+                <dd>{{receiptNumber}}</dd>
+                <dt class="invoice-date">Date of Donation</dt>
+                <dd>{{date}}</dd>
+            </dl>
+        </header>
+        <!-- e: invoice header -->
+
+
+        <section id="parties">
+
+            <div class="invoice-to">
+                <h2>Donation To:</h2>
+                <div id="hcard-Hiram-Roth" class="vcard">
+                    <a class="url fn" href="https://trashmountain.com">Trash Mountain Project</a>
+                    <a class="email" href="mailto:info@trashmountain.com">Info@trashmountain.com</a>
+
+                    <div class="adr">
+                        <div class="street-address">1555 NW Gage Boulevard</div>
+                        <span class="locality">Topeka</span>
+                        <span class="region">KS</span>
+                        <span class="postal-code">66618</span>
+                    </div>
+
+                    <div class="tel">785-246-6845</div>
+                </div><!-- e: vcard -->
+            </div><!-- e invoice-to -->
+            <div class="invoice-from"></div>
+
+            <div class="invoice-from">
+                <h2>Donation From:</h2>
+                <div id="hcard-{{fname}}-{{lname}}" class="vcard">
+                    <a class="fn">{{fname}} {{lname}}</a><br>
+                    <a class="email">{{email_address}}</a>
+
+                    <div class="adr">
+                        <div class="street-address">{{address_line1}}
+                            {{{address_line2}}}</div>
+                        <span class="locality">{{city}}</span>
+                        <span class="region">{{region}}</span>
+                        <span class="postal-code">{{postal_code}}</span>
+                    </div>
+
+                    <div class="tel">{{{phone_number}}}</div>
+                </div><!-- e: vcard -->
+            </div><!-- e invoice-from -->
+        </section><!-- e: invoice partis -->
+
+
+        <section class="invoice-financials">
+
+            <div class="invoice-items">
+                <table>
+                    <caption>Your Donation</caption>
+                    <thead>
+                    <tr>
+                        <th>Designation</th>
+                        <th>With</th>
+                        <th>Amount</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th>{{donateTo}}</th>
+                        <td>{{donateWith}}</td>
+                        <td>{{amount}}</td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colspan="3">&nbsp;</td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div><!-- e: invoice items -->
+
+
+            <div class="invoice-totals">
+                <table>
+                    <caption>Totals:</caption>
+                    <tbody>
+                    <tr>
+                        <th>Subtotal:</th>
+                        <td></td>
+                        <td>$103,850</td>
+                    </tr>
+                    <tr>
+                        <th>Tax:</th>
+                        <td>5%</td>
+                        <td>$5,192</td>
+                    </tr>
+                    <tr>
+                        <th>Total:</th>
+                        <td></td>
+                        <td>$109,042</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="invoice-pay">
+                    <h5>Pay with...</h5>
+                    <ul>
+                        <li>
+                            <a href="#" class="gcheckout">Checkout with Google</a>
+                        </li>
+                        <li>
+                            <a href="#" class="acheckout">Checkout with Amazon</a>
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- e: invoice totals -->
+
+
+            <div class="invoice-notes">
+                <h6>Notes &amp; Information:</h6>
+                <p>This invoice contains a incomplete list of items destroyed by the Federation ship Enterprise on Startdate 5401.6 in an unprovked attacked on a peaceful &amp; wholly scientific mission to Outpost 775.</p>
+                <p>The Romulan people demand immediate compensation for the loss of their Warbird, Shuttle, Cloaking Device, and to a lesser extent thier troops.</p>
+                <p>Failure to provide adequate compensation for the above losses will result in an immediate increase in Neutral Zone patrols &amp; a formal complaint will be filed in the form of increased aggresion on human populated worlds within the neutral zone.</p>
+            </div><!-- e: invoice-notes -->
+
+        </section><!-- e: invoice financials -->
+
+
+        <footer id="footer">
+            <p>
+                Crafted with Romulan State Required Levels of Attention by <a href="http://sprresponsive.com">sprResponsive</a>.
+            </p>
+        </footer>
+
+
+    </div><!-- e: invoice -->
 </template>
