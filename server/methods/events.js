@@ -107,9 +107,9 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        }
 	        });
 	        //Duplicate is intentional and a feature of events that allows us to run multiple events from one call
-	        evt.on('update_from_event', function (debitID, type, status) {
+	        evt.on('update_from_event', function (eventID, type, status) {
 		        logger.info("Got to update_from_event (2nd)");
-		        logger.info("(2nd) The ID is: " + debitID + " The type is: " + type + " This status is: " + status);
+		        logger.info("(2nd) The ID is: " + eventID + " The type is: " + type + " This status is: " + status);
 		        try {
 			        if (body.events[0].entity[type][0].meta['billy.transaction_guid']) {
                         // UPDATE THIS, Need to debug locally to get the whole JSON and figure out what is happening.
@@ -120,14 +120,13 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 						        var invoiceID = ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
 						        var id = Donate.findOne({'recurring.invoice.items.guid': invoiceID})._id;
                                 console.log("InvoiceID lookup found: " + id);
-                                var lookup;
+                                var lookup = type;
                                 if (type === 'debits'){
                                     lookup = 'debit';
-
                                 }
                                 var setModifierID = { $set: {} };
                                 var setModifierStatus = { $set: {} };
-                                setModifierID.$set[lookup + '.id'] = debitID;
+                                setModifierID.$set[lookup + '.id'] = eventID;
                                 setModifierStatus.$set[lookup + '.status'] = status;
                                 Donate.update(id, setModifierID);
                                 Donate.update(id, setModifierStatus);
@@ -144,7 +143,22 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        }
 	        });
 	        //UPDATE STATUS END
+            evt.on('send_email', function (eventID, type, status) {
+                console.log("GOT TO TEST AREA!" + status);
+                Fiber(function () {
+                if (body.events[0].entity[type][0].meta['billy.transaction_guid']) {
+                    updateThis = Donate.findOne({'debit.id': eventID})._id;
+                } else {
+                    updateThis = Donate.findOne({'recurring.subscription.guid.': eventID})._id
+                }
+                    Donate.update(updateThis, {$set: {'debit.email_sent': 'sending'}});
+                    //send out the appropriate email using Mandrill
+                    Meteor.call('sendEmailOutAPI', updateThis, function (error, result) {
+                        console.log(error, result);
+                    });
+                }).run();
 
+            });
 	        /*************************************************************/
 	        /***************         DEBIT AREA             **************/
 	        /*************************************************************/
@@ -157,11 +171,13 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        logger.info("Got to the debit_succeeded");
 		        this.emit('update_from_event', body.events[0].entity.debits[0].id, 'debits',
 			        body.events[0].entity.debits[0].status);
+                this.emit('send_email', body.events[0].entity.debits[0].id, 'debits', 'succeeded');
 	        });
 	        evt.on('debit_failed', function () {
 		        logger.info("Got to the debit_failed");
 		        this.emit('update_from_event', body.events[0].entity.debits[0].id, 'debits',
 			        body.events[0].entity.debits[0].status);
+                this.emit('send_email', body.events[0].entity.debits[0].id, 'debits', 'failed');
 	        });
 	        /*************************************************************/
 	        /***************         END DEBIT AREA         **************/

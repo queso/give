@@ -119,7 +119,7 @@ function createPaymentMethod(data) {
                 console.log(error, result);
                 if(result){
                     associate = result;
-                    console.log("Check links: " + check.links);
+                    console.log("Associate links: " + associate.links);
                     Donate.update(data._id, {
                         $set: {
                             'debit.type': associate.type,
