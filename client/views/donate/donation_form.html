@@ -35,21 +35,13 @@
 
                 <!-- Checbox for Covering related fees-->
                 <div class="row">
-                    <div class="col-md-4 col-md-offset-4 col-sm-10 col-xs-11">
-                        <!--<label class="checkbox" for="coverTheFees">
-                        <input type="checkbox" value="" id="coverTheFees" checked="checked" data-toggle="checkbox" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                        Checkbox
-                    </label>-->
-
+                    <div class="col-md-8 col-md-offset-2 col-sm-11 col-sm-offset-1 col-xs-11 col-xs-offset-1 text-center">
+                        <label class="checkbox moveLeft" for="coverTheFees">
+                            <input type="checkbox" name="coverTheFees" id="coverTheFees" data-toggle="checkbox" {{coverTheFeesChecked}} > I'll cover the credit card processing fees.
+                        </label>
                     </div>
-
-
-                    <label class="checkbox" for="coverTheFees">
-                        <input type="checkbox" name="coverTheFees" id="coverTheFees" data-toggle="checkbox" {{coverTheFeesChecked}} > I'll cover the credit card processing fees.
-                    </label>
-
                 </div>
-                <div class="">
+                <div class="row">
                     <i id="coverTheFeesQuestion" class="fa fa-question-circle"></i>
                 </div>
                 {{else}}

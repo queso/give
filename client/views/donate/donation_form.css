@@ -201,7 +201,6 @@ hr {
 
 .logoImage {
 	vertical-align:baseline;
-	margin-left:10px
 }
 
 .negativeBottomMargin {
@@ -297,7 +296,7 @@ input.parsley-error,select.parsley-error,textarea.parsley-error {
 /* For dropdown button menu, divides up the optgroup better */
 dt {
 	color:#000;
-	background-color:#2e8b57
+	background-color:#bdbdbd;
 }
 
 /* Remove spinner arrows for number fields */
@@ -328,4 +327,10 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button {
 .loading1 {
     font-size:18em;
     color:#389ADC
+}
+.moveLeft {
+    padding-left: 10px;
+}
+.checkbox > .icons {
+    top: 6px;
 }
