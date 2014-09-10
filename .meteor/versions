@@ -27,14 +27,15 @@ jquery@1.0.0
 json@1.0.0
 less@1.0.7
 livedata@1.0.9
+localstorage@1.0.0
 logging@1.0.2
 meteor-platform@1.0.2
 meteor@1.0.3
 meteorhacks:inject-initial@1.0.0
 meteorhacks:kadira-binary-deps@1.0.1
-meteorhacks:kadira@2.5.2
+meteorhacks:kadira@2.7.4
 meteorhacks:npm@1.1.4
-meteorhacks:zones@1.2.0
+meteorhacks:zones@1.2.1
 minifiers@1.0.2
 minimongo@1.0.2
 mizzao:bootstrap-3@3.2.0
