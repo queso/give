@@ -130,29 +130,35 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                     logger.error(e);
 		        }
 	        });
-	        //UPDATE STATUS END
+            //UPDATE STATUS END
             evt.on('send_email', function (eventID, type, status) {
                 Fiber(function () {
                     try{
                         logger.info("Got to send_email function");
-                    //console.log(body.events[0].entity[type][0].meta['billy.transaction_guid']);
-                /*if (body.events[0].entity[type][0].meta['billy.transaction_guid'] !== undefined) {
-                    console.log("Event ID: " + eventID);
-                    updateThis = Donate.findOne({'recurring.subscription.guid.': eventID})._id
-                } else {
-                    updateThis = Donate.findOne({'debit.id': eventID})._id;
-                }*/
-                    var updateThis = Donate.findOne({'debit.id': eventID})._id;
-                    Donate.update(updateThis, {$set: {'debit.email_sent': 'sending'}});
-                    //send out the appropriate email using Mandrill
-                    Meteor.call('sendEmailOutAPI', updateThis, function (error, result) {
-                        logger.info("Completed Email send out API");
-                    });
+                        //console.log(body.events[0].entity[type][0].meta['billy.transaction_guid']);
+                        if (body.events[0].entity[type][0].meta['billy.transaction_guid'] !== undefined) {
+                            var description = body.events[0].entity[type][0].description;
+                            var invoiceID = ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
+                            var id = Donate.findOne({'recurring.invoice.items.guid': invoiceID})._id;
+                            Donate.update(id, {$set: {'debit.email_sent': 'sending'}});
+
+                            //send out the appropriate email using Mandrill
+                            Meteor.call('sendEmailOutAPI', updateThis, function (error, result) {
+                                logger.info("Completed Email send out API");
+                            });
+                        } else {
+                            updateThis = Donate.findOne({'debit.id': eventID})._id;
+                            Donate.update(updateThis, {$set: {'debit.email_sent': 'sending'}});
+                            //send out the appropriate email using Mandrill
+                            Meteor.call('sendEmailOutAPI', updateThis, function (error, result) {
+                                logger.info("Completed Email send out API");
+                            });
+                        }
                     }
                     catch(e) {
                         logger.error(e);
-                    }}).run();
-
+                    }
+                }).run();
             });
 	        /*************************************************************/
 	        /***************         DEBIT AREA             **************/
