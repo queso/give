@@ -134,6 +134,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
             evt.on('send_email', function (eventID, type, status) {
                 Fiber(function () {
                     try{
+                        logger.info("Got to send_email function");
                     //console.log(body.events[0].entity[type][0].meta['billy.transaction_guid']);
                 /*if (body.events[0].entity[type][0].meta['billy.transaction_guid'] !== undefined) {
                     console.log("Event ID: " + eventID);
