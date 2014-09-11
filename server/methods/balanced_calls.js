@@ -44,7 +44,6 @@ Meteor.methods({
         logger.info("Associate uri: " + processor_uri);
         associate = extractFromPromise(balanced.get(checkHref).associate_to_customer(processor_uri));
         logger.info("Associate and debit: ");
-        console.dir(JSON.stringify(associate));
     },
     create_association: function (data, paymentHref, otherHref) {
             console.log("Inside create_association function");

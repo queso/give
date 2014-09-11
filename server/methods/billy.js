@@ -33,7 +33,7 @@ function logIt() {
 }
 
 function createPaymentMethod(data) {
-	/*try {*/
+	try {
 		logIt();
 
 		logger.info("Setup variables for data from form inputs inside the billy createPaymentMethod method.");
@@ -78,7 +78,8 @@ function createPaymentMethod(data) {
 			logger.info("Started Associate Function.");
             var cardHref = card.href;
             Meteor.call('create_association', data, cardHref, processor_uri, function(error, result){
-                console.log(error, result);
+                console.log("Results from create_association call: ");
+                console.dir(error, result);
                 if(result){
                     associate = result;
                     console.log("Card links: " + card.links);
@@ -130,10 +131,10 @@ function createPaymentMethod(data) {
                 }
             });
 			return 'bank_accounts';
-		}/*
+		}
 	} catch (e) {
 		throwTheError(e);
-	}*/
+	}
 }
 
 function createBillyCustomer(customerID) {
