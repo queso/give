@@ -14,22 +14,37 @@ Meteor.methods({
       logger.info("EMAIL:");
       logger.info("Started email send out with API for id: ");
       logger.info(data);
-      var statusOfDebit = Donate.findOne({_id: data}).debit.status;
+
       var error;
       var email_address = Donate.findOne({_id: data}).customer.email_address;
       var donateTo = Donate.findOne({_id: data}).debit.donateTo;
       var donateWith = Donate.findOne({_id: data}).debit.donateWith;
       var amount = Donate.findOne({_id: data}).debit.amount;
       var total_amount = Donate.findOne({_id: data}).debit.total_amount;
-      var fees = +total_amount - +amount;
+
       var coveredTheFees = Donate.findOne({_id: data}).debit.coveredTheFees;
-      logger.info("Cover the fees = " + coveredTheFees);
-      logger.info("debit.status: " + statusOfDebit);
+      var debit = Donate.findOne({_id: data}).debit;
+      var customer = Donate.findOne({_id: data}).customer;
+        var fees = +debit.total_amount - +debit.amount;
+      /*var address = {'fname': this.customer.fname,
+          'lname': this.customer.lname,
+          'address_line1': this.customer.address_line1,
+          'address_line2': this.customer.address_line2,
+          'locality': this.customer.city,
+          'region': this.customer.region,
+          'postal_code': this.customer.postal_code,
+          'phone': this.customer.phone_number,
+          'country': this.customer.country,
+
+      };*/
+        logger.info("First name inside mandrill.js is: " + customer.fname);
+      logger.info("Cover the fees = " + debit.coveredTheFees);
+      logger.info("debit.status: " + debit.status);
       var slug;
-      if (statusOfDebit === "failed") {
+      if (debit.status === "failed") {
         error = Donate.findOne({_id: data}).failed.status;
         slug = "failedpayment";
-        } else if (coveredTheFees){
+        } else if (debit.coveredTheFees){
         slug = "receiptincludesfees";
       } else {
         slug = "fall-2014-donation-electronic-receipt";
@@ -42,23 +57,23 @@ Meteor.methods({
         ],
         mergeVars: [
           {
-            "rcpt": email_address,
+            "rcpt": customer.email_address,
             "vars": [
               {
                 "name": "DonatedTo",
-                "content": donateTo
+                "content": debit.donateTo
               }, {
                 "name": "DonateWith", //eventually send the card brand and the last four instead of just this
-                "content": donateWith
+                "content": debit.donateWith
               }, {
                 "name": "GiftAmount",
-                "content": amount
+                "content": debit.amount
               }, {
                 "name": "GiftAmountFees",
                 "content": fees
               }, {
                 "name": "TotalGiftAmount",
-                "content": total_amount
+                "content": debit.total_amount
               }, {
                 "name": "WhatWentWrong",
                 "content": error
@@ -66,7 +81,7 @@ Meteor.methods({
             ]
           }
         ],
-        toEmail: email_address
+        toEmail: customer.email_address
       });
     } //End try
     catch (e) {
