@@ -1,68 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="AnalysisUIOptions">
-    <option name="ANALYSIS_IN_BACKGROUND" value="true" />
-  </component>
   <component name="ChangeListManager">
-    <list default="true" id="27e4598c-2a9c-49c2-a07a-73dfe4cbb72d" name="Default" comment="">
-      <change type="DELETED" beforePath="Z:\give\client\views\thanks.html" afterPath="" />
-      <change type="DELETED" beforePath="Z:\give\client\views\thanks.js" afterPath="" />
-      <change type="DELETED" beforePath="Z:\give\client\views\thanks.less" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/bg.jpg" afterPath="$PROJECT_DIR$/public/images/bg.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/check_image.png" afterPath="$PROJECT_DIR$/public/images/check_image.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/credit_card.png" afterPath="$PROJECT_DIR$/public/images/credit_card.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.eot" afterPath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.eot" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.ttf" afterPath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.ttf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.woff" afterPath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.woff" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-black.eot" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-black.eot" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-black.ttf" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-black.ttf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-black.woff" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-black.woff" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bold.eot" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bold.eot" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bold.ttf" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bold.ttf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bold.woff" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bold.woff" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.eot" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.eot" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.ttf" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.ttf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.woff" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.woff" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-italic.eot" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-italic.eot" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-italic.ttf" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-italic.ttf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-italic.woff" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-italic.woff" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-light.eot" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-light.eot" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-light.ttf" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-light.ttf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-light.woff" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-light.woff" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-regular.eot" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-regular.eot" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-regular.ttf" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-regular.ttf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-regular.woff" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-regular.woff" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/loading.gif" afterPath="$PROJECT_DIR$/public/images/loading.gif" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/switch/mask-square.png" afterPath="$PROJECT_DIR$/public/images/switch/mask-square.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/switch/mask.png" afterPath="$PROJECT_DIR$/public/images/switch/mask.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+    <list default="true" id="d6088cba-afc9-4ac0-a1e1-45aab2bd8f51" name="Default" comment="">
+      <change type="DELETED" beforePath="Z:\give\public\css\print.css" afterPath="" />
+      <change type="DELETED" beforePath="Z:\give\public\css\reset.css" afterPath="" />
+      <change type="DELETED" beforePath="Z:\give\public\css\style.css" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/.name" afterPath="$PROJECT_DIR$/.idea/.name" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.travis.yml" afterPath="$PROJECT_DIR$/.travis.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/donate/DonationTo.html" afterPath="$PROJECT_DIR$/client/views/donate/DonationTo.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/donate/DonationTo.js" afterPath="$PROJECT_DIR$/client/views/donate/DonationTo.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/both/collections/allerrors.js" afterPath="$PROJECT_DIR$/both/collections/allerrors.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/collections/allerrors.js" afterPath="$PROJECT_DIR$/server/collections/allerrors.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/android.svg" afterPath="$PROJECT_DIR$/public/images/icons/android.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/android1.svg" afterPath="$PROJECT_DIR$/public/images/icons/android1.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/app-store.svg" afterPath="$PROJECT_DIR$/public/images/icons/app-store.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/app.html" afterPath="$PROJECT_DIR$/client/app.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/both/app.js" afterPath="$PROJECT_DIR$/both/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/app.js" afterPath="$PROJECT_DIR$/client/app.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/arrow.svg" afterPath="$PROJECT_DIR$/public/images/icons/arrow.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/art.svg" afterPath="$PROJECT_DIR$/public/images/icons/art.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/compatibility/js/autoNumeric.js" afterPath="$PROJECT_DIR$/client/compatibility/js/autoNumeric.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/bag.svg" afterPath="$PROJECT_DIR$/public/images/icons/bag.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/methods/balanced_calls.js" afterPath="$PROJECT_DIR$/server/methods/balanced_calls.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/basket.svg" afterPath="$PROJECT_DIR$/public/images/icons/basket.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/methods/billy.js" afterPath="$PROJECT_DIR$/server/methods/billy.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/bg.jpg" afterPath="$PROJECT_DIR$/public/images/bg.jpg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/book.svg" afterPath="$PROJECT_DIR$/public/images/icons/book.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/flat/js/bootstrap-select.js" afterPath="$PROJECT_DIR$/client/flat/js/bootstrap-select.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/bowling.svg" afterPath="$PROJECT_DIR$/public/images/icons/bowling.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/box.svg" afterPath="$PROJECT_DIR$/public/images/icons/box.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/brush.svg" afterPath="$PROJECT_DIR$/public/images/icons/brush.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/building.svg" afterPath="$PROJECT_DIR$/public/images/icons/building.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/bulb.svg" afterPath="$PROJECT_DIR$/public/images/icons/bulb.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/compatibility/js/button.js" afterPath="$PROJECT_DIR$/client/compatibility/js/button.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/button.svg" afterPath="$PROJECT_DIR$/public/images/icons/button.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/calculator.svg" afterPath="$PROJECT_DIR$/public/images/icons/calculator.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/calendar.svg" afterPath="$PROJECT_DIR$/public/images/icons/calendar.svg" />
@@ -70,16 +27,138 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/car.svg" afterPath="$PROJECT_DIR$/public/images/icons/car.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/card.svg" afterPath="$PROJECT_DIR$/public/images/icons/card.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/chair.svg" afterPath="$PROJECT_DIR$/public/images/icons/chair.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/chargeExisting.html" afterPath="$PROJECT_DIR$/client/views/chargeExisting.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/chargeExisting.js" afterPath="$PROJECT_DIR$/client/views/chargeExisting.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/chat.svg" afterPath="$PROJECT_DIR$/public/images/icons/chat.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/check_image.png" afterPath="$PROJECT_DIR$/public/images/check_image.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/clipboard.svg" afterPath="$PROJECT_DIR$/public/images/icons/clipboard.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/clocks.svg" afterPath="$PROJECT_DIR$/public/images/icons/clocks.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/compas.svg" afterPath="$PROJECT_DIR$/public/images/icons/compas.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/converse.svg" afterPath="$PROJECT_DIR$/public/images/icons/converse.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/donate/countries/countries.html" afterPath="$PROJECT_DIR$/client/views/donate/countries/countries.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/credit_card.png" afterPath="$PROJECT_DIR$/public/images/credit_card.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/cup.svg" afterPath="$PROJECT_DIR$/public/images/icons/cup.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/dj.svg" afterPath="$PROJECT_DIR$/public/images/icons/dj.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/donut.svg" afterPath="$PROJECT_DIR$/public/images/icons/donut.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/dude.svg" afterPath="$PROJECT_DIR$/public/images/icons/dude.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/dynamite.svg" afterPath="$PROJECT_DIR$/public/images/icons/dynamite.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/earth.svg" afterPath="$PROJECT_DIR$/public/images/icons/earth.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/egg.svg" afterPath="$PROJECT_DIR$/public/images/icons/egg.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/eye.svg" afterPath="$PROJECT_DIR$/public/images/icons/eye.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/file.svg" afterPath="$PROJECT_DIR$/public/images/icons/file.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/fit.svg" afterPath="$PROJECT_DIR$/public/images/icons/fit.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/flag.svg" afterPath="$PROJECT_DIR$/public/images/icons/flag.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/flask.svg" afterPath="$PROJECT_DIR$/public/images/icons/flask.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.eot" afterPath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.eot" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.svg" afterPath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.ttf" afterPath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.ttf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.woff" afterPath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.woff" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/flower.svg" afterPath="$PROJECT_DIR$/public/images/icons/flower.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/games.svg" afterPath="$PROJECT_DIR$/public/images/icons/games.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/gift-box.svg" afterPath="$PROJECT_DIR$/public/images/icons/gift-box.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/girl.svg" afterPath="$PROJECT_DIR$/public/images/icons/girl.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/give.iml" afterPath="$PROJECT_DIR$/.idea/give.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/goal.svg" afterPath="$PROJECT_DIR$/public/images/icons/goal.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/google .svg" afterPath="$PROJECT_DIR$/public/images/icons/google .svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/graph.svg" afterPath="$PROJECT_DIR$/public/images/icons/graph.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/icecream.svg" afterPath="$PROJECT_DIR$/public/images/icons/icecream.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/imac.svg" afterPath="$PROJECT_DIR$/public/images/icons/imac.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/ipad.svg" afterPath="$PROJECT_DIR$/public/images/icons/ipad.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/iphone.svg" afterPath="$PROJECT_DIR$/public/images/icons/iphone.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/key.svg" afterPath="$PROJECT_DIR$/public/images/icons/key.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-black.eot" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-black.eot" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-black.svg" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-black.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-black.ttf" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-black.ttf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-black.woff" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-black.woff" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bold.eot" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bold.eot" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bold.svg" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bold.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bold.ttf" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bold.ttf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bold.woff" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bold.woff" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.eot" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.eot" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.svg" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.ttf" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.ttf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.woff" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.woff" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-italic.eot" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-italic.eot" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-italic.svg" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-italic.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-italic.ttf" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-italic.ttf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-italic.woff" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-italic.woff" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-light.eot" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-light.eot" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-light.svg" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-light.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-light.ttf" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-light.ttf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-light.woff" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-light.woff" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-regular.eot" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-regular.eot" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-regular.svg" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-regular.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-regular.ttf" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-regular.ttf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-regular.woff" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-regular.woff" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/lettersymbol.svg" afterPath="$PROJECT_DIR$/public/images/icons/lettersymbol.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/loading.gif" afterPath="$PROJECT_DIR$/public/images/loading.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/lock.svg" afterPath="$PROJECT_DIR$/public/images/icons/lock.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/loop.svg" afterPath="$PROJECT_DIR$/public/images/icons/loop.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/macbook.svg" afterPath="$PROJECT_DIR$/public/images/icons/macbook.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/magic.svg" afterPath="$PROJECT_DIR$/public/images/icons/magic.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/magicmouse.svg" afterPath="$PROJECT_DIR$/public/images/icons/magicmouse.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/mail.svg" afterPath="$PROJECT_DIR$/public/images/icons/mail.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/map.svg" afterPath="$PROJECT_DIR$/public/images/icons/map.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/switch/mask-square.png" afterPath="$PROJECT_DIR$/public/images/switch/mask-square.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/switch/mask.png" afterPath="$PROJECT_DIR$/public/images/switch/mask.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/medal.svg" afterPath="$PROJECT_DIR$/public/images/icons/medal.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/mic.svg" afterPath="$PROJECT_DIR$/public/images/icons/mic.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/money.svg" afterPath="$PROJECT_DIR$/public/images/icons/money.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/mortarboard.svg" afterPath="$PROJECT_DIR$/public/images/icons/mortarboard.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/mountain.svg" afterPath="$PROJECT_DIR$/public/images/icons/mountain.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/news.svg" afterPath="$PROJECT_DIR$/public/images/icons/news.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.meteor/packages" afterPath="$PROJECT_DIR$/.meteor/packages" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/paper-bag.svg" afterPath="$PROJECT_DIR$/public/images/icons/paper-bag.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/pc.svg" afterPath="$PROJECT_DIR$/public/images/icons/pc.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/pencil.svg" afterPath="$PROJECT_DIR$/public/images/icons/pencil.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/pencils.svg" afterPath="$PROJECT_DIR$/public/images/icons/pencils.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/picture.svg" afterPath="$PROJECT_DIR$/public/images/icons/picture.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/pig.svg" afterPath="$PROJECT_DIR$/public/images/icons/pig.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/pills.svg" afterPath="$PROJECT_DIR$/public/images/icons/pills.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/play.svg" afterPath="$PROJECT_DIR$/public/images/icons/play.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/printer.svg" afterPath="$PROJECT_DIR$/public/images/icons/printer.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/responsive.svg" afterPath="$PROJECT_DIR$/public/images/icons/responsive.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/retina.svg" afterPath="$PROJECT_DIR$/public/images/icons/retina.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/ring.svg" afterPath="$PROJECT_DIR$/public/images/icons/ring.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/rocket.svg" afterPath="$PROJECT_DIR$/public/images/icons/rocket.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/rss.svg" afterPath="$PROJECT_DIR$/public/images/icons/rss.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/safe.svg" afterPath="$PROJECT_DIR$/public/images/icons/safe.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/save.svg" afterPath="$PROJECT_DIR$/public/images/icons/save.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/search.svg" afterPath="$PROJECT_DIR$/public/images/icons/search.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/settings.svg" afterPath="$PROJECT_DIR$/public/images/icons/settings.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/shield.svg" afterPath="$PROJECT_DIR$/public/images/icons/shield.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/shirt.svg" afterPath="$PROJECT_DIR$/public/images/icons/shirt.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/skateboard.svg" afterPath="$PROJECT_DIR$/public/images/icons/skateboard.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/spray.svg" afterPath="$PROJECT_DIR$/public/images/icons/spray.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/storage.svg" afterPath="$PROJECT_DIR$/public/images/icons/storage.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/support.svg" afterPath="$PROJECT_DIR$/public/images/icons/support.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/ticket.svg" afterPath="$PROJECT_DIR$/public/images/icons/ticket.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/toilet-paper.svg" afterPath="$PROJECT_DIR$/public/images/icons/toilet-paper.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/touch.svg" afterPath="$PROJECT_DIR$/public/images/icons/touch.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/trash.svg" afterPath="$PROJECT_DIR$/public/images/icons/trash.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/trip-bag.svg" afterPath="$PROJECT_DIR$/public/images/icons/trip-bag.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/trunk.svg" afterPath="$PROJECT_DIR$/public/images/icons/trunk.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/ubmrella.svg" afterPath="$PROJECT_DIR$/public/images/icons/ubmrella.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/user-interface.svg" afterPath="$PROJECT_DIR$/public/images/icons/user-interface.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/video.svg" afterPath="$PROJECT_DIR$/public/images/icons/video.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/weather.svg" afterPath="$PROJECT_DIR$/public/images/icons/weather.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/wi-fi.svg" afterPath="$PROJECT_DIR$/public/images/icons/wi-fi.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/wine.svg" afterPath="$PROJECT_DIR$/public/images/icons/wine.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/yinyang.svg" afterPath="$PROJECT_DIR$/public/images/icons/yinyang.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.travis.yml" afterPath="$PROJECT_DIR$/.travis.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/donate/DonationTo.html" afterPath="$PROJECT_DIR$/client/views/donate/DonationTo.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/donate/DonationTo.js" afterPath="$PROJECT_DIR$/client/views/donate/DonationTo.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/both/collections/allerrors.js" afterPath="$PROJECT_DIR$/both/collections/allerrors.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/collections/allerrors.js" afterPath="$PROJECT_DIR$/server/collections/allerrors.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/app.html" afterPath="$PROJECT_DIR$/client/app.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/both/app.js" afterPath="$PROJECT_DIR$/both/app.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/app.js" afterPath="$PROJECT_DIR$/client/app.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/compatibility/js/autoNumeric.js" afterPath="$PROJECT_DIR$/client/compatibility/js/autoNumeric.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/methods/balanced_calls.js" afterPath="$PROJECT_DIR$/server/methods/balanced_calls.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/methods/billy.js" afterPath="$PROJECT_DIR$/server/methods/billy.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/flat/js/bootstrap-select.js" afterPath="$PROJECT_DIR$/client/flat/js/bootstrap-select.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/compatibility/js/button.js" afterPath="$PROJECT_DIR$/client/compatibility/js/button.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/chargeExisting.html" afterPath="$PROJECT_DIR$/client/views/chargeExisting.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/chargeExisting.js" afterPath="$PROJECT_DIR$/client/views/chargeExisting.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/donate/countries/countries.html" afterPath="$PROJECT_DIR$/client/views/donate/countries/countries.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/both/collections/donate.js" afterPath="$PROJECT_DIR$/both/collections/donate.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/collections/donate.js" afterPath="$PROJECT_DIR$/server/collections/donate.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/methods/donate.js" afterPath="$PROJECT_DIR$/server/methods/donate.js" />
@@ -91,124 +170,46 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/donate/donation_form.css" afterPath="$PROJECT_DIR$/client/views/donate/donation_form.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/donate/donation_form.html" afterPath="$PROJECT_DIR$/client/views/donate/donation_form.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/donate/donation_form.js" afterPath="$PROJECT_DIR$/client/views/donate/donation_form.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/donut.svg" afterPath="$PROJECT_DIR$/public/images/icons/donut.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/dude.svg" afterPath="$PROJECT_DIR$/public/images/icons/dude.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/dynamite.svg" afterPath="$PROJECT_DIR$/public/images/icons/dynamite.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/earth.svg" afterPath="$PROJECT_DIR$/public/images/icons/earth.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/egg.svg" afterPath="$PROJECT_DIR$/public/images/icons/egg.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/methods/errors.js" afterPath="$PROJECT_DIR$/server/methods/errors.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/methods/events.js" afterPath="$PROJECT_DIR$/server/methods/events.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/eye.svg" afterPath="$PROJECT_DIR$/public/images/icons/eye.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/failed/failed.html" afterPath="$PROJECT_DIR$/client/views/failed/failed.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/file.svg" afterPath="$PROJECT_DIR$/public/images/icons/file.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/fit.svg" afterPath="$PROJECT_DIR$/public/images/icons/fit.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/flag.svg" afterPath="$PROJECT_DIR$/public/images/icons/flag.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/flask.svg" afterPath="$PROJECT_DIR$/public/images/icons/flask.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.svg" afterPath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/flat/css/flat-ui.css" afterPath="$PROJECT_DIR$/client/flat/css/flat-ui.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/flat/js/flatui-checkbox.js" afterPath="$PROJECT_DIR$/client/flat/js/flatui-checkbox.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/flat/js/flatui-radio.js" afterPath="$PROJECT_DIR$/client/flat/js/flatui-radio.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/flower.svg" afterPath="$PROJECT_DIR$/public/images/icons/flower.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/games.svg" afterPath="$PROJECT_DIR$/public/images/icons/games.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/gift-box.svg" afterPath="$PROJECT_DIR$/public/images/icons/gift-box.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/girl.svg" afterPath="$PROJECT_DIR$/public/images/icons/girl.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/give.iml" afterPath="$PROJECT_DIR$/.idea/give.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/goal.svg" afterPath="$PROJECT_DIR$/public/images/icons/goal.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/google .svg" afterPath="$PROJECT_DIR$/public/images/icons/google .svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/graph.svg" afterPath="$PROJECT_DIR$/public/images/icons/graph.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/donate/handle_error.js" afterPath="$PROJECT_DIR$/client/views/donate/handle_error.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/icecream.svg" afterPath="$PROJECT_DIR$/public/images/icons/icecream.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/imac.svg" afterPath="$PROJECT_DIR$/public/images/icons/imac.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/ipad.svg" afterPath="$PROJECT_DIR$/public/images/icons/ipad.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/iphone.svg" afterPath="$PROJECT_DIR$/public/images/icons/iphone.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/compatibility/js/jquery.maskedinput.min.js" afterPath="$PROJECT_DIR$/client/compatibility/js/jquery.maskedinput.min.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/flat/js/jquery.placeholder.js" afterPath="$PROJECT_DIR$/client/flat/js/jquery.placeholder.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/key.svg" afterPath="$PROJECT_DIR$/public/images/icons/key.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-black.svg" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-black.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bold.svg" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bold.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.svg" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-italic.svg" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-italic.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-light.svg" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-light.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-regular.svg" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-regular.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/lettersymbol.svg" afterPath="$PROJECT_DIR$/public/images/icons/lettersymbol.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/lock.svg" afterPath="$PROJECT_DIR$/public/images/icons/lock.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/loop.svg" afterPath="$PROJECT_DIR$/public/images/icons/loop.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/macbook.svg" afterPath="$PROJECT_DIR$/public/images/icons/macbook.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/magic.svg" afterPath="$PROJECT_DIR$/public/images/icons/magic.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/magicmouse.svg" afterPath="$PROJECT_DIR$/public/images/icons/magicmouse.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/mail.svg" afterPath="$PROJECT_DIR$/public/images/icons/mail.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/methods/mandrill.js" afterPath="$PROJECT_DIR$/server/methods/mandrill.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/map.svg" afterPath="$PROJECT_DIR$/public/images/icons/map.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/layouts/master_layout/master_layout.html" afterPath="$PROJECT_DIR$/client/views/layouts/master_layout/master_layout.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/medal.svg" afterPath="$PROJECT_DIR$/public/images/icons/medal.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/mic.svg" afterPath="$PROJECT_DIR$/public/images/icons/mic.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/layouts/master_layout/master_layout.js" afterPath="$PROJECT_DIR$/client/views/layouts/master_layout/master_layout.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/money.svg" afterPath="$PROJECT_DIR$/public/images/icons/money.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/mortarboard.svg" afterPath="$PROJECT_DIR$/public/images/icons/mortarboard.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/mountain.svg" afterPath="$PROJECT_DIR$/public/images/icons/mountain.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/news.svg" afterPath="$PROJECT_DIR$/public/images/icons/news.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/compatibility/css/notifIt.css" afterPath="$PROJECT_DIR$/client/compatibility/css/notifIt.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/packages.json" afterPath="$PROJECT_DIR$/packages.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.meteor/packages" afterPath="$PROJECT_DIR$/.meteor/packages" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/paper-bag.svg" afterPath="$PROJECT_DIR$/public/images/icons/paper-bag.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/papertrail.js" afterPath="$PROJECT_DIR$/server/papertrail.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/pc.svg" afterPath="$PROJECT_DIR$/public/images/icons/pc.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/pencil.svg" afterPath="$PROJECT_DIR$/public/images/icons/pencil.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/pencils.svg" afterPath="$PROJECT_DIR$/public/images/icons/pencils.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/picture.svg" afterPath="$PROJECT_DIR$/public/images/icons/picture.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/pig.svg" afterPath="$PROJECT_DIR$/public/images/icons/pig.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/pills.svg" afterPath="$PROJECT_DIR$/public/images/icons/pills.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/play.svg" afterPath="$PROJECT_DIR$/public/images/icons/play.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/printer.svg" afterPath="$PROJECT_DIR$/public/images/icons/printer.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/receipt/receipt.css" afterPath="$PROJECT_DIR$/client/views/receipt/receipt.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/receipt/receipt.html" afterPath="$PROJECT_DIR$/client/views/receipt/receipt.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/receipt/receipt.js" afterPath="$PROJECT_DIR$/client/views/receipt/receipt.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/receipt/receiptReformated.html" afterPath="$PROJECT_DIR$/client/views/receipt/receiptReformated.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/request_address/request_address.html" afterPath="$PROJECT_DIR$/client/views/request_address/request_address.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/request_address/request_address.js" afterPath="$PROJECT_DIR$/client/views/request_address/request_address.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/responsive.svg" afterPath="$PROJECT_DIR$/public/images/icons/responsive.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/retina.svg" afterPath="$PROJECT_DIR$/public/images/icons/retina.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/ring.svg" afterPath="$PROJECT_DIR$/public/images/icons/ring.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/rocket.svg" afterPath="$PROJECT_DIR$/public/images/icons/rocket.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/both/router/routes.js" afterPath="$PROJECT_DIR$/both/router/routes.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/rss.svg" afterPath="$PROJECT_DIR$/public/images/icons/rss.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/safe.svg" afterPath="$PROJECT_DIR$/public/images/icons/safe.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/save.svg" afterPath="$PROJECT_DIR$/public/images/icons/save.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" afterPath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/search.svg" afterPath="$PROJECT_DIR$/public/images/icons/search.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/send_email/send_email.html" afterPath="$PROJECT_DIR$/client/views/send_email/send_email.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/send_email/send_email.js" afterPath="$PROJECT_DIR$/client/views/send_email/send_email.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/settings.svg" afterPath="$PROJECT_DIR$/public/images/icons/settings.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/shield.svg" afterPath="$PROJECT_DIR$/public/images/icons/shield.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/shirt.svg" afterPath="$PROJECT_DIR$/public/images/icons/shirt.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/skateboard.svg" afterPath="$PROJECT_DIR$/public/images/icons/skateboard.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/spray.svg" afterPath="$PROJECT_DIR$/public/images/icons/spray.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/storage.svg" afterPath="$PROJECT_DIR$/public/images/icons/storage.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/support.svg" afterPath="$PROJECT_DIR$/public/images/icons/support.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/tests.js" afterPath="$PROJECT_DIR$/tests/tests.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/ticket.svg" afterPath="$PROJECT_DIR$/public/images/icons/ticket.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/toilet-paper.svg" afterPath="$PROJECT_DIR$/public/images/icons/toilet-paper.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/thanks/thanks.css" afterPath="$PROJECT_DIR$/client/views/thanks/thanks.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/thanks/thanks.html" afterPath="$PROJECT_DIR$/client/views/thanks/thanks.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/thanks/thanks.js" afterPath="$PROJECT_DIR$/client/views/thanks/thanks.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/donate/total_donation/total_donation.html" afterPath="$PROJECT_DIR$/client/views/donate/total_donation/total_donation.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/donate/total_donation/total_donation.js" afterPath="$PROJECT_DIR$/client/views/donate/total_donation/total_donation.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/touch.svg" afterPath="$PROJECT_DIR$/public/images/icons/touch.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/trash.svg" afterPath="$PROJECT_DIR$/public/images/icons/trash.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/trip-bag.svg" afterPath="$PROJECT_DIR$/public/images/icons/trip-bag.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/trunk.svg" afterPath="$PROJECT_DIR$/public/images/icons/trunk.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/ubmrella.svg" afterPath="$PROJECT_DIR$/public/images/icons/ubmrella.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/user-interface.svg" afterPath="$PROJECT_DIR$/public/images/icons/user-interface.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/validate.js" afterPath="$PROJECT_DIR$/client/validate.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/validate.min.js" afterPath="$PROJECT_DIR$/client/js/validate.min.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/video.svg" afterPath="$PROJECT_DIR$/public/images/icons/video.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/weather.svg" afterPath="$PROJECT_DIR$/public/images/icons/weather.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/wi-fi.svg" afterPath="$PROJECT_DIR$/public/images/icons/wi-fi.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/wine.svg" afterPath="$PROJECT_DIR$/public/images/icons/wine.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/yinyang.svg" afterPath="$PROJECT_DIR$/public/images/icons/yinyang.svg" />
     </list>
     <ignored path="give.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -231,41 +232,24 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="donation_form.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/views/donate/donation_form.html">
+      <file leaf-file-name="style.less" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/views/receipt/style.less">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-11.807693" vertical-offset="424" max-vertical-offset="3315">
-              <caret line="43" column="31" selection-start-line="43" selection-start-column="31" selection-end-line="43" selection-end-column="31" />
-              <folding />
+            <state vertical-scroll-proportion="-3.2105262" vertical-offset="1065" max-vertical-offset="5644">
+              <caret line="77" column="23" selection-start-line="77" selection-start-column="23" selection-end-line="77" selection-end-column="23" />
+              <folding>
+                <element signature="e#4827#8814#2" expanded="true" />
+                <element signature="e#8950#14073#2" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="donation_form.css" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/views/donate/donation_form.css">
+      <file leaf-file-name="receipt.css" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/views/receipt/receipt.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-26.64" vertical-offset="4995" max-vertical-offset="5797">
-              <caret line="333" column="12" selection-start-line="333" selection-start-column="12" selection-end-line="333" selection-end-column="12" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="events.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/methods/events.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1904" max-vertical-offset="4267">
-              <caret line="140" column="75" selection-start-line="140" selection-start-column="75" selection-end-line="140" selection-end-column="75" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="thanks.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/views/thanks/thanks.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-11.769231" vertical-offset="0" max-vertical-offset="425">
-              <caret line="18" column="11" selection-start-line="18" selection-start-column="11" selection-end-line="18" selection-end-column="11" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="680">
+              <caret line="6" column="4" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -274,33 +258,8 @@
       <file leaf-file-name="receipt.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/views/receipt/receipt.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.6666667" vertical-offset="0" max-vertical-offset="4250">
-              <caret line="8" column="49" selection-start-line="8" selection-start-column="49" selection-end-line="8" selection-end-column="49" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="thanks.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/views/thanks/thanks.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="748">
-              <caret line="37" column="55" selection-start-line="37" selection-start-column="55" selection-end-line="37" selection-end-column="55" />
-              <folding>
-                <marker date="1410380198355" expanded="true" signature="459:849" placeholder="..." />
-                <marker date="1410380198355" expanded="true" signature="722:824" placeholder="..." />
-                <marker date="1410380198355" expanded="true" signature="899:952" placeholder="..." />
-                <marker date="1410380198355" expanded="true" signature="1181:1249" placeholder="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="donate.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/server/methods/donate.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4414169" vertical-offset="1869" max-vertical-offset="3961">
-              <caret line="129" column="62" selection-start-line="129" selection-start-column="62" selection-end-line="129" selection-end-column="62" />
+            <state vertical-scroll-proportion="-0.6666667" vertical-offset="0" max-vertical-offset="2091">
+              <caret line="2" column="33" selection-start-line="2" selection-start-column="33" selection-end-line="2" selection-end-column="33" />
               <folding />
             </state>
           </provider>
@@ -309,18 +268,70 @@
       <file leaf-file-name="receipt.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/views/receipt/receipt.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.92" vertical-offset="696" max-vertical-offset="1768">
-              <caret line="57" column="16" selection-start-line="57" selection-start-column="16" selection-end-line="57" selection-end-column="16" />
+            <state vertical-scroll-proportion="-22.84" vertical-offset="1027" max-vertical-offset="1802">
+              <caret line="94" column="11" selection-start-line="94" selection-start-column="11" selection-end-line="94" selection-end-column="11" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="balanced_calls.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/methods/balanced_calls.js">
+      <file leaf-file-name="thanks.html" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/client/views/thanks/thanks.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="720" max-vertical-offset="1530">
-              <caret line="67" column="45" selection-start-line="67" selection-start-column="45" selection-end-line="67" selection-end-column="45" />
+            <state vertical-scroll-proportion="0.2" vertical-offset="0" max-vertical-offset="680">
+              <caret line="8" column="47" selection-start-line="8" selection-start-column="47" selection-end-line="8" selection-end-column="47" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="routes.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/both/router/routes.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="216" max-vertical-offset="935">
+              <caret line="30" column="23" selection-start-line="30" selection-start-column="23" selection-end-line="30" selection-end-column="23" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="donation_form.css" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/views/donate/donation_form.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-5.84" vertical-offset="4801" max-vertical-offset="5797">
+              <caret line="291" column="32" selection-start-line="291" selection-start-column="32" selection-end-line="291" selection-end-column="32" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="donation_form.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/views/donate/donation_form.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-4.607843" vertical-offset="1278" max-vertical-offset="3315">
+              <caret line="89" column="54" selection-start-line="89" selection-start-column="54" selection-end-line="89" selection-end-column="54" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="donation_form.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/views/donate/donation_form.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-23.16" vertical-offset="5881" max-vertical-offset="6562">
+              <caret line="380" column="1" selection-start-line="380" selection-start-column="1" selection-end-line="380" selection-end-column="1" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="print.less" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/views/receipt/print.less">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-1.6666666" vertical-offset="0" max-vertical-offset="238">
+              <caret line="5" column="21" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -339,37 +350,27 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/both/app.js" />
-        <option value="$PROJECT_DIR$/server/collections/allerrors.js" />
-        <option value="$PROJECT_DIR$/tests/tests.js" />
-        <option value="$PROJECT_DIR$/server/methods/callbacks.js" />
-        <option value="$PROJECT_DIR$/both/router/routes.js" />
-        <option value="$PROJECT_DIR$/client/app.js" />
-        <option value="$PROJECT_DIR$/server/methods/card_create.js" />
-        <option value="$PROJECT_DIR$/.meteor/packages" />
-        <option value="$PROJECT_DIR$/server/papertrail.js" />
-        <option value="$PROJECT_DIR$/settings.json" />
-        <option value="$PROJECT_DIR$/server/methods/balanced_calls.js" />
-        <option value="$PROJECT_DIR$/client/views/thanks.html" />
-        <option value="$PROJECT_DIR$/client/views/thanks.js" />
-        <option value="$PROJECT_DIR$/server/methods/billy.js" />
-        <option value="$PROJECT_DIR$/client/views/donate/donation_form.css" />
-        <option value="$PROJECT_DIR$/client/views/donate/donation_form.html" />
+        <option value="$PROJECT_DIR$/client/views/receipt/print.css" />
+        <option value="$PROJECT_DIR$/client/views/receipt/test.css" />
         <option value="$PROJECT_DIR$/client/views/thanks/thanks.js" />
-        <option value="$PROJECT_DIR$/client/views/thanks/thanks.html" />
-        <option value="$PROJECT_DIR$/client/views/receipt/receipt.js" />
+        <option value="$PROJECT_DIR$/client/views/receipt/reset.less" />
+        <option value="$PROJECT_DIR$/client/views/layouts/master_layout/master_layout.js" />
+        <option value="$PROJECT_DIR$/client/views/layouts/master_layout/master_layout.html" />
+        <option value="$PROJECT_DIR$/client/views/donate/donation_form.css" />
+        <option value="$PROJECT_DIR$/client/views/receipt/receipt.css" />
+        <option value="$PROJECT_DIR$/client/views/receipt/print.less" />
         <option value="$PROJECT_DIR$/client/views/receipt/receipt.html" />
-        <option value="$PROJECT_DIR$/server/methods/events.js" />
-        <option value="$PROJECT_DIR$/client/views/donate/donation_form.js" />
-        <option value="$PROJECT_DIR$/server/methods/donate.js" />
+        <option value="$PROJECT_DIR$/client/views/receipt/receipt.js" />
+        <option value="$PROJECT_DIR$/client/views/receipt/style.less" />
+        <option value="$PROJECT_DIR$/client/views/thanks/thanks.html" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1592" />
+    <option name="x" value="-8" />
     <option name="y" value="-8" />
     <option name="width" value="1616" />
-    <option name="height" value="916" />
+    <option name="height" value="876" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -397,6 +398,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -412,124 +414,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="give" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="give" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="give" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="server" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="give" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="give" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="server" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="publish" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="donate" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="give" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="give" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="server" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="methods" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="give" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="give" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="server" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="collections" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="give" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="give" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="public" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="give" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="give" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="public" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="css" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="give" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="give" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="packages" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -627,6 +511,32 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="layouts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="master_layout" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="give" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="give" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="donate" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -641,149 +551,69 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value=".meteor" />
+              <option name="myItemId" value="both" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="give" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="give" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="both" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="router" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="FullScreen" value="false" />
-    <property name="last_opened_file_path" value="C:/Dev/give/server/methods/callbacks.js" />
-    <property name="HbShouldOpenHtmlAsHb" value="enabled" />
-    <property name="js.meteor.library.was.enabled" value="true" />
-  </component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="Z:\give\public\css" />
-      <recent name="Z:\give\server" />
-      <recent name="Z:\give\both" />
-      <recent name="Z:\give" />
-      <recent name="Z:\give\server\lib" />
-    </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
-      <option name="VMOptions" />
-      <option name="arguments" />
-      <option name="filePath" />
-      <option name="name" value="Dart" />
-      <option name="saveOutputToFile" value="false" />
-      <option name="showConsoleOnStdErr" value="false" />
-      <option name="showConsoleOnStdOut" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
-      <option name="VMOptions" />
-      <option name="arguments" />
-      <option name="filePath" />
-      <option name="scope" value="ALL" />
-      <option name="testName" />
-      <method />
-    </configuration>
-    <configuration default="true" type="JSTestDriver:ConfigurationType" factoryName="JsTestDriver">
-      <setting name="configLocationType" value="CONFIG_FILE" />
-      <setting name="settingsFile" value="" />
-      <setting name="serverType" value="INTERNAL" />
-      <setting name="preferredDebugBrowser" value="Chrome" />
-      <method />
-    </configuration>
-    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" config-file="">
-      <envs />
-      <method />
-    </configuration>
-    <configuration default="true" type="CucumberJavaScriptRunConfigurationType" factoryName="Cucumber.js">
-      <option name="cucumberJsArguments" />
-      <option name="executablePath" />
-      <option name="filePath" />
-      <method />
-    </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
-      <method />
-    </configuration>
-    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" working-dir="">
-      <method />
-    </configuration>
     <list size="0" />
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
-  <component name="SvnConfiguration">
-    <configuration />
-  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="27e4598c-2a9c-49c2-a07a-73dfe4cbb72d" name="Default" comment="" />
-      <created>1408716683725</created>
-      <updated>1408716683725</updated>
+      <changelist id="d6088cba-afc9-4ac0-a1e1-45aab2bd8f51" name="Default" comment="" />
+      <created>1410402462600</created>
+      <updated>1410402462600</updated>
     </task>
     <servers />
   </component>
-  <component name="TodoView" selected-index="0">
-    <todo-panel id="selected-file">
-      <are-packages-shown value="false" />
-      <are-modules-shown value="false" />
-      <flatten-packages value="false" />
-      <is-autoscroll-to-source value="false" />
-    </todo-panel>
-    <todo-panel id="all">
-      <are-packages-shown value="false" />
-      <are-modules-shown value="false" />
-      <flatten-packages value="false" />
-      <is-autoscroll-to-source value="false" />
-    </todo-panel>
-    <todo-panel id="default-changelist">
-      <are-packages-shown value="false" />
-      <are-modules-shown value="false" />
-      <flatten-packages value="false" />
-      <is-autoscroll-to-source value="false" />
-    </todo-panel>
-  </component>
   <component name="ToolWindowManager">
-    <frame x="1592" y="-8" width="1616" height="916" extended-state="6" />
+    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3294423" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1992238" sideWeight="0.49968335" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3299363" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18999366" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3292232" sideWeight="0.5003167" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32814527" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39975247" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-    </layout>
-    <layout-to-restore>
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3294423" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1992238" sideWeight="0.49968335" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3292232" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3292232" sideWeight="0.5003167" order="9" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14122863" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24952501" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-    </layout-to-restore>
+    </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
     <option name="RECENTLY_FILTERED_USER_GROUPS">
@@ -800,395 +630,131 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="false" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/client/views/donate/donation_form.js">
+    <entry file="file://$PROJECT_DIR$/client/views/thanks/thanks.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1581" max-vertical-offset="8823">
-          <caret line="87" column="43" selection-start-line="87" selection-start-column="43" selection-end-line="87" selection-end-column="43" />
+        <state vertical-scroll-proportion="0.8038943" vertical-offset="0" max-vertical-offset="719">
+          <caret line="34" column="40" selection-start-line="34" selection-start-column="40" selection-end-line="34" selection-end-column="40" />
+          <folding>
+            <marker date="1410403640990" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410403640990" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410403640990" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410403640990" expanded="true" signature="-1:-1" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/views/receipt/reset.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.33333334" vertical-offset="0" max-vertical-offset="1887">
+          <caret line="1" column="8" selection-start-line="1" selection-start-column="8" selection-end-line="1" selection-end-column="8" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/methods/donate.js">
+    <entry file="file://$PROJECT_DIR$/client/views/layouts/master_layout/master_layout.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="69" max-vertical-offset="4471">
-          <caret line="14" column="22" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="22" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="544">
+          <caret line="12" column="31" selection-start-line="12" selection-start-column="31" selection-end-line="12" selection-end-column="31" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/views/layouts/master_layout/master_layout.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.024531025" vertical-offset="0" max-vertical-offset="693">
+          <caret line="1" column="25" selection-start-line="1" selection-start-column="25" selection-end-line="1" selection-end-column="25" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/methods/events.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4233">
-          <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/views/donate/donation_form.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="4224" max-vertical-offset="8823">
-          <caret line="261" column="4" selection-start-line="261" selection-start-column="2" selection-end-line="261" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/validate.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="119" max-vertical-offset="578">
-          <caret line="7" column="4" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/views/donate/donation_form.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2244" max-vertical-offset="2992">
-          <caret line="7" column="50" selection-start-line="7" selection-start-column="50" selection-end-line="7" selection-end-column="50" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/methods/donate.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="459" max-vertical-offset="4471">
-          <caret line="37" column="10" selection-start-line="37" selection-start-column="10" selection-end-line="37" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/publish/donate/donate_index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="221">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/methods/events.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="687" max-vertical-offset="4233">
-          <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/views/donate/donation_form.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="816" max-vertical-offset="8823">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/methods/donate.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="459" max-vertical-offset="4471">
-          <caret line="37" column="10" selection-start-line="37" selection-start-column="10" selection-end-line="37" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/publish/donate/donate_index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="221">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/methods/events.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="687" max-vertical-offset="4233">
-          <caret line="81" column="10" selection-start-line="81" selection-start-column="10" selection-end-line="81" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/methods/donate.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="4471">
-          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="4" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/methods/errors.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="187">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/methods/events.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="687" max-vertical-offset="4233">
-          <caret line="81" column="10" selection-start-line="81" selection-start-column="10" selection-end-line="81" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/methods/donate.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="4471">
-          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="4" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/methods/errors.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="187">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/tests.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.36412317" vertical-offset="0" max-vertical-offset="747">
-          <caret line="16" column="3" selection-start-line="16" selection-start-column="3" selection-end-line="16" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/publish/donate/donate_index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="747">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/validate.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.115606934" vertical-offset="59" max-vertical-offset="578">
-          <caret line="7" column="4" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/methods/mandrill.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.19263457" vertical-offset="0" max-vertical-offset="2176">
-          <caret line="8" column="4" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="374">
-          <caret line="16" column="3" selection-start-line="16" selection-start-column="3" selection-end-line="16" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Desktop/jquery.remodal.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4165">
-          <caret line="0" column="44" selection-start-line="0" selection-start-column="41" selection-end-line="0" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/methods/donate.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="785">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/both/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.064968154" vertical-offset="0" max-vertical-offset="785">
-          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/both/collections/donate.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="785">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/packages/npm-container/.npm/package/node_modules/winston-papertrail/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.84316355" vertical-offset="0" max-vertical-offset="1122">
-          <caret line="37" column="57" selection-start-line="37" selection-start-column="57" selection-end-line="37" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.meteor/packages">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.17391305" vertical-offset="0" max-vertical-offset="782">
-          <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/papertrail.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2826087" vertical-offset="0" max-vertical-offset="782">
-          <caret line="13" column="26" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/collections/donate.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="782">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/collections/allerrors.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5" vertical-offset="0" max-vertical-offset="782">
-          <caret line="28" column="4" selection-start-line="28" selection-start-column="4" selection-end-line="28" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/methods/errors.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="187">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/settings.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3148148" vertical-offset="0" max-vertical-offset="756">
-          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/views/donate/handle_error.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1649">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/views/failed/failed.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="782">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/views/failed/failed.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="782">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/path.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="782">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/both/router/routes.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="153" max-vertical-offset="935">
-          <caret line="19" column="22" selection-start-line="19" selection-start-column="22" selection-end-line="19" selection-end-column="22" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="216" max-vertical-offset="935">
+          <caret line="30" column="23" selection-start-line="30" selection-start-column="23" selection-end-line="30" selection-end-column="23" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/methods/billy.js">
+    <entry file="file://$PROJECT_DIR$/client/views/donate/donation_form.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.43530998" vertical-offset="1581" max-vertical-offset="5882">
-          <caret line="112" column="23" selection-start-line="112" selection-start-column="23" selection-end-line="112" selection-end-column="23" />
+        <state vertical-scroll-proportion="-5.84" vertical-offset="4801" max-vertical-offset="5797">
+          <caret line="291" column="32" selection-start-line="291" selection-start-column="32" selection-end-line="291" selection-end-column="32" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/Dev/give/server/methods/callbacks.js">
+    <entry file="file://$PROJECT_DIR$/client/views/receipt/print.less">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.1966581" vertical-offset="153" max-vertical-offset="2941">
-          <caret line="20" column="73" selection-start-line="20" selection-start-column="73" selection-end-line="20" selection-end-column="73" />
+        <state vertical-scroll-proportion="-1.6666666" vertical-offset="0" max-vertical-offset="238">
+          <caret line="5" column="21" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/views/donate/donation_form.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.807693" vertical-offset="424" max-vertical-offset="3315">
-          <caret line="43" column="31" selection-start-line="43" selection-start-column="31" selection-end-line="43" selection-end-column="31" />
+        <state vertical-scroll-proportion="-4.607843" vertical-offset="1278" max-vertical-offset="3315">
+          <caret line="89" column="54" selection-start-line="89" selection-start-column="54" selection-end-line="89" selection-end-column="54" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/views/thanks/thanks.js">
+    <entry file="file://$PROJECT_DIR$/client/views/donate/donation_form.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="748">
-          <caret line="37" column="55" selection-start-line="37" selection-start-column="55" selection-end-line="37" selection-end-column="55" />
-          <folding>
-            <marker date="1410380198355" expanded="true" signature="459:849" placeholder="..." />
-            <marker date="1410380198355" expanded="true" signature="722:824" placeholder="..." />
-            <marker date="1410380198355" expanded="true" signature="899:952" placeholder="..." />
-            <marker date="1410380198355" expanded="true" signature="1181:1249" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/views/receipt/receipt.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.92" vertical-offset="696" max-vertical-offset="1768">
-          <caret line="57" column="16" selection-start-line="57" selection-start-column="16" selection-end-line="57" selection-end-column="16" />
+        <state vertical-scroll-proportion="-23.16" vertical-offset="5881" max-vertical-offset="6562">
+          <caret line="380" column="1" selection-start-line="380" selection-start-column="1" selection-end-line="380" selection-end-column="1" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/views/thanks/thanks.html">
+    <entry file="file://$PROJECT_DIR$/client/views/receipt/receipt.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.769231" vertical-offset="0" max-vertical-offset="425">
-          <caret line="18" column="11" selection-start-line="18" selection-start-column="11" selection-end-line="18" selection-end-column="11" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="680">
+          <caret line="6" column="4" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="4" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/views/receipt/receipt.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.6666667" vertical-offset="0" max-vertical-offset="4250">
-          <caret line="8" column="49" selection-start-line="8" selection-start-column="49" selection-end-line="8" selection-end-column="49" />
+        <state vertical-scroll-proportion="-0.6666667" vertical-offset="0" max-vertical-offset="2091">
+          <caret line="2" column="33" selection-start-line="2" selection-start-column="33" selection-end-line="2" selection-end-column="33" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/views/donate/donation_form.js">
+    <entry file="file://$PROJECT_DIR$/client/views/receipt/receipt.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33287102" vertical-offset="151" max-vertical-offset="6562">
-          <caret line="23" column="47" selection-start-line="23" selection-start-column="47" selection-end-line="23" selection-end-column="47" />
+        <state vertical-scroll-proportion="-22.84" vertical-offset="1027" max-vertical-offset="1802">
+          <caret line="94" column="11" selection-start-line="94" selection-start-column="11" selection-end-line="94" selection-end-column="11" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/views/donate/donation_form.css">
+    <entry file="file://$PROJECT_DIR$/client/views/receipt/style.less">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-26.64" vertical-offset="4995" max-vertical-offset="5797">
-          <caret line="333" column="12" selection-start-line="333" selection-start-column="12" selection-end-line="333" selection-end-column="12" />
-          <folding />
+        <state vertical-scroll-proportion="-3.2105262" vertical-offset="1065" max-vertical-offset="5644">
+          <caret line="77" column="23" selection-start-line="77" selection-start-column="23" selection-end-line="77" selection-end-column="23" />
+          <folding>
+            <element signature="e#4827#8814#2" expanded="true" />
+            <element signature="e#8950#14073#2" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/methods/events.js">
+    <entry file="file://$PROJECT_DIR$/client/views/thanks/thanks.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1904" max-vertical-offset="4267">
-          <caret line="140" column="75" selection-start-line="140" selection-start-column="75" selection-end-line="140" selection-end-column="75" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/methods/balanced_calls.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="720" max-vertical-offset="1530">
-          <caret line="67" column="45" selection-start-line="67" selection-start-column="45" selection-end-line="67" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/methods/donate.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4414169" vertical-offset="1869" max-vertical-offset="3961">
-          <caret line="129" column="62" selection-start-line="129" selection-start-column="62" selection-end-line="129" selection-end-column="62" />
+        <state vertical-scroll-proportion="0.2" vertical-offset="0" max-vertical-offset="680">
+          <caret line="8" column="47" selection-start-line="8" selection-start-column="47" selection-end-line="8" selection-end-column="47" />
           <folding />
         </state>
       </provider>

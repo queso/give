@@ -294,7 +294,7 @@ input.parsley-error,select.parsley-error,textarea.parsley-error {
 }
 
 /* For dropdown button menu, divides up the optgroup better */
-dt {
+li > dt{
 	color:#000;
 	background-color:#bdbdbd;
 }

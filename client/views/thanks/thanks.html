@@ -4,7 +4,7 @@
     </div>
 	<div class="container hidden-print">
 	    <div class="row vertical-center-row">
-	        <div class="col-lg-12">
+	        <div class="col-lg-10 col-lg-offset-1">
     			{{#if successOrPendingPayment}}
 		 			{{{successOrPendingTrans}}}
 		 		{{else}}
@@ -13,8 +13,10 @@
 	        </div>
 	    </div>
 	</div>
-	{{#if displayReceipt}}
+	<div class="Receipt">
+        {{#if displayReceipt}}
     {{> Receipt}}
     {{else}}
  	{{/if}}
+        </div>
 </template>

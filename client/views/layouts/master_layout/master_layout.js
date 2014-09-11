@@ -11,12 +11,6 @@ Template.MasterLayout.events({
 });
 
 Template.MasterLayout.helpers({
-  /*
-   * Example: 
-   *  items: function () {
-   *    return Items.find();
-   *  }
-   */
 });
 
 /*****************************************************************************/

@@ -68,11 +68,14 @@ Template.Receipt.helpers({
    		return this.debit.donateWith;
    },
    amount: function () {
-         return this.debit.total_amount;
+         return this.debit.amount;
    },
    total_amount: function () {
          return this.debit.total_amount;
-   }
+   },
+    fees: function () {
+        return "$" + -this.debit.amount - -this.debit.total_amount();
+    }
 });
 
 /*****************************************************************************/
@@ -89,8 +92,7 @@ $.fn.scrollView = function () {
         }, 1000);
     });
 }
-$('#receipt').scrollView();
-
+$('#invoice').scrollView();
 };
 
 Template.Receipt.destroyed = function () {
