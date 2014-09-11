@@ -107,6 +107,10 @@ $.fn.scrollView = function () {
     });
 }
 $('#invoice').scrollView();
+
+    if (Session.equals('params.print', 'yes')) {
+        //$('.modal').remodal
+    }
 };
 
 Template.Receipt.destroyed = function () {

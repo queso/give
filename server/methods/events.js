@@ -133,9 +133,11 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	        //UPDATE STATUS END
             evt.on('send_email', function (eventID, type, status) {
                 Fiber(function () {
-                    /*try{*/
+                    try{
+                        var updateThis;
                     console.log(body.events[0].entity[type][0].meta['billy.transaction_guid']);
                 if (body.events[0].entity[type][0].meta['billy.transaction_guid'] !== undefined) {
+                    console.log("Event ID: " + eventID);
                     updateThis = Donate.findOne({'recurring.subscription.guid.': eventID})._id
                 } else {
                     updateThis = Donate.findOne({'debit.id': eventID})._id;
@@ -145,12 +147,10 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                     Meteor.call('sendEmailOutAPI', updateThis, function (error, result) {
                         logger.info("Completed Email send out API");
                     });
-                    /*}
+                    }
                     catch(e) {
                         logger.error(e);
-                    }*/
-
-                    }).run();
+                    }}).run();
 
             });
 	        /*************************************************************/
