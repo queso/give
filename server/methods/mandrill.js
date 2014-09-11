@@ -37,7 +37,8 @@ Meteor.methods({
           'country': this.customer.country,
 
       };*/
-        logger.info("First name inside mandrill.js is: " + customer.fname);
+        console.dir(customer);
+        console.dir(debit);
       logger.info("Cover the fees = " + debit.coveredTheFees);
       logger.info("debit.status: " + debit.status);
       var slug;
@@ -77,7 +78,34 @@ Meteor.methods({
               }, {
                 "name": "WhatWentWrong",
                 "content": error
-              }
+              },{
+                "name": "FNAME",
+                "content": customer.fname
+            }, {
+                "name": "LNAME",
+                "content": customer.lname
+            }, {
+                "name": "ADDRESS_LINE1",
+                "content": customer.address_line1
+            }, {
+                "name": "ADDRESS_LINE2",
+                "content": customer.address_line2
+            }, {
+                "name": "LOCALITY",
+                "content": customer.city
+            }, {
+                "name": "REGION",
+                "content": customer.region
+            }, {
+                "name": "POSTAL_CODE",
+                "content": customer.postal_code
+            }, {
+                "name": "PHONE",
+                "content": customer.phone_number
+            }, {
+                "name": "ReceiptNumber",
+                "content": data
+            }
             ]
           }
         ],
