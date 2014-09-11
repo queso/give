@@ -134,22 +134,18 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
             evt.on('send_email', function (eventID, type, status) {
                 Fiber(function () {
                     try{
+                        var updateThis;
                         logger.info("Got to send_email function");
                         //console.log(body.events[0].entity[type][0].meta['billy.transaction_guid']);
                         if (body.events[0].entity[type][0].meta['billy.transaction_guid'] !== undefined) {
                             var description = body.events[0].entity[type][0].description;
                             var invoiceID = ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
-                            var id = Donate.findOne({'recurring.invoice.items.guid': invoiceID})._id;
-                            Donate.update(id, {$set: {'debit.email_sent': 'sending'}});
-
-                            //send out the appropriate email using Mandrill
-                            Meteor.call('sendEmailOutAPI', id, function (error, result) {
-                                logger.info("Completed Email send out API");
-                            });
+                            updateThis = Donate.findOne({'recurring.invoice.items.guid': invoiceID})._id;
                         } else {
                             updateThis = Donate.findOne({'debit.id': eventID})._id;
-                            Donate.update(updateThis, {$set: {'debit.email_sent': 'sending'}});
-                            //send out the appropriate email using Mandrill
+                        }
+                        //send out the appropriate email using Mandrill
+                        if (!(Donate.findOne(updateThis).debit.email_sent)) {
                             Meteor.call('sendEmailOutAPI', updateThis, function (error, result) {
                                 logger.info("Completed Email send out API");
                             });
