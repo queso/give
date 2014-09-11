@@ -2,12 +2,12 @@
     <!-- begin markup -->
     <div id="invoice" class="paid">
         <div class="this-is">
-            <strong>Donation</strong>
+            <strong>Donation Receipt</strong>
         </div><!-- invoice headline -->
 
         <header id="header">
             <div class="invoice-intro">
-                <h1>Trash Mountain Project</h1>
+                <h1 class="noTopPadding">Trash Mountain Project</h1>
                 <p>Developing Christ centered environments for children and families living and working in trash dump communities wordldwide.</p>
             </div>
 
@@ -76,21 +76,7 @@
                         <td class="donateWith text-left">{{donateWith}}</td>
                         <td>${{amount}}</td>
                     </tr>
-                    <tr>
-                        <th>Subtotal:</th>
-                        <td></td>
-                        <td>${{amount}}</td>
-                    </tr>
-                    <tr>
-                        <th>Covered fees:</th>
-                        <td></td>
-                        <td>{{fees}}</td>
-                    </tr>
-                    <tr>
-                        <th>Total:</th>
-                        <td></td>
-                        <td>${{total_amount}}</td>
-                    </tr>
+                    {{{fees}}}
                     </tbody>
                 </table>
             </div><!-- e: invoice totals -->
@@ -111,8 +97,8 @@
         <footer id="footer">
             <p>
                 As a 501(c)3 non-profit organization, all contributions to Trash Mountain Project, Inc.are tax deductible under 170(c)2 of the Internal Revenue Code. Trash Mountain Project, Inc.  EIN #26-4775012
-                <br><a class="btn btn-info hidden-print" onclick="javascript:window.print();"><i class="fa fa-print"></i> Print</a>
             </p>
+                <p><a class="hidden-print" href="" onclick="javascript:window.print();">Print</a></p>
 
         </footer>
     </div><!-- e: invoice -->

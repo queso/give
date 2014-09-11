@@ -1,6 +1,6 @@
 .fa-check-square {
-	font-size: 15em;
-	color: #389ADC;
+	font-size: 14em;
+	color: #7ccc79;
 }
 html, body, .container {
     margin-top: 0;
@@ -24,4 +24,8 @@ html, body, .container {
 .fa-chevron-circle-left {
 	font-size: 15em;
 	color: #cb4b31;
+}
+.alignReceipt {
+    margin-left: 11.8%;
+    width: 76.5%;
 }

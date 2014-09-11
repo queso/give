@@ -32,7 +32,7 @@ Meteor.methods({
         } else if (coveredTheFees){
         slug = "receiptincludesfees";
       } else {
-        slug = "compatiblereceipt";
+        slug = "fall-2014-donation-electronic-receipt";
       }
       Meteor.Mandrill.sendTemplate({
         key: Meteor.settings.mandrillKey,
