@@ -74,7 +74,21 @@ Template.Receipt.helpers({
          return this.debit.total_amount;
    },
     fees: function () {
-        return "$" + -this.debit.amount - -this.debit.total_amount();
+        return
+        if(this.debit.amount !== this.debit.total_amount){
+            return "<tr>\
+            <th>Covered fees:</th>\
+            <td></td>\
+            <td>$" + -this.debit.total_amount - -this.debit.amount + "</td>\
+        </tr>\
+            <tr>\
+            <th>Total:</th>\
+            <td></td>\
+            <td>$" + this.debit.total_amount + "</td>\
+        </tr>";
+        } else {
+        return "";
+        }
     }
 });
 

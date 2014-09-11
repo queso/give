@@ -12,7 +12,6 @@ http
 webapp
 pfafman:font-awesome-4
 less
-natestrauser:analyticsjs
 amr:parsley.js
 meteorhacks:kadira
 iron:router
