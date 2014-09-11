@@ -265,8 +265,8 @@
       <file leaf-file-name="events.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server/methods/events.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.65625" vertical-offset="2101" max-vertical-offset="4318">
-              <caret line="152" column="21" selection-start-line="152" selection-start-column="21" selection-end-line="152" selection-end-column="21" />
+            <state vertical-scroll-proportion="0.5638587" vertical-offset="2101" max-vertical-offset="4335">
+              <caret line="148" column="90" selection-start-line="148" selection-start-column="90" selection-end-line="148" selection-end-column="90" />
               <folding />
             </state>
           </provider>
@@ -1066,8 +1066,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/server/methods/events.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.65625" vertical-offset="2101" max-vertical-offset="4318">
-          <caret line="152" column="21" selection-start-line="152" selection-start-column="21" selection-end-line="152" selection-end-column="21" />
+        <state vertical-scroll-proportion="0.5638587" vertical-offset="2101" max-vertical-offset="4335">
+          <caret line="148" column="90" selection-start-line="148" selection-start-column="90" selection-end-line="148" selection-end-column="90" />
           <folding />
         </state>
       </provider>

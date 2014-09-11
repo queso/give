@@ -146,6 +146,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                         }
                         //send out the appropriate email using Mandrill
                         if (!(Donate.findOne(updateThis).debit.email_sent)) {
+                            Donate.update(updateThis, {$set: {'debit.email_sent': true}});
                             Meteor.call('sendEmailOutAPI', updateThis, function (error, result) {
                                 logger.info("Completed Email send out API");
                             });
