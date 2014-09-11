@@ -134,14 +134,14 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
             evt.on('send_email', function (eventID, type, status) {
                 Fiber(function () {
                     try{
-                        var updateThis;
-                    console.log(body.events[0].entity[type][0].meta['billy.transaction_guid']);
-                if (body.events[0].entity[type][0].meta['billy.transaction_guid'] !== undefined) {
+                    //console.log(body.events[0].entity[type][0].meta['billy.transaction_guid']);
+                /*if (body.events[0].entity[type][0].meta['billy.transaction_guid'] !== undefined) {
                     console.log("Event ID: " + eventID);
                     updateThis = Donate.findOne({'recurring.subscription.guid.': eventID})._id
                 } else {
                     updateThis = Donate.findOne({'debit.id': eventID})._id;
-                }
+                }*/
+                    var updateThis = Donate.findOne({'debit.id': eventID})._id;
                     Donate.update(updateThis, {$set: {'debit.email_sent': 'sending'}});
                     //send out the appropriate email using Mandrill
                     Meteor.call('sendEmailOutAPI', updateThis, function (error, result) {
