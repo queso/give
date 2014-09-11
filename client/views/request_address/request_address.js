@@ -88,7 +88,7 @@ Template.RequestAddress.helpers({
         type: "text",
         name: "region",
         id: "region",
-        class: "form-control text-uppercase",
+        class: "form-control text-capitalize",
         placeholder: "State",
         required: true
       }
