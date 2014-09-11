@@ -2,24 +2,61 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d6088cba-afc9-4ac0-a1e1-45aab2bd8f51" name="Default" comment="">
-      <change type="DELETED" beforePath="Z:\give\public\css\print.css" afterPath="" />
-      <change type="DELETED" beforePath="Z:\give\public\css\reset.css" afterPath="" />
-      <change type="DELETED" beforePath="Z:\give\public\css\style.css" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/bg.jpg" afterPath="$PROJECT_DIR$/public/images/bg.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/check_image.png" afterPath="$PROJECT_DIR$/public/images/check_image.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/credit_card.png" afterPath="$PROJECT_DIR$/public/images/credit_card.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.eot" afterPath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.eot" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.ttf" afterPath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.ttf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.woff" afterPath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.woff" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-black.eot" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-black.eot" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-black.ttf" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-black.ttf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-black.woff" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-black.woff" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bold.eot" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bold.eot" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bold.ttf" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bold.ttf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bold.woff" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bold.woff" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.eot" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.eot" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.ttf" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.ttf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.woff" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.woff" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-italic.eot" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-italic.eot" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-italic.ttf" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-italic.ttf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-italic.woff" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-italic.woff" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-light.eot" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-light.eot" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-light.ttf" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-light.ttf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-light.woff" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-light.woff" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-regular.eot" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-regular.eot" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-regular.ttf" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-regular.ttf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-regular.woff" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-regular.woff" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/loading.gif" afterPath="$PROJECT_DIR$/public/images/loading.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/switch/mask-square.png" afterPath="$PROJECT_DIR$/public/images/switch/mask-square.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/switch/mask.png" afterPath="$PROJECT_DIR$/public/images/switch/mask.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/.name" afterPath="$PROJECT_DIR$/.idea/.name" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.travis.yml" afterPath="$PROJECT_DIR$/.travis.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/donate/DonationTo.html" afterPath="$PROJECT_DIR$/client/views/donate/DonationTo.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/donate/DonationTo.js" afterPath="$PROJECT_DIR$/client/views/donate/DonationTo.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/both/collections/allerrors.js" afterPath="$PROJECT_DIR$/both/collections/allerrors.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/collections/allerrors.js" afterPath="$PROJECT_DIR$/server/collections/allerrors.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/android.svg" afterPath="$PROJECT_DIR$/public/images/icons/android.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/android1.svg" afterPath="$PROJECT_DIR$/public/images/icons/android1.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/app-store.svg" afterPath="$PROJECT_DIR$/public/images/icons/app-store.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/app.html" afterPath="$PROJECT_DIR$/client/app.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/both/app.js" afterPath="$PROJECT_DIR$/both/app.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/app.js" afterPath="$PROJECT_DIR$/client/app.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/arrow.svg" afterPath="$PROJECT_DIR$/public/images/icons/arrow.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/art.svg" afterPath="$PROJECT_DIR$/public/images/icons/art.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/compatibility/js/autoNumeric.js" afterPath="$PROJECT_DIR$/client/compatibility/js/autoNumeric.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/bag.svg" afterPath="$PROJECT_DIR$/public/images/icons/bag.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/methods/balanced_calls.js" afterPath="$PROJECT_DIR$/server/methods/balanced_calls.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/basket.svg" afterPath="$PROJECT_DIR$/public/images/icons/basket.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/bg.jpg" afterPath="$PROJECT_DIR$/public/images/bg.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/methods/billy.js" afterPath="$PROJECT_DIR$/server/methods/billy.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/book.svg" afterPath="$PROJECT_DIR$/public/images/icons/book.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/flat/js/bootstrap-select.js" afterPath="$PROJECT_DIR$/client/flat/js/bootstrap-select.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/bowling.svg" afterPath="$PROJECT_DIR$/public/images/icons/bowling.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/box.svg" afterPath="$PROJECT_DIR$/public/images/icons/box.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/brush.svg" afterPath="$PROJECT_DIR$/public/images/icons/brush.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/building.svg" afterPath="$PROJECT_DIR$/public/images/icons/building.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/bulb.svg" afterPath="$PROJECT_DIR$/public/images/icons/bulb.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/compatibility/js/button.js" afterPath="$PROJECT_DIR$/client/compatibility/js/button.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/button.svg" afterPath="$PROJECT_DIR$/public/images/icons/button.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/calculator.svg" afterPath="$PROJECT_DIR$/public/images/icons/calculator.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/calendar.svg" afterPath="$PROJECT_DIR$/public/images/icons/calendar.svg" />
@@ -27,138 +64,16 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/car.svg" afterPath="$PROJECT_DIR$/public/images/icons/car.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/card.svg" afterPath="$PROJECT_DIR$/public/images/icons/card.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/chair.svg" afterPath="$PROJECT_DIR$/public/images/icons/chair.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/chargeExisting.html" afterPath="$PROJECT_DIR$/client/views/chargeExisting.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/chargeExisting.js" afterPath="$PROJECT_DIR$/client/views/chargeExisting.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/chat.svg" afterPath="$PROJECT_DIR$/public/images/icons/chat.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/check_image.png" afterPath="$PROJECT_DIR$/public/images/check_image.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/clipboard.svg" afterPath="$PROJECT_DIR$/public/images/icons/clipboard.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/clocks.svg" afterPath="$PROJECT_DIR$/public/images/icons/clocks.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/compas.svg" afterPath="$PROJECT_DIR$/public/images/icons/compas.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/converse.svg" afterPath="$PROJECT_DIR$/public/images/icons/converse.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/credit_card.png" afterPath="$PROJECT_DIR$/public/images/credit_card.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/donate/countries/countries.html" afterPath="$PROJECT_DIR$/client/views/donate/countries/countries.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/cup.svg" afterPath="$PROJECT_DIR$/public/images/icons/cup.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/dj.svg" afterPath="$PROJECT_DIR$/public/images/icons/dj.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/donut.svg" afterPath="$PROJECT_DIR$/public/images/icons/donut.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/dude.svg" afterPath="$PROJECT_DIR$/public/images/icons/dude.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/dynamite.svg" afterPath="$PROJECT_DIR$/public/images/icons/dynamite.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/earth.svg" afterPath="$PROJECT_DIR$/public/images/icons/earth.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/egg.svg" afterPath="$PROJECT_DIR$/public/images/icons/egg.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/eye.svg" afterPath="$PROJECT_DIR$/public/images/icons/eye.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/file.svg" afterPath="$PROJECT_DIR$/public/images/icons/file.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/fit.svg" afterPath="$PROJECT_DIR$/public/images/icons/fit.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/flag.svg" afterPath="$PROJECT_DIR$/public/images/icons/flag.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/flask.svg" afterPath="$PROJECT_DIR$/public/images/icons/flask.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.eot" afterPath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.eot" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.svg" afterPath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.ttf" afterPath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.ttf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.woff" afterPath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.woff" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/flower.svg" afterPath="$PROJECT_DIR$/public/images/icons/flower.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/games.svg" afterPath="$PROJECT_DIR$/public/images/icons/games.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/gift-box.svg" afterPath="$PROJECT_DIR$/public/images/icons/gift-box.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/girl.svg" afterPath="$PROJECT_DIR$/public/images/icons/girl.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/give.iml" afterPath="$PROJECT_DIR$/.idea/give.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/goal.svg" afterPath="$PROJECT_DIR$/public/images/icons/goal.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/google .svg" afterPath="$PROJECT_DIR$/public/images/icons/google .svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/graph.svg" afterPath="$PROJECT_DIR$/public/images/icons/graph.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/icecream.svg" afterPath="$PROJECT_DIR$/public/images/icons/icecream.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/imac.svg" afterPath="$PROJECT_DIR$/public/images/icons/imac.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/ipad.svg" afterPath="$PROJECT_DIR$/public/images/icons/ipad.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/iphone.svg" afterPath="$PROJECT_DIR$/public/images/icons/iphone.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/key.svg" afterPath="$PROJECT_DIR$/public/images/icons/key.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-black.eot" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-black.eot" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-black.svg" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-black.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-black.ttf" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-black.ttf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-black.woff" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-black.woff" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bold.eot" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bold.eot" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bold.svg" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bold.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bold.ttf" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bold.ttf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bold.woff" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bold.woff" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.eot" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.eot" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.svg" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.ttf" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.ttf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.woff" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.woff" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-italic.eot" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-italic.eot" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-italic.svg" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-italic.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-italic.ttf" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-italic.ttf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-italic.woff" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-italic.woff" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-light.eot" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-light.eot" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-light.svg" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-light.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-light.ttf" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-light.ttf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-light.woff" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-light.woff" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-regular.eot" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-regular.eot" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-regular.svg" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-regular.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-regular.ttf" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-regular.ttf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-regular.woff" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-regular.woff" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/lettersymbol.svg" afterPath="$PROJECT_DIR$/public/images/icons/lettersymbol.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/loading.gif" afterPath="$PROJECT_DIR$/public/images/loading.gif" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/lock.svg" afterPath="$PROJECT_DIR$/public/images/icons/lock.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/loop.svg" afterPath="$PROJECT_DIR$/public/images/icons/loop.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/macbook.svg" afterPath="$PROJECT_DIR$/public/images/icons/macbook.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/magic.svg" afterPath="$PROJECT_DIR$/public/images/icons/magic.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/magicmouse.svg" afterPath="$PROJECT_DIR$/public/images/icons/magicmouse.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/mail.svg" afterPath="$PROJECT_DIR$/public/images/icons/mail.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/map.svg" afterPath="$PROJECT_DIR$/public/images/icons/map.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/switch/mask-square.png" afterPath="$PROJECT_DIR$/public/images/switch/mask-square.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/switch/mask.png" afterPath="$PROJECT_DIR$/public/images/switch/mask.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/medal.svg" afterPath="$PROJECT_DIR$/public/images/icons/medal.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/mic.svg" afterPath="$PROJECT_DIR$/public/images/icons/mic.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/money.svg" afterPath="$PROJECT_DIR$/public/images/icons/money.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/mortarboard.svg" afterPath="$PROJECT_DIR$/public/images/icons/mortarboard.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/mountain.svg" afterPath="$PROJECT_DIR$/public/images/icons/mountain.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/news.svg" afterPath="$PROJECT_DIR$/public/images/icons/news.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.meteor/packages" afterPath="$PROJECT_DIR$/.meteor/packages" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/paper-bag.svg" afterPath="$PROJECT_DIR$/public/images/icons/paper-bag.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/pc.svg" afterPath="$PROJECT_DIR$/public/images/icons/pc.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/pencil.svg" afterPath="$PROJECT_DIR$/public/images/icons/pencil.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/pencils.svg" afterPath="$PROJECT_DIR$/public/images/icons/pencils.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/picture.svg" afterPath="$PROJECT_DIR$/public/images/icons/picture.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/pig.svg" afterPath="$PROJECT_DIR$/public/images/icons/pig.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/pills.svg" afterPath="$PROJECT_DIR$/public/images/icons/pills.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/play.svg" afterPath="$PROJECT_DIR$/public/images/icons/play.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/printer.svg" afterPath="$PROJECT_DIR$/public/images/icons/printer.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/responsive.svg" afterPath="$PROJECT_DIR$/public/images/icons/responsive.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/retina.svg" afterPath="$PROJECT_DIR$/public/images/icons/retina.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/ring.svg" afterPath="$PROJECT_DIR$/public/images/icons/ring.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/rocket.svg" afterPath="$PROJECT_DIR$/public/images/icons/rocket.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/rss.svg" afterPath="$PROJECT_DIR$/public/images/icons/rss.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/safe.svg" afterPath="$PROJECT_DIR$/public/images/icons/safe.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/save.svg" afterPath="$PROJECT_DIR$/public/images/icons/save.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/search.svg" afterPath="$PROJECT_DIR$/public/images/icons/search.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/settings.svg" afterPath="$PROJECT_DIR$/public/images/icons/settings.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/shield.svg" afterPath="$PROJECT_DIR$/public/images/icons/shield.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/shirt.svg" afterPath="$PROJECT_DIR$/public/images/icons/shirt.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/skateboard.svg" afterPath="$PROJECT_DIR$/public/images/icons/skateboard.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/spray.svg" afterPath="$PROJECT_DIR$/public/images/icons/spray.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/storage.svg" afterPath="$PROJECT_DIR$/public/images/icons/storage.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/support.svg" afterPath="$PROJECT_DIR$/public/images/icons/support.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/ticket.svg" afterPath="$PROJECT_DIR$/public/images/icons/ticket.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/toilet-paper.svg" afterPath="$PROJECT_DIR$/public/images/icons/toilet-paper.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/touch.svg" afterPath="$PROJECT_DIR$/public/images/icons/touch.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/trash.svg" afterPath="$PROJECT_DIR$/public/images/icons/trash.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/trip-bag.svg" afterPath="$PROJECT_DIR$/public/images/icons/trip-bag.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/trunk.svg" afterPath="$PROJECT_DIR$/public/images/icons/trunk.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/ubmrella.svg" afterPath="$PROJECT_DIR$/public/images/icons/ubmrella.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/user-interface.svg" afterPath="$PROJECT_DIR$/public/images/icons/user-interface.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/video.svg" afterPath="$PROJECT_DIR$/public/images/icons/video.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/weather.svg" afterPath="$PROJECT_DIR$/public/images/icons/weather.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/wi-fi.svg" afterPath="$PROJECT_DIR$/public/images/icons/wi-fi.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/wine.svg" afterPath="$PROJECT_DIR$/public/images/icons/wine.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/yinyang.svg" afterPath="$PROJECT_DIR$/public/images/icons/yinyang.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.travis.yml" afterPath="$PROJECT_DIR$/.travis.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/donate/DonationTo.html" afterPath="$PROJECT_DIR$/client/views/donate/DonationTo.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/donate/DonationTo.js" afterPath="$PROJECT_DIR$/client/views/donate/DonationTo.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/both/collections/allerrors.js" afterPath="$PROJECT_DIR$/both/collections/allerrors.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/collections/allerrors.js" afterPath="$PROJECT_DIR$/server/collections/allerrors.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/app.html" afterPath="$PROJECT_DIR$/client/app.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/both/app.js" afterPath="$PROJECT_DIR$/both/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/app.js" afterPath="$PROJECT_DIR$/client/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/compatibility/js/autoNumeric.js" afterPath="$PROJECT_DIR$/client/compatibility/js/autoNumeric.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/methods/balanced_calls.js" afterPath="$PROJECT_DIR$/server/methods/balanced_calls.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/methods/billy.js" afterPath="$PROJECT_DIR$/server/methods/billy.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/flat/js/bootstrap-select.js" afterPath="$PROJECT_DIR$/client/flat/js/bootstrap-select.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/compatibility/js/button.js" afterPath="$PROJECT_DIR$/client/compatibility/js/button.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/chargeExisting.html" afterPath="$PROJECT_DIR$/client/views/chargeExisting.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/chargeExisting.js" afterPath="$PROJECT_DIR$/client/views/chargeExisting.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/donate/countries/countries.html" afterPath="$PROJECT_DIR$/client/views/donate/countries/countries.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/both/collections/donate.js" afterPath="$PROJECT_DIR$/both/collections/donate.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/collections/donate.js" afterPath="$PROJECT_DIR$/server/collections/donate.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/methods/donate.js" afterPath="$PROJECT_DIR$/server/methods/donate.js" />
@@ -170,46 +85,131 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/donate/donation_form.css" afterPath="$PROJECT_DIR$/client/views/donate/donation_form.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/donate/donation_form.html" afterPath="$PROJECT_DIR$/client/views/donate/donation_form.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/donate/donation_form.js" afterPath="$PROJECT_DIR$/client/views/donate/donation_form.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/donut.svg" afterPath="$PROJECT_DIR$/public/images/icons/donut.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/dude.svg" afterPath="$PROJECT_DIR$/public/images/icons/dude.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/dynamite.svg" afterPath="$PROJECT_DIR$/public/images/icons/dynamite.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/earth.svg" afterPath="$PROJECT_DIR$/public/images/icons/earth.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/egg.svg" afterPath="$PROJECT_DIR$/public/images/icons/egg.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/methods/errors.js" afterPath="$PROJECT_DIR$/server/methods/errors.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/methods/events.js" afterPath="$PROJECT_DIR$/server/methods/events.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/eye.svg" afterPath="$PROJECT_DIR$/public/images/icons/eye.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/failed/failed.html" afterPath="$PROJECT_DIR$/client/views/failed/failed.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/file.svg" afterPath="$PROJECT_DIR$/public/images/icons/file.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/fit.svg" afterPath="$PROJECT_DIR$/public/images/icons/fit.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/flag.svg" afterPath="$PROJECT_DIR$/public/images/icons/flag.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/flask.svg" afterPath="$PROJECT_DIR$/public/images/icons/flask.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.svg" afterPath="$PROJECT_DIR$/public/fonts/flat-ui-icons-regular.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/flat/css/flat-ui.css" afterPath="$PROJECT_DIR$/client/flat/css/flat-ui.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/flat/js/flatui-checkbox.js" afterPath="$PROJECT_DIR$/client/flat/js/flatui-checkbox.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/flat/js/flatui-radio.js" afterPath="$PROJECT_DIR$/client/flat/js/flatui-radio.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/flower.svg" afterPath="$PROJECT_DIR$/public/images/icons/flower.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/games.svg" afterPath="$PROJECT_DIR$/public/images/icons/games.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/gift-box.svg" afterPath="$PROJECT_DIR$/public/images/icons/gift-box.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/girl.svg" afterPath="$PROJECT_DIR$/public/images/icons/girl.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/give.iml" afterPath="$PROJECT_DIR$/.idea/give.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/goal.svg" afterPath="$PROJECT_DIR$/public/images/icons/goal.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/google .svg" afterPath="$PROJECT_DIR$/public/images/icons/google .svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/graph.svg" afterPath="$PROJECT_DIR$/public/images/icons/graph.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/donate/handle_error.js" afterPath="$PROJECT_DIR$/client/views/donate/handle_error.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/icecream.svg" afterPath="$PROJECT_DIR$/public/images/icons/icecream.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/imac.svg" afterPath="$PROJECT_DIR$/public/images/icons/imac.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/ipad.svg" afterPath="$PROJECT_DIR$/public/images/icons/ipad.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/iphone.svg" afterPath="$PROJECT_DIR$/public/images/icons/iphone.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/compatibility/js/jquery.maskedinput.min.js" afterPath="$PROJECT_DIR$/client/compatibility/js/jquery.maskedinput.min.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/flat/js/jquery.placeholder.js" afterPath="$PROJECT_DIR$/client/flat/js/jquery.placeholder.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/key.svg" afterPath="$PROJECT_DIR$/public/images/icons/key.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-black.svg" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-black.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bold.svg" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bold.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.svg" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-bolditalic.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-italic.svg" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-italic.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-light.svg" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-light.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/fonts/lato/lato-regular.svg" afterPath="$PROJECT_DIR$/public/fonts/lato/lato-regular.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/lettersymbol.svg" afterPath="$PROJECT_DIR$/public/images/icons/lettersymbol.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/lock.svg" afterPath="$PROJECT_DIR$/public/images/icons/lock.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/loop.svg" afterPath="$PROJECT_DIR$/public/images/icons/loop.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/macbook.svg" afterPath="$PROJECT_DIR$/public/images/icons/macbook.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/magic.svg" afterPath="$PROJECT_DIR$/public/images/icons/magic.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/magicmouse.svg" afterPath="$PROJECT_DIR$/public/images/icons/magicmouse.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/mail.svg" afterPath="$PROJECT_DIR$/public/images/icons/mail.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/methods/mandrill.js" afterPath="$PROJECT_DIR$/server/methods/mandrill.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/map.svg" afterPath="$PROJECT_DIR$/public/images/icons/map.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/layouts/master_layout/master_layout.html" afterPath="$PROJECT_DIR$/client/views/layouts/master_layout/master_layout.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/layouts/master_layout/master_layout.js" afterPath="$PROJECT_DIR$/client/views/layouts/master_layout/master_layout.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/medal.svg" afterPath="$PROJECT_DIR$/public/images/icons/medal.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/mic.svg" afterPath="$PROJECT_DIR$/public/images/icons/mic.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/money.svg" afterPath="$PROJECT_DIR$/public/images/icons/money.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/mortarboard.svg" afterPath="$PROJECT_DIR$/public/images/icons/mortarboard.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/mountain.svg" afterPath="$PROJECT_DIR$/public/images/icons/mountain.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/news.svg" afterPath="$PROJECT_DIR$/public/images/icons/news.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/compatibility/css/notifIt.css" afterPath="$PROJECT_DIR$/client/compatibility/css/notifIt.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/packages.json" afterPath="$PROJECT_DIR$/packages.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.meteor/packages" afterPath="$PROJECT_DIR$/.meteor/packages" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/paper-bag.svg" afterPath="$PROJECT_DIR$/public/images/icons/paper-bag.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/papertrail.js" afterPath="$PROJECT_DIR$/server/papertrail.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/pc.svg" afterPath="$PROJECT_DIR$/public/images/icons/pc.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/pencil.svg" afterPath="$PROJECT_DIR$/public/images/icons/pencil.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/pencils.svg" afterPath="$PROJECT_DIR$/public/images/icons/pencils.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/picture.svg" afterPath="$PROJECT_DIR$/public/images/icons/picture.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/pig.svg" afterPath="$PROJECT_DIR$/public/images/icons/pig.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/pills.svg" afterPath="$PROJECT_DIR$/public/images/icons/pills.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/play.svg" afterPath="$PROJECT_DIR$/public/images/icons/play.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/receipt/print.less" afterPath="$PROJECT_DIR$/client/views/receipt/print.less" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/printer.svg" afterPath="$PROJECT_DIR$/public/images/icons/printer.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/receipt/receipt.css" afterPath="$PROJECT_DIR$/client/views/receipt/receipt.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/receipt/receipt.html" afterPath="$PROJECT_DIR$/client/views/receipt/receipt.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/receipt/receipt.js" afterPath="$PROJECT_DIR$/client/views/receipt/receipt.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/receipt/receiptReformated.html" afterPath="$PROJECT_DIR$/client/views/receipt/receiptReformated.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/request_address/request_address.html" afterPath="$PROJECT_DIR$/client/views/request_address/request_address.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/request_address/request_address.js" afterPath="$PROJECT_DIR$/client/views/request_address/request_address.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/receipt/reset.less" afterPath="$PROJECT_DIR$/client/views/receipt/reset.less" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/responsive.svg" afterPath="$PROJECT_DIR$/public/images/icons/responsive.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/retina.svg" afterPath="$PROJECT_DIR$/public/images/icons/retina.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/ring.svg" afterPath="$PROJECT_DIR$/public/images/icons/ring.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/rocket.svg" afterPath="$PROJECT_DIR$/public/images/icons/rocket.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/both/router/routes.js" afterPath="$PROJECT_DIR$/both/router/routes.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/rss.svg" afterPath="$PROJECT_DIR$/public/images/icons/rss.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/safe.svg" afterPath="$PROJECT_DIR$/public/images/icons/safe.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/save.svg" afterPath="$PROJECT_DIR$/public/images/icons/save.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" afterPath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/search.svg" afterPath="$PROJECT_DIR$/public/images/icons/search.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/send_email/send_email.html" afterPath="$PROJECT_DIR$/client/views/send_email/send_email.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/send_email/send_email.js" afterPath="$PROJECT_DIR$/client/views/send_email/send_email.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/settings.svg" afterPath="$PROJECT_DIR$/public/images/icons/settings.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/shield.svg" afterPath="$PROJECT_DIR$/public/images/icons/shield.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/shirt.svg" afterPath="$PROJECT_DIR$/public/images/icons/shirt.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/skateboard.svg" afterPath="$PROJECT_DIR$/public/images/icons/skateboard.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/spray.svg" afterPath="$PROJECT_DIR$/public/images/icons/spray.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/storage.svg" afterPath="$PROJECT_DIR$/public/images/icons/storage.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/receipt/style.less" afterPath="$PROJECT_DIR$/client/views/receipt/style.less" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/support.svg" afterPath="$PROJECT_DIR$/public/images/icons/support.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/tests.js" afterPath="$PROJECT_DIR$/tests/tests.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/thanks/thanks.css" afterPath="$PROJECT_DIR$/client/views/thanks/thanks.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/thanks/thanks.html" afterPath="$PROJECT_DIR$/client/views/thanks/thanks.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/thanks/thanks.js" afterPath="$PROJECT_DIR$/client/views/thanks/thanks.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/ticket.svg" afterPath="$PROJECT_DIR$/public/images/icons/ticket.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/toilet-paper.svg" afterPath="$PROJECT_DIR$/public/images/icons/toilet-paper.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/donate/total_donation/total_donation.html" afterPath="$PROJECT_DIR$/client/views/donate/total_donation/total_donation.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/donate/total_donation/total_donation.js" afterPath="$PROJECT_DIR$/client/views/donate/total_donation/total_donation.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/touch.svg" afterPath="$PROJECT_DIR$/public/images/icons/touch.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/trash.svg" afterPath="$PROJECT_DIR$/public/images/icons/trash.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/trip-bag.svg" afterPath="$PROJECT_DIR$/public/images/icons/trip-bag.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/trunk.svg" afterPath="$PROJECT_DIR$/public/images/icons/trunk.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/ubmrella.svg" afterPath="$PROJECT_DIR$/public/images/icons/ubmrella.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/user-interface.svg" afterPath="$PROJECT_DIR$/public/images/icons/user-interface.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/validate.js" afterPath="$PROJECT_DIR$/client/validate.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/js/validate.min.js" afterPath="$PROJECT_DIR$/client/js/validate.min.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/video.svg" afterPath="$PROJECT_DIR$/public/images/icons/video.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/weather.svg" afterPath="$PROJECT_DIR$/public/images/icons/weather.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/wi-fi.svg" afterPath="$PROJECT_DIR$/public/images/icons/wi-fi.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/wine.svg" afterPath="$PROJECT_DIR$/public/images/icons/wine.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/yinyang.svg" afterPath="$PROJECT_DIR$/public/images/icons/yinyang.svg" />
     </list>
     <ignored path="give.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -249,17 +249,17 @@
         <entry file="file://$PROJECT_DIR$/client/views/receipt/receipt.css">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="680">
-              <caret line="6" column="4" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="4" />
+              <caret line="11" column="26" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="receipt.html" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="receipt.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/client/views/receipt/receipt.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.6666667" vertical-offset="0" max-vertical-offset="2091">
-              <caret line="2" column="33" selection-start-line="2" selection-start-column="33" selection-end-line="2" selection-end-column="33" />
+            <state vertical-scroll-proportion="0.81832063" vertical-offset="1385" max-vertical-offset="2125">
+              <caret line="113" column="20" selection-start-line="113" selection-start-column="20" selection-end-line="113" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -268,31 +268,19 @@
       <file leaf-file-name="receipt.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/views/receipt/receipt.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-22.84" vertical-offset="1027" max-vertical-offset="1802">
-              <caret line="94" column="11" selection-start-line="94" selection-start-column="11" selection-end-line="94" selection-end-column="11" />
+            <state vertical-scroll-proportion="-21.64" vertical-offset="1108" max-vertical-offset="1802">
+              <caret line="97" column="4" selection-start-line="97" selection-start-column="3" selection-end-line="97" selection-end-column="4" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="thanks.html" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="thanks.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/views/thanks/thanks.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2" vertical-offset="0" max-vertical-offset="680">
-              <caret line="8" column="47" selection-start-line="8" selection-start-column="47" selection-end-line="8" selection-end-column="47" />
+            <state vertical-scroll-proportion="-11.769231" vertical-offset="0" max-vertical-offset="476">
+              <caret line="18" column="21" selection-start-line="18" selection-start-column="21" selection-end-line="18" selection-end-column="21" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="routes.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/both/router/routes.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="216" max-vertical-offset="935">
-              <caret line="30" column="23" selection-start-line="30" selection-start-column="23" selection-end-line="30" selection-end-column="23" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -327,16 +315,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="print.less" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/views/receipt/print.less">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.6666666" vertical-offset="0" max-vertical-offset="238">
-              <caret line="5" column="21" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FindManager">
@@ -359,10 +337,10 @@
         <option value="$PROJECT_DIR$/client/views/donate/donation_form.css" />
         <option value="$PROJECT_DIR$/client/views/receipt/receipt.css" />
         <option value="$PROJECT_DIR$/client/views/receipt/print.less" />
-        <option value="$PROJECT_DIR$/client/views/receipt/receipt.html" />
         <option value="$PROJECT_DIR$/client/views/receipt/receipt.js" />
         <option value="$PROJECT_DIR$/client/views/receipt/style.less" />
         <option value="$PROJECT_DIR$/client/views/thanks/thanks.html" />
+        <option value="$PROJECT_DIR$/client/views/receipt/receipt.html" />
       </list>
     </option>
   </component>
@@ -635,19 +613,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/client/views/thanks/thanks.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8038943" vertical-offset="0" max-vertical-offset="719">
-          <caret line="34" column="40" selection-start-line="34" selection-start-column="40" selection-end-line="34" selection-end-column="40" />
-          <folding>
-            <marker date="1410403640990" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1410403640990" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1410403640990" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1410403640990" expanded="true" signature="-1:-1" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/views/receipt/reset.less">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.33333334" vertical-offset="0" max-vertical-offset="1887">
@@ -692,50 +657,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/views/receipt/print.less">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.6666666" vertical-offset="0" max-vertical-offset="238">
-          <caret line="5" column="21" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/views/donate/donation_form.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-4.607843" vertical-offset="1278" max-vertical-offset="3315">
           <caret line="89" column="54" selection-start-line="89" selection-start-column="54" selection-end-line="89" selection-end-column="54" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/views/donate/donation_form.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-23.16" vertical-offset="5881" max-vertical-offset="6562">
-          <caret line="380" column="1" selection-start-line="380" selection-start-column="1" selection-end-line="380" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/views/receipt/receipt.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="680">
-          <caret line="6" column="4" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/views/receipt/receipt.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.6666667" vertical-offset="0" max-vertical-offset="2091">
-          <caret line="2" column="33" selection-start-line="2" selection-start-column="33" selection-end-line="2" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/views/receipt/receipt.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-22.84" vertical-offset="1027" max-vertical-offset="1802">
-          <caret line="94" column="11" selection-start-line="94" selection-start-column="11" selection-end-line="94" selection-end-column="11" />
           <folding />
         </state>
       </provider>
@@ -751,10 +676,71 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/client/views/receipt/print.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.12724552" vertical-offset="0" max-vertical-offset="668">
+          <caret line="5" column="21" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/views/donate/donation_form.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-23.16" vertical-offset="5881" max-vertical-offset="6562">
+          <caret line="380" column="1" selection-start-line="380" selection-start-column="1" selection-end-line="380" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/views/receipt/receipt.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="680">
+          <caret line="11" column="26" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/views/receipt/receipt.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-21.64" vertical-offset="1108" max-vertical-offset="1802">
+          <caret line="97" column="4" selection-start-line="97" selection-start-column="3" selection-end-line="97" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/views/thanks/thanks.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="719">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/views/thanks/thanks.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.8038943" vertical-offset="0" max-vertical-offset="719">
+          <caret line="34" column="40" selection-start-line="34" selection-start-column="40" selection-end-line="34" selection-end-column="40" />
+          <folding>
+            <marker date="1410403640990" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410403640990" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410403640990" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1410403640990" expanded="true" signature="-1:-1" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/client/views/thanks/thanks.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2" vertical-offset="0" max-vertical-offset="680">
-          <caret line="8" column="47" selection-start-line="8" selection-start-column="47" selection-end-line="8" selection-end-column="47" />
+        <state vertical-scroll-proportion="-11.769231" vertical-offset="0" max-vertical-offset="476">
+          <caret line="18" column="21" selection-start-line="18" selection-start-column="21" selection-end-line="18" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/views/receipt/receipt.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.81832063" vertical-offset="1385" max-vertical-offset="2125">
+          <caret line="113" column="20" selection-start-line="113" selection-start-column="20" selection-end-line="113" selection-end-column="20" />
           <folding />
         </state>
       </provider>
