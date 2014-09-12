@@ -15,50 +15,6 @@ function extractFromPromise(promise) {
     return fut.wait();
 }
 
-/*function throwTheError(e){
-  console.log("Extras: " + JSON.parse(e.message).errors[0].extras);
-  console.log("Category Code: " + JSON.parse(e.message).errors[0].category_code);
-  console.log("All Errors: " + JSON.parse(e.message).errors[0]);
-  var error = JSON.parse(e.message).errors[0]; // Update this to handle multiple errors?
-  logger.error(JSON.stringify(error, null, 4));
-
-  throw new Meteor.Error(error);
-}
-
-
-function failTheRecord(data) {
-  logger.error("Error for this ID: " + data.id);
-  logger.error(JSON.stringify(data.e, null, 4));
-      // Update this record to reflect failed status.
-      Donate.update(data.id, {
-        $set: {
-          failed: data.e
-        }
-      });
-      return;
-}*/
-/*function throwTheError(e){
-    logger.error("Category Code: " + e.category_code);
-    logger.error("Error Description: " + e.description);
-    logger.error(e);
-    //throw new Meteor.Error(e);
-}
-
-
-function failTheRecord(errorWithID) {
-    logger.error("Category Code: " + errorWithID.e.category_code);
-    logger.error("Error Description: " + errorWithID.e.description);
-    logger.error("Error for this ID: " + errorWithID.id);
-    logger.error("Error: " + errorWithID.e);
-    // Update this record to reflect failed status.
-    Donate.update(errorWithID.id, {
-        $set: {
-            failed: errorWithID.e
-        }
-    });
-    return;
-}*/
-
 function logIt() {
   logger.info("Started " + arguments.callee.caller.name);
 }
@@ -102,11 +58,9 @@ Meteor.methods({
                 Donate.update(data._id, {$set: {status: 'Customer created.'}}); //TODO: Use this status inside the spinner to show that real things are happening.
                 console.log("Customer created: " + data._id);
             } else {
-                var errorWithID = {};
-                errorWithID.e = error;
-                errorWithID.id = data._id;
-                failTheRecord(errorWithID);
-                throwTheError(error);
+                logger.error("Error returned from create_customer");
+                //must have this Meteor error thrown here so that it returns an error to the cilent.
+                throw new Meteor.Error(error);
             }
         });
 
@@ -121,14 +75,9 @@ Meteor.methods({
                     console.log("Card: ");
                     console.dir(JSON.stringify(card));
                 } else {
-                    console.log("error returned");
-                    /*console.log("ERROR: " + error.errors.category_code);
-                    logger.error(JSON.stringify(error, null, 4));
-                    throw new Meteor.Error(500, error.errors.category_code, error.errors.description)*/;/*var errorWithID = {};
-                    errorWithID.e = error;
-                    errorWithID.id = data._id;
-                    failTheRecord(errorWithID);
-                    throwTheError(error);*/
+                    logger.error("Error returned from card_create");
+                    //must have this Meteor error thrown here so that it returns an error to the cilent.
+                    throw new Meteor.Error(error);
                 }
             });
 
@@ -140,13 +89,9 @@ Meteor.methods({
                     console.log('********Total Amount = ' + data.paymentInformation[0].total_amount * 100);
                 }
                 else {
-                    //console.dir(error.reason.errors);
-                    //logger.error(JSON.stringify(error, null, 4));
-                    //throw new Meteor.Error(500, error.category_code, error.description);/*var errorWithID = {};
-                     /*errorWithID.e = error;
-                     errorWithID.id = data._id;
-                     failTheRecord(errorWithID);
-                     throwTheError(error);*/
+                    logger.error("Error returned from create_association");
+                    //must have this Meteor error thrown here so that it returns an error to the cilent.
+                    throw new Meteor.Error(error);
                  }
             });
 
@@ -183,11 +128,9 @@ Meteor.methods({
                     console.log("Check: ");
                     console.log("Adding check create response from Balanced to the collection.");
                 } else {
-                    var errorWithID = {};
-                    errorWithID.e = error;
-                    errorWithID.id = data._id;
-                    failTheRecord(errorWithID);
-                    throwTheError(error);
+                    logger.error("Error returned from check_create");
+                    //must have this Meteor error thrown here so that it returns an error to the cilent.
+                    throw new Meteor.Error(error);
                 }
             });
             var checkVerify;
@@ -198,11 +141,9 @@ Meteor.methods({
                     associate = result;
                 }
                 else {
-                    /*var errorWithID = {};
-                    errorWithID.e = error;
-                    errorWithID.id = data._id;
-                    failTheRecord(errorWithID);*/
-                    throwTheError(error);
+                    logger.error("Error returned from create_association");
+                    //must have this Meteor error thrown here so that it returns an error to the cilent.
+                    throw new Meteor.Error(error);
                 }
             });
 
@@ -229,14 +170,12 @@ Meteor.methods({
             }});
         }
         return data._id;
+
     } catch (e) {
-        logger.error("Got to catch error area of processPayment function.");
-        var errorWithID = {};
-        errorWithID.e = e;
-        errorWithID.id = data._id;
-        failTheRecord(errorWithID);
-        throwTheError(e);
-    }
+            logger.error("Got to catch error area of processPayment function." + e);
+            logger.error("e.category_code = " + e.category_code + " e.descriptoin = " + e.description);
+            throw new Meteor.Error(500, e.category_code, e.description);
+        }
     },
     logNewGift: function(id) {
       try {
@@ -244,8 +183,8 @@ Meteor.methods({
         logger.info("**********************NEW GIFT******************** id: " + id + " Total Amount: $" + amount)
       }
       catch (e) {
-        logger.error(e);
-        throw new Meteor.error(e);
+        logger.error("Donate.js caught an error: " + e);
+        throw new Meteor.Error(e);
       }
     }
 });

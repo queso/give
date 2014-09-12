@@ -10,11 +10,9 @@ function extractFromPromise(promise) {
     return fut.wait();
 }
 
-function failTheRecord(errorWithID) {/*
-    logger.error("Category Code: " + errorWithID.e.category_code);
-    logger.error("Error Description: " + errorWithID.e.description);
-    logger.error("Error for this ID: " + errorWithID.id);*/
-    logger.error("Error from inside balanced_calls.js and failTheRecord: " + errorWithID.e);
+function failTheRecord(errorWithID) {
+    logger.error("Error from inside balanced_calls.js and failTheRecord: Category Code: " + errorWithID.e.category_code);
+
     // Update this record to reflect failed status.
     var id = errorWithID.id;
     var errors = errorWithID.e;
@@ -86,7 +84,7 @@ Meteor.methods({
                         'failed.description': e.description
                     }
                 });
-                throw new Meteor.Error(500, e.category_code, e.description);
+                throw new Meteor.Error(e);//500, e.category_code, e.description);
                 /*var errorWithID = {};
                 errorWithID.e = e;
                 errorWithID.id = data._id;

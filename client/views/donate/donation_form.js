@@ -13,7 +13,7 @@ function handleErrors(error) {
 		show: true
 	});
 	$('#errorCategory').text(error);
-    console.log(error.errors[0]);
+    console.log(error);
 	$('#errorDescription').text(error.description);
 }
 
