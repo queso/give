@@ -144,20 +144,22 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                         } else {
                             updateThis = Donate.findOne({'debit.id': eventID})._id;
                         }
-                        if (status === 'failed' && type === debits ){
-                            Donate.update(updateThis, {$set:
-                            {'failed.failure_reason': body.events[0].entity[type][0].failure_reason,
-                                'failed.failure_reason_code': body.events[0].entity[type][0].failure_reason_code,
-                                'failed.transaction_number': body.events[0].entity[type][0].transaction_number}});
-                        }
+
+                        /*if (status === 'failed' && type === debits ){
+                         Donate.update(updateThis, {$set:
+                         {'failed.failure_reason': body.events[0].entity[type][0].failure_reason,
+                         'failed.failure_reason_code': body.events[0].entity[type][0].failure_reason_code,
+                         'failed.transaction_number': body.events[0].entity[type][0].transaction_number}});
+                         }*/
+
                         //send out the appropriate email using Mandrill
                         if (!(Donate.findOne(updateThis).debit.email_sent)) {
-                            Donate.update(updateThis, {$set:
-                            {'debit.email_sent': true}});
+                            Donate.update(updateThis, {$set: {'debit.email_sent': true}});
                             Meteor.call('sendEmailOutAPI', updateThis, function (error, result) {
                                 logger.info("Completed Email send out API");
                             });
                         }
+
                     }
                     catch(e) {
                         logger.error(e);
