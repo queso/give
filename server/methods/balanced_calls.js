@@ -10,6 +10,39 @@ function extractFromPromise(promise) {
     return fut.wait();
 }
 
+function throwTheError(e){
+    logger.error("Category Code: " + e.category_code);
+    logger.error("Error Description: " + e.description);
+    logger.error(e);
+    //throw new Meteor.Error(e);
+}
+
+
+function failTheRecord(errorWithID) {
+    logger.error("Category Code: " + errorWithID.e.category_code);
+    logger.error("Error Description: " + errorWithID.e.description);
+    logger.error("Error for this ID: " + errorWithID.id);
+    logger.error("Error: " + errorWithID.e);
+    // Update this record to reflect failed status.
+    var id = errorWithID.id;
+    var errors = errorWithID.e;
+    console.log(errors);
+    /*if(errorWithID.e.debits){
+        var debits = errorWithID.e.debits;
+        Donate.update(id, {
+            $set: {
+                'failed.debits': debits
+            }
+        });
+    }*/
+    Donate.update(id, {
+        $set: {
+            failed: errors
+        }
+    });
+    throw new Meteor.Error(500, errorWithID.e);
+}
+
 Meteor.methods({
     card_create: function (data) {
         console.log("Inside card create.");
@@ -46,22 +79,35 @@ Meteor.methods({
         logger.info("Associate and debit: ");
     },
     create_association: function (data, paymentHref, otherHref) {
-            console.log("Inside create_association function");
-            var associate;
-            if (data.paymentInformation[0].is_recurring === 'one_time') {
-                console.log("One time gift.");
-                // var type = data.paymentInformation[0].type;
-                associate = extractFromPromise(balanced.get(paymentHref).associate_to_customer(otherHref).debit({
-                    "amount": data.paymentInformation[0].total_amount * 100,
-                    "appears_on_statement_as": "Trash Mountain"}));
-                console.log("Associate and debit: ");
-                console.dir(JSON.stringify(associate));
-                return associate;
-            } else {
-                console.log("Recurring gift");
-                associate = extractFromPromise(balanced.get(paymentHref).associate_to_customer(otherHref));
-                logger.info("Associate and debit: ");
-                return associate;
+            try {
+                console.log("Inside create_association function");
+                var associate;
+                if (data.paymentInformation[0].is_recurring === 'one_time') {
+                    logger.info("One time gift.");
+                    associate = extractFromPromise(balanced.get(paymentHref).associate_to_customer(otherHref).debit({
+                        "amount": data.paymentInformation[0].total_amount * 100,
+                        "appears_on_statement_as": "Trash Mountain"}));
+                    logger.info("Associate and debit: ");
+                    return associate;
+                } else {
+                    console.log("Recurring gift");
+                    associate = extractFromPromise(balanced.get(paymentHref).associate_to_customer(otherHref));
+                    logger.info("Associate and debit: ");
+                    return associate;
+                }
+            } catch(e) {
+                logger.error("Got to catch error area of create_associate. ID: " + data._id + " Category Code: " + e.category_code + ' Description: ' + e.description);
+                Donate.update(data._id, {
+                    $set: {
+                        'failed.category_code': e.category_code,
+                        'failed.description': e.description
+                    }
+                });
+                throw new Meteor.Error(500, e.category_code, e.description);
+                /*var errorWithID = {};
+                errorWithID.e = e;
+                errorWithID.id = data._id;
+                failTheRecord(errorWithID);*/
             }
     },
     create_customer: function(customerInfo) {

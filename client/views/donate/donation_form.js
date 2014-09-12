@@ -12,7 +12,8 @@ function handleErrors(error) {
 	$('#modal_for_initial_donation_error').modal({
 		show: true
 	});
-	$('#errorCategory').text(error.category_code);
+	$('#errorCategory').text(error);
+    console.log(error.errors[0]);
 	$('#errorDescription').text(error.description);
 }
 
@@ -21,7 +22,7 @@ function fillForm() {
 		$('#routing_number').val("321174851");
 		$('#account_number').val("9900000003");
 	} else {
-		$('#card_number').val("4111111111111111");
+		$('#card_number').val("4444444444444448"); //4111111111111111 4444444444444448
 		$('#expiry_month option').prop('selected', false).filter('[value=12]').prop(
 			'selected', true);
 		$('select[name=expiry_month]').change();
@@ -110,7 +111,7 @@ Template.DonationForm.events({
     //var coverTheFeesStatus =  $(e.target).find('[name=coverTheFees]').is(':checked');
     var form = {
       "paymentInformation": [{
-        "amount": $('#amount').val().replace(/[^\d\.\-\ ]/g, ''),
+        "amount": Number($('#amount').val().replace(/[^\d\.\-\ ]/g, '')),
         "total_amount": $('#total_amount').val(),
         "donateTo": $("#donateTo").val(),
         "donateWith": $("#donateWith").val(),
@@ -135,6 +136,10 @@ Template.DonationForm.events({
       sessionId: Meteor.default_connection._lastSessionId
     };
 
+      //
+      if (form.paymentInformation[0].total_amount !== form.paymentInformation[0].amount){
+          form.paymentInformation[0].fees = form.paymentInformation[0].total_amount - form.paymentInformation[0].amount;
+      }
 
     if (form.paymentInformation[0].donateWith === "card") {
       form.paymentInformation[0].card_number = $('[name=card_number]').val();
@@ -188,7 +193,7 @@ Template.DonationForm.events({
             var storedError = error.error;
             //handleErrors is used to check the returned error and the display a user friendly message about what happened that caused
             //the error.
-            handleErrors(error.error);
+            handleErrors(error);
         }
       });
     }
