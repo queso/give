@@ -15,7 +15,7 @@ Meteor.methods({
       logger.info("Started email send out with API for id: ");
       logger.info(data);
 
-      var error;
+      var error = {};
       var debit = Donate.findOne({_id: data}).debit;
       var customer = Donate.findOne({_id: data}).customer;
       var fees = +debit.total_amount - +debit.amount;
@@ -23,7 +23,7 @@ Meteor.methods({
       logger.info("debit.status: " + debit.status);
       var slug;
       if (debit.status === "failed") {
-        error = Donate.findOne({_id: data}).debit.status;
+        error = Donate.findOne({_id: data}).failed;
         slug = "failedpayment";
         } else if (debit.coveredTheFees){
         slug = "receiptincludesfees";
@@ -56,11 +56,17 @@ Meteor.methods({
                 "name": "TotalGiftAmount",
                 "content": debit.total_amount
               }, {
-                "name": "WhatWentWrong",
-                "content": error
+                "name": "WhatWentWrongRea",
+                "content": error.failure_reason
               },{
-                "name": "FNAME",
-                "content": customer.fname
+                "name": "FailureReason",
+                "content": error.failure_reason
+               },{
+                "name": "FailureReasonCode",
+                "content": error.failure_reason_code
+              },{
+            "name": "FNAME",
+            "content": customer.fname
             }, {
                 "name": "LNAME",
                 "content": customer.lname
