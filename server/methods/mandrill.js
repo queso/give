@@ -23,7 +23,7 @@ Meteor.methods({
       logger.info("debit.status: " + debit.status);
       var slug;
       if (debit.status === "failed") {
-        error = Donate.findOne({_id: data}).failed.description;
+        error = Donate.findOne({_id: data}).debit.status;
         slug = "failedpayment";
         } else if (debit.coveredTheFees){
         slug = "receiptincludesfees";
