@@ -140,10 +140,10 @@ Meteor.methods({
                     console.log('********Total Amount = ' + data.paymentInformation[0].total_amount * 100);
                 }
                 else {
-                    console.dir(error.reason.errors);
+                    //console.dir(error.reason.errors);
                     //logger.error(JSON.stringify(error, null, 4));
-                    throw new Meteor.Error(500, error.category_code, error.description);/*var errorWithID = {};
-                     errorWithID.e = error;
+                    //throw new Meteor.Error(500, error.category_code, error.description);/*var errorWithID = {};
+                     /*errorWithID.e = error;
                      errorWithID.id = data._id;
                      failTheRecord(errorWithID);
                      throwTheError(error);*/

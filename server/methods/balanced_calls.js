@@ -10,31 +10,14 @@ function extractFromPromise(promise) {
     return fut.wait();
 }
 
-function throwTheError(e){
-    logger.error("Category Code: " + e.category_code);
-    logger.error("Error Description: " + e.description);
-    logger.error(e);
-    //throw new Meteor.Error(e);
-}
-
-
-function failTheRecord(errorWithID) {
+function failTheRecord(errorWithID) {/*
     logger.error("Category Code: " + errorWithID.e.category_code);
     logger.error("Error Description: " + errorWithID.e.description);
-    logger.error("Error for this ID: " + errorWithID.id);
-    logger.error("Error: " + errorWithID.e);
+    logger.error("Error for this ID: " + errorWithID.id);*/
+    logger.error("Error from inside balanced_calls.js and failTheRecord: " + errorWithID.e);
     // Update this record to reflect failed status.
     var id = errorWithID.id;
     var errors = errorWithID.e;
-    console.log(errors);
-    /*if(errorWithID.e.debits){
-        var debits = errorWithID.e.debits;
-        Donate.update(id, {
-            $set: {
-                'failed.debits': debits
-            }
-        });
-    }*/
     Donate.update(id, {
         $set: {
             failed: errors
