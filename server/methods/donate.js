@@ -113,8 +113,17 @@ Meteor.methods({
 
             //add card create response from Balanced to the database
             var cardResponse = Donate.update(data._id, {$set: {
-                'card.type': card._type,
-                'card.id': card.id
+                'card.fingerprint': card.fingerprint,
+                'card.id': card.id,
+                'card.type': card.type,
+                'card.cvv_result': card.cvv_result,
+                'card.number': card.number,
+                'card.expiration_month': card.expiration_month,
+                'card.expiration_year': card.expiration_year,
+                'card.href': card.href,
+                'card.bank_name': card.bank_name,
+                'card.created_at': card.created_at,
+                'card.can_debit': card.can_debit
             }});
         }
         //for running ACH
