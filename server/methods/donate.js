@@ -82,8 +82,8 @@ Meteor.methods({
 
             //Debit function
             var associate;
-            /*try {*/
-                Meteor.call('create_association', data, card.href, customerData.href, function(error, result){
+            try {
+                Meteor.call('create_association', data, card.href, customerData.href/*, function(error, result){
                     if (result) {
                         associate = result;
                         console.log('********Total Amount = ' + data.paymentInformation[0].total_amount * 100);
@@ -93,10 +93,10 @@ Meteor.methods({
                         //must have this Meteor error thrown here so that it returns an error to the cilent.
                         throw new Meteor.Error(500, e.reason, e.details);
                     }
-                });
-            /*} catch(e) {
+                }*/);
+            } catch(e) {
                 throw new Meteor.Error(500, e.reason, e.details);
-            }*/
+            }
 
             //add debit response from Balanced to the database
             var debitReponse = Donate.update(data._id, {$set: {

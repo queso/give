@@ -2232,11 +2232,12 @@ fieldset[disabled] .input-group-btn .btn-default.active {
   -webkit-transition: color 0.25s linear;
   transition: color 0.25s linear;
 }
-.checkbox:hover .first-icon,
+/*commented below because it was causing problems with mobile when checked*/
+/*.checkbox:hover .first-icon,
 .radio:hover .first-icon {
   opacity: 0;
   filter: alpha(opacity=0);
-}
+}*/
 .checkbox:hover .second-icon,
 .radio:hover .second-icon {
   opacity: 1;
