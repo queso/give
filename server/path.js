@@ -1,1 +1,1 @@
-Meteor.absoluteUrl('giveDev');
+//Meteor.absoluteUrl('giveDev');
