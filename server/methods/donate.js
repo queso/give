@@ -25,7 +25,6 @@ Meteor.methods({
     /*try {*/
         // Moved the below from client side to here.
         data._id = Donate.insert({created_at: data.paymentInformation[0].created_at});
-        console.log(data._id);
 
         Donate.update(data._id, {
             $set: {
