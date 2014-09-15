@@ -14,11 +14,11 @@ Router.configure({
   routeControllerNameConverter: 'upperCamelCase'
 });
 Router.map(function () {
-  
   this.route('donation_form', {
-    path: '/give',
+    path: ':root',
     data: function() {
       var params = this.params;
+      var root = Meteor.settings.root;
       Session.set('params.donateTo', this.params.donateTo);
       Session.set('params.amount', this.params.amount);
       Session.set('params.donateWith', this.params.donateWith);
@@ -28,22 +28,29 @@ Router.map(function () {
       }
     }
   });
-  this.route('thanks', 
-    {path: '/give/thanks/:_id', 
-    waitOn: function() { console.log(this.params._id);
+  this.route('thanks', {
+      path: ':root/thanks/:_id',
+      waitOn: function() { console.log(this.params._id);
 	    return Meteor.subscribe('donate', this.params._id)},
-    data: function () {
+      data: function () {
+        var root = Meteor.settings.root;
       return Donate.findOne(this.params._id);
-    },
-       
-  });
-  this.route('thanks1', {path: '/give/thanks1/:_id', 
+    }});
+  this.route('thanks1', {path: ':root//thanks1/:_id',
     waitOn: function() { return Meteor.subscribe('donate', this.params._id)},
     data: function () {
+        var root = Meteor.settings.root;
       return Donate.findOne(this.params._id);
     }
   });
-  this.route('send.email', {path: '/give/send_email'});
-  this.route('failed', {path: '/give/failed/:_id'});
-  this.route('charge_existing', {path: '/give/charge_existing'});
+  this.route('send.email', {path: ':root//send_email',
+  data: function () {
+      var root = Meteor.settings.root;
+  }});
+  this.route('failed', {path: ':root//failed/:_id', data: function () {
+      var root = Meteor.settings.root;
+  }});
+  this.route('charge_existing', {path: ':root//charge_existing', data: function () {
+      var root = Meteor.settings.root;
+  }});
 });
