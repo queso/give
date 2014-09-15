@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d6088cba-afc9-4ac0-a1e1-45aab2bd8f51" name="Default" comment="">
+      <change type="DELETED" beforePath="Z:\give\server\path.js" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/bg.jpg" afterPath="$PROJECT_DIR$/public/images/bg.jpg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/bw_logo.png" afterPath="$PROJECT_DIR$/public/images/bw_logo.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/check_image.png" afterPath="$PROJECT_DIR$/public/images/check_image.png" />
@@ -152,7 +153,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.meteor/packages" afterPath="$PROJECT_DIR$/.meteor/packages" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/paper-bag.svg" afterPath="$PROJECT_DIR$/public/images/icons/paper-bag.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/papertrail.js" afterPath="$PROJECT_DIR$/server/papertrail.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/path.js" afterPath="$PROJECT_DIR$/server/path.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/pc.svg" afterPath="$PROJECT_DIR$/public/images/icons/pc.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/pencil.svg" afterPath="$PROJECT_DIR$/public/images/icons/pencil.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/icons/pencils.svg" afterPath="$PROJECT_DIR$/public/images/icons/pencils.svg" />
@@ -254,21 +254,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="donate.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="donate.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server/methods/donate.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-12.92" vertical-offset="459" max-vertical-offset="3536">
+            <state vertical-scroll-proportion="0.47291362" vertical-offset="459" max-vertical-offset="3536">
               <caret line="46" column="27" selection-start-line="46" selection-start-column="27" selection-end-line="46" selection-end-column="43" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="path.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/server/path.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="721">
-              <caret line="0" column="2" selection-start-line="0" selection-start-column="2" selection-end-line="0" selection-end-column="2" />
               <folding />
             </state>
           </provider>
@@ -1190,14 +1180,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/methods/donate.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-12.92" vertical-offset="459" max-vertical-offset="3536">
-          <caret line="46" column="27" selection-start-line="46" selection-start-column="27" selection-end-line="46" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/both/router/routes.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="333" max-vertical-offset="1054">
@@ -1214,10 +1196,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/path.js">
+    <entry file="file://$PROJECT_DIR$/server/methods/donate.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="721">
-          <caret line="0" column="2" selection-start-line="0" selection-start-column="2" selection-end-line="0" selection-end-column="2" />
+        <state vertical-scroll-proportion="0.47291362" vertical-offset="459" max-vertical-offset="3536">
+          <caret line="46" column="27" selection-start-line="46" selection-start-column="27" selection-end-line="46" selection-end-column="43" />
           <folding />
         </state>
       </provider>
