@@ -12,9 +12,8 @@ function handleErrors(error) {
 	$('#modal_for_initial_donation_error').modal({
 		show: true
 	});
-	$('#errorCategory').text(error);
-    console.log(error);
-	$('#errorDescription').text(error.description);
+	$('#errorCategory').text(error.error);
+	$('#errorDescription').text(error.reason);
 }
 
 function fillForm() {
@@ -70,8 +69,8 @@ function updateTotal() {
     } else {
       if ($.isNumeric(donationAmount)) {
         if ($('#coverTheFees').prop('checked')) {
-          var fee = Math.round(donationAmount * 0.029 + 0.30);
-          var roundedAmount = (+donationAmount + (+fee));
+          var fee = Math.round(donationAmount * 0.029 + 0.30).toFixed(2);
+          var roundedAmount = (+donationAmount + (+fee)).toFixed(2);
           $("#total_amount_display").text("$" + donationAmount + " + $" + fee +
             " = $" + roundedAmount).css({
             'color': '#34495e'
@@ -158,7 +157,7 @@ Template.DonationForm.events({
 
     //Move inert and update from here.
     if ($('#is_recurring').val() === 'one_time') {
-      Meteor.call("processPayment", form, function(error, result) {
+      Meteor.call("singleDonation", form, function(error, result) {
         if (result) {
           $('#loading1').modal('hide');
           Meteor.call('logNewGift', result, function (error, result) {
@@ -170,14 +169,14 @@ Template.DonationForm.events({
 	      updateTotal();
              $('#loading1').modal('hide');
 
-             var storedError = error.error;
-             handleErrors(error.error);
+             console.log(error);
+             handleErrors(error);
         }
         //END error handling block for meteor call to processPayment
       });
       //END Meteor call block
     } else {
-      Meteor.call('createCustomer', form, function(error, result) {
+      Meteor.call('recurringDonation', form, function(error, result) {
         if (result) {
           $('#loading1').modal('hide');
           // In the recurring gifts section we won't know if the gift was successful until after Billy returns this data (at a later time)
@@ -190,7 +189,6 @@ Template.DonationForm.events({
 	      updateTotal();
             $('#loading1').modal('hide');
 
-            var storedError = error.error;
             //handleErrors is used to check the returned error and the display a user friendly message about what happened that caused
             //the error.
             handleErrors(error);

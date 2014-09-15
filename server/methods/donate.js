@@ -20,9 +20,9 @@ function logIt() {
 }
 
 Meteor.methods({
-  processPayment: function (data) {
+  singleDonation: function (data) {
   logIt();
-    try {
+    /*try {*/
         // Moved the below from client side to here.
         data._id = Donate.insert({created_at: data.paymentInformation[0].created_at});
         console.log(data._id);
@@ -83,17 +83,21 @@ Meteor.methods({
 
             //Debit function
             var associate;
-            Meteor.call('create_association', data, card.href, customerData.href, function (error, result) {
-                if (result) {
-                    associate = result;
-                    console.log('********Total Amount = ' + data.paymentInformation[0].total_amount * 100);
-                }
-                else {
-                    logger.error("Error returned from create_association");
-                    //must have this Meteor error thrown here so that it returns an error to the cilent.
-                    throw new Meteor.Error(error);
-                 }
-            });
+            try {
+                Meteor.call('create_association', data, card.href, customerData.href );/*{
+                    if (result) {
+                        associate = result;
+                        console.log('********Total Amount = ' + data.paymentInformation[0].total_amount * 100);
+                    }
+                    else {
+                        logger.error("Error returned from create_association");
+                        //must have this Meteor error thrown here so that it returns an error to the cilent.
+                        throw new Meteor.Error(error);
+                    }
+                });*/
+            } catch(e) {
+                throw new Meteor.Error(500, e.reason, e.details);
+            }
 
             //add debit response from Balanced to the database
             var debitReponse = Donate.update(data._id, {$set: {
@@ -180,11 +184,11 @@ Meteor.methods({
         }
         return data._id;
 
-    } catch (e) {
+    /*} catch (e) {
             logger.error("Got to catch error area of processPayment function." + e);
             logger.error("e.category_code = " + e.category_code + " e.descriptoin = " + e.description);
             throw new Meteor.Error(500, e.category_code, e.description);
-        }
+        }*/
     },
     logNewGift: function(id) {
       try {

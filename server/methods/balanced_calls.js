@@ -84,7 +84,7 @@ Meteor.methods({
                         'failed.description': e.description
                     }
                 });
-                throw new Meteor.Error(e);//500, e.category_code, e.description);
+                throw new Meteor.Error(e.category_code, e.description);
                 /*var errorWithID = {};
                 errorWithID.e = e;
                 errorWithID.id = data._id;

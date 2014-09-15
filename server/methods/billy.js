@@ -249,7 +249,7 @@ Meteor.methods({
     -X POST \
     -u Meteor.settings.billyKey:
 	},*/
-	createCustomer: function(data) {
+    recurringDonation: function(data) {
 		logger.info("Started billy method calls.")
 		logIt();
 		// Moved the below from client side to here.  
