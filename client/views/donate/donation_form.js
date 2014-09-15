@@ -92,7 +92,7 @@ function updateTotal() {
     }
   }
 }
-uncheckThatBox = function() {
+toggleBox = function() {
   $(':checkbox').checkbox('toggle');
 }
 Template.DonationForm.events({
@@ -230,8 +230,8 @@ Template.DonationForm.events({
   },
   'change [name=donateWith]': function(e, tmpl) {
     setTimeout(function() {
-      uncheckThatBox(); //call the same function twice,
-      uncheckThatBox(); //ugly hack to fix the box not appearing when switching between check and card
+      toggleBox(); //call the same function twice,
+      toggleBox(); //ugly hack to fix the box not appearing when switching between check and card
     }, 20);
     var selectedValue = $("[name=donateWith]").val();
     Session.set("paymentMethod", selectedValue);
