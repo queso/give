@@ -23,8 +23,7 @@ function failTheRecord(errorWithID) {
     });
     throw new Meteor.Error(500, errorWithID.e);
 }
-
-Meteor.methods({
+_.extend(Utils,{
     card_create: function (data) {
         console.log("Inside card create.");
         var card;
@@ -36,6 +35,22 @@ Meteor.methods({
             'cvv': data.paymentInformation[0].cvv,
             "appears_on_statement_as": "Trash Mountain"
         }));
+
+        //add card create response from Balanced to the database
+        var cardResponse = Donate.update(data._id, {$set: {
+            'card.fingerprint': card.fingerprint,
+            'card.id': card.id,
+            'card.type': card.type,
+            'card.cvv_result': card.cvv_result,
+            'card.number': card.number,
+            'card.expiration_month': card.expiration_month,
+            'card.expiration_year': card.expiration_year,
+            'card.href': card.href,
+            'card.bank_name': card.bank_name,
+            'card.created_at': card.created_at,
+            'card.can_debit': card.can_debit,
+            'debit.customer': card.links.customer
+        }});
         console.log("Finished balanced card create");
         return card;
     },
@@ -49,6 +64,11 @@ Meteor.methods({
             "appears_on_statement_as": "Trash Mountain"
         }));
         console.dir(JSON.stringify(check));
+        Donate.update(data._id, {
+            $set: {
+                'bank_account.id': check.id,
+                'bank_account.href': check.href}
+        });
         return check;
     },
     debit_create: function (data, checkHref) {
@@ -69,11 +89,21 @@ Meteor.methods({
                         "amount": data.paymentInformation[0].total_amount * 100,
                         "appears_on_statement_as": "Trash Mountain"}));
                     logger.info("Associate and debit: ");
+                    Donate.update(data._id, {
+                        $set: {
+                            'debit.type': associate.type
+                        }
+                    });
                     return associate;
                 } else {
                     console.log("Recurring gift");
                     associate = extractFromPromise(balanced.get(paymentHref).associate_to_customer(otherHref));
                     logger.info("Associate and debit: ");
+                    Donate.update(data._id, {
+                        $set: {
+                            'debit.type': associate.type
+                        }
+                    });
                     return associate;
                 }
             } catch(e) {
@@ -91,7 +121,7 @@ Meteor.methods({
                 failTheRecord(errorWithID);*/
             }
     },
-    create_customer: function(customerInfo) {
+    create_customer: function(customerInfo, id) {
         var customerData;
         customerData =  extractFromPromise(balanced.marketplace.customers.create({
             'name': customerInfo.fname + " " + customerInfo.lname,
@@ -106,6 +136,7 @@ Meteor.methods({
             //need to add if statement for any fields that might be blank
             'phone': customerInfo.phone_number
         }));
+        Donate.update(id, {$set: {status: 'Customer created.'}});
         return customerData;
     }
 });
