@@ -22,9 +22,9 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
     .use('/events', function(req, res, next) {
     Fiber(function() {
 
-	    function lastWord(description) {
+	    /*function lastWord(description) {
 		    return ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
-	    }
+	    }*/
 	    //These events will run every time
         function getEvents(body) {
             var e = new EventEmitter();
@@ -49,7 +49,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	        var evt = getEvents(body);
 
 	        evt.on('start', function () {
-		        logger.info("*****************Received an event");
+		        logger.info("**********Received an event");
 	        });
 
 	        evt.on('checkBody', function (d) {
@@ -85,8 +85,8 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        logger.info("Got to update_from_event");
 		        logger.info("The ID is: " + id + " The type is: " + type + " This status is: " + status);
                 var lookup = type;
-		        try {
-			        new Fiber(function () {
+		        /*try {*/
+			        /*new Fiber(function () {*/
                         if(lookup === 'debits') {
                             lookup = 'debit';
                             console.log("Show see this.");
@@ -96,19 +96,19 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                         } else{
                             Donate.update({'[lookup]id': id}, {$set: {'[lookup].status': status}});
                         }
-			        }).run();
-		        } catch (e) {
+			        /*}).run();*/
+		        /*} catch (e) {
 			        logger.error(e);
-		        }
+		        }*/
 	        });
 	        //Duplicate is intentional and a feature of events that allows us to run multiple events from one call
 	        evt.on('update_from_event', function (eventID, type, status) {
 		        logger.info("Got to update_from_event (2nd)");
 		        logger.info("(2nd) The ID is: " + eventID + " The type is: " + type + " This status is: " + status);
-		        try {
+		        /*try {*/
 			        if (body.events[0].entity[type][0].meta['billy.transaction_guid']) {
                         console.log("Inside Billy update function of update_from_events 2nd.");
-				        Fiber(function () {
+				        /*Fiber(function () {*/
 					        try {
 						        var description = body.events[0].entity[type][0].description;
 						        var invoiceID = ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
@@ -128,18 +128,18 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 						        logger.error("Error Message: " + e.message);
                                 logger.error(e);
 					        }
-				        }).run();
+				        /*}).run();*/
 			        } else {
 				        logger.info("Nothing to update, not a Billy transaction.");
 			        }
-		        } catch (e) {
+		        /*} catch (e) {
                     logger.error(e);
-		        }
+		        }*/
 	        });
             //UPDATE STATUS END
             evt.on('send_email', function (eventID, type, status) {
-                Fiber(function () {
-                    try{
+                /*Fiber(function () {*/
+                    /*try{*/
                         var updateThis;
                         logger.info("Got to send_email function");
                         //console.log(body.events[0].entity[type][0].meta['billy.transaction_guid']);
@@ -166,11 +166,11 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                             });
                         }
 
-                    }
+                    /*}
                     catch(e) {
                         logger.error(e);
-                    }
-                }).run();
+                    }*/
+                /*}).run();*/
             });
 	        /*************************************************************/
 	        /***************         DEBIT AREA             **************/
@@ -234,11 +234,11 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	        // Check the body otherwise any invalid call to the website would still run any of the events after checking the body.
 	        // TODO: This might not be necessary in the long run because I'll be restricting traffic to /events by IP, but this is still good practice
 	        var body = req.body; //request body
-	        try {
+	        /*try {*/
 		        body.events ? runEvents(body) : noBody();
-	        } catch (e) {
+	        /*} catch (e) {
 		        logger.error(e);
-	        }
+	        }*/
 
 	        function noBody() {
 		        logger.warn('No events found in the body, exited.');
