@@ -160,8 +160,6 @@ Template.DonationForm.events({
       Meteor.call("singleDonation", form, function(error, result) {
         if (result) {
           $('#loading1').modal('hide');
-          Meteor.call('logNewGift', result, function (error, result) {
-          });
           Router.go('/give/thanks/' + result);
         } else {
             console.log(error);
@@ -177,9 +175,6 @@ Template.DonationForm.events({
       Meteor.call('recurringDonation', form, function(error, result) {
         if (result) {
           $('#loading1').modal('hide');
-          // In the recurring gifts section we won't know if the gift was successful until after Billy returns this data (at a later time)
-          /*Meteor.call('logNewGift', result, function (error, result) {
-          });*/
           Router.go('/give/thanks/' + result);
         } else {
             console.log(error);
