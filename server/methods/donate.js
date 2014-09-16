@@ -10,7 +10,7 @@ function extractFromPromise(promise) {
         fut.return(result);
     }, function (error) {
         console.log(error);
-        fut.throw(error);
+        //fut.throw(error);
     });
     return fut.wait();
 }

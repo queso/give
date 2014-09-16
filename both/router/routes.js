@@ -40,7 +40,7 @@ Router.map(function () {
           if (this.ready())
               this.render();
           else
-              this.render('loading');
+              this.render('Loading');
       }});
   this.route('thanks1', {path: ':root//thanks1/:_id',
     waitOn: function() { return Meteor.subscribe('donate', this.params._id)},

@@ -19,8 +19,8 @@ function extractFromPromise(promise) {
 WebApp.connectHandlers.use(bodyParser.urlencoded({
     extended: false}))
     .use(bodyParser.json())
-    .use('/events', function(req, res, next) {
-    Fiber(function() {
+    .use('/events', Meteor.bindEnvironment(function(req, res, next) {
+    /*Fiber(function() {*/
 
 	    /*function lastWord(description) {
 		    return ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
@@ -31,8 +31,8 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
             
         	// Modify the event binding function to always put callbacks in a Meteor Fiber
         	var prevOn = e.on;
-        	e.on = function(event, callback) {
-        		prevOn.call(e, event, Meteor.bindEnvironment(callback));
+            e.on = function(eventName, callback) {
+                EventEmitter.prototype.on.call(this, eventName, Meteor.bindEnvironment(callback));
         	};
             
             setImmediate(function () {
@@ -247,8 +247,8 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        });
 		        res.end("404");//TODO: Remove Got it text, just leave blank when this is live.
 	        }
-        }).run();
-});
+        /*}).run();*/
+}));
 
 /*
 var body = req.body; //request body
