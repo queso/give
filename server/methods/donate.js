@@ -79,8 +79,14 @@ Meteor.methods({
                 }
             });*/
 
-            //Debit function
+            //Order function
+            var orders = Utils.create_order(data._id, customerData.href);
+
+            //Connect card with customer
             var associate = Utils.create_association(data, card.href, customerData.href);
+
+            //Debit the order
+            var debitOrder = Utils.debit_order(data, orders.href, card);
             /*try {
                 Meteor.call('create_association', data, card.href, customerData.href, function(error, result){
                     if (result) {
@@ -118,7 +124,15 @@ Meteor.methods({
                     throw new Meteor.Error(error);
                 }
             });*/
+
+            //Order function
+            var orders = Utils.create_order(data._id, customerData.href);
+
+            //Connect card with customer
             var associate = Utils.create_association(data, check.href, customerData.href);
+
+            //Debit the order
+            var debitOrder = Utils.debit_order(data, orders.href, check);
            /* Meteor.call('create_association', data, check.href, customerData.href, function (error, result) {
                 console.log("Back from create_association function: ");
                 if (result) {

@@ -83,28 +83,7 @@ _.extend(Utils,{
     create_association: function (data, paymentHref, otherHref) {
             try {
                 console.log("Inside create_association function");
-                var associate;
-                if (data.paymentInformation[0].is_recurring === 'one_time') {
-                    logger.info("One time gift.");
-                    associate = extractFromPromise(balanced.get(paymentHref).associate_to_customer(otherHref).debit({
-                        "amount": data.paymentInformation[0].total_amount * 100,
-                        "appears_on_statement_as": "Trash Mountain"}));
-                    logger.info("Associate and debit: ");
-
-                    //add debit response from Balanced to the database
-                    var debitReponse = Donate.update(data._id, {$set: {
-                        'debit.type': associate.type,
-                        'debit.customer': associate.links.customer,
-                        'debit.total_amount': associate.amount / 100,
-                        'debit.id': associate.id,
-                        'debit.status': associate.status,
-                        'card_holds.id': associate.links.card_hold
-                    }});
-                    return associate;
-                } else {
-                    console.log("Recurring gift");
                     associate = extractFromPromise(balanced.get(paymentHref).associate_to_customer(otherHref));
-                    logger.info("Associate for recurring gift: " + associate);
                     //add debit response from Balanced to the database
                     Donate.update(data._id, {
                         $set: {
@@ -112,7 +91,6 @@ _.extend(Utils,{
                         }
                     });
                     return associate;
-                }
             } catch(e) {
                 logger.error("Got to catch error area of create_associate. ID: " + data._id + " Category Code: " + e.category_code + ' Description: ' + e.description);
                 Donate.update(data._id, {
