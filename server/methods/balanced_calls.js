@@ -116,5 +116,15 @@ _.extend(Utils,{
             'customer.id': customerData.id
         }});
         return customerData;
+    },
+    logNewGift: function(id) {
+        try {
+            var amount = Donate.findOne(id).debit.total_amount;
+            logger.info("**********************NEW GIFT******************** id: " + id + " Total Amount: $" + amount)
+        }
+        catch (e) {
+            logger.error("Donate.js caught an error: " + e);
+            throw new Meteor.Error(e);
+        }
     }
 });

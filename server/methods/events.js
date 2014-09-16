@@ -65,6 +65,24 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        this.emit([funcName]);
 	        });
 
+
+            /*************************************************************/
+            /**************        LOG NEW GIFT             **************/
+            /*************************************************************/
+            evt.on('log_new_gift', function (id) {
+                try {
+                    var amount = Donate.findOne({"debit.id": id}).debit.total_amount;
+                    logger.info("**********************NEW GIFT******************** id: " + id + " Total Amount: $" + amount)
+                }
+                catch (e) {
+                    logger.error("events.js caught an error when trying to log_new_gift: " + e);
+                    throw new Meteor.Error(e);
+                }
+            });
+            /*************************************************************/
+            /**************        END LOG NEW GIFT        ***************/
+            /*************************************************************/
+
 	        /*************************************************************/
 	        /**************        UPDATE STATUS            **************/
 	        /*************************************************************/
@@ -172,6 +190,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        this.emit('update_from_event', body.events[0].entity.debits[0].id, 'debits',
 			        body.events[0].entity.debits[0].status);
                 this.emit('send_email', body.events[0].entity.debits[0].id, 'debits', 'succeeded');
+                this.emit('log_new_gift', body.events[0].entity.debits[0].id);
 	        });
 	        evt.on('debit_failed', function () {
 		        logger.info("Got to the debit_failed");

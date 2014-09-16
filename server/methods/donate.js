@@ -133,6 +133,10 @@ Meteor.methods({
 
             //Debit the order
             var debitOrder = Utils.debit_order(data, orders.href, check);
+
+            //TODO: Can run the credit_to right here balanced.get('/orders/OR5EZkSOSTsmYJlJi6UlrUmp').credit_to(bank_account, 5000)
+            //https://docs.balancedpayments.com/1.1/api/debits/#create-a-debit-for-an-order
+
            /* Meteor.call('create_association', data, check.href, customerData.href, function (error, result) {
                 console.log("Back from create_association function: ");
                 if (result) {
@@ -152,15 +156,5 @@ Meteor.methods({
             logger.error("e.category_code = " + e.category_code + " e.descriptoin = " + e.description);
             throw new Meteor.Error(500, e.category_code, e.description);
         }*/
-    },
-    logNewGift: function(id) {
-      try {
-        var amount = Donate.findOne(id).debit.total_amount;
-        logger.info("**********************NEW GIFT******************** id: " + id + " Total Amount: $" + amount)
-      }
-      catch (e) {
-        logger.error("Donate.js caught an error: " + e);
-        throw new Meteor.Error(e);
-      }
     }
 });
