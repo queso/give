@@ -28,7 +28,13 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	    //These events will run every time
         function getEvents(body) {
             var e = new EventEmitter();
-            //var a = new EventEmitter(); TODO: remove this line, or find a use for it.
+            
+        	// Modify the event binding function to always put callbacks in a Meteor Fiber
+        	var prevOn = e.on;
+        	e.on = function(event, callback) {
+        		prevOn.call(e, event, Meteor.bindEnvironment(callback));
+        	};
+            
             setImmediate(function () {
 	            e.setMaxListeners(20);
                 e.emit('start');
