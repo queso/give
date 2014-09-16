@@ -38,7 +38,8 @@ Meteor.methods({
                 'debit.total_amount': data.paymentInformation[0].total_amount,
                 'debit.amount': data.paymentInformation[0].amount,
                 'debit.fees': data.paymentInformation[0].fees,
-                'debit.coveredTheFees': data.paymentInformation[0].coverTheFees
+                'debit.coveredTheFees': data.paymentInformation[0].coverTheFees,
+                'debit.status': 'pending'
             }
         });
 
@@ -96,21 +97,9 @@ Meteor.methods({
                 throw new Meteor.Error(500, e.reason, e.details);
             }*/
 
-            //add debit response from Balanced to the database
-            var debitReponse = Donate.update(data._id, {$set: {
-                'debit.type': associate.type,
-                'debit.customer': associate.links.customer,
-                'debit.total_amount': associate.amount / 100,
-                'debit.id': associate.id,
-                'debit.status': associate.status,
-                'card_holds.id': associate.links.card_hold
-            }});
 
-            //add customer create response from Balanced to the database
-            var customerResponse = Donate.update(data._id, {$set: {
-                'customer.type': customerData._type,
-                'customer.id': customerData.id
-            }});
+
+
 
 
         }
@@ -141,28 +130,6 @@ Meteor.methods({
                     throw new Meteor.Error(error);
                 }
             });*/
-
-            //add customer create response from Balanced to the database
-            var customerResponse = Donate.update(data._id, {$set: {
-                'customer.type': customerData._type,
-                'customer.id': customerData.id
-            }});
-
-            //add check create response from Balanced to the database
-            var checkResponse = Donate.update(data._id, {$set: {
-                'bank_account.type': check._type,
-                'bank_account.id': check.id
-            }});
-
-            //add debit response from Balanced to the database
-
-            var debitReponse = Donate.update(data._id, {$set: {
-                'debit.type': associate.type,
-                'debit.customer': associate.links.customer,
-                'debit.total_amount': associate.amount / 100,
-                'debit.id': associate.id,
-                'debit.status': associate.status
-            }});
         }
         return data._id;
 

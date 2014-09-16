@@ -67,6 +67,7 @@ _.extend(Utils,{
         Donate.update(data._id, {
             $set: {
                 'bank_account.id': check.id,
+                'bank_account.type': check.account_type,
                 'bank_account.href': check.href}
         });
         return check;
@@ -89,16 +90,22 @@ _.extend(Utils,{
                         "amount": data.paymentInformation[0].total_amount * 100,
                         "appears_on_statement_as": "Trash Mountain"}));
                     logger.info("Associate and debit: ");
-                    Donate.update(data._id, {
-                        $set: {
-                            'debit.type': associate.type
-                        }
-                    });
+
+                    //add debit response from Balanced to the database
+                    var debitReponse = Donate.update(data._id, {$set: {
+                        'debit.type': associate.type,
+                        'debit.customer': associate.links.customer,
+                        'debit.total_amount': associate.amount / 100,
+                        'debit.id': associate.id,
+                        'debit.status': associate.status,
+                        'card_holds.id': associate.links.card_hold
+                    }});
                     return associate;
                 } else {
                     console.log("Recurring gift");
                     associate = extractFromPromise(balanced.get(paymentHref).associate_to_customer(otherHref));
-                    logger.info("Associate and debit: ");
+                    logger.info("Associate for recurring gift: " + associate);
+                    //add debit response from Balanced to the database
                     Donate.update(data._id, {
                         $set: {
                             'debit.type': associate.type
@@ -136,7 +143,12 @@ _.extend(Utils,{
             //need to add if statement for any fields that might be blank
             'phone': customerInfo.phone_number
         }));
-        Donate.update(id, {$set: {status: 'Customer created.'}});
+        //add customer create response from Balanced to the database
+        Donate.update(id, {$set: {
+            'customer.type': customerData._type,
+             status: 'Customer created.',
+            'customer.id': customerData.id
+        }});
         return customerData;
     }
 });

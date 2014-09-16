@@ -76,8 +76,7 @@ function createPaymentMethod(data) {
          });*/
         logger.info("Finished adding card into the collection.");
         logger.info("Started Associate Function.");
-        var cardHref = card.href;
-        var associate = Utils.create_association(data, cardHref, processor_uri);
+        var associate = Utils.create_association(data, card.href, processor_uri);
         /* function(error, result){
          console.log("Results from create_association call: ");
          console.dir(error, result);
@@ -117,8 +116,7 @@ function createPaymentMethod(data) {
              }
              });*/
 
-            var checkHref = check.href;
-            associate = Utils.create_association(data, checkHref, processor_uri);
+            associate = Utils.create_association(data, check.href, processor_uri);
             /*, function(error, result){
              console.log(error, result);
              if(result){
