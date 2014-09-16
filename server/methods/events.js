@@ -3,19 +3,6 @@ var bodyParser = Meteor.npmRequire('body-parser');
 var Fiber = Meteor.npmRequire('fibers');
 var EventEmitter = Meteor.npmRequire('events').EventEmitter;
 
-var Future = Meteor.npmRequire("fibers/future");
-
-function extractFromPromise(promise) {
-	var fut = new Future(function() {
-		promise.then(function (result) {
-			fut.return(result);
-		}, function (error) {
-			logger.error(error);
-			fut.throw(error);
-		});
-		return fut.wait();
-	});
-}
 WebApp.connectHandlers.use(bodyParser.urlencoded({
     extended: false}))
     .use(bodyParser.json())

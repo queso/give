@@ -1,15 +1,3 @@
-var Future = Meteor.npmRequire("fibers/future");
-  function extractFromPromise(promise) {
-    var fut = new Future();
-    promise.then(function (result) {
-       fut.return(result);
-     }, function (error) { 
-       logger.info(error);      
-       fut.throw(error);
-    });
-    return fut.wait();
-  }
-
 function throwTheError(e) {
 	logger.error(JSON.stringify(e, null, 4));
 	throw new Meteor.Error(e);
@@ -284,7 +272,7 @@ Meteor.methods({
 		logger.info("Customer First Name: " + customerInfo.fname);
 		var customerData = '';
 		try {
-			customerData = extractFromPromise(balanced.marketplace.customers.create({
+			customerData = Utils.extractFromPromise(balanced.marketplace.customers.create({
 				'name': customerInfo.fname + " " + customerInfo.lname,
 				"address": {
 					"city": customerInfo.city,

@@ -1,15 +1,3 @@
-var Future = Meteor.npmRequire("fibers/future");
-function extractFromPromise(promise) {
-    var fut = new Future();
-    promise.then(function (result) {
-        fut.return(result);
-    }, function (error) {
-        logger.info("Error from promise area: " + error);
-        fut.throw(error);
-    });
-    return fut.wait();
-}
-
 function failTheRecord(errorWithID) {
     logger.error("Error from inside balanced_calls.js and failTheRecord: Category Code: " + errorWithID.e.category_code);
 
@@ -27,7 +15,7 @@ _.extend(Utils,{
     card_create: function (data) {
         console.log("Inside card create.");
         var card;
-        card = extractFromPromise(balanced.card.create({
+        card = Utils.extractFromPromise(balanced.card.create({
             "name": data.customer[0].fname + " " + data.customer[0].lname,
             'number': data.paymentInformation[0].card_number,
             'expiration_year': data.paymentInformation[0].expiry_year,
@@ -56,7 +44,7 @@ _.extend(Utils,{
     },
     check_create: function (data) {
         var check;
-        check = extractFromPromise(balanced.bank_account.create({
+        check = Utils.extractFromPromise(balanced.bank_account.create({
             "name": data.customer[0].fname + " " + data.customer[0].lname,
             "routing_number": data.paymentInformation[0].routing_number,
             "account_type": data.paymentInformation[0].account_type,
@@ -77,13 +65,13 @@ _.extend(Utils,{
         var processor_uri = Donate.findOne(data._id).recurring.customer.processor_uri;
         logger.info(checkHref + ' ' + processor_uri);
         logger.info("Associate uri: " + processor_uri);
-        associate = extractFromPromise(balanced.get(checkHref).associate_to_customer(processor_uri));
+        associate = Utils.extractFromPromise(balanced.get(checkHref).associate_to_customer(processor_uri));
         logger.info("Associate and debit: ");
     },
     create_association: function (data, paymentHref, otherHref) {
             try {
                 console.log("Inside create_association function");
-                    associate = extractFromPromise(balanced.get(paymentHref).associate_to_customer(otherHref));
+                    associate = Utils.extractFromPromise(balanced.get(paymentHref).associate_to_customer(otherHref));
                     //add debit response from Balanced to the database
                     Donate.update(data._id, {
                         $set: {
@@ -108,7 +96,7 @@ _.extend(Utils,{
     },
     create_customer: function(customerInfo, id) {
         var customerData;
-        customerData =  extractFromPromise(balanced.marketplace.customers.create({
+        customerData =  Utils.extractFromPromise(balanced.marketplace.customers.create({
             'name': customerInfo.fname + " " + customerInfo.lname,
             "address": {
                 "city": customerInfo.city,
