@@ -48,8 +48,7 @@ Meteor.methods({
 
         var customerInfo = data.customer[0];
         var paymentInfo = data.paymentInformation[0];
-        var customerData;
-        Meteor.call('create_customer', customerInfo, function (error, result) {
+        var customerData = Utils.create_customer(customerInfo, data._id);/*, function (error, result) {
             if (result) {
                 customerData = result;
                 console.log("Customer: ");
@@ -61,14 +60,13 @@ Meteor.methods({
                 //must have this Meteor error thrown here so that it returns an error to the cilent.
                 throw new Meteor.Error(error);
             }
-        });
+        });*/
 
         //Runs if the form used was the credit card form, which sets type as part of the array which is passed to this server
         // side function
         if (paymentInfo.type === "card") {
             //Tokenize card
-            var card;
-            Meteor.call('card_create', data, function (error, result) {
+            var card = Utils.card_create(data);/*, function (error, result) {
                 if (result) {
                     card = result;
                     console.log("Card: ");
@@ -78,12 +76,12 @@ Meteor.methods({
                     //must have this Meteor error thrown here so that it returns an error to the cilent.
                     throw new Meteor.Error(error);
                 }
-            });
+            });*/
 
             //Debit function
-            var associate;
-            try {
-                Meteor.call('create_association', data, card.href, customerData.href/*, function(error, result){
+            var associate = Utils.create_association(data, paymentHref, otherHref);
+            /*try {
+                Meteor.call('create_association', data, card.href, customerData.href, function(error, result){
                     if (result) {
                         associate = result;
                         console.log('********Total Amount = ' + data.paymentInformation[0].total_amount * 100);
@@ -93,10 +91,10 @@ Meteor.methods({
                         //must have this Meteor error thrown here so that it returns an error to the cilent.
                         throw new Meteor.Error(500, e.reason, e.details);
                     }
-                }*/);
+                });
             } catch(e) {
                 throw new Meteor.Error(500, e.reason, e.details);
-            }
+            }*/
 
             //add debit response from Balanced to the database
             var debitReponse = Donate.update(data._id, {$set: {
@@ -114,27 +112,13 @@ Meteor.methods({
                 'customer.id': customerData.id
             }});
 
-            //add card create response from Balanced to the database
-            var cardResponse = Donate.update(data._id, {$set: {
-                'card.fingerprint': card.fingerprint,
-                'card.id': card.id,
-                'card.type': card.type,
-                'card.cvv_result': card.cvv_result,
-                'card.number': card.number,
-                'card.expiration_month': card.expiration_month,
-                'card.expiration_year': card.expiration_year,
-                'card.href': card.href,
-                'card.bank_name': card.bank_name,
-                'card.created_at': card.created_at,
-                'card.can_debit': card.can_debit
-            }});
+
         }
         //for running ACH
         else {
 
             //Create bank account
-            var check;
-            Meteor.call('check_create', data, function (error, result) {
+            var check = Utils.check_create(data);/*, function (error, result) {
                 if (result) {
                     check = result;
                     console.log("Check: ");
@@ -144,10 +128,9 @@ Meteor.methods({
                     //must have this Meteor error thrown here so that it returns an error to the cilent.
                     throw new Meteor.Error(error);
                 }
-            });
-            var checkVerify;
-            var associate;
-            Meteor.call('create_association', data, check.href, customerData.href, function (error, result) {
+            });*/
+            var associate = Utils.create_association(data, check.href, customerData.href);
+           /* Meteor.call('create_association', data, check.href, customerData.href, function (error, result) {
                 console.log("Back from create_association function: ");
                 if (result) {
                     associate = result;
@@ -157,7 +140,7 @@ Meteor.methods({
                     //must have this Meteor error thrown here so that it returns an error to the cilent.
                     throw new Meteor.Error(error);
                 }
-            });
+            });*/
 
             //add customer create response from Balanced to the database
             var customerResponse = Donate.update(data._id, {$set: {

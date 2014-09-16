@@ -41,98 +41,102 @@ function createPaymentMethod(data) {
 		var debitType = data.paymentInformation[0].type;
 		logger.info("ID: " + data._id);
 		logger.info("In create Payment Method before if: " + debitType);
-    var associate;
+
     var processor_uri = Donate.findOne(data._id).recurring.customer.processor_uri;
     if (debitType === "card") {
-			logger.info("Stepped into createPaymentMethod card if statement");
+        logger.info("Stepped into createPaymentMethod card if statement");
 
-            //Tokenize card
-            var card;
-            Meteor.call('card_create', data, function (error, result) {
-                console.log(error);
-                console.log(result);
+        //Tokenize card
+        var card = Utils.card_create(data);
+        /*, function (error, result) {
+         console.log(error);
+         console.log(result);
 
-                if (result) {
-                    card = result;
-                    console.log("Card: ");
-                    console.dir(JSON.stringify(card));
-                    console.log("Adding card create response from Balanced to the collection.");
-                    Donate.update(data._id, {
-                        $set: {
-                            'card.fingerprint': card.fingerprint,
-                            'card.id': card.id,
-                            'card.type': card.type,
-                            'card.cvv_result': card.cvv_result,
-                            'card.number': card.number,
-                            'card.expiration_month': card.expiration_month,
-                            'card.expiration_year': card.expiration_year,
-                            'card.href': card.href,
-                            'card.bank_name': card.bank_name,
-                            'card.created_at': card.created_at,
-                            'card.can_debit': card.can_debit
-                        }
-                    });
-                }
-            });
-			logger.info("Finished adding card into the collection.");
-			logger.info("Started Associate Function.");
-            var cardHref = card.href;
-            Meteor.call('create_association', data, cardHref, processor_uri, function(error, result){
-                console.log("Results from create_association call: ");
-                console.dir(error, result);
-                if(result){
-                    associate = result;
-                    console.log("Card links: " + card.links);
-                    Donate.update(data._id, {
-                        $set: {
-                            'debit.type': associate.type,
-                            'debit.customer': card.links.customer,
-                            'debit.status': 'pending'
-                        }
-                    });
-                }
-            });
-			return 'card';
-		}
-		//for running ACH
-		else {
-			logger.info("In check portion of create payment Method");
-			//Create bank account
-			var check;
-            Meteor.call('check_create', data, function (error, result) {
-                console.log(error);
-                console.log(result);
-                if (result) {
-                    check = result;
-                    console.log("Check: ");
-                    console.dir(JSON.stringify(check));
-                    console.log("Adding check create response from Balanced to the collection.");
-                    Donate.update(data._id, {
-                        $set: {
-                            'bank_account.id': check.id,
-                            'bank_account.href': check.href}
-                    });
-                }
-            });
+         if (result) {
+         card = result;
+         console.log("Card: ");
+         console.dir(JSON.stringify(card));
+         console.log("Adding card create response from Balanced to the collection.");
+         Donate.update(data._id, {
+         $set: {
+         'card.fingerprint': card.fingerprint,
+         'card.id': card.id,
+         'card.type': card.type,
+         'card.cvv_result': card.cvv_result,
+         'card.number': card.number,
+         'card.expiration_month': card.expiration_month,
+         'card.expiration_year': card.expiration_year,
+         'card.href': card.href,
+         'card.bank_name': card.bank_name,
+         'card.created_at': card.created_at,
+         'card.can_debit': card.can_debit
+         }
+         });
+         }
+         });*/
+        logger.info("Finished adding card into the collection.");
+        logger.info("Started Associate Function.");
+        var cardHref = card.href;
+        var associate = Utils.create_association(data, cardHref, processor_uri);
+        /* function(error, result){
+         console.log("Results from create_association call: ");
+         console.dir(error, result);
+         if(result){
+         associate = result;
+         console.log("Card links: " + card.links);
+         Donate.update(data._id, {
+         $set: {
+         'debit.type': associate.type,
+
+         'debit.status': 'pending'
+         }
+         });
+         }
+         });
+         return 'card';
+         */}
+        //for running ACH
+    else
+        {
+            logger.info("In check portion of create payment Method");
+            //Create bank account
+            var check = Utils.check_create(data);
+            /* function (error, result) {
+             console.log(error);
+             console.log(result);
+             if (result) {
+             check = result;
+             console.log("Check: ");
+             console.dir(JSON.stringify(check));
+             console.log("Adding check create response from Balanced to the collection.");
+             Donate.update(data._id, {
+             $set: {
+             'bank_account.id': check.id,
+             'bank_account.href': check.href}
+             });
+             }
+             });*/
 
             var checkHref = check.href;
-            Meteor.call('create_association', data, checkHref, processor_uri, function(error, result){
-                console.log(error, result);
-                if(result){
-                    associate = result;
-                    console.log("Associate links: " + associate.links);
-                    Donate.update(data._id, {
-                        $set: {
-                            'debit.type': associate.type,
-                            'debit.customer': check.links.customer,
-                            'debit.status': 'pending'
-                        }
-                    });
-                }
-            });
-			return 'bank_accounts';
-		}
-	} catch (e) {
+            associate = Utils.create_association(data, checkHref, processor_uri);
+            /*, function(error, result){
+             console.log(error, result);
+             if(result){
+             associate = result;
+             console.log("Associate links: " + associate.links);
+             Donate.update(data._id, {
+             $set: {
+             'debit.type': associate.type,
+             'debit.customer': check.links.customer,
+             'debit.status': 'pending'
+             }
+             });
+             }
+             });
+             return 'bank_accounts';
+             }*/
+        }
+    }catch (e) {
 		throwTheError(e);
 	}
 }
