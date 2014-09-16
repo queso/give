@@ -35,7 +35,13 @@ Router.map(function () {
       data: function () {
         var root = Meteor.settings.root;
       return Donate.findOne(this.params._id);
-    }});
+          },
+      action: function () {
+          if (this.ready())
+              this.render();
+          else
+              this.render('loading');
+      }});
   this.route('thanks1', {path: ':root//thanks1/:_id',
     waitOn: function() { return Meteor.subscribe('donate', this.params._id)},
     data: function () {

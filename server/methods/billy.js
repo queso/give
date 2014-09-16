@@ -274,7 +274,8 @@ Meteor.methods({
 				'debit.total_amount': data.paymentInformation[0].total_amount,
 				'debit.amount': data.paymentInformation[0].amount,
 				'debit.fees': data.paymentInformation[0].fees,
-				'debit.coveredTheFees': data.paymentInformation[0].coverTheFees
+				'debit.coveredTheFees': data.paymentInformation[0].coverTheFees,
+                'debit.status': 'pending'
 			}
 		});
 

@@ -168,8 +168,6 @@ Template.DonationForm.events({
 	      //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
 	      updateTotal();
              $('#loading1').modal('hide');
-
-             console.log(error);
              handleErrors(error);
         }
         //END error handling block for meteor call to processPayment

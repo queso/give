@@ -79,7 +79,7 @@ Meteor.methods({
             });*/
 
             //Debit function
-            var associate = Utils.create_association(data, paymentHref, otherHref);
+            var associate = Utils.create_association(data, card.href, customerData.href);
             /*try {
                 Meteor.call('create_association', data, card.href, customerData.href, function(error, result){
                     if (result) {

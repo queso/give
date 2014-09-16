@@ -4,7 +4,7 @@ function extractFromPromise(promise) {
     promise.then(function (result) {
         fut.return(result);
     }, function (error) {
-        logger.info(error);
+        logger.info("Error from promise area: " + error);
         fut.throw(error);
     });
     return fut.wait();
