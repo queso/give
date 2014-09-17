@@ -27,14 +27,14 @@ function fillForm() {
         $('#cvv').val("123");
     }
     $('#fname').val("John");
-    $('[name="lname"]').val("Doe");
-    $('[name="email_address"]').val("josh@trashmountain.com");
+    $('#lname').val("Doe");
+    $('#email_address').val("josh@trashmountain.com");
     $('#phone').val("(785) 246-6845");
-    $('[name="address_line1"]').val("Address Line 1");
-    $('[name="address_line2"]').val("Address Line 2");
-    $('[name="city"]').val("Topeka");
+    $('#address_line1').val("Address Line 1");
+    $('#address_line2').val("Address Line 2");
+    $('#city').val("Topeka");
     $('#region').val("KS");
-    $('[name="postal_code"]').val("66618");
+    $('postal_code').val("66618");
     $('#amount').val("1.03");
 }
 
@@ -112,16 +112,16 @@ Template.DonationForm.events({
                 "created_at": moment().format('MM/DD/YYYY, hh:mm')
             }],
             "customer": [{
-                "fname": $('[name=fname]').val(),
-                "lname": $('[name=lname]').val(),
-                "email_address": $('[name=email_address]').val(),
-                "phone_number": $('[name=phone_number]').val(),
-                "address_line1": $('[name=address_line1]').val(),
-                "address_line2": $('[name=address_line2]').val(),
-                "region": $('[name=region]').val(),
-                "city": $('[name=city]').val(),
-                "postal_code": $('[name=postal_code]').val(),
-                "country": $('[name=country]').val(),
+                "fname": $('#fname').val(),
+                "lname": $('#lname').val(),
+                "email_address": $('#email_address').val(),
+                "phone_number": $('#phone').val(),
+                "address_line1": $('#address_line1').val(),
+                "address_line2": $('#address_line2').val(),
+                "region": $('#region').val(),
+                "city": $('#city').val(),
+                "postal_code": $('#postal_code').val(),
+                "country": $('#country').val(),
                 "created_at": moment().format('MM/DD/YYYY, hh:mm')
             }],
             "URL": document.URL,
@@ -229,23 +229,15 @@ Template.DonationForm.events({
             fillForm();
         }
     },
-    'focus #cvv': function(e) {
+    'focus, blur #cvv': function(e) {
         $('#cvv').on('mousewheel.disableScroll', function(e) {
             e.preventDefault();
         });
     },
-    'blur #cvv': function(e) {
-        $('#cvv').on('mousewheel.disableScroll', function(e) {
-            e.preventDefault();
-        });
-    },
-    'focus #card_number': function(e) {
+    'focus, blur #card_number': function(e) {
         $('#card_number').on('mousewheel.disableScroll', function(e) {
             e.preventDefault();
         });
-    },
-    'blur #card_number': function(e) {
-        $('#card_number').on('mousewheel.disableScroll', function(e) {});
     }
 });
 Template.DonationForm.helpers({

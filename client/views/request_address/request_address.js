@@ -3,10 +3,10 @@
 /*****************************************************************************/
 Template.RequestAddress.events({
 
-   'change [name=country]': function(e, tmpl) {
+   'change #country': function(e, tmpl) {
     var countryValue;
-    if($('[name=country]').val() !== "US") {
-      console.log("Value of country " + $('[name=country]').val());
+    if($('#country').val() !== "US") {
+      console.log("Value of country " + $('#country').val());
       $('#phone').hide().find('input, textarea').prop('disabled', true);
       $('#phone, text').val("");
       $('#phoneDiv').hide().find('input, textarea').prop('disabled', true);
@@ -33,6 +33,7 @@ Template.RequestAddress.helpers({
       return {
         type: "text",
         name: "lname",
+        id: "lname",
         class: "form-control",
         placeholder: "Last Name",
         required: true
@@ -42,6 +43,7 @@ Template.RequestAddress.helpers({
       return {
         type: "email",
         name: "email_address",
+          id: "email_address",
         class: "form-control email",
         placeholder: "Email address",
         required: true
@@ -49,7 +51,6 @@ Template.RequestAddress.helpers({
     },
     attributes_Input_Phone_Number: function () {
       return {
-        name: "phone_number",
         class: "form-control",
         placeholder: "Phone Number",
         required: true,
@@ -61,6 +62,7 @@ Template.RequestAddress.helpers({
       return {
         type: "text",
         name: "address_line1",
+          id: "address_line1",
         class: "form-control",
         placeholder: "address line 1",
         required: true
@@ -70,6 +72,7 @@ Template.RequestAddress.helpers({
       return {
         type: "text",
         name: "address_line2",
+          id: "address_line2",
         class: "form-control",
         placeholder: "address line 2"
       }
@@ -78,6 +81,7 @@ Template.RequestAddress.helpers({
       return {
         type: "text",
         name: "city",
+          id: "city",
         class: "form-control",
         placeholder: "city",
         required: true
@@ -97,6 +101,7 @@ Template.RequestAddress.helpers({
       return {
         type: "text",
         name: "postal_code",
+          id: "postal_code",
         class: "form-control",
         placeholder: "zip or postal code",
         required: true
@@ -105,6 +110,7 @@ Template.RequestAddress.helpers({
     attributes_Select_Country: function () {
       return {
         name: "country",
+          id: "country",
         class: "form-control",
         required: true
       }
