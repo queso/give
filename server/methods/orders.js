@@ -21,6 +21,7 @@ _.extend(Utils, {
             'order.description': "Order #" + id
         }});
         console.log("Finished balanced order create");
+        console.log(order);
         return order;
     },
     debit_order: function (data, order, paymentObject) {
@@ -41,11 +42,11 @@ _.extend(Utils, {
         console.log("Finished balanced order debit");
         return debit;
     },
-    credit_order: function(order) {
+    credit_order: function(order, paymentObject) {
         logger.info("Inside credit_order.");
         console.log(order);
         var credit;
-        credit = extractFromPromise(balanced.get(order).credit_to(Meteor.settings.devBankAccount));
+        credit = extractFromPromise(balanced.get(order).credit_to("/bank_accounts/" + Meteor.settings.devBankAccount + "/credits", 103));
         logger.info("This is what Balanced sent back for the credit_order, credit_to call. " + credit);
         return credit;
     }
