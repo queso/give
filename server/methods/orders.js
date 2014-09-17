@@ -43,6 +43,7 @@ _.extend(Utils, {
     },
     credit_order: function(order) {
         logger.info("Inside credit_order.");
+        console.log(order);
         var credit;
         credit = extractFromPromise(balanced.get(order).credit_to(Meteor.settings.devBankAccount));
         logger.info("This is what Balanced sent back for the credit_order, credit_to call. " + credit);
