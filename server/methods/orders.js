@@ -30,7 +30,7 @@ _.extend(Utils, {
             "appears_on_statement_as": "Trash Mountain"})));
 
         var credit;
-        credit = extractFromPromise(balanced.get(order).credit_to(Meteor.settings.devBankAccount));
+        credit = extractFromPromise(balanced.get(order).credit_to("/bank_accounts/" + Meteor.settings.devBankAccount + "/credits", 103));
         logger.info("This is what Balanced sent back for the credit_order, credit_to call. " + credit);
         
         //add debit response from Balanced to the database
@@ -49,7 +49,7 @@ _.extend(Utils, {
         logger.info("Inside credit_order.");
         console.log(order);
         var credit;
-        credit = extractFromPromise(balanced.get(order).credit_to(Meteor.settings.devBankAccount));
+        credit = extractFromPromise(balanced.get(order).credit_to("/bank_accounts/" + Meteor.settings.devBankAccount + "/credits", 103));
         logger.info("This is what Balanced sent back for the credit_order, credit_to call. " + credit);
         return credit;
     }
