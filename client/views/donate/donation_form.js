@@ -34,7 +34,7 @@ function fillForm() {
     $('#address_line2').val("Address Line 2");
     $('#city').val("Topeka");
     $('#region').val("KS");
-    $('postal_code').val("66618");
+    $('#postal_code').val("66618");
     $('#amount').val("1.03");
 }
 

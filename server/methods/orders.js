@@ -12,7 +12,7 @@ function extractFromPromise(promise) {
 
 _.extend(Utils, {
     create_order: function (id, customerHREF) {
-        console.log("Inside create_order.");
+        logger.info("Inside create_order.");
         var order;
         order = extractFromPromise(balanced.get(customerHREF).orders.create({"Description": "Order #" + id}));
 
@@ -24,7 +24,7 @@ _.extend(Utils, {
         return order;
     },
     debit_order: function (data, order, paymentObject) {
-        console.log("Inside create_order.");
+        logger.info("Inside debit_order.");
         var debit;
         debit = extractFromPromise(balanced.get(order).debit_from(paymentObject, ({ "amount": data.paymentInformation[0].total_amount * 100,
             "appears_on_statement_as": "Trash Mountain"})));
@@ -40,5 +40,12 @@ _.extend(Utils, {
         }});
         console.log("Finished balanced order debit");
         return debit;
+    },
+    credit_order: function(order) {
+        logger.info("Inside credit_order.");
+        var credit;
+        credit = extractFromPromise(balanced.get(order).credit_to(Meteor.settings.devBankAccount));
+        logger.info("This is what Balanced sent back for the credit_order, credit_to call. " + credit);
+        return credit;
     }
 });

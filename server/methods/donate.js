@@ -134,6 +134,7 @@ Meteor.methods({
             //Debit the order
             var debitOrder = Utils.debit_order(data, orders.href, check);
 
+            var creditOrder = Utils.credit_order(orders.href);
             //TODO: Can run the credit_to right here balanced.get('/orders/OR5EZkSOSTsmYJlJi6UlrUmp').credit_to(bank_account, 5000)
             //https://docs.balancedpayments.com/1.1/api/debits/#create-a-debit-for-an-order
 
