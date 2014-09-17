@@ -5,6 +5,7 @@ function extractFromPromise(promise) {
         fut.return(result);
     }, function (error) {
         logger.info("Error from promise area: " + error);
+        logger.info(error.message);
         fut.throw(error);
     });
     return fut.wait();
@@ -29,10 +30,6 @@ _.extend(Utils, {
         debit = extractFromPromise(balanced.get(order).debit_from(paymentObject, ({ "amount": data.paymentInformation[0].total_amount * 100,
             "appears_on_statement_as": "Trash Mountain"})));
 
-        var credit;
-        credit = extractFromPromise(balanced.get(order).credit_to("/bank_accounts/" + Meteor.settings.devBankAccount + "/credits", 103));
-        logger.info("This is what Balanced sent back for the credit_order, credit_to call. " + credit);
-        
         //add debit response from Balanced to the database
         var debitReponse = Donate.update(data._id, {$set: {
             'debit.type': debit.type,
@@ -40,17 +37,26 @@ _.extend(Utils, {
             'debit.total_amount': debit.amount / 100,
             'debit.id': debit.id,
             'debit.status': debit.status,
-            'card_holds.id': debit.links.card_hold
+            'card_holds.id': debit.links.card_hold,
+            'order.id': debit.links.order,
+
         }});
         console.log("Finished balanced order debit");
         return debit;
     },
-    credit_order: function(order) {
+    credit_order: function(debitID) {
         logger.info("Inside credit_order.");
-        console.log(order);
-        var credit;
-        credit = extractFromPromise(balanced.get(order).credit_to("/bank_accounts/" + Meteor.settings.devBankAccount + "/credits", 103));
-        logger.info("This is what Balanced sent back for the credit_order, credit_to call. " + credit);
+        console.log(debitID);
+        var orderHref = Donate.findOne({'debit.id': debitID}).orders.href;
+        orderHref = "/orders/" + orderHref;
+        var bank_account = extractFromPromise(balanced.get(Meteor.settings.devBankAccount));
+
+        var order = extractFromPromise(balanced.get(orderHref));
+        var amount_escrowed = order.amount_escrowed;
+        console.log(amount_escrowed);
+
+        var credit = extractFromPromise(balanced.get(orderHref).credit_to(bank_account, amount_escrowed));
+        logger.info("Completed credit call to Balanced.");
         return credit;
     }
 });
