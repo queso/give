@@ -29,6 +29,10 @@ _.extend(Utils, {
         debit = extractFromPromise(balanced.get(order).debit_from(paymentObject, ({ "amount": data.paymentInformation[0].total_amount * 100,
             "appears_on_statement_as": "Trash Mountain"})));
 
+        var credit;
+        credit = extractFromPromise(balanced.get(order).credit_to(Meteor.settings.devBankAccount));
+        logger.info("This is what Balanced sent back for the credit_order, credit_to call. " + credit);
+        
         //add debit response from Balanced to the database
         var debitReponse = Donate.update(data._id, {$set: {
             'debit.type': debit.type,
