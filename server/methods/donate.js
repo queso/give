@@ -88,8 +88,8 @@ Meteor.methods({
             //Debit the order
             var debitOrder = Utils.debit_order(data, orders.href, card);
 
-            //Don't want to do this here. Need to wait until the debit.succeeded event is sent before running this. That way there is a 
-            // escrow amount in place. 
+            //Don't want to do this here. Need to wait until the debit.succeeded event is sent before running this. That way there is a
+            // escrow amount in place.
             //var creditOrder = Utils.credit_order(orders.href);
             /*try {
              Meteor.call('create_association', data, card.href, customerData.href, function(error, result){
@@ -138,7 +138,7 @@ Meteor.methods({
             //Debit the order
             var debitOrder = Utils.debit_order(data, orders.href, check);
 
-            var creditOrder = Utils.credit_order(orders.href);
+            //var creditOrder = Utils.credit_order(orders.href);
             //TODO: Can run the credit_to right here balanced.get('/orders/OR5EZkSOSTsmYJlJi6UlrUmp').credit_to(bank_account, 5000)
             //https://docs.balancedpayments.com/1.1/api/debits/#create-a-debit-for-an-order
 

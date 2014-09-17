@@ -47,7 +47,7 @@ _.extend(Utils, {
     credit_order: function(debitID) {
         logger.info("Inside credit_order.");
         console.log(debitID);
-        var orderHref = Donate.findOne({'debit.id': debitID}).orders.href;
+        var orderHref = Donate.findOne({'debit.id': debitID}).order.id;
         orderHref = "/orders/" + orderHref;
         var bank_account = extractFromPromise(balanced.get(Meteor.settings.devBankAccount));
 
