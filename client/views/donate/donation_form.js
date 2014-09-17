@@ -199,7 +199,9 @@ Template.DonationForm.events({
         });
     },
     'blur #amount': function(e) {
-        $('#amount').on('mousewheel.disableScroll', function(e) {});
+        $('#amount').on('mousewheel.disableScroll', function(e) {
+            e.preventDefault();
+        });
         return updateTotal();
     },
     'change [name=coverTheFees]': function() {
@@ -233,7 +235,9 @@ Template.DonationForm.events({
         });
     },
     'blur #cvv': function(e) {
-        $('#cvv').on('mousewheel.disableScroll', function(e) {});
+        $('#cvv').on('mousewheel.disableScroll', function(e) {
+            e.preventDefault();
+        });
     },
     'focus #card_number': function(e) {
         $('#card_number').on('mousewheel.disableScroll', function(e) {
@@ -258,13 +262,13 @@ Template.DonationForm.helpers({
             class: "form-control",
             type: "text",
             required: true
-        }
+        };
     },
     attributes_Label_Amount: function() {
         return {
             class: "col-md-4 control-label",
             for: "amount"
-        }
+        };
     },
     errorCategory: function() {
         return 'Error Category';
@@ -319,7 +323,7 @@ Template.checkPaymentInformation.helpers({
             class: "form-control",
             placeholder: "Bank Account Number",
             required: true
-        }
+        };
     },
     attributes_Input_RoutingNumber: function() {
         return {
@@ -329,7 +333,7 @@ Template.checkPaymentInformation.helpers({
             class: "form-control",
             placeholder: "Routing numbers are 9 digits long",
             required: true
-        }
+        };
     }
 });
 //Check Payment Template mods
