@@ -74,7 +74,7 @@ Template.Receipt.helpers({
          return this.debit.total_amount;
    },
     fees: function () {
-        if(this.debit.amount !== this.debit.total_amount){
+        if(this.debit.fees){
             console.log("Got here");
             return '\
             <tr>\

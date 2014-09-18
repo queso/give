@@ -1,6 +1,11 @@
 function throwTheError(e) {
 	logger.error(JSON.stringify(e, null, 4));
-	throw new Meteor.Error(e);
+    if(e.category_code) {
+        throw new Meteor.Error(500, e.category_code, e.description);
+    }else {
+        throw new Meteor.Error(500, e.reason, e.details);
+    }
+	//throw new Meteor.Error(e);
 }
 
 function failTheRecord(data) {
@@ -36,94 +41,34 @@ function createPaymentMethod(data) {
 
         //Tokenize card
         var card = Utils.card_create(data);
-        /*, function (error, result) {
-         console.log(error);
-         console.log(result);
 
-         if (result) {
-         card = result;
-         console.log("Card: ");
-         console.dir(JSON.stringify(card));
-         console.log("Adding card create response from Balanced to the collection.");
-         Donate.update(data._id, {
-         $set: {
-         'card.fingerprint': card.fingerprint,
-         'card.id': card.id,
-         'card.type': card.type,
-         'card.cvv_result': card.cvv_result,
-         'card.number': card.number,
-         'card.expiration_month': card.expiration_month,
-         'card.expiration_year': card.expiration_year,
-         'card.href': card.href,
-         'card.bank_name': card.bank_name,
-         'card.created_at': card.created_at,
-         'card.can_debit': card.can_debit
-         }
-         });
-         }
-         });*/
+
         logger.info("Finished adding card into the collection.");
         logger.info("Started Associate Function.");
-        var associate = Utils.create_association(data, card.href, processor_uri);
-        /* function(error, result){
-         console.log("Results from create_association call: ");
-         console.dir(error, result);
-         if(result){
-         associate = result;
-         console.log("Card links: " + card.links);
-         Donate.update(data._id, {
-         $set: {
-         'debit.type': associate.type,
 
-         'debit.status': 'pending'
-         }
-         });
-         }
-         });
-         return 'card';
-         */}
+        var associate = Utils.create_association(data, card.href, processor_uri);
+
+    }
         //for running ACH
     else
         {
             logger.info("In check portion of create payment Method");
             //Create bank account
             var check = Utils.check_create(data);
-            /* function (error, result) {
-             console.log(error);
-             console.log(result);
-             if (result) {
-             check = result;
-             console.log("Check: ");
-             console.dir(JSON.stringify(check));
-             console.log("Adding check create response from Balanced to the collection.");
-             Donate.update(data._id, {
-             $set: {
-             'bank_account.id': check.id,
-             'bank_account.href': check.href}
-             });
-             }
-             });*/
+
 
             associate = Utils.create_association(data, check.href, processor_uri);
-            /*, function(error, result){
-             console.log(error, result);
-             if(result){
-             associate = result;
-             console.log("Associate links: " + associate.links);
-             Donate.update(data._id, {
-             $set: {
-             'debit.type': associate.type,
-             'debit.customer': check.links.customer,
-             'debit.status': 'pending'
-             }
-             });
-             }
-             });
-             return 'bank_accounts';
-             }*/
+
         }
     }catch (e) {
-		throwTheError(e);
+        if(e.category_code) {
+            console.log("Category_code area: e.details " + e.details);
+            throw new Meteor.Error(500, e.category_code, e.description);
+        }else {
+            console.log("No category_code area: e.details " + e.details);
+            throw new Meteor.Error(500, e.reason, e.details);
+        }
+		//throwTheError(e);
 	}
 }
 
@@ -327,7 +272,7 @@ Meteor.methods({
 			logger.info(e);
 			logger.info(e.error_message);
 			logger.info(e.reason);
-			throw new Meteor.Error(e);
+			throw new Meteor.Error(500, e.reason, e.details);
 		}
 	}
 });
