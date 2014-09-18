@@ -40,7 +40,6 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        logger.info("Got to checkBody");
 		        var bodyType = d.events[0].type; //What type of event is coming from Balanced?
 		        logger.info('Body type: ' + bodyType);
-		        console.log(this);
 		        this.emit('select', bodyType);
 	        });
 
@@ -88,27 +87,26 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        logger.info("Got to update_from_event");
 		        logger.info("The ID is: " + id + " The type is: " + type + " This status is: " + status);
                 var lookup = type;
-		        /*try {*/
+		        try {
                         if(lookup === 'debits') {
                             lookup = 'debit';
-                            console.log("Show see this.");
                             var setModifierID = { $set: {} };
                             setModifierID.$set[lookup + '.id'] = id;
                             Donate.update({'[lookup]id': id}, {$set: {'[lookup].status': status}});
                         } else{
                             Donate.update({'[lookup]id': id}, {$set: {'[lookup].status': status}});
                         }
-		        /*} catch (e) {
+		        } catch (e) {
 			        logger.error(e);
-		        }*/
+		        }
 	        });
 	        //Duplicate is intentional and a feature of events that allows us to run multiple events from one call
 	        evt.on('update_from_event', function (eventID, type, status) {
 		        logger.info("Got to update_from_event (2nd)");
 		        logger.info("(2nd) The ID is: " + eventID + " The type is: " + type + " This status is: " + status);
-		        /*try {*/
+		        try {
 			        if (body.events[0].entity[type][0].meta['billy.transaction_guid']) {
-                        console.log("Inside Billy update function of update_from_events 2nd.");
+                        logger.info("Inside Billy update function of update_from_events 2nd.");
 					        try {
 						        var description = body.events[0].entity[type][0].description;
 						        var invoiceID = ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
@@ -131,16 +129,15 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 			        } else {
 				        logger.info("Nothing to update, not a Billy transaction.");
 			        }
-		        /*} catch (e) {
+		        } catch (e) {
                     logger.error(e);
-		        }*/
+		        }
 	        });
             //UPDATE STATUS END
             evt.on('send_email', function (eventID, type, status) {
-                    /*try{*/
+                    try{
                         var updateThis;
                         logger.info("Got to send_email function");
-                        //console.log(body.events[0].entity[type][0].meta['billy.transaction_guid']);
                         if (body.events[0].entity[type][0].meta['billy.transaction_guid'] !== undefined) {
                             var description = body.events[0].entity[type][0].description;
                             var invoiceID = ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
@@ -164,10 +161,10 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                             });
                         }
 
-                    /*}
+                    }
                     catch(e) {
                         logger.error(e);
-                    }*/
+                    }
             });
 	        /*************************************************************/
 	        /***************         DEBIT AREA             **************/
@@ -184,7 +181,6 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                 this.emit('send_email', body.events[0].entity.debits[0].id, 'debits', 'succeeded');
                 this.emit('log_new_gift', body.events[0].entity.debits[0].id);
                 if (body.events[0].entity.debits[0].meta['billy.transaction_guid']) {
-                    console.log("Billy JSON");
                     Utils.credit_billy_order(body.events[0].entity.debits[0].id);
                 } else{
                     Utils.credit_order(body.events[0].entity.debits[0].id);
@@ -238,11 +234,11 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	        // Check the body otherwise any invalid call to the website would still run any of the events after checking the body.
 	        // TODO: This might not be necessary in the long run because I'll be restricting traffic to /events by IP, but this is still good practice
 	        var body = req.body; //request body
-	        /*try {*/
+	        try {
 		        body.events ? runEvents(body) : noBody();
-	        /*} catch (e) {
+	        } catch (e) {
 		        logger.error(e);
-	        }*/
+	        }
 
 	        function noBody() {
 		        logger.warn('No events found in the body, exited.');
@@ -251,18 +247,4 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        });
 		        res.end("404");//TODO: Remove Got it text, just leave blank when this is live.
 	        }
-        /*}).run();*/
 }));
-
-/*
-var body = req.body; //request body
-      try {
-        var bodyType = body.events[0].type; //What type of event is coming from Balanced?
-        logger.info('Callback.js : received an event of type: ' + bodyType);
-      } catch (e) {
-        logger.error("Callback.js : Threw and error for a received event.")
-        logger.error(e);
-      }
-      // var events = new Meteor.npmRequire(events).EventEmitter;
-      // events.on("bank_account.created", bank_accountWrite);
-      // events.emit(bodyType, body.events[0]);*/

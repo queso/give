@@ -1,21 +1,8 @@
-var Future = Meteor.npmRequire("fibers/future");
-function extractFromPromise(promise) {
-    var fut = new Future();
-    promise.then(function (result) {
-        fut.return(result);
-    }, function (error) {
-        logger.info("Error from promise area: " + error);
-        logger.info(error.message);
-        fut.throw(error);
-    });
-    return fut.wait();
-}
-
 _.extend(Utils, {
     create_order: function (id, customerHREF) {
         logger.info("Inside create_order.");
         var order;
-        order = extractFromPromise(balanced.get(customerHREF).orders.create({"Description": "Order #" + id}));
+        order = Utils.extractFromPromise(balanced.get(customerHREF).orders.create({"Description": "Order #" + id}));
 
         //add order response from Balanced to the collection
         var orderResponse = Donate.update(id, {$set: {
@@ -27,7 +14,7 @@ _.extend(Utils, {
     debit_order: function (data, order, paymentObject) {
         logger.info("Inside debit_order.");
         var debit;
-        debit = extractFromPromise(balanced.get(order).debit_from(paymentObject, ({ "amount": data.paymentInformation[0].total_amount * 100,
+        debit = Utils.extractFromPromise(balanced.get(order).debit_from(paymentObject, ({ "amount": data.paymentInformation[0].total_amount * 100,
             "appears_on_statement_as": "Trash Mountain"})));
 
         //add debit response from Balanced to the database
@@ -45,33 +32,39 @@ _.extend(Utils, {
         return debit;
     },
     credit_order: function(debitID) {
+        //initialize the balanced function with our API key.
+        balanced.configure(Meteor.settings.balancedPaymentsAPI);
+
         logger.info("Inside credit_order.");
-        console.log(debitID);
+        var name = Donate.findOne({'debit.id': debitID}).customer.fname + " " + Donate.findOne({'debit.id': debitID}).customer.lname;
+        name = name.substring(0, 17);
         var orderHref = Donate.findOne({'debit.id': debitID}).order.id;
         orderHref = "/orders/" + orderHref;
-        var bank_account = extractFromPromise(balanced.get(Meteor.settings.devBankAccount));
+        var bank_account = Utils.extractFromPromise(balanced.get(Meteor.settings.devBankAccount));
 
-        var order = extractFromPromise(balanced.get(orderHref));
+        var order = Utils.extractFromPromise(balanced.get(orderHref));
         var amount_escrowed = order.amount_escrowed;
-        console.log(amount_escrowed);
 
-        var credit = extractFromPromise(balanced.get(orderHref).credit_to(bank_account, amount_escrowed));
-        logger.info("Completed credit call to Balanced.");
+        var credit = Utils.extractFromPromise(balanced.get(orderHref).credit_to(bank_account, {"amount": amount_escrowed,
+            "appears_on_statement_as": name}));
+        Donate.update({'debit.id': debitID}, {$set: {'credit.id': credit.id,
+            'credit.amount': credit.amount}});
         return credit;
     },
     credit_billy_order: function(debitID) {
+        //initialize the balanced function with our API key.
+        balanced.configure(Meteor.settings.balancedPaymentsAPI);
+
         logger.info("Inside credit_order.");
-        console.log(debitID);
         var name = Donate.findOne({'debit.id': debitID}).customer.fname + " " + Donate.findOne({'debit.id': debitID}).customer.lname;
-        name = string.substring(0, 13);
-        var bank_account = extractFromPromise(balanced.get(Meteor.settings.devBankAccount).credit({"appears_on_statement_as": name}));
+        var amount = Donate.findOne({'debit.id': debitID}).debit.total_amount * 100;
+        name = name.substring(0, 17);
 
-        var order = extractFromPromise(balanced.get(orderHref));
-        var amount_escrowed = order.amount_escrowed;
-        console.log(amount_escrowed);
-
-        var credit = extractFromPromise(balanced.get(orderHref).credit_to(bank_account, amount_escrowed));
-        logger.info("Completed credit call to Balanced.");
+        var credit = Utils.extractFromPromise(balanced.get(Meteor.settings.devBankAccounts).credit({"appears_on_statement_as": name,
+            "amount": amount
+        }));
+        Donate.update({'debit.id': debitID}, {$set: {'credit.id': credit.id,
+        'credit.amount': credit.amount}});
         return credit;
     }
 });
