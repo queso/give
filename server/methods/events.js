@@ -19,7 +19,8 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
         	// Modify the event binding function to always put callbacks in a Meteor Fiber
         	var prevOn = e.on;
             e.on = function(eventName, callback) {
-                EventEmitter.prototype.on.call(this, eventName, Meteor.bindEnvironment(callback));
+            	console.log("Binding " + eventName, this);
+                EventEmitter.prototype.on.call(this, eventName, Meteor.bindEnvironment(callback.bind(this)));
         	};
             
             setImmediate(function () {
@@ -43,6 +44,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        logger.info("Got to checkBody");
 		        var bodyType = d.events[0].type; //What type of event is coming from Balanced?
 		        logger.info('Body type: ' + bodyType);
+		        console.log(this);
 		        this.emit('select', bodyType);
 	        });
 
