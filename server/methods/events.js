@@ -40,6 +40,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        logger.info("Got to checkBody");
 		        var bodyType = d.events[0].type; //What type of event is coming from Balanced?
 		        logger.info('Body type: ' + bodyType);
+		        console.log(this);
 		        this.emit('select', bodyType);
 	        });
 
