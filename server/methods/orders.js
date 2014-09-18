@@ -15,7 +15,7 @@ _.extend(Utils, {
         logger.info("Inside debit_order.");
         var debit;
         //Need to make sure that the number is a whole number, not a decimal
-        var total = Math.round(data.paymentInformation[0].total_amount * 100).toFixed();
+        var total = Math.ceil(data.paymentInformation[0].total_amount * 100);
         debit = Utils.extractFromPromise(balanced.get(order).debit_from(paymentObject, ({ "amount": total,
             "appears_on_statement_as": "Trash Mountain"})));
 
@@ -44,11 +44,10 @@ _.extend(Utils, {
         orderHref = "/orders/" + orderHref;
         var bank_account = Utils.extractFromPromise(balanced.get(Meteor.settings.devBankAccount));
 
-        var order = Utils.extractFromPromise(balanced.get(orderHref));
-        var amount_escrowed = order.amount_escrowed;
-        console.log(amount_escrowed);
+        var amount = Donate.findOne({'debit.id': debitID}).debit.total_amount * 100;
+        console.log("Amount from one-time credit order: " + amount);
 
-        var credit = Utils.extractFromPromise(balanced.get(orderHref).credit_to(bank_account, {"amount": amount_escrowed,
+        var credit = Utils.extractFromPromise(balanced.get(orderHref).credit_to(bank_account, {"amount": amount,
             "appears_on_statement_as": name}));
         Donate.update({'debit.id': debitID}, {$set: {'credit.id': credit.id,
             'credit.amount': credit.amount}});
@@ -60,7 +59,10 @@ _.extend(Utils, {
 
         logger.info("Inside credit_order.");
         var name = Donate.findOne({'debit.id': debitID}).customer.fname + " " + Donate.findOne({'debit.id': debitID}).customer.lname;
+        //Need to make sure that the number is a whole number, not a decimal
         var amount = Donate.findOne({'debit.id': debitID}).debit.total_amount * 100;
+        console.log("Amount from billy credit order: " + amount);
+
         name = name.substring(0, 13);
 
         var credit = Utils.extractFromPromise(balanced.get(Meteor.settings.devBankAccount).credit({"appears_on_statement_as": name,
