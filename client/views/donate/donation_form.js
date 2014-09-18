@@ -1,30 +1,25 @@
 /*****************************************************************************/
 /* DonationForm: Event Handlers and Helpers */
 /*****************************************************************************/
-// this function is used to update the displayed total
-// since we can take payment with card fees added in this is needed to update the
-// amount that is shown to the user and passed as total_amount through the form
-//display error modal if there is an error while initially submitting data from the form.
 function handleErrors(error) {
     //console.log(error.errors[0]);
     $('#modal_for_initial_donation_error').modal({
         show: true
     });
-    $('#errorCategory').text(error.error);
-    $('#errorDescription').text(error.reason);
+    $('#errorCategory').text(error.reason);
+    $('#errorDescription').text(error.details);
 }
-
 function fillForm() {
     if (Session.get("paymentMethod") === "check") {
         $('#routing_number').val("321174851");
         $('#account_number').val("9900000003");
     } else {
-        $('#card_number').val("4444444444444448"); //4111111111111111 4444444444444448
+        $('#card_number').val("5112000200000002"); //4111111111111111 4444444444444448
         $('#expiry_month option').prop('selected', false).filter('[value=12]').prop('selected', true);
         $('select[name=expiry_month]').change();
         $('#expiry_year option').prop('selected', false).filter('[value=2015]').prop('selected', true);
         $('select[name=expiry_year]').change();
-        $('#cvv').val("123");
+        $('#cvv').val("200");
     }
     $('#fname').val("John");
     $('#lname').val("Doe");
@@ -37,7 +32,6 @@ function fillForm() {
     $('#postal_code').val("66618");
     $('#amount').val("1.03");
 }
-
 function updateTotal() {
     var data = Session.get('paymentMethod');
     var donationAmount = $('#amount').val();
@@ -272,7 +266,6 @@ Template.DonationForm.helpers({
 /*****************************************************************************/
 /* DonationForm: Lifecycle Hooks */
 /*****************************************************************************/
-Template.DonationForm.created = function() {};
 Template.DonationForm.rendered = function() {
     // Setup parsley form validation
     $('#donation_form').parsley();
@@ -305,7 +298,6 @@ Template.DonationForm.rendered = function() {
         menuStyle: 'dropdown-inverse'
     });
 };
-Template.DonationForm.destroyed = function() {};
 Template.checkPaymentInformation.helpers({
     attributes_Input_AccountNumber: function() {
         return {
@@ -344,8 +336,6 @@ Template.checkPaymentInformation.rendered = function() {
         placement: 'auto top'
     });
 };
-Template.checkPaymentInformation.created = function() {};
-//Card Payment Template mods
 Template.cardPaymentInformation.rendered = function() {
     $('#expirationDataQuestion').tooltip({
         container: 'body',

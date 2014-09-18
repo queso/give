@@ -23,6 +23,10 @@ _.extend(Utils,{
             'cvv': data.paymentInformation[0].cvv,
             "appears_on_statement_as": "Trash Mountain"
         }));
+        if (card.cvv_result === 'No Match'){
+            //throw new Meteor.Error(card.cvv_result);
+            throw new Meteor.Error('CVV', 'CVV', 'Your CVV code does not match your card number. Please check the code and try again.');
+        }
 
         //add card create response from Balanced to the database
         var cardResponse = Donate.update(data._id, {$set: {
@@ -116,15 +120,5 @@ _.extend(Utils,{
             'customer.id': customerData.id
         }});
         return customerData;
-    }/*,
-    logNewGift: function(id) {
-        try {
-            var amount = Donate.findOne(id).debit.total_amount;
-            logger.info("**********************NEW GIFT******************** id: " + id + " Total Amount: $" + amount)
-        }
-        catch (e) {
-            logger.error("Donate.js caught an error: " + e);
-            throw new Meteor.Error(e);
-        }
-    }*/
+    }
 });

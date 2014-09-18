@@ -71,9 +71,13 @@ Meteor.methods({
         return data._id;
 
         } catch (e) {
-         logger.error("Got to catch error area of processPayment function." + e);
+         logger.error("Got to catch error area of processPayment function." + e + " " + e.reason);
          logger.error("e.category_code = " + e.category_code + " e.descriptoin = " + e.description);
-         throw new Meteor.Error(500, e.category_code, e.description);
+         if(e.category_code) {
+             throw new Meteor.Error(500, e.category_code, e.description);
+         }else {
+             throw new Meteor.Error(500, e.reason, e.details);
+         }
          }
     }
 });

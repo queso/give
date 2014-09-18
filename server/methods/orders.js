@@ -37,13 +37,14 @@ _.extend(Utils, {
 
         logger.info("Inside credit_order.");
         var name = Donate.findOne({'debit.id': debitID}).customer.fname + " " + Donate.findOne({'debit.id': debitID}).customer.lname;
-        name = name.substring(0, 17);
+        name = name.substring(0, 13);
         var orderHref = Donate.findOne({'debit.id': debitID}).order.id;
         orderHref = "/orders/" + orderHref;
         var bank_account = Utils.extractFromPromise(balanced.get(Meteor.settings.devBankAccount));
 
         var order = Utils.extractFromPromise(balanced.get(orderHref));
         var amount_escrowed = order.amount_escrowed;
+        console.log(amount_escrowed);
 
         var credit = Utils.extractFromPromise(balanced.get(orderHref).credit_to(bank_account, {"amount": amount_escrowed,
             "appears_on_statement_as": name}));
@@ -58,7 +59,7 @@ _.extend(Utils, {
         logger.info("Inside credit_order.");
         var name = Donate.findOne({'debit.id': debitID}).customer.fname + " " + Donate.findOne({'debit.id': debitID}).customer.lname;
         var amount = Donate.findOne({'debit.id': debitID}).debit.total_amount * 100;
-        name = name.substring(0, 17);
+        name = name.substring(0, 13);
 
         var credit = Utils.extractFromPromise(balanced.get(Meteor.settings.devBankAccounts).credit({"appears_on_statement_as": name,
             "amount": amount
