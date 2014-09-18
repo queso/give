@@ -1,13 +1,10 @@
 var bodyParser = Meteor.npmRequire('body-parser');
-// Fiber is necessary for Collection use and other wrapped methods
-var Fiber = Meteor.npmRequire('fibers');
 var EventEmitter = Meteor.npmRequire('events').EventEmitter;
 
 WebApp.connectHandlers.use(bodyParser.urlencoded({
     extended: false}))
     .use(bodyParser.json())
     .use('/events', Meteor.bindEnvironment(function(req, res, next) {
-    /*Fiber(function() {*/
 
 	    /*function lastWord(description) {
 		    return ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
@@ -91,7 +88,6 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        logger.info("The ID is: " + id + " The type is: " + type + " This status is: " + status);
                 var lookup = type;
 		        /*try {*/
-			        /*new Fiber(function () {*/
                         if(lookup === 'debits') {
                             lookup = 'debit';
                             console.log("Show see this.");
@@ -101,7 +97,6 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                         } else{
                             Donate.update({'[lookup]id': id}, {$set: {'[lookup].status': status}});
                         }
-			        /*}).run();*/
 		        /*} catch (e) {
 			        logger.error(e);
 		        }*/
@@ -113,7 +108,6 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        /*try {*/
 			        if (body.events[0].entity[type][0].meta['billy.transaction_guid']) {
                         console.log("Inside Billy update function of update_from_events 2nd.");
-				        /*Fiber(function () {*/
 					        try {
 						        var description = body.events[0].entity[type][0].description;
 						        var invoiceID = ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
@@ -133,7 +127,6 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 						        logger.error("Error Message: " + e.message);
                                 logger.error(e);
 					        }
-				        /*}).run();*/
 			        } else {
 				        logger.info("Nothing to update, not a Billy transaction.");
 			        }
@@ -143,7 +136,6 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	        });
             //UPDATE STATUS END
             evt.on('send_email', function (eventID, type, status) {
-                /*Fiber(function () {*/
                     /*try{*/
                         var updateThis;
                         logger.info("Got to send_email function");
@@ -175,7 +167,6 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                     catch(e) {
                         logger.error(e);
                     }*/
-                /*}).run();*/
             });
 	        /*************************************************************/
 	        /***************         DEBIT AREA             **************/
@@ -191,7 +182,8 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 			        body.events[0].entity.debits[0].status);
                 this.emit('send_email', body.events[0].entity.debits[0].id, 'debits', 'succeeded');
                 this.emit('log_new_gift', body.events[0].entity.debits[0].id);
-                if (body.events[0].entity[type][0].meta['billy.transaction_guid']) {
+                if (body.events[0].entity.debits[0].meta['billy.transaction_guid']) {
+                    console.log("Billy JSON");
                     Utils.credit_billy_order(body.events[0].entity.debits[0].id);
                 } else{
                     Utils.credit_order(body.events[0].entity.debits[0].id);
