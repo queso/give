@@ -191,6 +191,11 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 			        body.events[0].entity.debits[0].status);
                 this.emit('send_email', body.events[0].entity.debits[0].id, 'debits', 'succeeded');
                 this.emit('log_new_gift', body.events[0].entity.debits[0].id);
+                if (body.events[0].entity[type][0].meta['billy.transaction_guid']) {
+                    Utils.credit_billy_order(body.events[0].entity.debits[0].id);
+                } else{
+                    Utils.credit_order(body.events[0].entity.debits[0].id);
+                }
 	        });
 	        evt.on('debit_failed', function () {
 		        logger.info("Got to the debit_failed");

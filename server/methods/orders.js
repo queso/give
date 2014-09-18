@@ -58,5 +58,20 @@ _.extend(Utils, {
         var credit = extractFromPromise(balanced.get(orderHref).credit_to(bank_account, amount_escrowed));
         logger.info("Completed credit call to Balanced.");
         return credit;
+    },
+    credit_billy_order: function(debitID) {
+        logger.info("Inside credit_order.");
+        console.log(debitID);
+        var name = Donate.findOne({'debit.id': debitID}).customer.fname + " " + Donate.findOne({'debit.id': debitID}).customer.lname;
+        name = string.substring(0, 13);
+        var bank_account = extractFromPromise(balanced.get(Meteor.settings.devBankAccount).credit({"appears_on_statement_as": name}));
+
+        var order = extractFromPromise(balanced.get(orderHref));
+        var amount_escrowed = order.amount_escrowed;
+        console.log(amount_escrowed);
+
+        var credit = extractFromPromise(balanced.get(orderHref).credit_to(bank_account, amount_escrowed));
+        logger.info("Completed credit call to Balanced.");
+        return credit;
     }
 });
