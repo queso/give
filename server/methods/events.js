@@ -19,8 +19,8 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
         	// Modify the event binding function to always put callbacks in a Meteor Fiber
         	var prevOn = e.on;
             e.on = function(eventName, callback) {
-                EventEmitter.prototype.on.call(this, eventName, Meteor.bindEnvironment(callback));
-        	};
+                EventEmitter.prototype.on.call(this, eventName, Meteor.bindEnvironment(callback.bind(this)));
+        	}.bind(e);
             
             setImmediate(function () {
 	            e.setMaxListeners(20);
