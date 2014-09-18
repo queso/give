@@ -14,7 +14,9 @@ _.extend(Utils, {
     debit_order: function (data, order, paymentObject) {
         logger.info("Inside debit_order.");
         var debit;
-        debit = Utils.extractFromPromise(balanced.get(order).debit_from(paymentObject, ({ "amount": data.paymentInformation[0].total_amount * 100,
+        //Need to make sure that the number is a whole number, not a decimal
+        var total = Math.round(data.paymentInformation[0].total_amount * 100).toFixed();
+        debit = Utils.extractFromPromise(balanced.get(order).debit_from(paymentObject, ({ "amount": total,
             "appears_on_statement_as": "Trash Mountain"})));
 
         //add debit response from Balanced to the database
@@ -61,7 +63,7 @@ _.extend(Utils, {
         var amount = Donate.findOne({'debit.id': debitID}).debit.total_amount * 100;
         name = name.substring(0, 13);
 
-        var credit = Utils.extractFromPromise(balanced.get(Meteor.settings.devBankAccounts).credit({"appears_on_statement_as": name,
+        var credit = Utils.extractFromPromise(balanced.get(Meteor.settings.devBankAccount).credit({"appears_on_statement_as": name,
             "amount": amount
         }));
         Donate.update({'debit.id': debitID}, {$set: {'credit.id': credit.id,

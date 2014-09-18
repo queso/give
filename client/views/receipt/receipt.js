@@ -75,7 +75,6 @@ Template.Receipt.helpers({
    },
     fees: function () {
         if(this.debit.fees){
-            console.log("Got here");
             return '\
             <tr>\
                 <th>Covered fees:</th>\

@@ -88,14 +88,19 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        logger.info("The ID is: " + id + " The type is: " + type + " This status is: " + status);
                 var lookup = type;
 		        try {
-                        if(lookup === 'debits') {
+                    if (body.events[0].entity[type][0].meta['billy.transaction_guid']) {
+                        return;
+                    }else {
+                        if (lookup === 'debits') {
                             lookup = 'debit';
                             var setModifierID = { $set: {} };
                             setModifierID.$set[lookup + '.id'] = id;
                             Donate.update({'[lookup]id': id}, {$set: {'[lookup].status': status}});
-                        } else{
+                        } else {
                             Donate.update({'[lookup]id': id}, {$set: {'[lookup].status': status}});
                         }
+                    }
+
 		        } catch (e) {
 			        logger.error(e);
 		        }

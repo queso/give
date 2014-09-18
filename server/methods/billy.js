@@ -109,7 +109,7 @@ function subscribeToBillyPlan(data) {
 			logger.info("Funding URI: " + funding_instrument_uri);
 		}
 		logger.info("Amount: " + (Donate.findOne(data).debit.total_amount * 100));
-		var billyAmount = (Donate.findOne(data).debit.total_amount * 100);
+		var billyAmount = Math.round(Donate.findOne(data).debit.total_amount * 100).toFixed();
 		var resultSet = '';
 		resultSet = HTTP.post("https://billy.balancedpayments.com/v1/subscriptions", {
 			//customer URI below is missing the last character, 'f' so that I can test errors

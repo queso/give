@@ -1,6 +1,10 @@
 /*****************************************************************************/
 /* DonationForm: Event Handlers and Helpers */
 /*****************************************************************************/
+// this function is used to update the displayed total
+// since we can take payment with card fees added in this is needed to update the
+// amount that is shown to the user and passed as total_amount through the form
+//display error modal if there is an error while initially submitting data from the form.
 function handleErrors(error) {
     //console.log(error.errors[0]);
     $('#modal_for_initial_donation_error').modal({
@@ -9,6 +13,7 @@ function handleErrors(error) {
     $('#errorCategory').text(error.reason);
     $('#errorDescription').text(error.details);
 }
+
 function fillForm() {
     if (Session.get("paymentMethod") === "check") {
         $('#routing_number').val("321174851");
@@ -32,6 +37,7 @@ function fillForm() {
     $('#postal_code').val("66618");
     $('#amount').val("1.03");
 }
+
 function updateTotal() {
     var data = Session.get('paymentMethod');
     var donationAmount = $('#amount').val();
@@ -95,6 +101,7 @@ Template.DonationForm.events({
             backdrop: 'static'
         });
         //var coverTheFeesStatus =  $(e.target).find('[name=coverTheFees]').is(':checked');
+        console.log($('#total_amount').val());
         var form = {
             "paymentInformation": [{
                 "amount": Number($('#amount').val().replace(/[^\d\.\-\ ]/g, '')),
@@ -266,6 +273,7 @@ Template.DonationForm.helpers({
 /*****************************************************************************/
 /* DonationForm: Lifecycle Hooks */
 /*****************************************************************************/
+Template.DonationForm.created = function() {};
 Template.DonationForm.rendered = function() {
     // Setup parsley form validation
     $('#donation_form').parsley();
@@ -298,6 +306,7 @@ Template.DonationForm.rendered = function() {
         menuStyle: 'dropdown-inverse'
     });
 };
+Template.DonationForm.destroyed = function() {};
 Template.checkPaymentInformation.helpers({
     attributes_Input_AccountNumber: function() {
         return {
@@ -336,6 +345,8 @@ Template.checkPaymentInformation.rendered = function() {
         placement: 'auto top'
     });
 };
+Template.checkPaymentInformation.created = function() {};
+//Card Payment Template mods
 Template.cardPaymentInformation.rendered = function() {
     $('#expirationDataQuestion').tooltip({
         container: 'body',
