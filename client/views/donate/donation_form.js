@@ -10,8 +10,8 @@ function handleErrors(error) {
     $('#modal_for_initial_donation_error').modal({
         show: true
     });
-    $('#errorCategory').text(error.reason);
-    $('#errorDescription').text(error.details);
+    $('#errorCategory').html(error.reason);
+    $('#errorDescription').html(error.details);
 }
 
 function fillForm() {
@@ -93,14 +93,20 @@ Template.DonationForm.events({
     'submit form': function(e) {
         e.preventDefault();
         updateTotal();
-        if($('#total_amount:gt(15000)')){
+        if(($('#total_amount').val()) > 15000){
             var error = {};
         error.reason = 'Exceeds processor amount';
-            error.details = 'Sorry, our processor will not allow us to accept gifts larger than $15,000. Here are a couple of options. \n' +
-                ' 1. Split your gift into several donations. \r' +
-                '2. Call us and give your gift over the phone by ACH. \n' +
-                '3. Mail your check to 1555 NW Gage BLVD. \n' +
-                'Topeka, KS 66618';
+            error.details = "<tr>\
+                        <td>Sorry, our processor will not allow us to accept gifts larger than $15,000.&nbsp; Here are a couple of options.</td>\
+                    <tr>\
+                        <td>1. Split your gift into several donations.</td>\
+                    </tr>\
+                        <td>2. Call us and give your gift over the phone by ACH.&nbsp; <tel>(785)246-6845</tel></td>\
+                    </tr>\
+                    <tr>\
+                        <td>3. Mail your check of any amount to</br> 1555 NW Gage BLVD. </br>Topeka, KS 66618</td>\
+                    </tr>\
+                </tr>";
             handleErrors(error);
             throw new Meteor.Error(error);
         }

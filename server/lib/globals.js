@@ -10,5 +10,8 @@ Utils = {
         fut.throw(error);
     });
     return fut.wait();
-}
+},
+    checkInputs: function(form) {
+        return typeof form.customer[0].fname;
+    }
 };

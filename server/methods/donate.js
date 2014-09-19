@@ -8,6 +8,7 @@ function logIt() {
 Meteor.methods({
     singleDonation: function (data) {
         logIt();
+
         try {
         // Moved the below from client side to here.
         data._id = Donate.insert({created_at: data.paymentInformation[0].created_at});
