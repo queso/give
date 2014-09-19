@@ -93,6 +93,17 @@ Template.DonationForm.events({
     'submit form': function(e) {
         e.preventDefault();
         updateTotal();
+        if($('#total_amount:gt(15000)')){
+            var error = {};
+        error.reason = 'Exceeds processor amount';
+            error.details = 'Sorry, our processor will not allow us to accept gifts larger than $15,000. Here are a couple of options. \n' +
+                ' 1. Split your gift into several donations. \r' +
+                '2. Call us and give your gift over the phone by ACH. \n' +
+                '3. Mail your check to 1555 NW Gage BLVD. \n' +
+                'Topeka, KS 66618';
+            handleErrors(error);
+            throw new Meteor.Error(error);
+        }
         //Start the bootstrap modal with the awesome font refresh logo
         //Also, backdrop: 'static' sets the modal to not be exited when
         //a user clicks in the background.
@@ -238,7 +249,7 @@ Template.DonationForm.events({
             e.preventDefault();
         });
     }
-});
+});;
 Template.DonationForm.helpers({
     paymentWithCard: function() {
         return Session.equals("paymentMethod", "card");
