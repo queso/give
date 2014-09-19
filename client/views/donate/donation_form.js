@@ -307,6 +307,7 @@ Template.DonationForm.rendered = function() {
         title: 'Below is the summary of your donation. To change your options please use the dropdown buttons.',
         placement: 'auto top'
     });
+
     //Change the select elements to button style dropdowns
     $('select[name=donateWith]').selectpicker({
         style: 'btn-primary',

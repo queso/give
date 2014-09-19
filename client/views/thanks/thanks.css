@@ -1,9 +1,9 @@
-.fa-check-square {
-	font-size: 14em;
-	color: #7ccc79;
-}
+
 html, body, .container {
     margin-top: 0;
+}
+.fa-check-square {
+    color: #7ccc79;
 }
 .container {
     display: table;
@@ -17,15 +17,64 @@ html, body, .container {
 .badText {
 	color: #cb4b31;
 }
-.fa-arrow-left {
-	font-size: 15em;
-	color: #cb4b31;
+
+@media only screen and (min-width: 320px) {
+    .fa-check-square {
+        font-size: 7em;
+        color: #7ccc79;
+    }
+    .fa-arrow-left {
+        font-size: 7em;
+        color: #cb4b31;
+    }
+    .fa-chevron-circle-left {
+        font-size: 5em;
+        color: #cb4b31;
+    }
+    .badText {
+        font-size: 1.5em;
+    }
 }
-.fa-chevron-circle-left {
-	font-size: 15em;
-	color: #cb4b31;
+
+/* Custom, iPhone Retina */
+@media only screen and (min-width: 480px) {
+    .fa-check-square {
+        font-size: 10em;
+    }
+    .fa-arrow-left {
+        font-size: 10em;
+        color: #cb4b31;
+    }
+    .fa-chevron-circle-left {
+        font-size: 10em;
+        color: #cb4b31;
+    }
+    .alignReceipt {
+        margin-left: 11.8%;
+        width: 76.5%;
+    }
+    .badText {
+        font-size: 2em;
+    }
 }
-.alignReceipt {
-    margin-left: 11.8%;
-    width: 76.5%;
+/* Custom, iPhone Retina */
+@media only screen and (min-width: 760px) {
+    .fa-check-square {
+        font-size: 15em;
+    }
+    .fa-arrow-left {
+        font-size: 15em;
+        color: #cb4b31;
+    }
+    .fa-chevron-circle-left {
+        font-size: 15em;
+        color: #cb4b31;
+    }
+    .alignReceipt {
+        margin-left: 11.8%;
+        width: 76.5%;
+    }
+    .badText {
+        font-size: 3em;
+    }
 }

@@ -115,6 +115,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 					        try {
 						        var description = body.events[0].entity[type][0].description;
 						        var invoiceID = ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
+                                console.log(invoiceID);
 						        var id = Donate.findOne({'recurring.invoice.items.guid': invoiceID})._id;
                                 logger.info("InvoiceID lookup found: " + id);
                                 var lookup = type;
@@ -151,13 +152,6 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                             updateThis = Donate.findOne({'debit.id': eventID})._id;
                         }
 
-                        /*if (status === 'failed' && type === debits ){
-                         Donate.update(updateThis, {$set:
-                         {'failed.failure_reason': body.events[0].entity[type][0].failure_reason,
-                         'failed.failure_reason_code': body.events[0].entity[type][0].failure_reason_code,
-                         'failed.transaction_number': body.events[0].entity[type][0].transaction_number}});
-                         }*/
-
                         //send out the appropriate email using Mandrill
                         if (!(Donate.findOne(updateThis).debit.email_sent)) {
                             Donate.update(updateThis, {$set: {'debit.email_sent': true}});
@@ -170,6 +164,14 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                     catch(e) {
                         logger.error(e);
                     }
+            });
+            evt.on('failed_collection_update', function (type, debitID){
+                console.log('failed_collection_update area. ' + debitID);
+                var id = Donate.findOne({'debit.id': debitID})._id;
+                    Donate.update(id, {$set: {'failed.failure_reason': body.events[0].entity[type][0].failure_reason,
+                        'failed.failure_reason_code': body.events[0].entity[type][0].failure_reason_code,
+                        'failed.transaction_number': body.events[0].entity[type][0].transaction_number}}
+                    );
             });
 	        /*************************************************************/
 	        /***************         DEBIT AREA             **************/
@@ -195,6 +197,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        logger.info("Got to the debit_failed");
 		        this.emit('update_from_event', body.events[0].entity.debits[0].id, 'debits',
 			        body.events[0].entity.debits[0].status);
+                this.emit('failed_collection_update', 'debits', body.events[0].entity.debits[0].id);
                 this.emit('send_email', body.events[0].entity.debits[0].id, 'debits', 'failed');
 	        });
 	        /*************************************************************/

@@ -56,9 +56,6 @@ Meteor.methods({
                 "name": "TotalGiftAmount",
                 "content": debit.total_amount
               }, {
-                "name": "WhatWentWrongRea",
-                "content": error.failure_reason
-              },{
                 "name": "FailureReason",
                 "content": error.failure_reason
                },{
