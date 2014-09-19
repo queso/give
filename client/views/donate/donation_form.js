@@ -100,12 +100,10 @@ Template.DonationForm.events({
             visibility: 'show',
             backdrop: 'static'
         });
-        //var coverTheFeesStatus =  $(e.target).find('[name=coverTheFees]').is(':checked');
-        console.log($('#total_amount').val());
         var form = {
             "paymentInformation": [{
-                "amount": Number($('#amount').val().replace(/[^\d\.\-\ ]/g, '')),
-                "total_amount": $('#total_amount').val(),
+                "amount": (Math.ceil(Number($('#amount').val().replace(/[^\d\.\-\ ]/g, ''))* 100) / 100).toFixed(2),
+                "total_amount": (Math.ceil($('#total_amount').val() * 100) / 100).toFixed(2),
                 "donateTo": $("#donateTo").val(),
                 "donateWith": $("#donateWith").val(),
                 "is_recurring": $('#is_recurring').val(),

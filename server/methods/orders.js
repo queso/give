@@ -44,7 +44,7 @@ _.extend(Utils, {
         orderHref = "/orders/" + orderHref;
         var bank_account = Utils.extractFromPromise(balanced.get(Meteor.settings.devBankAccount));
 
-        var amount = Donate.findOne({'debit.id': debitID}).debit.total_amount * 100;
+        var amount = Math.ceil(Donate.findOne({'debit.id': debitID}).debit.total_amount * 100);
         console.log("Amount from one-time credit order: " + amount);
 
         var credit = Utils.extractFromPromise(balanced.get(orderHref).credit_to(bank_account, {"amount": amount,
@@ -60,7 +60,7 @@ _.extend(Utils, {
         logger.info("Inside credit_order.");
         var name = Donate.findOne({'debit.id': debitID}).customer.fname + " " + Donate.findOne({'debit.id': debitID}).customer.lname;
         //Need to make sure that the number is a whole number, not a decimal
-        var amount = Donate.findOne({'debit.id': debitID}).debit.total_amount * 100;
+        var amount = Math.ceil(Donate.findOne({'debit.id': debitID}).debit.total_amount * 100);
         console.log("Amount from billy credit order: " + amount);
 
         name = name.substring(0, 13);

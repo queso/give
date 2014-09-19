@@ -26,7 +26,7 @@ Meteor.methods({
         error = Donate.findOne({_id: data}).failed;
         slug = "failedpayment";
         } else if (debit.coveredTheFees){
-        slug = "receiptincludesfees";
+        slug = "fall-2014-donation-electronic-receipt-with-fees";
       } else {
         slug = "fall-2014-donation-electronic-receipt";
       }

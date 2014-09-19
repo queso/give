@@ -108,14 +108,14 @@ function subscribeToBillyPlan(data) {
 			var funding_instrument_uri = Donate.findOne(data).bank_account.href;
 			logger.info("Funding URI: " + funding_instrument_uri);
 		}
-		logger.info("Amount: " + (Donate.findOne(data).debit.total_amount * 100));
-		var billyAmount = Math.round(Donate.findOne(data).debit.total_amount * 100).toFixed();
+		logger.info("Amount: " + Math.ceil(Donate.findOne(data).debit.total_amount * 100));
+		var billyAmount = Math.ceil(Donate.findOne(data).debit.total_amount * 100);
 		var resultSet = '';
 		resultSet = HTTP.post("https://billy.balancedpayments.com/v1/subscriptions", {
 			//customer URI below is missing the last character, 'f' so that I can test errors
 			params: {
 				"customer_guid": Donate.findOne(data).recurring.customer.guid,
-				"plan_guid": Meteor.settings.billyMonthlyGUID, //this is the monthly plan GUID
+				"plan_guid": Meteor.settings.billyDailyGUID, //this is the monthly plan GUID
 				//fix below
 				"funding_instrument_uri": "/" + Meteor.settings.balancedPaymentsURI + funding_instrument_uri,
 				"appears_on_statement_as": "Trash Mountain",
