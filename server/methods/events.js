@@ -89,7 +89,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                 var lookup = type;
 		        try {
                     if (body.events[0].entity[type][0].meta['billy.transaction_guid']) {
-                        return;
+                        return '';
                     }else {
                         if (lookup === 'debits') {
                             lookup = 'debit';
@@ -170,7 +170,8 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                 var id = Donate.findOne({'debit.id': debitID})._id;
                     Donate.update(id, {$set: {'failed.failure_reason': body.events[0].entity[type][0].failure_reason,
                         'failed.failure_reason_code': body.events[0].entity[type][0].failure_reason_code,
-                        'failed.transaction_number': body.events[0].entity[type][0].transaction_number}}
+                        'failed.transaction_number': body.events[0].entity[type][0].transaction_number,
+                        'failed.updated': moment().format('MM/DD/YYYY, hh:mm')}}
                     );
             });
 	        /*************************************************************/
@@ -183,6 +184,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	        });
 	        evt.on('debit_succeeded', function () {
 		        logger.info("Got to the debit_succeeded");
+                Utils.getBillySubscriptionGUID(body.events[0].entity.debits[0].description);
 		        this.emit('update_from_event', body.events[0].entity.debits[0].id, 'debits',
 			        body.events[0].entity.debits[0].status);
                 this.emit('send_email', body.events[0].entity.debits[0].id, 'debits', 'succeeded');
@@ -240,14 +242,19 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	        });
         }
 	        // Check the body otherwise any invalid call to the website would still run any of the events after checking the body.
-	        // TODO: This might not be necessary in the long run because I'll be restricting traffic to /events by IP, but this is still good practice
 	        var body = req.body; //request body
+
 	        try {
-		        body.events ? runEvents(body) : noBody();
+		        body.events ? addTo(body) : noBody();
 	        } catch (e) {
 		        logger.error(e);
 	        }
 
+            function addTo(body) {
+                var type = Object.keys(body.events[0].entity)[0];
+                var billy = Boolean(body.events[0].entity[type][0].meta['billy.transaction_guid']);
+                runEvents(body, billy, type);
+            }
 	        function noBody() {
 		        logger.warn('No events found in the body, exited.');
 		        res.writeHead(404, {

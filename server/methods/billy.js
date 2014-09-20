@@ -112,7 +112,6 @@ function subscribeToBillyPlan(data) {
 		var billyAmount = Math.ceil(Donate.findOne(data).debit.total_amount * 100);
 		var resultSet = '';
 		resultSet = HTTP.post("https://billy.balancedpayments.com/v1/subscriptions", {
-			//customer URI below is missing the last character, 'f' so that I can test errors
 			params: {
 				"customer_guid": Donate.findOne(data).recurring.customer.guid,
 				"plan_guid": Meteor.settings.billyMonthlyGUID, //this is the monthly plan GUID

@@ -1,6 +1,6 @@
 <template name="DonationForm">
     <div class="row text-center">
-        <div class="blackBackground"><a href="https://trashmountain.com"><img class="logoImage" src="/give/images/bw_logo.png" style="width:235px;height:60px"></a></div>
+        <div class="blackBackground"><a href="https://trashmountain.com" target="_blank"><img class="logoImage" src="/give/images/bw_logo.png"  style="width:235px;height:60px"></a></div>
     <h1 class="jumboSize">THANK YOU</h1>
 
 		<form class="form-horizontal donation-form" role="form" id="donation_form" name="donation_form" data-parsley-focus="first" data-parsley-excluded="input[type=submit], input[type=reset], input[type=hidden], [disabled], :hidden">
@@ -36,13 +36,14 @@
                 <!-- Checbox for Covering related fees-->
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2 col-sm-11 col-sm-offset-1 col-xs-11 col-xs-offset-1 text-center">
-                        <label class="checkbox moveLeft" for="coverTheFees">
-                            <input type="checkbox" name="coverTheFees" id="coverTheFees" data-toggle="checkbox" {{coverTheFeesChecked}} > I'll cover the credit card processing fees.
+                        <label class="checkbox" for="coverTheFees">
+                            <input type="checkbox" name="coverTheFees" id="coverTheFees" data-toggle="checkbox" {{coverTheFeesChecked}} /> I'll cover the credit card processing fees.&nbsp;&nbsp; <i id="coverTheFeesQuestion" class="fa fa-question-circle"></i>
                         </label>
+
                     </div>
                 </div>
                 <div class="row">
-                    <i id="coverTheFeesQuestion" class="fa fa-question-circle"></i>
+
                 </div>
                 {{else}}
                 {{/if}}

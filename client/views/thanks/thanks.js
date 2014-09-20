@@ -20,12 +20,13 @@ Template.Thanks.helpers({
   },
   failedTrans: function () {
     var referrer = this.URL;
-    if(!referrer) {
+    var errorMessage = this.failed.failure_reason + " " + this.failed.failure_reason_code;
+    if(!referrer || !errorMessage) {
       return;
     }
     return "<h3 class='text-center badText'>Something went wrong.</h3>\
           <p class='text-center alert alert-error'>\
-            We weren't able to process your gift. Please <a href='" + referrer + "'>go back</a> and try again.\
+            We weren't able to process your gift. Here is the error: </br><strong>" + errorMessage + "</strong></br> Please <a href='" + referrer + "'>go back</a> and try again.\
             <br>\
             <a href='" + referrer + "'><i class='fa fa-arrow-left'></i></a>\
           </p>";

@@ -268,7 +268,8 @@ Template.DonationForm.helpers({
             name: "amount",
             id: "amount",
             class: "form-control",
-            type: "text",
+            type: "digits",
+            min: 1,
             required: true
         };
     },
@@ -294,10 +295,10 @@ Template.DonationForm.rendered = function() {
     $('#donation_form').parsley();
     //Set the mask for the input field lZero is used to deny leading zeros
     //https://github.com/BobKnothe/autoNumeric
-    $('#amount').autoNumeric({
+    /*$('#amount').autoNumeric({
         lZero: 'deny',
         vMin: 1
-    });
+    });*/
     //Set the checkboxes to unchecked
     $(':checkbox').checkbox('uncheck');
     //Set the tooltips for the question mark icons.

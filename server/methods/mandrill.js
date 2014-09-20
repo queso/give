@@ -100,50 +100,5 @@ Meteor.methods({
       logger.error('Mandril sendEmailOutAPI Method error: ' + e);
       throw new Meteor.error(e);
     }
-  }/*,
-  failedPaymentSendEmail: function (data) {
-    try {
-      logger.info("Started email send out with API for failed payment. " + data);
-      var email_address = Donate.findOne({'_id': data}).customer.email_address;
-      logger.info("Email: " + email_address);
-      var failureReason = 'Test failure'; //Donate.findOne({_id: data}).debit.failureReason;
-      var donateWith = Donate.findOne({'_id': data}).debit.donateWith;
-      var total_amount = Donate.findOne({'_id': data}).debit.total_amount;
-      logger.info("Donate With: " + donateWith);
-      if (donateWith == 'card') {
-        donateWith = 'credit or debit card';
-      } else {
-        donateWith = 'bank account'
-      }
-
-      Meteor.Mandrill.sendTemplate({
-        key: Meteor.settings.mandrillKey,
-        templateSlug: "failedpayment",
-        templateContent: [
-          {}
-        ],
-        mergeVars: [
-          {
-            "rcpt": email_address,
-            "vars": [
-              {
-                "name": "WhatWentWrong",
-                "content": failureReason
-              }, {
-                "name": "DonateWith", //eventually send the card brand and the last four instead of just this
-                "content": donateWith
-              },{
-                "name": "GiftAmount",
-                "content": total_amount
-              }
-            ]
-          }
-        ],
-        toEmail: email_address
-      });
-    } //End Try
-    catch (e) {
-      logger.info('Mandril failedPaymentSendEmail Method error: ' + e);
-    }
-  }*/
+  }
 });
