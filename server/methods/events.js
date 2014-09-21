@@ -110,8 +110,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 						        var description = body.events[0].entity[type][0].description;
 						        var invoiceID = ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
                                 console.log(invoiceID);
-                                var id = Donate.findOne({'recurring.invoices.guid': invoiceID})._id;
-
+                                var id = Donate.findOne({'recurring.invoice.items.guid': invoiceID})._id;
 
                                 var lookup = type;
                                 if (type === 'debits'){
