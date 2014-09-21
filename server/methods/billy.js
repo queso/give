@@ -259,14 +259,9 @@ Meteor.methods({
 			});
 			var billyGetInvoiceID = '';
 			billyGetInvoiceID = getInvoice(billySubscribeCustomer.data.guid);
-            Donate.update(data._id, {
-                $push: {
-                    'recurring.invoices': billyGetInvoiceID.data.items[0].guid
-                }
-            });
 			Donate.update(data._id, {
 				$push: {
-					'recurring.invoice': billyGetInvoiceID.data
+					'recurring.invoices': billyGetInvoiceID.data
 				}
 			});
 			return data._id;
