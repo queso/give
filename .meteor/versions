@@ -27,9 +27,9 @@ jquery@1.0.0
 json@1.0.0
 less@1.0.7
 livedata@1.0.9
-logging@1.0.3
-meteor-platform@1.1.0
-meteor@1.1.0
+logging@1.0.2
+meteor-platform@1.0.2
+meteor@1.0.3
 meteorhacks:async@1.0.0
 meteorhacks:kadira-binary-deps@1.0.1
 meteorhacks:kadira@2.5.2
