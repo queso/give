@@ -22,5 +22,22 @@ Utils = {
             });
         var subscription_guid = invoice.data.subscription_guid;
         console.log("LOOK HERE ******************** " + subscription_guid)
+        if(Donate.findOne({'recurring.subscription.guid': subscription_guid})){
+            var id = Donate.findOne({'recurring.subscription.guid': subscription_guid})._id;
+        }
+        Donate.update(id, {
+            $push: {
+                'recurring.invoices': invoice
+            }
+        });
+        return id;
+    },
+    getInvoice: function(subGUID){
+        var resultSet;
+        resultSet = HTTP.post("https://billy.balancedpayments.com/v1/subscriptions/" + subGUID + "/invoices", {
+            auth: Meteor.settings.billyKey + ':'
+        });
+        return resultSet;
     }
+
 };
