@@ -156,8 +156,6 @@ function getInvoice(subGUID) {
 		resultSet = HTTP.post("https://billy.balancedpayments.com/v1/subscriptions/" + subGUID + "/invoices", {
 			auth: Meteor.settings.billyKey + ':'
 		});
-		logger.info("getInvoice " + resultSet.data);
-		logger.info("getInvoice " + resultSet.data.items[0].guid);
 		return resultSet;
 	} catch (e) {
 		e._id = AllErrors.insert(e.response);
@@ -261,8 +259,13 @@ Meteor.methods({
 			});
 			var billyGetInvoiceID = '';
 			billyGetInvoiceID = getInvoice(billySubscribeCustomer.data.guid);
+            Donate.update(data._id, {
+                $push: {
+                    'recurring.invoices': billyGetInvoiceID.data.items[0].guid
+                }
+            });
 			Donate.update(data._id, {
-				$set: {
+				$push: {
 					'recurring.invoice': billyGetInvoiceID.data
 				}
 			});

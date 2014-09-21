@@ -10,37 +10,31 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		    return ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
 	    }*/
 	    //These events will run every time
-        function getEvents(body) {
+        function getEvents(body, billy, type) {
             var e = new EventEmitter();
-            
+
         	// Modify the event binding function to always put callbacks in a Meteor Fiber
         	var prevOn = e.on;
             e.on = function(eventName, callback) {
                 EventEmitter.prototype.on.call(this, eventName, Meteor.bindEnvironment(callback.bind(this)));
         	}.bind(e);
-            
+
             setImmediate(function () {
 	            e.setMaxListeners(20);
                 e.emit('start');
-                e.emit('checkBody', body);
+                logger.info('Body type: ' + body.events[0].type);
+                e.emit('select', body.events[0].type);
                 e.emit('end', body.events[0].type);
             });
             return(e);
         }
 
         //Get Events started
-        function runEvents (body) {
-	        var evt = getEvents(body);
+        function runEvents (body, billy, type) {
+	        var evt = getEvents(body, billy, type);
 
 	        evt.on('start', function () {
 		        logger.info("**********Received an event");
-	        });
-
-	        evt.on('checkBody', function (d) {
-		        logger.info("Got to checkBody");
-		        var bodyType = d.events[0].type; //What type of event is coming from Balanced?
-		        logger.info('Body type: ' + bodyType);
-		        this.emit('select', bodyType);
 	        });
 
 	        evt.on('end', function (t) {
@@ -67,14 +61,14 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
             /**************        LOG NEW GIFT             **************/
             /*************************************************************/
             evt.on('log_new_gift', function (id) {
-                try {
+                /*try {*/
                     var amount = Donate.findOne({"debit.id": id}).debit.total_amount;
                     logger.info("**********************NEW GIFT******************** id: " + id + " Total Amount: $" + amount)
-                }
+                /*}
                 catch (e) {
                     logger.error("events.js caught an error when trying to log_new_gift: " + e);
                     throw new Meteor.Error(e);
-                }
+                }*/
             });
             /*************************************************************/
             /**************        END LOG NEW GIFT        ***************/
@@ -87,9 +81,9 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        logger.info("Got to update_from_event");
 		        logger.info("The ID is: " + id + " The type is: " + type + " This status is: " + status);
                 var lookup = type;
-		        try {
+		        /*try {*/
                     if (body.events[0].entity[type][0].meta['billy.transaction_guid']) {
-                        return '';
+                        return;
                     }else {
                         if (lookup === 'debits') {
                             lookup = 'debit';
@@ -101,47 +95,51 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                         }
                     }
 
-		        } catch (e) {
+		        /*} catch (e) {
 			        logger.error(e);
-		        }
+		        }*/
 	        });
 	        //Duplicate is intentional and a feature of events that allows us to run multiple events from one call
 	        evt.on('update_from_event', function (eventID, type, status) {
 		        logger.info("Got to update_from_event (2nd)");
 		        logger.info("(2nd) The ID is: " + eventID + " The type is: " + type + " This status is: " + status);
-		        try {
+		        /*try {*/
 			        if (body.events[0].entity[type][0].meta['billy.transaction_guid']) {
                         logger.info("Inside Billy update function of update_from_events 2nd.");
-					        try {
+					        /*try {*/
 						        var description = body.events[0].entity[type][0].description;
 						        var invoiceID = ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
                                 console.log(invoiceID);
-						        var id = Donate.findOne({'recurring.invoice.items.guid': invoiceID})._id;
-                                logger.info("InvoiceID lookup found: " + id);
+                                var id = Donate.findOne({'recurring.invoice.items.guid': invoiceID})._id;
+
                                 var lookup = type;
                                 if (type === 'debits'){
                                     lookup = 'debit';
                                 }
+                               /*if (id == null && type === 'debits') {
+                                    Utils.getBillySubscriptionGUID(body.events[
+                                    return '';0].entity[type][0].description);
+                               }*/
                                 var setModifierID = { $set: {} };
                                 var setModifierStatus = { $set: {} };
                                 setModifierID.$set[lookup + '.id'] = eventID;
                                 setModifierStatus.$set[lookup + '.status'] = status;
                                 Donate.update(id, setModifierID);
                                 Donate.update(id, setModifierStatus);
-					        }catch(e) {
+					        /*}catch(e) {
 						        logger.error("Error Message: " + e.message);
                                 logger.error(e);
-					        }
+					        }*/
 			        } else {
-				        logger.info("Nothing to update, not a Billy transaction.");
+				        logger.info("Nothing to update, not a Billy transac/*tion.");
 			        }
-		        } catch (e) {
+		        /*} catch (e) {
                     logger.error(e);
-		        }
+		        }*/
 	        });
             //UPDATE STATUS END
             evt.on('send_email', function (eventID, type, status) {
-                    try{
+                    /*try{*/
                         var updateThis;
                         logger.info("Got to send_email function");
                         if (body.events[0].entity[type][0].meta['billy.transaction_guid'] !== undefined) {
@@ -160,10 +158,10 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                             });
                         }
 
-                    }
+                    /*}
                     catch(e) {
                         logger.error(e);
-                    }
+                    }*/
             });
             evt.on('failed_collection_update', function (type, debitID){
                 console.log('failed_collection_update area. ' + debitID);
@@ -184,16 +182,15 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	        });
 	        evt.on('debit_succeeded', function () {
 		        logger.info("Got to the debit_succeeded");
-                Utils.getBillySubscriptionGUID(body.events[0].entity.debits[0].description);
 		        this.emit('update_from_event', body.events[0].entity.debits[0].id, 'debits',
 			        body.events[0].entity.debits[0].status);
                 this.emit('send_email', body.events[0].entity.debits[0].id, 'debits', 'succeeded');
                 this.emit('log_new_gift', body.events[0].entity.debits[0].id);
-                if (body.events[0].entity.debits[0].meta['billy.transaction_guid']) {
+                /*if (body.events[0].entity.debits[0].meta['billy.transaction_guid']) {
                     Utils.credit_billy_order(body.events[0].entity.debits[0].id);
                 } else{
                     Utils.credit_order(body.events[0].entity.debits[0].id);
-                }
+                }*/
 	        });
 	        evt.on('debit_failed', function () {
 		        logger.info("Got to the debit_failed");
@@ -244,11 +241,11 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	        // Check the body otherwise any invalid call to the website would still run any of the events after checking the body.
 	        var body = req.body; //request body
 
-	        try {
+	        /*try {*/
 		        body.events ? addTo(body) : noBody();
-	        } catch (e) {
+	        /*} catch (e) {
 		        logger.error(e);
-	        }
+	        }*/
 
             function addTo(body) {
                 var type = Object.keys(body.events[0].entity)[0];
