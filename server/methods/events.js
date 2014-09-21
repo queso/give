@@ -6,9 +6,6 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
     .use(bodyParser.json())
     .use('/events', Meteor.bindEnvironment(function(req, res, next) {
 
-	    /*function lastWord(description) {
-		    return ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
-	    }*/
 	    //These events will run every time
         function getEvents(body, billy, type) {
             var e = new EventEmitter();
@@ -23,7 +20,11 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	            e.setMaxListeners(20);
                 e.emit('start');
                 logger.info('Body type: ' + body.events[0].type);
-                e.emit('select', body.events[0].type);
+                if (billy) {
+                    e.emit('parseInvoiceID');
+                }else {
+                    e.emit('select')
+                }
                 e.emit('end', body.events[0].type);
             });
             return(e);
@@ -44,10 +45,15 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        });
 		        res.end("Got it");//TODO: Remove Got it text, just leave blank when this is live.
 	        });
-
-	        evt.on('select', function (bodyType) {
-		        logger.info("Received type: " + bodyType);
-
+            evt.on('parseInvoiceID', function(){
+                var description = body.events[0].entity[type][0].description;
+                invoiceID = ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
+                this.emit('select');
+            } )
+	        evt.on('select', function () {
+                logger.info("I can still see the invoicID here: " + invoiceID);
+		        logger.info("Received type: " + body.events[0].type);
+                var bodyType = body.events[0].type;
 		        //replace the period in the funcName with an underscore
 		        var funcName = bodyType.replace(/\./g, '_');
 		        logger.info("Sending to: " + funcName);
@@ -77,14 +83,12 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	        /*************************************************************/
 	        /**************        UPDATE STATUS            **************/
 	        /*************************************************************/
-	        evt.on('update_from_event', function (id, type, status) {
+	        evt.on('update_from_event', function (id, status) {
 		        logger.info("Got to update_from_event");
 		        logger.info("The ID is: " + id + " The type is: " + type + " This status is: " + status);
                 var lookup = type;
 		        /*try {*/
-                    if (body.events[0].entity[type][0].meta['billy.transaction_guid']) {
-                        return;
-                    }else {
+                   
                         if (lookup === 'debits') {
                             lookup = 'debit';
                             var setModifierID = { $set: {} };
@@ -93,65 +97,42 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                         } else {
                             Donate.update({'[lookup]id': id}, {$set: {'[lookup].status': status}});
                         }
-                    }
 
 		        /*} catch (e) {
 			        logger.error(e);
 		        }*/
 	        });
-	        //Duplicate is intentional and a feature of events that allows us to run multiple events from one call
-	        evt.on('update_from_event', function (eventID, type, status) {
-		        logger.info("Got to update_from_event (2nd)");
-		        logger.info("(2nd) The ID is: " + eventID + " The type is: " + type + " This status is: " + status);
-		        /*try {*/
-			        if (body.events[0].entity[type][0].meta['billy.transaction_guid']) {
-                        logger.info("Inside Billy update function of update_from_events 2nd.");
-					        /*try {*/
-						        var description = body.events[0].entity[type][0].description;
-						        var invoiceID = ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
-                                console.log(invoiceID);
-                        if (Donate.findOne({'recurring.invoices.items.guid': invoiceID})){
-                            var id = Donate.findOne({'recurring.invoices.items.guid': invoiceID})._id;
-                            logger.info("Found the invoice GUID in invoices");
+            evt.on('update_billy', function (eventID, status){
+                logger.info("Inside Billy update function.");
+                if (Donate.findOne({'recurring.subscriptions.invoices.items.guid': invoiceID})){
+                    var id = Donate.findOne({'recurring.subscriptions.invoices.items.guid': invoiceID})._id;
+                    logger.info("Found the invoice GUID in invoices");
+                    this.emit('update_status_for_first_time_billy_debit', id, eventID, status);
+                    
+                } else{
+                    logger.info("Couldn't find the invoice GUID in invoices, let's go look for it.");
+                    logger.info("Going to go find the subscription, insert the invoice into that subscription and" + 
+                        "return the id of the collection as well as the subscription GUID.");
+                    var id = Utils.getBillySubscriptionGUID(invoiceID);
+                    //Need subscription here too, need to make id an object with id and subscription GUID
+                }
 
-                        } else{
-                            logger.info("Couldn't find the invoice GUID in invoices");
-                            var id = Utils.getBillySubscriptionGUID(invoiceID);
-                        }
-                                var lookup = type;
-                                if (type === 'debits'){
-                                    lookup = 'debit';
-                                }
-                               /*if (id == null && type === 'debits') {
-                                    Utils.getBillySubscriptionGUID(body.events[
-                                    return '';0].entity[type][0].description);
-                               }*/
-                                var setModifierID = { $set: {} };
-                                var setModifierStatus = { $set: {} };
-                                setModifierID.$set[lookup + '.id'] = eventID;
-                                setModifierStatus.$set[lookup + '.status'] = status;
-                                Donate.update(id, setModifierID);
-                                Donate.update(id, setModifierStatus);
-					        /*}catch(e) {
-						        logger.error("Error Message: " + e.message);
-                                logger.error(e);
-					        }*/
-			        } else {
-				        logger.info("Nothing to update, not a Billy transac/*tion.");
-			        }
-		        /*} catch (e) {
-                    logger.error(e);
-		        }*/
-	        });
+            });
             //UPDATE STATUS END
-            evt.on('send_email', function (eventID, type, status) {
+
+            evt.on('update_status_for_first_time_billy_debit', function (id, eventID, status){
+                    Donate.update(id, {
+                        $set: {
+                            'recurring.subscriptions.invoices.debit.status': invoiceID
+                        }
+                    })
+                });
+            evt.on('send_email', function (eventID, status) {
                     /*try{*/
                         var updateThis;
                         logger.info("Got to send_email function");
-                        if (body.events[0].entity[type][0].meta['billy.transaction_guid'] !== undefined) {
-                            var description = body.events[0].entity[type][0].description;
-                            var invoiceID = ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
-                            updateThis = Donate.findOne({'recurring.invoice.items.guid': invoiceID})._id;
+                        if (billy) {
+                            updateThis = Donate.findOne({'recurring.subscriptions.invoices.items.guid': invoiceID})._id;
                         } else {
                             updateThis = Donate.findOne({'debit.id': eventID})._id;
                         }
@@ -183,25 +164,37 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	        /*************************************************************/
 	        evt.on('debit_created', function () {
 		        logger.info("Got to the debit_created");
-		        this.emit('update_from_event', body.events[0].entity.debits[0].id, 'debits',
+		        if(billy){
+                    this.emit('update_billy', body.events[0].entity.debits[0].id,
 			        body.events[0].entity.debits[0].status);
+                } else{
+                    this.emit('update_from_event', body.events[0].entity.debits[0].id,
+                    body.events[0].entity.debits[0].status);
+                }
 	        });
 	        evt.on('debit_succeeded', function () {
 		        logger.info("Got to the debit_succeeded");
-		        this.emit('update_from_event', body.events[0].entity.debits[0].id, 'debits',
-			        body.events[0].entity.debits[0].status);
-                this.emit('send_email', body.events[0].entity.debits[0].id, 'debits', 'succeeded');
-                this.emit('log_new_gift', body.events[0].entity.debits[0].id);
-                /*if (body.events[0].entity.debits[0].meta['billy.transaction_guid']) {
+		        if(billy){
+                    this.emit('update_billy', body.events[0].entity.debits[0].id,
+                    body.events[0].entity.debits[0].status);
                     Utils.credit_billy_order(body.events[0].entity.debits[0].id);
                 } else{
+                    this.emit('update_from_event', body.events[0].entity.debits[0].id,
+                    body.events[0].entity.debits[0].status);
                     Utils.credit_order(body.events[0].entity.debits[0].id);
-                }*/
+                }
+                this.emit('send_email', body.events[0].entity.debits[0].id, 'succeeded');
+                this.emit('log_new_gift', body.events[0].entity.debits[0].id);
 	        });
 	        evt.on('debit_failed', function () {
 		        logger.info("Got to the debit_failed");
-		        this.emit('update_from_event', body.events[0].entity.debits[0].id, 'debits',
-			        body.events[0].entity.debits[0].status);
+		        if(billy){
+                    this.emit('update_billy', body.events[0].entity.debits[0].id,
+                    body.events[0].entity.debits[0].status);
+                } else{
+                    this.emit('update_from_event', body.events[0].entity.debits[0].id,
+                    body.events[0].entity.debits[0].status);
+                }
                 this.emit('failed_collection_update', 'debits', body.events[0].entity.debits[0].id);
                 this.emit('send_email', body.events[0].entity.debits[0].id, 'debits', 'failed');
 	        });

@@ -253,17 +253,20 @@ Meteor.methods({
 			var billySubscribeCustomer = '';
 			billySubscribeCustomer = subscribeToBillyPlan(data._id);
 			Donate.update(data._id, {
-				$set: {
-					'recurring.subscription': billySubscribeCustomer.data
+				$push: {
+					'recurring.subscriptions': billySubscribeCustomer.data
 				}
 			});
 			var billyGetInvoiceID = '';
 			billyGetInvoiceID = getInvoice(billySubscribeCustomer.data.guid);
-			Donate.update(data._id, {
+			Donate.update({
+				_id: data._id,
+				'recurring.subscriptions.guid': billySubscribeCustomer.data.guid}, {
 				$push: {
-					'recurring.invoices': billyGetInvoiceID.data
+					'recurring.subscriptions.$.invoices': billyGetInvoiceID.data
 				}
 			});
+			logger.info("Inserted invoice into appropriate subscription.");
 			return data._id;
 		} catch (e) {
 			logger.info(e);

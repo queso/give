@@ -14,23 +14,28 @@ Utils = {
     checkInputs: function(form) {
         return typeof form.customer[0].fname;
     },
-    getBillySubscriptionGUID: function(description){
-        var invoiceID = ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
-        //https://billy.balancedpayments.com/v1/invoices/IV6PmZZTbM7BcwMRhD2rSBam -u GngRMhnziCPpQxyNDMaNKWmBhPYyK3Bt4ERADwg6UDgv:
-            var invoice = HTTP.get("https://billy.balancedpayments.com/v1/invoices/" + invoiceID, {
-                    auth: Meteor.settings.billyKey + ':'
-            });
-        var subscription_guid = invoice.data.subscription_guid;
-        console.log("LOOK HERE ******************** " + subscription_guid)
-        if(Donate.findOne({'recurring.subscription.guid': subscription_guid})){
-            var id = Donate.findOne({'recurring.subscription.guid': subscription_guid})._id;
-        }
-        Donate.update(id, {
-            $push: {
-                'recurring.invoices': invoice
-            }
+    getBillySubscriptionGUID: function(invoiceID){
+        var IDs = {};
+        var invoice = HTTP.get("https://billy.balancedpayments.com/v1/invoices/" + invoiceID, {
+                auth: Meteor.settings.billyKey + ':'
         });
-        return id;
+        IDs.subscription_guid = invoice.data.subscription_guid;
+        logger.info("Got the subscription_guid: " + IDs.subscription_guid);
+        if(Donate.findOne({'recurring.subscriptions.guid': IDs.subscription_guid})){
+            IDs._id = Donate.findOne({'recurring.subscriptions.guid': subscription_guid})._id;
+            logger.info("Got the _id: " + IDs._id);
+        }else{
+            logger.error("Couldn't find the subscription for this invoice...bummer: " + invoiceID);
+            return;
+        }
+        Donate.update({
+                _id: IDs._id,
+                'recurring.subscriptions.guid': IDs.subscription_guid}, {
+                $push: {
+                    'recurring.subscriptions.$.invoices': invoice
+                }
+            });
+        return IDs;
     },
     getInvoice: function(subGUID){
         var resultSet;
