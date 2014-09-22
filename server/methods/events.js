@@ -37,7 +37,28 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	        evt.on('start', function () {
 		        logger.info("**********Received an event");
 	        });
+            evt.on('parse_billy_invoice_guid', function(){
+                if(billy){
+                    var description = body.events[0].entity[type][0].description;
+                    invoice_guid = ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
+                }
+                this.emit('select');
+            });
+            evt.on('parse_billy_transaction_guid', function(){
+                if(billy){
+                    transaction_guid = body.events[0].entity[type][0].meta['billy.transaction_guid'];
+                }
+            })
+            evt.on('select', function () {
+                logger.info("Received type: " + body.events[0].type);
+                var bodyType = body.events[0].type;
+                //replace the period in the funcName with an underscore
+                var funcName = bodyType.replace(/\./g, '_');
+                logger.info("Sending to: " + funcName);
 
+                //Send to the evt.on of the same name
+                this.emit([funcName]);
+            });
 	        evt.on('end', function (t) {
 		        logger.info('Done with ' + t + ' data events.');
 		        res.writeHead(200, {
@@ -45,22 +66,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        });
 		        res.end("Got it");//TODO: Remove Got it text, just leave blank when this is live.
 	        });
-            evt.on('parseInvoiceID', function(){
-                var description = body.events[0].entity[type][0].description;
-                invoiceID = ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
-                this.emit('select');
-            } )
-	        evt.on('select', function () {
-                logger.info("I can still see the invoicID here: " + invoiceID);
-		        logger.info("Received type: " + body.events[0].type);
-                var bodyType = body.events[0].type;
-		        //replace the period in the funcName with an underscore
-		        var funcName = bodyType.replace(/\./g, '_');
-		        logger.info("Sending to: " + funcName);
-
-		        //Send to the evt.on of the same name
-		        this.emit([funcName]);
-	        });
+            
 
 
             /*************************************************************/
@@ -102,10 +108,15 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 			        logger.error(e);
 		        }*/
 	        });
+            evt.on('billy_trans', function () {
+                if(Donate.findOne({'recurring.subscriptions.invoices.items.transactions.guid': transaction_guid})){
+
+                }
+            });
             evt.on('update_billy', function (eventID, status){
                 logger.info("Inside Billy update function.");
-                if (Donate.findOne({'recurring.subscriptions.invoices.items.guid': invoiceID})){
-                    var id = Donate.findOne({'recurring.subscriptions.invoices.items.guid': invoiceID})._id;
+                if (Donate.findOne({'recurring.subscriptions.invoices.items.guid': invoice_guid})){
+                    var id = Donate.findOne({'recurring.subscriptions.invoices.items.guid': invoice_guid})._id;
                     logger.info("Found the invoice GUID in invoices");
                     this.emit('update_status_for_first_time_billy_debit', id, eventID, status);
                     
@@ -123,7 +134,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
             evt.on('update_status_for_first_time_billy_debit', function (id, eventID, status){
                     Donate.update(id, {
                         $set: {
-                            'recurring.subscriptions.invoices.debit.status': invoiceID
+                            'recurring.subscriptions.invoices.debit': invoice_guid
                         }
                     })
                 });
@@ -132,7 +143,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                         var updateThis;
                         logger.info("Got to send_email function");
                         if (billy) {
-                            updateThis = Donate.findOne({'recurring.subscriptions.invoices.items.guid': invoiceID})._id;
+                            updateThis = Donate.findOne({'recurring.subscriptions.invoices.items.guid': invoice_guid})._id;
                         } else {
                             updateThis = Donate.findOne({'debit.id': eventID})._id;
                         }
