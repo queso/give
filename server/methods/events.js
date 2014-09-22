@@ -21,9 +21,11 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                 e.emit('start');
                 logger.info('Body type: ' + body.events[0].type);
                 if (billy) {
-                    e.emit('parseInvoiceID');
+                    e.emit('parse_billy_invoice_guid');
+                    e.emit('parse_billy_transaction_guid');
+                    e.emit('select');
                 }else {
-                    e.emit('select')
+                    e.emit('select');
                 }
                 e.emit('end', body.events[0].type);
             });
@@ -38,17 +40,15 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        logger.info("**********Received an event");
 	        });
             evt.on('parse_billy_invoice_guid', function(){
-                if(billy){
-                    var description = body.events[0].entity[type][0].description;
-                    invoice_guid = ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
-                }
-                this.emit('select');
+                logger.info("Started parse_billy_invoice_guid");
+                logger.info("Billy true");
+                var description = body.events[0].entity[type][0].description;
+                invoice_guid = ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
             });
             evt.on('parse_billy_transaction_guid', function(){
-                if(billy){
-                    transaction_guid = body.events[0].entity[type][0].meta['billy.transaction_guid'];
-                }
-            })
+                logger.info("Started parse_billy_transaction_guid");
+                transaction_guid = body.events[0].entity[type][0].meta['billy.transaction_guid'];
+            });
             evt.on('select', function () {
                 logger.info("Received type: " + body.events[0].type);
                 var bodyType = body.events[0].type;
@@ -94,7 +94,6 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        logger.info("The ID is: " + id + " The type is: " + type + " This status is: " + status);
                 var lookup = type;
 		        /*try {*/
-                   
                         if (lookup === 'debits') {
                             lookup = 'debit';
                             var setModifierID = { $set: {} };
@@ -108,23 +107,71 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 			        logger.error(e);
 		        }*/
 	        });
-            evt.on('billy_trans', function () {
-                if(Donate.findOne({'recurring.subscriptions.invoices.items.transactions.guid': transaction_guid})){
+            evt.on('billy_trans_status', function (status) {
+                Donate.update({
+                    id, 'recurring.subscriptions.invoices.transactions.guid': transaction_guid}, {
+                    $set: {
+                        'recurring.subscriptions.transactions.invoices.$.status': status
+                    }
+                }); 
+            });
+            evt.on('billy_trans_insert', function () {
+                var transaction = HTTP.get("https://billy.balancedpayments.com/v1/transactions/" + transaction_guid, {
+                    auth: Meteor.settings.billyKey + ':'
+                });
+                Donate.update({
+                    id,
+                    'recurring.subscriptions.invoices.guid': invoice_guid}, {
+                    $push: {
+                        'recurring.subscriptions.invoices.$.transactions': transaction
+                    }
+                });
+            });
+            evt.on('billy_invoice', function (status) {
+                if(Donate.findOne({'recurring.subscriptions.invoices.guid': invoice_guid})){
+                    Donate.update({
+                    id,
+                    'recurring.subscriptions.invoices.guid': invoice_guid}, {
+                    $push: {
+                        'recurring.subscriptions.$.invoices': transaction
+                    }
+                });
+
+                var invoice = HTTP.get("https://billy.balancedpayments.com/v1/invoices/" + invoice_guid, {
+                    auth: Meteor.settings.billyKey + ':'
+                });
+                Donate.update({
+                    id,
+                    'recurring.subscriptions.invoices.guid': invoice_guid}, {
+                    $push: {
+                        'recurring.subscriptions.$.invoices': transaction
+                    }
+                });
 
                 }
+
             });
+            /*evt.on('billy_subscription', function () {
+                if(Donate.findOne({'recurring.subscriptions.guid': subscription_guid})){
+
+                }
+            });*/
             evt.on('update_billy', function (eventID, status){
                 logger.info("Inside Billy update function.");
-                if (Donate.findOne({'recurring.subscriptions.invoices.items.guid': invoice_guid})){
-                    var id = Donate.findOne({'recurring.subscriptions.invoices.items.guid': invoice_guid})._id;
+                if(Donate.findOne({'recurring.subscriptions.invoices.transactions.guid': transaction_guid})){
+                    logger.info("FOUND A transaction_guid in the collection");
+                    id = Donate.findOne({'recurring.subscriptions.invoices.transactions.guid': transaction_guid})._id;
+                    this.emit('billy_trans_status', status);
+                }else if(Donate.findOne({'recurring.subscriptions.invoices.guid': invoice_guid})){
+                    id = Donate.findOne({'recurring.subscriptions.invoices.guid': invoice_guid})._id;
                     logger.info("Found the invoice GUID in invoices");
-                    this.emit('update_status_for_first_time_billy_debit', id, eventID, status);
-                    
+                    this.emit('billy_trans_insert');                    
                 } else{
                     logger.info("Couldn't find the invoice GUID in invoices, let's go look for it.");
                     logger.info("Going to go find the subscription, insert the invoice into that subscription and" + 
                         "return the id of the collection as well as the subscription GUID.");
-                    var id = Utils.getBillySubscriptionGUID(invoiceID);
+                    id = Utils.getBillySubscriptionGUID(invoice_guid);
+                    this.emit('')
                     //Need subscription here too, need to make id an object with id and subscription GUID
                 }
 
@@ -132,6 +179,30 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
             //UPDATE STATUS END
 
             evt.on('update_status_for_first_time_billy_debit', function (id, eventID, status){
+                
+
+
+
+
+
+
+
+
+                Donate.update({
+                id,
+                'recurring.subscriptions.invoices': billySubscribeCustomer.data.guid}, {
+                $push: {
+                    'recurring.subscriptions.$.invoices': billyGetInvoiceID.data
+                }
+            });
+
+
+
+
+
+
+
+
                     Donate.update(id, {
                         $set: {
                             'recurring.subscriptions.invoices.debit': invoice_guid

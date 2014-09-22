@@ -163,6 +163,7 @@ function getInvoice(subGUID) {
 		throw new Meteor.Error(error, e._id);
 	}
 }
+
 Meteor.methods({
 	/*createBillyPlan: function(data) {
 		logIt();	
@@ -263,10 +264,22 @@ Meteor.methods({
 				_id: data._id,
 				'recurring.subscriptions.guid': billySubscribeCustomer.data.guid}, {
 				$push: {
-					'recurring.subscriptions.$.invoices': billyGetInvoiceID.data
+					'recurring.subscriptions.$.invoices': billyGetInvoiceID.data.items
 				}
 			});
 			logger.info("Inserted invoice into appropriate subscription.");
+
+			/*var billyGetTransactionID = '';
+			billyGetTransactionID = getTransaction(billySubscribeCustomer.data.guid);
+			Donate.update({
+				_id: data._id,
+				'recurring.subscriptions.guid': billySubscribeCustomer.data.guid}, {
+				$push: {
+					'recurring.subscriptions.$.invoices': billyGetInvoiceID.data.items
+				}
+			});
+			logger.info("Inserted invoice into appropriate subscription."); */
+
 			return data._id;
 		} catch (e) {
 			logger.info(e);

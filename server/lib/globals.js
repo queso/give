@@ -43,6 +43,27 @@ Utils = {
             auth: Meteor.settings.billyKey + ':'
         });
         return resultSet;
-    }
+    }/*,
+    getTransaction: function(invoiceID) {
+    try {
+        logIt();
+        logger.info("inside getTransaction");
+        var transaction = HTTP.get("https://billy.balancedpayments.com/v1/transactions/" + transaction_guid, {
+                auth: Meteor.settings.billyKey + ':'
+        });
+        Donate.update({
+                _id: IDs._id,
+                'recurring.subscriptions.guid': IDs.subscription_guid}, {
+                $push: {
+                    'recurring.subscriptions.$.invoices': invoice
+                }
+            });
+        return resultSet;
+    } catch (e) {
+        e._id = AllErrors.insert(e.response);
+        var error = (e.response);
+        throw new Meteor.Error(error, e._id);
+    }*/
+}
 
 };
