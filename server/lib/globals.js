@@ -19,20 +19,23 @@ Utils = {
         var invoice = HTTP.get("https://billy.balancedpayments.com/v1/invoices/" + invoiceID, {
                 auth: Meteor.settings.billyKey + ':'
         });
+        logger.info("getBillySubscriptionGUID");
+        console.dir(invoice);
+        logger.info("end the getBillySubscriptionGUID");
         IDs.subscription_guid = invoice.data.subscription_guid;
         logger.info("Got the subscription_guid: " + IDs.subscription_guid);
         if(Donate.findOne({'recurring.subscriptions.guid': IDs.subscription_guid})){
-            IDs._id = Donate.findOne({'recurring.subscriptions.guid': subscription_guid})._id;
-            logger.info("Got the _id: " + IDs._id);
+            IDs.id = Donate.findOne({'recurring.subscriptions.guid': IDs.subscription_guid})._id;
+            logger.info("Got the _id: " + IDs.id);
         }else{
             logger.error("Couldn't find the subscription for this invoice...bummer: " + invoiceID);
             return;
         }
         Donate.update({
-                _id: IDs._id,
+                _id: IDs.id,
                 'recurring.subscriptions.guid': IDs.subscription_guid}, {
-                $push: {
-                    'recurring.subscriptions.$.invoices': invoice
+                $addToSet: {
+                    'recurring.subscriptions.$.invoices': invoice.data.items
                 }
             });
         return IDs;
@@ -43,27 +46,186 @@ Utils = {
             auth: Meteor.settings.billyKey + ':'
         });
         return resultSet;
-    }/*,
-    getTransaction: function(invoiceID) {
+    },
+    send_one_time_email: function (id) {
     try {
-        logIt();
-        logger.info("inside getTransaction");
-        var transaction = HTTP.get("https://billy.balancedpayments.com/v1/transactions/" + transaction_guid, {
-                auth: Meteor.settings.billyKey + ':'
-        });
-        Donate.update({
-                _id: IDs._id,
-                'recurring.subscriptions.guid': IDs.subscription_guid}, {
-                $push: {
-                    'recurring.subscriptions.$.invoices': invoice
-                }
-            });
-        return resultSet;
-    } catch (e) {
-        e._id = AllErrors.insert(e.response);
-        var error = (e.response);
-        throw new Meteor.Error(error, e._id);
-    }*/
-}
+      logger.info("Started send_one_time_email with ID: " + id + " --------------------------");
+      var error = {};
+      var debit = Donate.findOne({_id: id}).debit;
+      var customer = Donate.findOne({_id: id}).customer;
+      var fees = +debit.total_amount - +debit.amount;
+      logger.info("Cover the fees = " + debit.coveredTheFees);
+      logger.info("debit.status: " + debit.status);
+      var slug;
+      if (debit.status === "failed") {
+        error = Donate.findOne({_id: id}).failed;
+        slug = "failedpayment";
+        } else if (debit.coveredTheFees){
+        slug = "fall-2014-donation-electronic-receipt-with-fees";
+      } else {
+        slug = "fall-2014-donation-electronic-receipt";
+      }
+      Meteor.Mandrill.sendTemplate({
+        key: Meteor.settings.mandrillKey,
+        templateSlug: slug,
+        templateContent: [
+          {}
+        ],
+        mergeVars: [
+          {
+            "rcpt": customer.email_address,
+            "vars": [
+              {
+                "name": "DonatedTo",
+                "content": debit.donateTo
+              }, {
+                "name": "DonateWith", //eventually send the card brand and the last four instead of just this
+                "content": debit.donateWith
+              }, {
+                "name": "GiftAmount",
+                "content": debit.amount
+              }, {
+                "name": "GiftAmountFees",
+                "content": fees
+              }, {
+                "name": "TotalGiftAmount",
+                "content": debit.total_amount
+              }, {
+                "name": "FailureReason",
+                "content": error.failure_reason
+               },{
+                "name": "FailureReasonCode",
+                "content": error.failure_reason_code
+              },{
+            "name": "FNAME",
+            "content": customer.fname
+            }, {
+                "name": "LNAME",
+                "content": customer.lname
+            }, {
+                "name": "ADDRESS_LINE1",
+                "content": customer.address_line1
+            }, {
+                "name": "ADDRESS_LINE2",
+                "content": customer.address_line2
+            }, {
+                "name": "LOCALITY",
+                "content": customer.city
+            }, {
+                "name": "REGION",
+                "content": customer.region
+            }, {
+                "name": "POSTAL_CODE",
+                "content": customer.postal_code
+            }, {
+                "name": "PHONE",
+                "content": customer.phone_number
+            }, {
+                "name": "ReceiptNumber",
+                "content": id
+            }
+            ]
+          }
+        ],
+        toEmail: customer.email_address
+      });
+    } //End try
+    catch (e) {
+      logger.error('Mandril sendEmailOutAPI Method error message: ' + e.message);
+      logger.error('Mandril sendEmailOutAPI Method error: ' + e);
+      throw new Meteor.error(e);
+    }
+  },
+    send_billy_email: function (id, transaction_guid, status) {
+    try {
+      logger.info("Started sendEmailOutAPI with ID: " + id + " --------------------------");
+      var error = {};
+      var debit = Donate.findOne({_id: id, 'recurring.subscriptions.transacitons.guid': transaction_guid}).recurring.subscriptions.$.debit;
+      console.log("**********HERE IS WHAT YOU ARE LOOKING FOR******************");
+      console.dir(debit);
+      var customer = Donate.findOne({_id: id}).customer;
+      var fees = +debit.total_amount - +debit.amount;
+      logger.info("Cover the fees = " + debit.coveredTheFees);
+      logger.info("debit.status: " + debit.status);
+      var slug;
+      if (debit.status === "failed") {
+        error = Donate.findOne({_id: id}).failed;
+        slug = "failedpayment";
+        } else if (debit.coveredTheFees){
+        slug = "fall-2014-donation-electronic-receipt-with-fees";
+      } else {
+        slug = "fall-2014-donation-electronic-receipt";
+      }
+      Meteor.Mandrill.sendTemplate({
+        key: Meteor.settings.mandrillKey,
+        templateSlug: slug,
+        templateContent: [
+          {}
+        ],
+        mergeVars: [
+          {
+            "rcpt": customer.email_address,
+            "vars": [
+              {
+                "name": "DonatedTo",
+                "content": debit.donateTo
+              }, {
+                "name": "DonateWith", //eventually send the card brand and the last four instead of just this
+                "content": debit.donateWith
+              }, {
+                "name": "GiftAmount",
+                "content": debit.amount
+              }, {
+                "name": "GiftAmountFees",
+                "content": fees
+              }, {
+                "name": "TotalGiftAmount",
+                "content": debit.total_amount
+              }, {
+                "name": "FailureReason",
+                "content": error.failure_reason
+               },{
+                "name": "FailureReasonCode",
+                "content": error.failure_reason_code
+              },{
+            "name": "FNAME",
+            "content": customer.fname
+            }, {
+                "name": "LNAME",
+                "content": customer.lname
+            }, {
+                "name": "ADDRESS_LINE1",
+                "content": customer.address_line1
+            }, {
+                "name": "ADDRESS_LINE2",
+                "content": customer.address_line2
+            }, {
+                "name": "LOCALITY",
+                "content": customer.city
+            }, {
+                "name": "REGION",
+                "content": customer.region
+            }, {
+                "name": "POSTAL_CODE",
+                "content": customer.postal_code
+            }, {
+                "name": "PHONE",
+                "content": customer.phone_number
+            }, {
+                "name": "ReceiptNumber",
+                "content": id
+            }
+            ]
+          }
+        ],
+        toEmail: customer.email_address
+      });
+    } //End try
+    catch (e) {
+      logger.error('Mandril sendEmailOutAPI Method error message: ' + e.message);
+      logger.error('Mandril sendEmailOutAPI Method error: ' + e);
+      throw new Meteor.error(e);
+    }
+  }
 
 };

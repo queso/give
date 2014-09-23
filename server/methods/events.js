@@ -21,10 +21,12 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                 e.emit('start');
                 logger.info('Body type: ' + body.events[0].type);
                 if (billy) {
+                    logger.info("Billy Event received.");
                     e.emit('parse_billy_invoice_guid');
                     e.emit('parse_billy_transaction_guid');
                     e.emit('select');
                 }else {
+                    logger.info("Non-Billy Event received.");
                     e.emit('select');
                 }
                 e.emit('end', body.events[0].type);
@@ -41,7 +43,6 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	        });
             evt.on('parse_billy_invoice_guid', function(){
                 logger.info("Started parse_billy_invoice_guid");
-                logger.info("Billy true");
                 var description = body.events[0].entity[type][0].description;
                 invoice_guid = ("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop();
             });
@@ -109,124 +110,94 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	        });
             evt.on('billy_trans_status', function (status) {
                 Donate.update({
-                    id, 'recurring.subscriptions.invoices.transactions.guid': transaction_guid}, {
+                    _id: id, 'recurring.subscriptions.transactions.guid': transaction_guid}, {
                     $set: {
-                        'recurring.subscriptions.transactions.invoices.$.status': status
+                        'recurring.subscriptions.transactions.$.status': status
                     }
                 }); 
             });
-            evt.on('billy_trans_insert', function () {
+            evt.on('billy_trans_insert', function (status) {
                 var transaction = HTTP.get("https://billy.balancedpayments.com/v1/transactions/" + transaction_guid, {
                     auth: Meteor.settings.billyKey + ':'
                 });
-                Donate.update({
-                    id,
-                    'recurring.subscriptions.invoices.guid': invoice_guid}, {
-                    $push: {
-                        'recurring.subscriptions.invoices.$.transactions': transaction
-                    }
-                });
-            });
-            evt.on('billy_invoice', function (status) {
-                if(Donate.findOne({'recurring.subscriptions.invoices.guid': invoice_guid})){
+                if(Donate.findOne({'recurring.subscriptions.transactions.guid': transaction_guid})){
+                    this.emit('billy_trans_status', status);
+                    Utils.send_billy_email(id, transaction_guid, status);
+                    return;
+                }else{
                     Donate.update({
-                    id,
-                    'recurring.subscriptions.invoices.guid': invoice_guid}, {
-                    $push: {
-                        'recurring.subscriptions.$.invoices': transaction
+                        _id: id,
+                        'recurring.subscriptions.guid': subscription_guid}, {
+                        $addToSet: {
+                            'recurring.subscriptions.$.transactions': transaction.data
+                        }
+                    });
+                    if(Donate.findOne({'recurring.subscriptions.email_sent.transaction_guid': 'placeholder'})){
+                        Donate.update({
+                        _id: id,
+                        'recurring.subscriptions.guid': subscription_guid}, {
+                            'recurring.subscriptions.$.email_sent': {transaction_guid: transaction_guid}
+                        }, {upsert: true});
                     }
-                });
-
-                var invoice = HTTP.get("https://billy.balancedpayments.com/v1/invoices/" + invoice_guid, {
-                    auth: Meteor.settings.billyKey + ':'
-                });
-                Donate.update({
-                    id,
-                    'recurring.subscriptions.invoices.guid': invoice_guid}, {
-                    $push: {
-                        'recurring.subscriptions.$.invoices': transaction
-                    }
-                });
-
                 }
-
             });
-            /*evt.on('billy_subscription', function () {
-                if(Donate.findOne({'recurring.subscriptions.guid': subscription_guid})){
-
-                }
-            });*/
             evt.on('update_billy', function (eventID, status){
                 logger.info("Inside Billy update function.");
-                if(Donate.findOne({'recurring.subscriptions.invoices.transactions.guid': transaction_guid})){
+
+                if(Donate.findOne({'recurring.subscriptions.transactions.guid': transaction_guid})){
                     logger.info("FOUND A transaction_guid in the collection");
-                    id = Donate.findOne({'recurring.subscriptions.invoices.transactions.guid': transaction_guid})._id;
+                    id = Donate.findOne({'recurring.subscriptions.transactions.guid': transaction_guid})._id;
                     this.emit('billy_trans_status', status);
                 }else if(Donate.findOne({'recurring.subscriptions.invoices.guid': invoice_guid})){
                     id = Donate.findOne({'recurring.subscriptions.invoices.guid': invoice_guid})._id;
                     logger.info("Found the invoice GUID in invoices");
-                    this.emit('billy_trans_insert');                    
+                    this.emit('billy_trans_insert', status);                    
                 } else{
                     logger.info("Couldn't find the invoice GUID in invoices, let's go look for it.");
-                    logger.info("Going to go find the subscription, insert the invoice into that subscription and" + 
+                    logger.info("Going to go find the subscription, insert the invoice into that subscription and " + 
                         "return the id of the collection as well as the subscription GUID.");
-                    id = Utils.getBillySubscriptionGUID(invoice_guid);
-                    this.emit('')
+                    var subIDs = Utils.getBillySubscriptionGUID(invoice_guid);
+                    id = subIDs.id;
+                    subscription_guid = subIDs.subscription_guid;
+                    this.emit('billy_trans_insert', status);
                     //Need subscription here too, need to make id an object with id and subscription GUID
                 }
 
             });
-            //UPDATE STATUS END
 
-            evt.on('update_status_for_first_time_billy_debit', function (id, eventID, status){
-                
-
-
-
-
-
-
-
-
+            /*evt.on('update_status_for_first_time_billy_debit', function (id, eventID, status){
                 Donate.update({
-                id,
+                _id: id,
                 'recurring.subscriptions.invoices': billySubscribeCustomer.data.guid}, {
-                $push: {
+                $addToSet: {
                     'recurring.subscriptions.$.invoices': billyGetInvoiceID.data
                 }
             });
-
-
-
-
-
-
-
-
                     Donate.update(id, {
                         $set: {
                             'recurring.subscriptions.invoices.debit': invoice_guid
                         }
                     })
-                });
+                });*/
             evt.on('send_email', function (eventID, status) {
                     /*try{*/
-                        var updateThis;
                         logger.info("Got to send_email function");
                         if (billy) {
-                            updateThis = Donate.findOne({'recurring.subscriptions.invoices.items.guid': invoice_guid})._id;
+                            logger.info("Already have the id: " + id);
+                            //send out the appropriate email using Mandrill
+                        if (!(Donate.findOne(id).recurring.subscriptions.transactions.email_sent.status)) {
+                            Donate.update(id, {$set: {'recurring.subscriptions.transactions.email_sent.status': true}});
+                            Utils.send_billy_email(id, transaction_guid);
+                        }
                         } else {
-                            updateThis = Donate.findOne({'debit.id': eventID})._id;
+                            id = Donate.findOne({'debit.id': eventID})._id;
+                            logger.info("Here is the id: " + id);
+                            //send out the appropriate email using Mandrill
+                            if (!(Donate.findOne(id).debit.email_sent)) {
+                                Donate.update(id, {$set: {'debit.email_sent': true}});
+                                Utils.send_one_time_email(id);
+                            }
                         }
-
-                        //send out the appropriate email using Mandrill
-                        if (!(Donate.findOne(updateThis).debit.email_sent)) {
-                            Donate.update(updateThis, {$set: {'debit.email_sent': true}});
-                            Meteor.call('sendEmailOutAPI', updateThis, function (error, result) {
-                                logger.info("Completed Email send out API");
-                            });
-                        }
-
                     /*}
                     catch(e) {
                         logger.error(e);
@@ -259,7 +230,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        if(billy){
                     this.emit('update_billy', body.events[0].entity.debits[0].id,
                     body.events[0].entity.debits[0].status);
-                    Utils.credit_billy_order(body.events[0].entity.debits[0].id);
+                    Utils.credit_billy_order(id, transaction_guid);
                 } else{
                     this.emit('update_from_event', body.events[0].entity.debits[0].id,
                     body.events[0].entity.debits[0].status);

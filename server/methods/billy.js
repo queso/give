@@ -198,7 +198,6 @@ Meteor.methods({
 				'customer': data.customer[0],
 				'debit.donateTo': data.paymentInformation[0].donateTo,
 				'debit.donateWith': data.paymentInformation[0].donateWith,
-				'debit.email_sent': false,
 				'debit.type': data.paymentInformation[0].type,
 				'debit.total_amount': data.paymentInformation[0].total_amount,
 				'debit.amount': data.paymentInformation[0].amount,
@@ -256,6 +255,18 @@ Meteor.methods({
 			Donate.update(data._id, {
 				$push: {
 					'recurring.subscriptions': billySubscribeCustomer.data
+				}
+			});
+			//Copy debit information into the subscription
+			var debitInformation = Donate.findOne(data._id).debit;
+			debitInformation.subscription_guid = billySubscribeCustomer.data.guid;
+			var email_sent = {status: false, transaction_guid:"placeholder"};
+			Donate.update({_id: data._id, 
+				'recurring.subscriptions.guid': billySubscribeCustomer.data.guid},
+				{
+				$push: {
+					'recurring.subscriptions.$.debitInformation': debitInformation,
+					'recurring.subscriptions.$.email_sent': email_sent
 				}
 			});
 			var billyGetInvoiceID = '';
