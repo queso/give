@@ -52,7 +52,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
             });
             evt.on('select', function () {
                 logger.info("Received type: " + body.events[0].type);
-                var bodyType = body.events[0].type;
+                bodyType = body.events[0].type;
                 //replace the period in the funcName with an underscore
                 var funcName = bodyType.replace(/\./g, '_');
                 logger.info("Sending to: " + funcName);
@@ -73,10 +73,16 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
             /*************************************************************/
             /**************        LOG NEW GIFT             **************/
             /*************************************************************/
-            evt.on('log_new_gift', function (id) {
+            evt.on('log_new_gift', function (mixedID, transaction_guid) {
                 /*try {*/
-                    var amount = Donate.findOne({"debit.id": id}).debit.total_amount;
-                    logger.info("**********************NEW GIFT******************** id: " + id + " Total Amount: $" + amount)
+                    if(billy){
+                        var amount = Donate.findOne({_id: mixedID}).debit.total_amount;
+                        logger.info("**********NEW RECURRING GIFT*********** id: " + transaction_guid + " Total Amount: $" + amount)
+                    }else{
+                        var amount = Donate.findOne({"debit.id": mixedID}).debit.total_amount;
+                        logger.info("*************NEW GIFT************* id: " + id + " Total Amount: $" + amount)
+                    }
+                    
                 /*}
                 catch (e) {
                     logger.error("events.js caught an error when trying to log_new_gift: " + e);
@@ -109,50 +115,51 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        }*/
 	        });
             evt.on('billy_trans_status', function (status) {
-                Donate.update({
+                var setModifier = { $set: {} };
+                setModifier.$set['recurring.transactions.' + transaction_guid + '.status'] = status;
+                Donate.update({_id: id}, setModifier);
+
+                /*Donate.update({
                     _id: id, 'recurring.subscriptions.transactions.guid': transaction_guid}, {
                     $set: {
-                        'recurring.subscriptions.$.transactions.status': status
+                        'recurring.transactions.status': status
                     }
-                }); 
+                }); */
             });
             evt.on('billy_trans_insert', function (status) {
                 var transaction = HTTP.get("https://billy.balancedpayments.com/v1/transactions/" + transaction_guid, {
                     auth: Meteor.settings.billyKey + ':'
                 });
-                if(Donate.findOne({'recurring.subscriptions.transactions.guid': transaction_guid})){
+                var lookup_transaction_guid = {};
+                lookup_transaction_guid['recurring.transactions.' + transaction_guid + '.guid'] = transaction_guid;
+                if(Donate.findOne(lookup_transaction_guid)){
                     this.emit('billy_trans_status', status);
-                    Utils.send_billy_email(id, transaction_guid, status);
-                    return;
+                    /*if(bodyType === 'debit.succeeded' || 'debit.failed'){
+                        Utils.send_billy_email(id, transaction_guid, status);
+                        return;    
+                    }*/
+                    
                 }else{
-                    Donate.update({
-                        _id: id,
-                        'recurring.subscriptions.guid': subscription_guid}, {
-                        $addToSet: {
-                            'recurring.subscriptions.$.transactions': transaction.data
-                        }
-                    });
-                    if(Donate.findOne({'recurring.subscriptions.email_sent.transaction_guid': 'placeholder'})){
-                        /*var insertThis = {Donate.findOne({
-                            _id: id,'recurring.subscriptions.email_sent.transaction_guid': 'placeholder'}) }*/
-                        Donate.update({
-                            _id: id,
-                            'recurring.subscriptions.email_sent.transaction_guid': 'placeholder'}, {
-                            $set: {
-                                'recurring.subscriptions.$.email_sent.transaction_guid': transaction_guid
-                            }
-                        });                    }
+                    var setModifier = { $set: {} };
+                    transaction.data.email_sent = {};
+                    setModifier.$set['recurring.transactions.' + transaction_guid] = transaction.data;
+                    Donate.update({_id: id}, setModifier);
                 }
             });
             evt.on('update_billy', function (eventID, status){
                 logger.info("Inside Billy update function.");
 
-                if(Donate.findOne({'recurring.subscriptions.transactions.guid': transaction_guid})){
+                var lookup_transaction_guid = {};
+                lookup_transaction_guid['recurring.transactions.' + transaction_guid + '.guid'] = transaction_guid;
+                var lookup_invoice_guid = {};
+                lookup_invoice_guid['recurring.invoices.' + invoice_guid + '.guid'] = invoice_guid;
+
+                if(Donate.findOne(lookup_transaction_guid)){
                     logger.info("FOUND A transaction_guid in the collection");
-                    id = Donate.findOne({'recurring.subscriptions.transactions.guid': transaction_guid})._id;
+                    id = Donate.findOne(lookup_transaction_guid)._id;
                     this.emit('billy_trans_status', status);
-                }else if(Donate.findOne({'recurring.subscriptions.invoices.guid': invoice_guid})){
-                    id = Donate.findOne({'recurring.subscriptions.invoices.guid': invoice_guid})._id;
+                }else if(Donate.findOne(lookup_invoice_guid)){
+                    id = Donate.findOne(lookup_invoice_guid)._id;
                     logger.info("Found the invoice GUID in invoices");
                     this.emit('billy_trans_insert', status);                    
                 } else{
@@ -187,24 +194,30 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                         logger.info("Got to send_email function");
                         if (billy) {
                             logger.info("Already have the id: " + id);
+
+                            //setup query programmatically.
+                            var email_sent_lookup = {};
+                            email_sent_lookup['recurring.transactions.' + transaction_guid + '.email_sent.' + status] = true;
+                            
                             //send out the appropriate email using Mandrill
-                        if (!(Donate.findOne(id).recurring.subscriptions.transactions.email_sent.status)) {
-                            Donate.update(id, {$set: {'recurring.subscriptions.transactions.email_sent.status': true}});
-                            Utils.send_billy_email(id, transaction_guid);
-                        }
-                        } else {
-                            id = Donate.findOne({'debit.id': eventID})._id;
-                            logger.info("Here is the id: " + id);
-                            //send out the appropriate email using Mandrill
-                            if (!(Donate.findOne(id).debit.email_sent)) {
-                                Donate.update(id, {$set: {'debit.email_sent': true}});
-                                Utils.send_one_time_email(id);
+                            //TODO: Change this to use a programatic query and it really needs to add the status, if the status=succeeded doesn't exists or if the status=failed doesn't exist
+                            if (!(Donate.findOne(email_sent_lookup)) && status === 'succeeded' || 'failed') {
+                                Donate.update(id, {$set: email_sent_lookup});
+                                Utils.send_billy_email(id, transaction_guid);
                             }
-                        }
-                    /*}
-                    catch(e) {
-                        logger.error(e);
-                    }*/
+                            } else {
+                                id = Donate.findOne({'debit.id': eventID})._id;
+                                logger.info("Here is the id: " + id);
+                                //send out the appropriate email using Mandrill
+                                if (!(Donate.findOne(id).debit.email_sent)) {
+                                    Donate.update(id, {$set: {'debit.email_sent': true}});
+                                    Utils.send_one_time_email(id);
+                                }
+                            }
+                        /*}
+                        catch(e) {
+                            logger.error(e);
+                        }*/
             });
             evt.on('failed_collection_update', function (type, debitID){
                 console.log('failed_collection_update area. ' + debitID);
@@ -234,13 +247,15 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                     this.emit('update_billy', body.events[0].entity.debits[0].id,
                     body.events[0].entity.debits[0].status);
                     Utils.credit_billy_order(id, transaction_guid);
+                    this.emit('log_new_gift', id, transaction_guid);
                 } else{
                     this.emit('update_from_event', body.events[0].entity.debits[0].id,
                     body.events[0].entity.debits[0].status);
                     Utils.credit_order(body.events[0].entity.debits[0].id);
+                    this.emit('log_new_gift', body.events[0].entity.debits[0].id);
                 }
                 this.emit('send_email', body.events[0].entity.debits[0].id, 'succeeded');
-                this.emit('log_new_gift', body.events[0].entity.debits[0].id);
+                
 	        });
 	        evt.on('debit_failed', function () {
 		        logger.info("Got to the debit_failed");

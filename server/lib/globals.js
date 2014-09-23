@@ -51,14 +51,16 @@ Utils = {
     try {
       logger.info("Started send_one_time_email with ID: " + id + " --------------------------");
       var error = {};
-      var debit = Donate.findOne({_id: id}).debit;
-      var customer = Donate.findOne({_id: id}).customer;
+      var lookup_record = Donate.findOne({_id: id});
+      
+      var debit = lookup_record.debit;
+      var customer = lookup_record.customer;
       var fees = +debit.total_amount - +debit.amount;
       logger.info("Cover the fees = " + debit.coveredTheFees);
       logger.info("debit.status: " + debit.status);
       var slug;
       if (debit.status === "failed") {
-        error = Donate.findOne({_id: id}).failed;
+        error = lookup_record.failed;
         slug = "failedpayment";
         } else if (debit.coveredTheFees){
         slug = "fall-2014-donation-electronic-receipt-with-fees";
@@ -142,16 +144,20 @@ Utils = {
       logger.info("Started send_billy_email with transaction_guid: " + transaction_guid + " --------------------------");
       logger.info("Started send_billy_email with status: " + status + " --------------------------");
       var error = {};
-      var debit = Donate.findOne({_id: id, 'recurring.subscriptions.transacitons.guid': transaction_guid}).recurring.subscriptions.$.debit;
+      
+      var lookup_record = Donate.findOne({_id: id});
+      var debit = lookup_record.debit;
       console.log("**********HERE IS WHAT YOU ARE LOOKING FOR******************");
       console.dir(debit);
-      var customer = Donate.findOne({_id: id}).customer;
+      var customer = lookup_record.customer;
       var fees = +debit.total_amount - +debit.amount;
       logger.info("Cover the fees = " + debit.coveredTheFees);
-      logger.info("debit.status: " + debit.status);
+      logger.info("Transaction Status: " + lookup_record.recurring.transactions[transaction_guid].status);
       var slug;
-      if (debit.status === "failed") {
-        error = Donate.findOne({_id: id}).failed;
+      //TODO: Fix this so that it looks into the transaciton sub-document, not just into the top level, or when it fails, put the transaction GUID into the failed record 
+      //that is probably the way to go. 
+      if (status === "failed") {
+        error = lookup_record.failed;
         slug = "failedpayment";
         } else if (debit.coveredTheFees){
         slug = "fall-2014-donation-electronic-receipt-with-fees";
