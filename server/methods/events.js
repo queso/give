@@ -112,7 +112,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                 Donate.update({
                     _id: id, 'recurring.subscriptions.transactions.guid': transaction_guid}, {
                     $set: {
-                        'recurring.subscriptions.transactions.$.status': status
+                        'recurring.subscriptions.$.transactions.status': status
                     }
                 }); 
             });
@@ -133,12 +133,15 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                         }
                     });
                     if(Donate.findOne({'recurring.subscriptions.email_sent.transaction_guid': 'placeholder'})){
+                        /*var insertThis = {Donate.findOne({
+                            _id: id,'recurring.subscriptions.email_sent.transaction_guid': 'placeholder'}) }*/
                         Donate.update({
-                        _id: id,
-                        'recurring.subscriptions.guid': subscription_guid}, {
-                            'recurring.subscriptions.$.email_sent': {transaction_guid: transaction_guid}
-                        }, {upsert: true});
-                    }
+                            _id: id,
+                            'recurring.subscriptions.email_sent.transaction_guid': 'placeholder'}, {
+                            $set: {
+                                'recurring.subscriptions.$.email_sent.transaction_guid': transaction_guid
+                            }
+                        });                    }
                 }
             });
             evt.on('update_billy', function (eventID, status){

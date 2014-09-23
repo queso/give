@@ -137,8 +137,10 @@ Utils = {
     }
   },
     send_billy_email: function (id, transaction_guid, status) {
-    try {
-      logger.info("Started sendEmailOutAPI with ID: " + id + " --------------------------");
+    /*try {*/
+      logger.info("Started send_billy_email with ID: " + id + " --------------------------");
+      logger.info("Started send_billy_email with transaction_guid: " + transaction_guid + " --------------------------");
+      logger.info("Started send_billy_email with status: " + status + " --------------------------");
       var error = {};
       var debit = Donate.findOne({_id: id, 'recurring.subscriptions.transacitons.guid': transaction_guid}).recurring.subscriptions.$.debit;
       console.log("**********HERE IS WHAT YOU ARE LOOKING FOR******************");
@@ -220,12 +222,12 @@ Utils = {
         ],
         toEmail: customer.email_address
       });
-    } //End try
+    /*} //End try
     catch (e) {
       logger.error('Mandril sendEmailOutAPI Method error message: ' + e.message);
       logger.error('Mandril sendEmailOutAPI Method error: ' + e);
       throw new Meteor.error(e);
-    }
+    }*/
   }
 
 };

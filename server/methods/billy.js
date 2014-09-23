@@ -264,7 +264,7 @@ Meteor.methods({
 			Donate.update({_id: data._id, 
 				'recurring.subscriptions.guid': billySubscribeCustomer.data.guid},
 				{
-				$push: {
+				$set: {
 					'recurring.subscriptions.$.debitInformation': debitInformation,
 					'recurring.subscriptions.$.email_sent': email_sent
 				}
