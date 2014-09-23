@@ -29,6 +29,7 @@ Router.map(function () {
     }
   });
   this.route('thanks', {
+      //this is the route for one-time gift acknowledgements
       path: ':root/thanks/:_id',
       waitOn: function() { console.log(this.params._id);
 	    return Meteor.subscribe('donate', this.params._id)},
@@ -41,22 +42,22 @@ Router.map(function () {
               this.render();
           else
               this.render('Loading');
-      }});
-  this.route('thanks1', {path: ':root//thanks1/:_id',
-    waitOn: function() { return Meteor.subscribe('donate', this.params._id)},
-    data: function () {
+      }
+  });
+  this.route('gift', {
+    //this is the route for recurring gift acknowledgements
+      path: ':root/gift/:_id',
+      waitOn: function() { console.log(this.params._id);
+      return Meteor.subscribe('donate', this.params._id)},
+      data: function () {
         var root = Meteor.settings.root;
       return Donate.findOne(this.params._id);
-    }
+          },
+      action: function () {
+          if (this.ready())
+              this.render();
+          else
+              this.render('Loading');
+      }
   });
-  this.route('send.email', {path: ':root//send_email',
-  data: function () {
-      var root = Meteor.settings.root;
-  }});
-  this.route('failed', {path: ':root//failed/:_id', data: function () {
-      var root = Meteor.settings.root;
-  }});
-  this.route('charge_existing', {path: ':root//charge_existing', data: function () {
-      var root = Meteor.settings.root;
-  }});
 });

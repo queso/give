@@ -203,7 +203,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                             //TODO: Change this to use a programatic query and it really needs to add the status, if the status=succeeded doesn't exists or if the status=failed doesn't exist
                             if (!(Donate.findOne(email_sent_lookup)) && status === 'succeeded' || 'failed') {
                                 Donate.update(id, {$set: email_sent_lookup});
-                                Utils.send_billy_email(id, transaction_guid);
+                                Utils.send_billy_email(id, transaction_guid, status);
                             }
                             } else {
                                 id = Donate.findOne({'debit.id': eventID})._id;

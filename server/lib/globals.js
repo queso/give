@@ -125,6 +125,9 @@ Utils = {
             }, {
                 "name": "ReceiptNumber",
                 "content": id
+            }, {
+                "name": "Path",
+                "content": 'thanks'
             }
             ]
           }
@@ -221,8 +224,12 @@ Utils = {
                 "content": customer.phone_number
             }, {
                 "name": "ReceiptNumber",
-                "content": id
+                "content": transaction_guid
+            }, {
+                "name": "Path",
+                "content": 'gift'
             }
+
             ]
           }
         ],
