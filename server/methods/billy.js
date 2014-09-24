@@ -164,6 +164,21 @@ function getInvoice(subGUID) {
 	}
 }
 
+function getTransaction(invoiceID) {
+	try {
+		logIt();
+		logger.info("inside getTransaction");
+		resultSet = HTTP.get("https://billy.balancedpayments.com/v1/invoices/" + invoiceID + "/transactions", {
+			auth: Meteor.settings.billyKey + ':'
+		});
+		return resultSet;
+	} catch (e) {
+		e._id = AllErrors.insert(e.response);
+		var error = (e.response);
+		throw new Meteor.Error(error, e._id);
+	}
+}
+
 Meteor.methods({
 	/*createBillyPlan: function(data) {
 		logIt();	
@@ -213,7 +228,7 @@ Meteor.methods({
 		logger.info("Customer Info: " + customerInfo);
 		logger.info("Customer First Name: " + customerInfo.fname);
 		var customerData = '';
-		try {
+		/*try {*/
 			customerData = Utils.extractFromPromise(balanced.marketplace.customers.create({
 				'name': customerInfo.fname + " " + customerInfo.lname,
 				"address": {
@@ -236,7 +251,7 @@ Meteor.methods({
 					'customer.id': customerData.id
 				}
 			});
-			var billyCustomer = '';
+			var billyCustomer = {};
 			billyCustomer = createBillyCustomer(customerData.id);
 			Donate.update(data._id, {
 				$set: {
@@ -248,54 +263,61 @@ Meteor.methods({
 					'recurring.isRecurring': true
 				}
 			});
-			var billyPayment = '';
+			var billyPayment = {};
 			billyPayment = createPaymentMethod(data);
 			var billySubscribeCustomer = '';
 			billySubscribeCustomer = subscribeToBillyPlan(data._id);
+			console.dir(billySubscribeCustomer.data);
 			Donate.update(data._id, {
-				$push: {
+				$set: {
 					'recurring.subscriptions': billySubscribeCustomer.data
 				}
 			});
 			//Copy debit information into the subscription
 			var debitInformation = Donate.findOne(data._id).debit;
 			debitInformation.subscription_guid = billySubscribeCustomer.data.guid;
-			var email_sent = {status: false, transaction_guid:"placeholder"};
-			Donate.update({_id: data._id, 
-				'recurring.subscriptions.guid': billySubscribeCustomer.data.guid},
+			Donate.update({_id: data._id},
 				{
 				$set: {
-					'recurring.subscriptions.$.debitInformation': debitInformation,
-					'recurring.subscriptions.$.email_sent': email_sent
+					'recurring.subscriptions.debitInformation': debitInformation
 				}
 			});
-			var billyGetInvoiceID = '';
-			billyGetInvoiceID = getInvoice(billySubscribeCustomer.data.guid);
-			Donate.update({
-				_id: data._id,
-				'recurring.subscriptions.guid': billySubscribeCustomer.data.guid}, {
-				$push: {
-					'recurring.subscriptions.$.invoices': billyGetInvoiceID.data.items
-				}
-			});
-			logger.info("Inserted invoice into appropriate subscription.");
+			
 
-			/*var billyGetTransactionID = '';
-			billyGetTransactionID = getTransaction(billySubscribeCustomer.data.guid);
-			Donate.update({
-				_id: data._id,
-				'recurring.subscriptions.guid': billySubscribeCustomer.data.guid}, {
-				$push: {
-					'recurring.subscriptions.$.invoices': billyGetInvoiceID.data.items
-				}
-			});
-			logger.info("Inserted invoice into appropriate subscription."); */
-			return data._id;
-		} catch (e) {
+
+			var billyGetInvoiceID = {};
+			billyGetInvoiceID = getInvoice(billySubscribeCustomer.data.guid);
+
+			//update the collection with this invoice
+	        var invoice_guid = billyGetInvoiceID.data.items[0].guid;
+	        var setModifier = { $set: {} };
+	        setModifier.$set['recurring.invoices.' + invoice_guid] = billyGetInvoiceID.data.items[0]
+	        Donate.update({_id: data._id}, setModifier);
+			logger.info("Inserted invoice into appropriate subscription.");
+			logger.info("LOOK HERE FOR ID: ");
+			console.log(billyGetInvoiceID.data.items[0].guid);
+
+			var billyGetTransactionID = {};
+			billyGetTransactionID = getTransaction(billyGetInvoiceID.data.items[0].guid);
+
+			//update the collection with this transaction
+			var transaction_guid = billyGetTransactionID.data.items[0].guid;
+			var setModifier = { $set: {} };
+            billyGetTransactionID.data.items[0].email_sent = {};
+            setModifier.$set['recurring.transactions.' + transaction_guid] = billyGetTransactionID.data.items[0];
+            Donate.update({_id: id}, setModifier);
+
+			//logger.info("Inserted invoice into appropriate subscription."); 
+			var return_this = {_id: data._id, transaction_guid: transaction_guid};
+			//return data._id;
+			return return_this;
+
+
+		/*} catch (e) {
 			logger.info(e);
 			logger.info(e.error_message);
 			logger.info(e.reason);
 			throw new Meteor.Error(500, e.reason, e.details);
-		}
+		}*/
 	}
 });

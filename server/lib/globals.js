@@ -21,7 +21,6 @@ Utils = {
         });
         logger.info("getBillySubscriptionGUID");
         console.dir(invoice);
-        logger.info("end the getBillySubscriptionGUID");
         IDs.subscription_guid = invoice.data.subscription_guid;
         logger.info("Got the subscription_guid: " + IDs.subscription_guid);
         if(Donate.findOne({'recurring.subscriptions.guid': IDs.subscription_guid})){
@@ -31,13 +30,12 @@ Utils = {
             logger.error("Couldn't find the subscription for this invoice...bummer: " + invoiceID);
             return;
         }
-        Donate.update({
-                _id: IDs.id,
-                'recurring.subscriptions.guid': IDs.subscription_guid}, {
-                $addToSet: {
-                    'recurring.subscriptions.$.invoices': invoice.data.items
-                }
-            });
+
+        //update the collection with this invoice
+        var invoice_guid = invoice.data.guid;
+        var setModifier = { $set: {} };
+        setModifier.$set['recurring.invoices.' + invoice_guid] = invoice.data;
+        Donate.update({_id: IDs.id}, setModifier);
         return IDs;
     },
     getInvoice: function(subGUID){

@@ -50,6 +50,7 @@ Router.map(function () {
       waitOn: function() { console.log(this.params._id);
       return Meteor.subscribe('donate', this.params._id)},
       data: function () {
+        var params = this.params;
         var root = Meteor.settings.root;
         Session.set('params.transaction_guid', this.params.transaction_guid);
       return Donate.findOne(this.params._id);

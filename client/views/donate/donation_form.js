@@ -181,7 +181,7 @@ Template.DonationForm.events({
             Meteor.call('recurringDonation', form, function(error, result) {
                 if (result) {
                     $('#loading1').modal('hide');
-                    Router.go('/give/gift/' + result + '/?transaction_guid=');
+                    Router.go('/give/gift/' + result._id + '/?transaction_guid=' + result.transaction_guid);
                 } else {
                     console.log(error);
                     //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
