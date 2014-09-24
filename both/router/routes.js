@@ -51,6 +51,7 @@ Router.map(function () {
       return Meteor.subscribe('donate', this.params._id)},
       data: function () {
         var root = Meteor.settings.root;
+        Session.set('params.transaction_guid', this.params.transaction_guid);
       return Donate.findOne(this.params._id);
           },
       action: function () {

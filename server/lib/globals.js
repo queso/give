@@ -224,10 +224,13 @@ Utils = {
                 "content": customer.phone_number
             }, {
                 "name": "ReceiptNumber",
-                "content": transaction_guid
+                "content": id
             }, {
                 "name": "Path",
                 "content": 'gift'
+            }, {
+                "name": "TransactionGUID",
+                "content": transaction_guid
             }
 
             ]

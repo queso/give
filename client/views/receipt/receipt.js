@@ -1,22 +1,23 @@
 /*****************************************************************************/
 /* Receipt: Event Handlers and Helpers */
 /*****************************************************************************/
-
-Template.Receipt.events({
-  /*
-   * Example: 
-   *  'click .selector': function (e, tmpl) {
-   *
-   *  }
-   */
-});
-
 Template.Receipt.helpers({
+    billy: function () {
+      return (this.recurring);
+    },
    receiptNumber: function () {
    		return this._id;
    },
+   transaction_guid: function () {
+    var transaction_guid = Session.get('params.transaction_guid');
+    return this.recurring.transactions[transaction_guid].guid;
+   },
    date: function () {
    		return moment(this.debit.created_at).format('MM/DD/YYYY');
+   },
+   transaction_date: function () {
+    var transaction_guid = Session.get('params.transaction_guid');
+      return moment(this.recurring.transactions[transaction_guid].updated_at).format('MM/DD/YYYY');
    },
    fname: function () {
    		return this.customer.fname;

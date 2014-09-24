@@ -290,7 +290,6 @@ Meteor.methods({
 				}
 			});
 			logger.info("Inserted invoice into appropriate subscription."); */
-
 			return data._id;
 		} catch (e) {
 			logger.info(e);
