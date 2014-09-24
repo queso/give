@@ -50,7 +50,8 @@ Utils = {
       logger.info("Started send_one_time_email with ID: " + id + " --------------------------");
       var error = {};
       var lookup_record = Donate.findOne({_id: id});
-      
+      var created_at = moment(Date.parse(lookup_record.created_at)).format('MM/DD/YYYY');
+      console.log(created_at);
       var debit = lookup_record.debit;
       var customer = lookup_record.customer;
       var fees = +debit.total_amount - +debit.amount;
@@ -75,6 +76,10 @@ Utils = {
           {
             "rcpt": customer.email_address,
             "vars": [
+            {
+              "name": "CreatedAt",
+              "content": created_at
+            },
               {
                 "name": "DonatedTo",
                 "content": debit.donateTo
@@ -97,11 +102,8 @@ Utils = {
                 "name": "FailureReasonCode",
                 "content": error.failure_reason_code
               },{
-            "name": "FNAME",
-            "content": customer.fname
-            }, {
-                "name": "LNAME",
-                "content": customer.lname
+                "name": "FULLNAME",
+                "content": customer.fname + " " + customer.lname
             }, {
                 "name": "ADDRESS_LINE1",
                 "content": customer.address_line1
@@ -130,7 +132,6 @@ Utils = {
                 "name": "ReceiptOrTransNumber",
                 "content": id
             }
-
             ]
           }
         ],
@@ -151,6 +152,7 @@ Utils = {
       var error = {};
       
       var lookup_record = Donate.findOne({_id: id});
+      var created_at = moment(lookup_record.recurring.transactions[transaction_guid].created_at).format('MM/DD/YYYY');
       var debit = lookup_record.debit;
       console.log("**********HERE IS WHAT YOU ARE LOOKING FOR******************");
       console.dir(debit);
@@ -158,6 +160,8 @@ Utils = {
       var fees = +debit.total_amount - +debit.amount;
       logger.info("Cover the fees = " + debit.coveredTheFees);
       logger.info("Transaction Status: " + lookup_record.recurring.transactions[transaction_guid].status);
+
+      console.log("HERE*******" + transaction_guid);
       var slug;
       //TODO: Fix this so that it looks into the transaciton sub-document, not just into the top level, or when it fails, put the transaction GUID into the failed record 
       //that is probably the way to go. 
@@ -179,6 +183,14 @@ Utils = {
           {
             "rcpt": customer.email_address,
             "vars": [
+            {
+              "name": "CreatedAt",
+              "content": created_at
+            },
+             {
+                "name": "ReceiptOrTransNumber",
+                "content": transaction_guid
+            },
               {
                 "name": "DonatedTo",
                 "content": debit.donateTo
@@ -201,11 +213,8 @@ Utils = {
                 "name": "FailureReasonCode",
                 "content": error.failure_reason_code
               },{
-            "name": "FNAME",
-            "content": customer.fname
-            }, {
-                "name": "LNAME",
-                "content": customer.lname
+                "name": "FULLNAME",
+                "content": customer.fname + " " + customer.lname
             }, {
                 "name": "ADDRESS_LINE1",
                 "content": customer.address_line1
@@ -233,11 +242,7 @@ Utils = {
             }, {
                 "name": "TransactionGUID",
                 "content": transaction_guid
-            }, {
-                "name": "ReceiptOrTransNumber",
-                "content": transaction_guid
             }
-
             ]
           }
         ],

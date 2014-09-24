@@ -64,7 +64,7 @@ function updateTotal() {
         } else {
             if ($.isNumeric(donationAmount)) {
                 if ($('#coverTheFees').prop('checked')) {
-                    var fee = Math.round(donationAmount * 0.029 + 0.30).toFixed(2);
+                    var fee = (donationAmount * 0.029 + 0.30).toFixed(2);
                     var roundedAmount = (+donationAmount + (+fee)).toFixed(2);
                     $("#total_amount_display").text("$" + donationAmount + " + $" + fee + " = $" + roundedAmount).css({
                         'color': '#34495e'
@@ -145,7 +145,7 @@ Template.DonationForm.events({
         };
         //
         if (form.paymentInformation[0].total_amount !== form.paymentInformation[0].amount) {
-            form.paymentInformation[0].fees = form.paymentInformation[0].total_amount - form.paymentInformation[0].amount;
+            form.paymentInformation[0].fees = (form.paymentInformation[0].total_amount - form.paymentInformation[0].amount).toFixed(2);
         }
         if (form.paymentInformation[0].donateWith === "card") {
             form.paymentInformation[0].card_number = $('[name=card_number]').val();
