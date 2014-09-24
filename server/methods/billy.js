@@ -305,7 +305,7 @@ Meteor.methods({
 			var setModifier = { $set: {} };
             billyGetTransactionID.data.items[0].email_sent = {};
             setModifier.$set['recurring.transactions.' + transaction_guid] = billyGetTransactionID.data.items[0];
-            Donate.update({_id: id}, setModifier);
+            Donate.update({_id: data._id}, setModifier);
 
 			//logger.info("Inserted invoice into appropriate subscription."); 
 			var return_this = {_id: data._id, transaction_guid: transaction_guid};
