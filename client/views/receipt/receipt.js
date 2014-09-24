@@ -69,23 +69,32 @@ Template.Receipt.helpers({
    		return this.debit.donateWith;
    },
    amount: function () {
-         return this.debit.amount;
+          if(this.debit.amount){
+          return (this.debit.amount / 100);   
+          }else {
+            return '';   
+          }
+         
    },
    total_amount: function () {
-         return this.debit.total_amount;
+      if(this.debit.total_amount){
+        return (this.debit.total_amount / 100);   
+      }else {
+       return '';   
+      }
    },
     fees: function () {
-        if(this.debit.fees){
+        if(this.debit.fees && this.debit.total_amount){
             return '\
             <tr>\
                 <th>Covered fees:</th>\
                 <td></td>\
-                <td>$' + this.debit.fees + '</td>\
+                <td>$' + (this.debit.fees / 100) + '</td>\
             </tr>\
             <tr>\
                 <th>Total:</th>\
                 <td></td>\
-                <td>$' + this.debit.total_amount + '</td>\
+                <td>$' + (this.debit.total_amount / 100)+ '</td>\
             </tr>';
         } else {
         return "";

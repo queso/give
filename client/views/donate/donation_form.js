@@ -19,12 +19,12 @@ function fillForm() {
         $('#routing_number').val("321174851");
         $('#account_number').val("9900000003");
     } else {
-        $('#card_number').val("5112000200000002"); //4111111111111111 4444444444444448
+        $('#card_number').val("4111111111111111"); //Succeeded = 4111111111111111 Failed = 4444444444444448 CVV mismatch = 5112000200000002
         $('#expiry_month option').prop('selected', false).filter('[value=12]').prop('selected', true);
         $('select[name=expiry_month]').change();
         $('#expiry_year option').prop('selected', false).filter('[value=2015]').prop('selected', true);
         $('select[name=expiry_year]').change();
-        $('#cvv').val("200");
+        $('#cvv').val("123"); //CVV mismatch = 200
     }
     $('#fname').val("John");
     $('#lname').val("Doe");
@@ -119,8 +119,8 @@ Template.DonationForm.events({
         });
         var form = {
             "paymentInformation": [{
-                "amount": (Math.ceil(Number($('#amount').val().replace(/[^\d\.\-\ ]/g, ''))* 100) / 100).toFixed(2),
-                "total_amount": (Math.ceil($('#total_amount').val() * 100) / 100).toFixed(2),
+                "amount": parseInt(($('#amount').val().replace(/[^\d\.\-\ ]/g, ''))* 100),
+                "total_amount": parseInt($('#total_amount').val() * 100),
                 "donateTo": $("#donateTo").val(),
                 "donateWith": $("#donateWith").val(),
                 "is_recurring": $('#is_recurring').val(),
@@ -145,7 +145,7 @@ Template.DonationForm.events({
         };
         //
         if (form.paymentInformation[0].total_amount !== form.paymentInformation[0].amount) {
-            form.paymentInformation[0].fees = (form.paymentInformation[0].total_amount - form.paymentInformation[0].amount).toFixed(2);
+            form.paymentInformation[0].fees = (form.paymentInformation[0].total_amount - form.paymentInformation[0].amount);
         }
         if (form.paymentInformation[0].donateWith === "card") {
             form.paymentInformation[0].card_number = $('[name=card_number]').val();

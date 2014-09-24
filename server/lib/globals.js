@@ -54,7 +54,7 @@ Utils = {
       console.log(created_at);
       var debit = lookup_record.debit;
       var customer = lookup_record.customer;
-      var fees = +debit.total_amount - +debit.amount;
+      var fees = debit.fees;
       logger.info("Cover the fees = " + debit.coveredTheFees);
       logger.info("debit.status: " + debit.status);
       var slug;
@@ -88,13 +88,13 @@ Utils = {
                 "content": debit.donateWith
               }, {
                 "name": "GiftAmount",
-                "content": debit.amount
+                "content": debit.amount / 100
               }, {
                 "name": "GiftAmountFees",
-                "content": fees
+                "content": fees / 100
               }, {
                 "name": "TotalGiftAmount",
-                "content": debit.total_amount
+                "content": debit.total_amount / 100
               }, {
                 "name": "FailureReason",
                 "content": error.failure_reason
@@ -157,7 +157,7 @@ Utils = {
       console.log("**********HERE IS WHAT YOU ARE LOOKING FOR******************");
       console.dir(debit);
       var customer = lookup_record.customer;
-      var fees = +debit.total_amount - +debit.amount;
+      var fees = (debit.fees);
       logger.info("Cover the fees = " + debit.coveredTheFees);
       logger.info("Transaction Status: " + lookup_record.recurring.transactions[transaction_guid].status);
 
@@ -199,13 +199,13 @@ Utils = {
                 "content": debit.donateWith
               }, {
                 "name": "GiftAmount",
-                "content": debit.amount
+                "content": debit.amount /100
               }, {
                 "name": "GiftAmountFees",
-                "content": fees
+                "content": fees / 100
               }, {
                 "name": "TotalGiftAmount",
-                "content": debit.total_amount
+                "content": debit.total_amount / 100
               }, {
                 "name": "FailureReason",
                 "content": error.failure_reason

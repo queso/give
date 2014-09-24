@@ -108,8 +108,8 @@ function subscribeToBillyPlan(data) {
 			var funding_instrument_uri = Donate.findOne(data).bank_account.href;
 			logger.info("Funding URI: " + funding_instrument_uri);
 		}
-		logger.info("Amount: " + Math.ceil(Donate.findOne(data).debit.total_amount * 100));
-		var billyAmount = Math.ceil(Donate.findOne(data).debit.total_amount * 100);
+		logger.info("Amount: " + Math.ceil(Donate.findOne(data).debit.total_amount));
+		var billyAmount = Math.ceil(Donate.findOne(data).debit.total_amount);
 		var resultSet = '';
 		resultSet = HTTP.post("https://billy.balancedpayments.com/v1/subscriptions", {
 			params: {
