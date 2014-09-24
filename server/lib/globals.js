@@ -126,7 +126,11 @@ Utils = {
             }, {
                 "name": "Path",
                 "content": 'thanks'
+            }, {
+                "name": "ReceiptOrTransNumber",
+                "content": id
             }
+
             ]
           }
         ],
@@ -228,6 +232,9 @@ Utils = {
                 "content": 'gift'
             }, {
                 "name": "TransactionGUID",
+                "content": transaction_guid
+            }, {
+                "name": "ReceiptOrTransNumber",
                 "content": transaction_guid
             }
 

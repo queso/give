@@ -10,7 +10,7 @@ Template.Receipt.helpers({
    },
    transaction_guid: function () {
     var transaction_guid = Session.get('params.transaction_guid');
-    return this.recurring.transactions[transaction_guid].guid;
+    return transaction_guid;
    },
    date: function () {
    		return moment(this.debit.created_at).format('MM/DD/YYYY');
