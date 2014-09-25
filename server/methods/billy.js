@@ -228,7 +228,7 @@ Meteor.methods({
 		logger.info("Customer Info: " + customerInfo);
 		logger.info("Customer First Name: " + customerInfo.fname);
 		var customerData = '';
-		/*try {*/
+		try {
 			customerData = Utils.extractFromPromise(balanced.marketplace.customers.create({
 				'name': customerInfo.fname + " " + customerInfo.lname,
 				"address": {
@@ -313,11 +313,11 @@ Meteor.methods({
 			return return_this;
 
 
-		/*} catch (e) {
+		} catch (e) {
 			logger.info(e);
 			logger.info(e.error_message);
 			logger.info(e.reason);
 			throw new Meteor.Error(500, e.reason, e.details);
-		}*/
+		}
 	}
 });

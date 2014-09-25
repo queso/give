@@ -145,7 +145,7 @@ Utils = {
     }
   },
     send_billy_email: function (id, transaction_guid, status) {
-    /*try {*/
+    try {
       logger.info("Started send_billy_email with ID: " + id + " --------------------------");
       logger.info("Started send_billy_email with transaction_guid: " + transaction_guid + " --------------------------");
       logger.info("Started send_billy_email with status: " + status + " --------------------------");
@@ -248,12 +248,12 @@ Utils = {
         ],
         toEmail: customer.email_address
       });
-    /*} //End try
+    } //End try
     catch (e) {
       logger.error('Mandril sendEmailOutAPI Method error message: ' + e.message);
       logger.error('Mandril sendEmailOutAPI Method error: ' + e);
       throw new Meteor.error(e);
-    }*/
+    }
   }
 
 };

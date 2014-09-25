@@ -74,7 +74,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
             /**************        LOG NEW GIFT             **************/
             /*************************************************************/
             evt.on('log_new_gift', function (mixedID, transaction_guid) {
-                /*try {*/
+                try {
                     if(billy){
                         var amount = Donate.findOne({_id: mixedID}).debit.total_amount;
                         logger.info("*****NEW RECURRING GIFT**** id: " + mixedID + "transaction_guid: " + transaction_guid + " Total Amount: $" + amount / 100)
@@ -83,11 +83,11 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                         logger.info("*************NEW GIFT************* id: " + mixedID + " Total Amount: $" + amount / 100)
                     }
                     
-                /*}
+                }
                 catch (e) {
                     logger.error("events.js caught an error when trying to log_new_gift: " + e);
                     throw new Meteor.Error(e);
-                }*/
+                }
             });
             /*************************************************************/
             /**************        END LOG NEW GIFT        ***************/
@@ -100,7 +100,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        logger.info("Got to update_from_event");
 		        logger.info("The ID is: " + id + " The type is: " + type + " This status is: " + status);
                 var lookup = type;
-		        /*try {*/
+		        try {
                         if (lookup === 'debits') {
                             lookup = 'debit';
                             var setModifierID = { $set: {} };
@@ -110,9 +110,9 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                             Donate.update({'[lookup]id': id}, {$set: {'[lookup].status': status}});
                         }
 
-		        /*} catch (e) {
+		        } catch (e) {
 			        logger.error(e);
-		        }*/
+		        }
 	        });
             evt.on('billy_trans_status', function (status) {
                 var setModifier = { $set: {} };
@@ -190,7 +190,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                     })
                 });*/
             evt.on('send_email', function (eventID, status) {
-                    /*try{*/
+                    try{
                         logger.info("Got to send_email function");
                         if (billy) {
                             logger.info("Already have the id: " + id);
@@ -214,10 +214,10 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                                     Utils.send_one_time_email(id);
                                 }
                             }
-                        /*}
+                        }
                         catch(e) {
                             logger.error(e);
-                        }*/
+                        }
             });
             evt.on('failed_collection_update', function (type, debitID){
                 console.log('failed_collection_update area. ' + debitID);
@@ -312,11 +312,11 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	        // Check the body otherwise any invalid call to the website would still run any of the events after checking the body.
 	        var body = req.body; //request body
 
-	        /*try {*/
+	        try {
 		        body.events ? addTo(body) : noBody();
-	        /*} catch (e) {
+	        } catch (e) {
 		        logger.error(e);
-	        }*/
+	        }
 
             function addTo(body) {
                 var type = Object.keys(body.events[0].entity)[0];
