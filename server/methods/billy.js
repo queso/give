@@ -62,10 +62,10 @@ function createPaymentMethod(data) {
         }
     }catch (e) {
         if(e.category_code) {
-            console.log("Category_code area: e.details " + e.details);
+            logger.error("Category_code area: e.details " + e.details);
             throw new Meteor.Error(500, e.category_code, e.description);
         }else {
-            console.log("No category_code area: e.details " + e.details);
+            logger.error("No category_code area: e.details " + e.details);
             throw new Meteor.Error(500, e.reason, e.details);
         }
 		//throwTheError(e);
@@ -202,9 +202,6 @@ Meteor.methods({
 		logIt();
 		// Moved the below from client side to here.  
       	data._id = Donate.insert({created_at: data.paymentInformation[0].created_at});
-		console.log(data);
-
-		console.log(data._id);
 
 		Donate.update(data._id, {
 			$set: {
@@ -244,7 +241,6 @@ Meteor.methods({
 			}));
 			//remove before production
 			logger.info("Customer: ");
-			console.dir(JSON.stringify(customerData));
 			var customerResponse = Donate.update(data._id, {
 				$set: {
 					'customer.type': customerData._type,
@@ -267,7 +263,6 @@ Meteor.methods({
 			billyPayment = createPaymentMethod(data);
 			var billySubscribeCustomer = '';
 			billySubscribeCustomer = subscribeToBillyPlan(data._id);
-			console.dir(billySubscribeCustomer.data);
 			Donate.update(data._id, {
 				$set: {
 					'recurring.subscriptions': billySubscribeCustomer.data
@@ -294,8 +289,6 @@ Meteor.methods({
 	        setModifier.$set['recurring.invoices.' + invoice_guid] = billyGetInvoiceID.data.items[0]
 	        Donate.update({_id: data._id}, setModifier);
 			logger.info("Inserted invoice into appropriate subscription.");
-			logger.info("LOOK HERE FOR ID: ");
-			console.log(billyGetInvoiceID.data.items[0].guid);
 
 			var billyGetTransactionID = {};
 			billyGetTransactionID = getTransaction(billyGetInvoiceID.data.items[0].guid);
