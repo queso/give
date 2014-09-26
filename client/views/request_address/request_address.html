@@ -2,23 +2,35 @@
   <!-- Name-->
 	<div class="form-group">
 		<div class="col-sm-12">
+            <!--[if lt IE 9]>
+                <label>First Name</label>
+            <![endif]-->        
 			<input {{attributes_Input_FName}} class="form-control" />
 		</div>
     </div>
     <div class="form-group">
         <div class="col-sm-12">
+            <!--[if lt IE 9]>
+                <label>Last Name</label>
+            <![endif]-->        
             <input {{attributes_Input_LName}} class="form-control" />
         </div>
 	</div>
     <!-- email address input-->
     <div class="form-group">
         <div class="col-sm-12">
+            <!--[if lt IE 9]>
+                <label>Email Address</label>
+            <![endif]-->        
             <input {{attributes_Input_Email_Address}} class="form-control email" />
         </div>
     </div>
     <!-- phone number input-->
     <div class="form-group" id="phoneDiv">
         <div class="col-sm-12">
+            <!--[if lt IE 9]>
+                <label>Phone Number</label>
+            <![endif]-->        
             <input {{attributes_Input_Phone_Number}} 
             oninvalid="setCustomValidity('Please enter only numbers')"
             onchange="try{setCustomValidity('')}catch(e){}" class="form-control" />
@@ -27,36 +39,54 @@
 	<!-- address-line1 input-->
     <div class="form-group">
         <div class="col-sm-12">
+            <!--[if lt IE 9]>
+                <label>Address Line 1</label>
+            <![endif]-->        
             <input {{attributes_Input_AddressLine1}} class="form-control" >
         </div>
     </div>
     <!-- address-line2 input-->
     <div class="form-group">
         <div class="col-sm-12">
+            <!--[if lt IE 9]>
+                <label>Address Line 2</label>
+            <![endif]-->        
             <input {{attributes_Input_AddressLine2}} class="form-control" >
         </div>
     </div>
     <!-- city input-->
     <div class="form-group">
         <div class="col-sm-12">
+            <!--[if lt IE 9]>
+                <label>City</label>
+            <![endif]-->        
             <input {{attributes_Input_City}} class="form-control" >
         </div>
     </div>
     <!-- region input-->
     <div class="form-group">
         <div class="col-sm-12">
+            <!--[if lt IE 9]>
+                <label>State</label>
+            <![endif]-->        
             <input {{attributes_Input_State}} class="form-control text-capitalize" >
         </div>
     </div>
     <!-- postal-code input-->
     <div class="form-group">
         <div class="col-sm-12">
+            <!--[if lt IE 9]>
+                <label>Postal Code</label>
+            <![endif]-->        
             <input {{attributes_Input_Zip}} pattern="(\d{5}([\-]\d{4})?)" class="form-control" >
         </div>
     </div>
     <!-- country select -->
     <div class="form-group">
         <div class="col-sm-12">
+            <!--[if lt IE 9]>
+                <label>Country</label>
+            <![endif]-->        
             <select {{attributes_Select_Country}} class="form-control">
                 <!--Countires template called here -->
                 {{> Countries}}

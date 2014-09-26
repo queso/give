@@ -19,12 +19,12 @@ Template.DonationTo.rendered = function () {
 	if (Session.get('params.donateWith')) {
 		$("#donateWith").val(Session.get('params.donateWith'));
 	}
-	if(Session.get('params.donateWith') == 'card') {
-		Session.set("paymentMethod", 'card');
+	if(Session.get('params.donateWith') === 'Card') {
+		Session.set("paymentMethod", 'Card');
 	} else {
-		Session.set("paymentMethod", 'check');
+		Session.set("paymentMethod", 'Check');
 	}
-	if(Session.get('params.recurring') == 'true') {
+	if(Session.get('params.recurring') === true) {
 		$('#recurring').prop('checked', true);
 	}
 };
