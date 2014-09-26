@@ -24,7 +24,6 @@ Template.RequestAddress.helpers({
         type: "text",
         name: "fname",
         id: 'fname',
-        class: "form-control",
         placeholder: "First Name",
         required: true
       }
@@ -34,7 +33,6 @@ Template.RequestAddress.helpers({
         type: "text",
         name: "lname",
         id: "lname",
-        class: "form-control",
         placeholder: "Last Name",
         required: true
       }
@@ -44,14 +42,12 @@ Template.RequestAddress.helpers({
         type: "email",
         name: "email_address",
           id: "email_address",
-        class: "form-control email",
         placeholder: "Email address",
         required: true
       }
     },
     attributes_Input_Phone_Number: function () {
       return {
-        class: "form-control",
         placeholder: "Phone Number",
         required: true,
         type: "tel",
@@ -63,7 +59,6 @@ Template.RequestAddress.helpers({
         type: "text",
         name: "address_line1",
           id: "address_line1",
-        class: "form-control",
         placeholder: "address line 1",
         required: true
       }
@@ -73,7 +68,6 @@ Template.RequestAddress.helpers({
         type: "text",
         name: "address_line2",
           id: "address_line2",
-        class: "form-control",
         placeholder: "address line 2"
       }
     },
@@ -82,7 +76,6 @@ Template.RequestAddress.helpers({
         type: "text",
         name: "city",
           id: "city",
-        class: "form-control",
         placeholder: "city",
         required: true
       }
@@ -92,7 +85,6 @@ Template.RequestAddress.helpers({
         type: "text",
         name: "region",
         id: "region",
-        class: "form-control text-capitalize",
         placeholder: "State",
         required: true
       }
@@ -102,7 +94,6 @@ Template.RequestAddress.helpers({
         type: "text",
         name: "postal_code",
           id: "postal_code",
-        class: "form-control",
         placeholder: "zip or postal code",
         required: true
       }
@@ -111,7 +102,6 @@ Template.RequestAddress.helpers({
       return {
         name: "country",
           id: "country",
-        class: "form-control",
         required: true
       }
     }

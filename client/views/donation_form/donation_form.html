@@ -54,11 +54,11 @@
 
     				<!-- Amount of donation -->
     				<div class="form-group donation_amount">
-    				    <label {{attributes_Label_Amount}} >Donation Amount</label>
+    				    <label class="col-md-4 control-label" for="amount">Donation Amount</label>
     				    <div class="col-sm-12">
     				        <div class="input-group col-md-12 col-sm-12 col-xs-12">
     				            <span class="input-group-addon">$</span>
-    				            <input {{attributes_Input_Amount}} value="{{amount}}" required />
+    				            <input {{attributes_Input_Amount}} value="{{amount}}" class="form-control" required />
     				        </div>
     				    </div>
     				</div>
@@ -112,12 +112,12 @@
 	<!-- Bank Info -->
 	<div class="form-group">
 		<div class="col-sm-12">
-			<input {{attributes_Input_AccountNumber}} data-parsley-type="number" />
+			<input {{attributes_Input_AccountNumber}} data-parsley-type="number" class="form-control" />
 		</div>
 	</div>
 	<div class="form-group">
 		<div class="col-sm-12">
-			<input {{attributes_Input_RoutingNumber}} />
+			<input {{attributes_Input_RoutingNumber}} class="form-control" />
 		</div>
 	</div>
     <div class="form-group">

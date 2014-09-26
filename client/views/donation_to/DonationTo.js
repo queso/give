@@ -4,7 +4,6 @@ Template.DonationTo.helpers({
 	    return {
 	        name: "donateTo",
 	        id: "donateTo",
-	        class: "form-control noBorder",
 	        required: true
 	    }
 	  },
