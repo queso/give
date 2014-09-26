@@ -40,7 +40,7 @@ Meteor.methods({
 
         //Runs if the form used was the credit card form, which sets type as part of the array which is passed to this server
         // side function
-        if (paymentInfo.type === "card") {
+        if (paymentInfo.type === "Card") {
             //Tokenize card
             var card = Utils.card_create(data);
 
@@ -62,7 +62,7 @@ Meteor.methods({
             //Order function
             var orders = Utils.create_order(data._id, customerData.href);
 
-            //Connect card with customer
+            //Connect bank account with customer
             var associate = Utils.create_association(data, check.href, customerData.href);
 
             //Debit the order

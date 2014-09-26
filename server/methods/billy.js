@@ -36,7 +36,7 @@ function createPaymentMethod(data) {
 		logger.info("In create Payment Method before if: " + debitType);
 
     var processor_uri = Donate.findOne(data._id).recurring.customer.processor_uri;
-    if (debitType === "card") {
+    if (debitType === "Card") {
         logger.info("Stepped into createPaymentMethod card if statement");
 
         //Tokenize card

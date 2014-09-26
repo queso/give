@@ -43,7 +43,6 @@ _.extend(Utils,{
             'card.can_debit': card.can_debit,
             'debit.customer': card.links.customer
         }});
-        console.log("Finished balanced card create");
         return card;
     },
     check_create: function (data) {
@@ -92,10 +91,6 @@ _.extend(Utils,{
                     }
                 });
                 throw new Meteor.Error(e.category_code, e.description);
-                /*var errorWithID = {};
-                errorWithID.e = e;
-                errorWithID.id = data._id;
-                failTheRecord(errorWithID);*/
             }
     },
     create_customer: function(customerInfo, id) {

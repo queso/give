@@ -15,7 +15,7 @@ function handleErrors(error) {
 }
 
 function fillForm() {
-    if (Session.get("paymentMethod") === "check") {
+    if (Session.get("paymentMethod") === "Check") {
         $('#routing_number').val("321174851");
         $('#account_number').val("9900000003");
     } else {
@@ -43,7 +43,7 @@ function updateTotal() {
     var donationAmount = $('#amount').val();
     donationAmount = donationAmount.replace(/[^\d\.\-\ ]/g, '');
     donationAmount = donationAmount.replace(/^0+/, '');
-    if (data === 'check') {
+    if (data === 'Check') {
         if ($.isNumeric(donationAmount)) {
             $("#total_amount").val(donationAmount);
             var testValueTransfer = $("#total_amount").val();
@@ -147,19 +147,19 @@ Template.DonationForm.events({
         if (form.paymentInformation[0].total_amount !== form.paymentInformation[0].amount) {
             form.paymentInformation[0].fees = (form.paymentInformation[0].total_amount - form.paymentInformation[0].amount);
         }
-        if (form.paymentInformation[0].donateWith === "card") {
+        if (form.paymentInformation[0].donateWith === "Card") {
             form.paymentInformation[0].card_number = $('[name=card_number]').val();
             form.paymentInformation[0].expiry_month = $('[name=expiry_month]').val();
             form.paymentInformation[0].expiry_year = $('[name=expiry_year]').val();
             form.paymentInformation[0].cvv = $('[name=cvv]').val();
             //set the form type so the server side method knows what to do with the data.
-            form.paymentInformation[0].type = "card";
+            form.paymentInformation[0].type = "Card";
         } else {
             form.paymentInformation[0].account_number = $('[name=account_number]').val();
             form.paymentInformation[0].routing_number = $('[name=routing_number]').val();
             form.paymentInformation[0].account_type = $('[name=account_type]').val();
             //set the form type so the server side method knows what to do with the data.
-            form.paymentInformation[0].type = "check";
+            form.paymentInformation[0].type = "Check";
         }
         //Move inert and update from here.
         if ($('#is_recurring').val() === 'one_time') {
@@ -258,7 +258,7 @@ Template.DonationForm.events({
 });;
 Template.DonationForm.helpers({
     paymentWithCard: function() {
-        return Session.equals("paymentMethod", "card");
+        return Session.equals("paymentMethod", "Card");
     },
     coverTheFeesChecked: function() {
         return this.coverTheFees ? 'checked' : '';
