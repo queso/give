@@ -31,7 +31,7 @@ Router.map(function () {
   this.route('thanks', {
       //this is the route for one-time gift acknowledgements
       path: ':root/thanks/:_id',
-      waitOn: function() { console.log(this.params._id);
+      waitOn: function() { //console.log(this.params._id);
 	    return Meteor.subscribe('donate', this.params._id)},
       data: function () {
         var root = Meteor.settings.root;
@@ -47,7 +47,7 @@ Router.map(function () {
   this.route('gift', {
     //this is the route for recurring gift acknowledgements
       path: ':root/gift/:_id',
-      waitOn: function() { console.log(this.params._id);
+      waitOn: function() { //console.log(this.params._id);
       return Meteor.subscribe('donate', this.params._id)},
       data: function () {
         var params = this.params;

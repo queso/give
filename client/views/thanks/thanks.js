@@ -14,7 +14,7 @@ Template.Thanks.helpers({
                     This page will automatically show your gift receipt once the payment has been approved. <strong>For ACH gifts it may take up to a \
                     few days to receive an email receipt.</strong> \
                   </p>\
-  			<p class='text-center alert alert-success'>\
+  			<p  id='success_pending_icon' class='text-center alert alert-success'>\
   				<i class='fa fa-check-square'></i>\
   			</p>";
   },
@@ -28,7 +28,7 @@ Template.Thanks.helpers({
           <p class='text-center alert alert-error'>\
             We weren't able to process your gift. Here is the error: </br><strong>" + errorMessage + "</strong></br> Please <a href='" + referrer + "'>go back</a> and try again.\
             <br>\
-            <a href='" + referrer + "'><i class='fa fa-arrow-left'></i></a>\
+            <a id='failed_icon' href='" + referrer + "'><i class='fa fa-arrow-left'></i></a>\
           </p>";
   }
 });
