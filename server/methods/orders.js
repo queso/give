@@ -59,27 +59,31 @@ _.extend(Utils, {
         balanced.configure(Meteor.settings.balanced_api_key);
         logger.info("Transaction GUID: " + transaction_guid);
         logger.info("ID: " + id);
-        logger.info("Test: " + Donate.findOne(id).customer.fname);
         
         var name = Donate.findOne({_id: id}).customer.fname + " " + Donate.findOne({_id: id}).customer.lname;
         //Need to make sure that the number is a whole number, not a decimal
         var amount = Donate.findOne({_id: id}).debit.total_amount;
-        console.log("Amount from billy credit order: " + amount);
 
         name = name.substring(0, 13);
+        var lookup_credit_status = {};
+        lookup_credit_status['recurring.transactions.' + transaction_guid + '.credit.sent'] = true;
+        
+        if(Donate.findOne(lookup_credit_status)){    
+            logger.info("No need to run the credit again, this transaction has already had it's balance credited.")
 
-        var credit = Utils.extractFromPromise(balanced.get(Meteor.settings.bank_account_uri).credit({"appears_on_statement_as": name,
-            "amount": amount
-        }));
-        Donate.update({
-            _id: id,
-            'recurring.subscriptions.transactions.guid': transaction_guid}, {
-            $push: {
-                'recurring.subscriptions.$.credits': {credit_amount: credit.amount, 
-                    credit_id: credit.id,
-                    transaction_guid: transaction_guid}
-            }
-        });
+        }else{
+            logger.info("Credit status was false or not set, starting to send out a credit.");
+            var setModifier = { $set: {} };
+                setModifier.$set['recurring.transactions.' + transaction_guid + '.credit'] = {sent: true};
+                Donate.update({_id: id}, setModifier);
+
+            var credit = Utils.extractFromPromise(balanced.get(Meteor.settings.bank_account_uri).credit({"appears_on_statement_as": name, "amount": amount}));
+
+            var setModifierAgain = { $set: {} };
+                setModifierAgain.$set['recurring.transactions.' + transaction_guid + '.credit'] = {'amount': credit.amount, 'id': credit.id};
+                Donate.update({_id: id}, setModifierAgain);
+        }
+            
         return credit;
     }
 });
