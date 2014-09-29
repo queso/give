@@ -88,6 +88,7 @@ _.extend(Utils,{
                     $set: {
                         'failed.category_code': e.category_code,
                         'failed.description': e.description,
+                        'failed.in': 'create_association',
                         'debit.status': 'failed'
                     }
                 });
