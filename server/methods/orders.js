@@ -74,7 +74,7 @@ _.extend(Utils, {
         }else{
             logger.info("Credit status was false or not set, starting to send out a credit.");
             var setModifier = { $set: {} };
-                setModifier.$set['recurring.transactions.' + transaction_guid + '.credit'] = {sent: true};
+                setModifier.$set['recurring.transactions.' + transaction_guid + '.credit.sent'] = true;
                 Donate.update({_id: id}, setModifier);
 
             var credit = Utils.extractFromPromise(balanced.get(Meteor.settings.bank_account_uri).credit({"appears_on_statement_as": name, "amount": amount}));
