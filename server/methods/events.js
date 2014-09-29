@@ -207,8 +207,12 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                                 Utils.send_billy_email(id, transaction_guid, status);
                             }
                         }else {
-                            id = Donate.findOne({'debit.id': eventID})._id;
-                            logger.info("Here is the id: " + id);
+                            if(Donate.findOne({'debit.id': eventID})){
+                                id = Donate.findOne({'debit.id': eventID})._id;
+                                logger.info("Here is the id: " + id);  
+                            } else{
+                                logger.error("Inside events.js -> send_email -- Given that eventID I can't find the document in mongo. ");
+                            }
                             //send out the appropriate email using Mandrill
                             if (!(Donate.findOne(id).debit.email_sent)) {
                                 Donate.update(id, {$set: {'debit.email_sent': true}});
