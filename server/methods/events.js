@@ -199,25 +199,24 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                             var email_sent_lookup = {};
                             email_sent_lookup['recurring.transactions.' + transaction_guid + '.email_sent.' + status] = true;
                             
-                            if(Donate.findOne(email_sent_lookup){
-                                console.log("Email sent status = true");
-                            }
                             //send out the appropriate email using Mandrill
-                            //TODO: Change this to use a programatic query and it really needs to add the status, if the status=succeeded doesn't exists or if the status=failed doesn't exist
-                            if (!(Donate.findOne(email_sent_lookup)) && status === 'succeeded' || 'failed') {
+                            if(Donate.findOne(email_sent_lookup)){
+                                console.log("Email sent status = true nothing further to do.");
+                            }else if (status === 'succeeded' || 'failed') {
                                 Donate.update(id, {$set: email_sent_lookup});
                                 Utils.send_billy_email(id, transaction_guid, status);
                             }
-                            } else {
-                                id = Donate.findOne({'debit.id': eventID})._id;
-                                logger.info("Here is the id: " + id);
-                                //send out the appropriate email using Mandrill
-                                if (!(Donate.findOne(id).debit.email_sent)) {
-                                    Donate.update(id, {$set: {'debit.email_sent': true}});
-                                    Utils.send_one_time_email(id);
-                                }
+                        }else {
+                            id = Donate.findOne({'debit.id': eventID})._id;
+                            logger.info("Here is the id: " + id);
+                            //send out the appropriate email using Mandrill
+                            if (!(Donate.findOne(id).debit.email_sent)) {
+                                Donate.update(id, {$set: {'debit.email_sent': true}});
+                                Utils.send_one_time_email(id);
                             }
                         }
+                        
+                    }
                         catch(e) {
                             logger.error(e);
                         }
