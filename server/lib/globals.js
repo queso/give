@@ -80,6 +80,10 @@ Utils = {
               "name": "CreatedAt",
               "content": created_at
             },
+            {
+              "name": "DEV",
+              "content": Meteor.settings.dev
+            },
               {
                 "name": "DonatedTo",
                 "content": debit.donateTo
@@ -186,6 +190,10 @@ Utils = {
             {
               "name": "CreatedAt",
               "content": created_at
+            },
+            {
+              "name": "DEV",
+              "content": Meteor.settings.dev
             },
              {
                 "name": "ReceiptOrTransNumber",
