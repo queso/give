@@ -63,7 +63,7 @@ _.extend(Utils, {
         logger.info("Transaction GUID: " + transaction_guid);
         logger.info("ID: " + id);
         
-        if(Donate.findOne({'debit.id': debitID})) {
+        if(Donate.findOne({_id: id})) {
             var name = Donate.findOne({_id: id}).customer.fname + " " + Donate.findOne({_id: id}).customer.lname;
             //Need to make sure that the number is a whole number, not a decimal
             var amount = Donate.findOne({_id: id}).debit.total_amount;
