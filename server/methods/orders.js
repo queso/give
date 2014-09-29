@@ -69,7 +69,8 @@ _.extend(Utils, {
         lookup_credit_status['recurring.transactions.' + transaction_guid + '.credit.sent'] = true;
         
         if(Donate.findOne(lookup_credit_status)){    
-            logger.info("No need to run the credit again, this transaction has already had it's balance credited.")
+            logger.info("No need to run the credit again, this transaction has already had it's balance credited.");
+            return '';
 
         }else{
             logger.info("Credit status was false or not set, starting to send out a credit.");
