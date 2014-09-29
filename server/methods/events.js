@@ -227,12 +227,16 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
             });
             evt.on('failed_collection_update', function (type, debitID){
                 console.log('failed_collection_update area. ' + debitID);
-                var id = Donate.findOne({'debit.id': debitID})._id;
+                if(Donate.findOne({'debit.id': debitID})) {
+                    var id = Donate.findOne({'debit.id': debitID})._id;
                     Donate.update(id, {$set: {'failed.failure_reason': body.events[0].entity[type][0].failure_reason,
                         'failed.failure_reason_code': body.events[0].entity[type][0].failure_reason_code,
                         'failed.transaction_number': body.events[0].entity[type][0].transaction_number,
                         'failed.updated': moment().format('MM/DD/YYYY, hh:mm')}}
                     );
+                }else{
+                    logger.error("Can't run a failed_collection_update when the debitID passed in can't be found in the collection. Check to see if this is a Billy debit.");
+                }
             });
 	        /*************************************************************/
 	        /***************         DEBIT AREA             **************/

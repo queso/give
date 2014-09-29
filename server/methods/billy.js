@@ -112,7 +112,7 @@ function subscribeToBillyPlan(data) {
 		resultSet = HTTP.post("https://billy.balancedpayments.com/v1/subscriptions", {
 			params: {
 				"customer_guid": Donate.findOne(data).recurring.customer.guid,
-				"plan_guid": Meteor.settings.billy_daily_GUID, //this is the monthly plan GUID
+				"plan_guid": Meteor.settings.billy_monthly_GUID, //this is the monthly plan GUID
 				//fix below
 				"funding_instrument_uri": "/" + Meteor.settings.balanced_uri + funding_instrument_uri,
 				"appears_on_statement_as": "Trash Mountain",
@@ -212,6 +212,7 @@ Meteor.methods({
                 'debit.status': 'pending'
 			}
 		});
+		logger.info("ID: " + data._id);
 
 		balanced.configure(Meteor.settings.balanced_api_key);
 		var customerInfo = data.customer[0];

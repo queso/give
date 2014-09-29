@@ -29,6 +29,7 @@ Meteor.methods({
                 'debit.status': 'pending'
             }
         });
+        logger.info("ID: " + data._id);
 
         // ^^^^^^^^^^^^^^^ Moved the above from the client side to here.
         //initialize the balanced function with our API key.
@@ -75,7 +76,15 @@ Meteor.methods({
          logger.error("Got to catch error area of processPayment function." + e + " " + e.reason);
          logger.error("e.category_code = " + e.category_code + " e.descriptoin = " + e.description);
          if(e.category_code) {
-             throw new Meteor.Error(500, e.category_code, e.description);
+            logger.error("Got to catch error area of create_associate. ID: " + data._id + " Category Code: " + e.category_code + ' Description: ' + e.description);
+            Donate.update(data._id, {
+                $set: {
+                    'failed.category_code': e.category_code,
+                    'failed.description': e.description,
+                    'debit.status': 'failed'
+                }
+            });
+            throw new Meteor.Error(500, e.category_code, e.description);
          }else {
              throw new Meteor.Error(500, e.reason, e.details);
          }

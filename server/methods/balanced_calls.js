@@ -1,4 +1,4 @@
-function failTheRecord(errorWithID) {
+/*function failTheRecord(errorWithID) {
     logger.error("Error from inside balanced_calls.js and failTheRecord: Category Code: " + errorWithID.e.category_code);
 
     // Update this record to reflect failed status.
@@ -10,7 +10,7 @@ function failTheRecord(errorWithID) {
         }
     });
     throw new Meteor.Error(500, errorWithID.e);
-}
+}*/
 _.extend(Utils,{
     card_create: function (data) {
         console.log("Inside card create.");
@@ -87,7 +87,8 @@ _.extend(Utils,{
                 Donate.update(data._id, {
                     $set: {
                         'failed.category_code': e.category_code,
-                        'failed.description': e.description
+                        'failed.description': e.description,
+                        'debit.status': 'failed'
                     }
                 });
                 throw new Meteor.Error(e.category_code, e.description);

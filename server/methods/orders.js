@@ -38,20 +38,23 @@ _.extend(Utils, {
         balanced.configure(Meteor.settings.balanced_api_key);
 
         logger.info("Inside credit_order.");
-        var name = Donate.findOne({'debit.id': debitID}).customer.fname + " " + Donate.findOne({'debit.id': debitID}).customer.lname;
-        name = name.substring(0, 13);
-        var orderHref = Donate.findOne({'debit.id': debitID}).order.id;
-        orderHref = "/orders/" + orderHref;
-        var bank_account = Utils.extractFromPromise(balanced.get(Meteor.settings.bank_account_uri));
+        if(Donate.findOne({'debit.id': debitID})) {
+            var name = Donate.findOne({'debit.id': debitID}).customer.fname + " " + Donate.findOne({'debit.id': debitID}).customer.lname;
+            name = name.substring(0, 13);
+            var orderHref = Donate.findOne({'debit.id': debitID}).order.id;
+            orderHref = "/orders/" + orderHref;
+            var bank_account = Utils.extractFromPromise(balanced.get(Meteor.settings.bank_account_uri));
 
-        var amount = Donate.findOne({'debit.id': debitID}).debit.total_amount;
-        console.log("Amount from one-time credit order: " + amount);
+            var amount = Donate.findOne({'debit.id': debitID}).debit.total_amount;
+            console.log("Amount from one-time credit order: " + amount);
 
-        var credit = Utils.extractFromPromise(balanced.get(orderHref).credit_to(bank_account, {"amount": amount,
-            "appears_on_statement_as": name}));
-        Donate.update({'debit.id': debitID}, {$set: {'credit.id': credit.id,
-            'credit.amount': credit.amount}});
-        return credit;
+            var credit = Utils.extractFromPromise(balanced.get(orderHref).credit_to(bank_account, {"amount": amount,
+                "appears_on_statement_as": name}));
+            Donate.update({'debit.id': debitID}, {$set: {'credit.id': credit.id,
+                'credit.amount': credit.amount}});
+            return credit;
+        }
+        
     },
     credit_billy_order: function(id, transaction_guid) {
         //initialize the balanced function with our API key.
@@ -60,18 +63,19 @@ _.extend(Utils, {
         logger.info("Transaction GUID: " + transaction_guid);
         logger.info("ID: " + id);
         
-        var name = Donate.findOne({_id: id}).customer.fname + " " + Donate.findOne({_id: id}).customer.lname;
-        //Need to make sure that the number is a whole number, not a decimal
-        var amount = Donate.findOne({_id: id}).debit.total_amount;
+        if(Donate.findOne({'debit.id': debitID})) {
+            var name = Donate.findOne({_id: id}).customer.fname + " " + Donate.findOne({_id: id}).customer.lname;
+            //Need to make sure that the number is a whole number, not a decimal
+            var amount = Donate.findOne({_id: id}).debit.total_amount;
 
-        name = name.substring(0, 13);
-        var lookup_credit_status = {};
-        lookup_credit_status['recurring.transactions.' + transaction_guid + '.credit.sent'] = true;
-        
-        if(Donate.findOne(lookup_credit_status)){    
-            logger.info("No need to run the credit again, this transaction has already had it's balance credited.");
-            return '';
+            name = name.substring(0, 13);
+            var lookup_credit_status = {};
+            lookup_credit_status['recurring.transactions.' + transaction_guid + '.credit.sent'] = true;
+            if(Donate.findOne(lookup_credit_status)){    
+                logger.info("No need to run the credit again, this transaction has already had it's balance credited.");
+                return '';
 
+            }
         }else{
             logger.info("Credit status was false or not set, starting to send out a credit.");
             var setModifier = { $set: {} };
@@ -86,5 +90,6 @@ _.extend(Utils, {
         }
             
         return credit;
+
     }
 });

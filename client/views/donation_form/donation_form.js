@@ -361,7 +361,7 @@ Template.cardPaymentInformation.rendered = function() {
         container: 'body',
         trigger: 'hover focus',
         template: '<div class="tooltip tooltipWide" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner tooltipInnerWide"></div></div>',
-        title: 'Our credit card processor charges 2.9% + .30 per transaction. If you check the box to cover these fees we\'ll do the math and round to the nearest whole dollar.',
+        title: 'Our credit card processor charges 2.9% + .30 per transaction. If you check the box to cover these fees we\'ll do the math and change your gift amount to reflect this amount.',
         placement: 'auto top'
     });
 };
