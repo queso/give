@@ -270,7 +270,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                     body.events[0].entity.debits[0].status);
                 }
                 this.emit('failed_collection_update', 'debits', body.events[0].entity.debits[0].id);
-                this.emit('send_email', body.events[0].entity.debits[0].id, 'debits', 'failed');
+                this.emit('send_email', body.events[0].entity.debits[0].id, 'failed');
 	        });
 	        /*************************************************************/
 	        /***************         END DEBIT AREA         **************/
