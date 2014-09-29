@@ -199,6 +199,9 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                             var email_sent_lookup = {};
                             email_sent_lookup['recurring.transactions.' + transaction_guid + '.email_sent.' + status] = true;
                             
+                            if(Donate.findOne(email_sent_lookup){
+                                console.log("Email sent status = true");
+                            }
                             //send out the appropriate email using Mandrill
                             //TODO: Change this to use a programatic query and it really needs to add the status, if the status=succeeded doesn't exists or if the status=failed doesn't exist
                             if (!(Donate.findOne(email_sent_lookup)) && status === 'succeeded' || 'failed') {
