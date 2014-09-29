@@ -128,7 +128,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
             });
             evt.on('billy_trans_insert', function (status) {
                 var transaction = HTTP.get("https://billy.balancedpayments.com/v1/transactions/" + transaction_guid, {
-                    auth: Meteor.settings.billyKey + ':'
+                    auth: Meteor.settings.billy_key + ':'
                 });
                 var lookup_transaction_guid = {};
                 lookup_transaction_guid['recurring.transactions.' + transaction_guid + '.guid'] = transaction_guid;

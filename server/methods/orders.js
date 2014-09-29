@@ -35,14 +35,14 @@ _.extend(Utils, {
     },
     credit_order: function(debitID) {
         //initialize the balanced function with our API key.
-        balanced.configure(Meteor.settings.balancedPaymentsAPI);
+        balanced.configure(Meteor.settings.balanced_api_key);
 
         logger.info("Inside credit_order.");
         var name = Donate.findOne({'debit.id': debitID}).customer.fname + " " + Donate.findOne({'debit.id': debitID}).customer.lname;
         name = name.substring(0, 13);
         var orderHref = Donate.findOne({'debit.id': debitID}).order.id;
         orderHref = "/orders/" + orderHref;
-        var bank_account = Utils.extractFromPromise(balanced.get(Meteor.settings.devBankAccount));
+        var bank_account = Utils.extractFromPromise(balanced.get(Meteor.settings.bank_account_uri));
 
         var amount = Donate.findOne({'debit.id': debitID}).debit.total_amount;
         console.log("Amount from one-time credit order: " + amount);
@@ -56,7 +56,7 @@ _.extend(Utils, {
     credit_billy_order: function(id, transaction_guid) {
         //initialize the balanced function with our API key.
         logger.info("Inside credit_billy_order.");
-        balanced.configure(Meteor.settings.balancedPaymentsAPI);
+        balanced.configure(Meteor.settings.balanced_api_key);
         logger.info("Transaction GUID: " + transaction_guid);
         logger.info("ID: " + id);
         logger.info("Test: " + Donate.findOne(id).customer.fname);
@@ -68,7 +68,7 @@ _.extend(Utils, {
 
         name = name.substring(0, 13);
 
-        var credit = Utils.extractFromPromise(balanced.get(Meteor.settings.devBankAccount).credit({"appears_on_statement_as": name,
+        var credit = Utils.extractFromPromise(balanced.get(Meteor.settings.bank_account_uri).credit({"appears_on_statement_as": name,
             "amount": amount
         }));
         Donate.update({

@@ -83,7 +83,7 @@ function createBillyCustomer(customerID) {
 			params: {
 				"processor_uri": "/customers/" + customerID
 			},
-			auth: Meteor.settings.billyKey + ':'
+			auth: Meteor.settings.billy_key + ':'
 		});
 		logger.info(resultSet.data.company_guid);
 		return resultSet;
@@ -102,11 +102,9 @@ function subscribeToBillyPlan(data) {
 		if (paymentType === "credit" || paymentType === "debit") {
 			logger.info("Payment Type: " + paymentType);
 			var funding_instrument_uri = Donate.findOne(data).card.href;
-			logger.info("Funding URI: " + funding_instrument_uri);
 		} else {
 			logger.info("Payment Type: " + paymentType);
 			var funding_instrument_uri = Donate.findOne(data).bank_account.href;
-			logger.info("Funding URI: " + funding_instrument_uri);
 		}
 		logger.info("Amount: " + Math.ceil(Donate.findOne(data).debit.total_amount));
 		var billyAmount = Math.ceil(Donate.findOne(data).debit.total_amount);
@@ -114,21 +112,17 @@ function subscribeToBillyPlan(data) {
 		resultSet = HTTP.post("https://billy.balancedpayments.com/v1/subscriptions", {
 			params: {
 				"customer_guid": Donate.findOne(data).recurring.customer.guid,
-				"plan_guid": Meteor.settings.billyMonthlyGUID, //this is the monthly plan GUID
+				"plan_guid": Meteor.settings.billy_daily_GUID, //this is the monthly plan GUID
 				//fix below
-				"funding_instrument_uri": "/" + Meteor.settings.balancedPaymentsURI + funding_instrument_uri,
+				"funding_instrument_uri": "/" + Meteor.settings.balanced_uri + funding_instrument_uri,
 				"appears_on_statement_as": "Trash Mountain",
 				"amount": billyAmount
 			},
-			auth: Meteor.settings.billyKey + ':'
+			auth: Meteor.settings.billy_key + ':'
 		});
 		if (resultSet.statusCode == 200) {
-			logger.info(JSON.stringify(resultSet.data));
-			logger.info("content: " + resultSet.content);
 			logger.info("Subscription GUID: " + resultSet.data.guid);
 			logger.info("Effective amount: " + resultSet.data.effective_amount);
-			logger.info("statusCode: " + resultSet.statusCode);
-			console.dir("data next invoice at: " + resultSet.data.next_invoice_at);
 			return resultSet;
 		} else {
 			var error = {};
@@ -154,7 +148,7 @@ function getInvoice(subGUID) {
 		logIt();
 		logger.info("inside getInvoice");
 		resultSet = HTTP.post("https://billy.balancedpayments.com/v1/subscriptions/" + subGUID + "/invoices", {
-			auth: Meteor.settings.billyKey + ':'
+			auth: Meteor.settings.billy_key + ':'
 		});
 		return resultSet;
 	} catch (e) {
@@ -169,7 +163,7 @@ function getTransaction(invoiceID) {
 		logIt();
 		logger.info("inside getTransaction");
 		resultSet = HTTP.get("https://billy.balancedpayments.com/v1/invoices/" + invoiceID + "/transactions", {
-			auth: Meteor.settings.billyKey + ':'
+			auth: Meteor.settings.billy_key + ':'
 		});
 		return resultSet;
 	} catch (e) {
@@ -219,11 +213,8 @@ Meteor.methods({
 			}
 		});
 
-		balanced.configure(Meteor.settings.balancedPaymentsAPI);
+		balanced.configure(Meteor.settings.balanced_api_key);
 		var customerInfo = data.customer[0];
-		//remove before production
-		logger.info("Customer Info: " + customerInfo);
-		logger.info("Customer First Name: " + customerInfo.fname);
 		var customerData = '';
 		try {
 			customerData = Utils.extractFromPromise(balanced.marketplace.customers.create({
@@ -239,8 +230,6 @@ Meteor.methods({
 				//need to add if statement for any fields that might be blank
 				'phone': customerInfo.phone_number
 			}));
-			//remove before production
-			logger.info("Customer: ");
 			var customerResponse = Donate.update(data._id, {
 				$set: {
 					'customer.type': customerData._type,
@@ -300,7 +289,6 @@ Meteor.methods({
             setModifier.$set['recurring.transactions.' + transaction_guid] = billyGetTransactionID.data.items[0];
             Donate.update({_id: data._id}, setModifier);
 
-			//logger.info("Inserted invoice into appropriate subscription."); 
 			var return_this = {_id: data._id, transaction_guid: transaction_guid};
 			//return data._id;
 			return return_this;

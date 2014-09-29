@@ -17,7 +17,7 @@ Utils = {
     getBillySubscriptionGUID: function(invoiceID){
         var IDs = {};
         var invoice = HTTP.get("https://billy.balancedpayments.com/v1/invoices/" + invoiceID, {
-                auth: Meteor.settings.billyKey + ':'
+                auth: Meteor.settings.billy_key + ':'
         });
         logger.info("getBillySubscriptionGUID");
         console.dir(invoice);
@@ -41,7 +41,7 @@ Utils = {
     getInvoice: function(subGUID){
         var resultSet;
         resultSet = HTTP.post("https://billy.balancedpayments.com/v1/subscriptions/" + subGUID + "/invoices", {
-            auth: Meteor.settings.billyKey + ':'
+            auth: Meteor.settings.billy_key + ':'
         });
         return resultSet;
     },
