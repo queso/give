@@ -301,6 +301,10 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	        /*************************************************************/
 	        /***************         END HOLDS AREA         **************/
 	        /*************************************************************/
+
+            /*************************************************************/
+            /***************         ACCOUNTS AREA         ***************/
+            /*************************************************************/
             //TODO: Need to send these to a special event that adds these to the database. Look below for a link to an example.
             //https://www.runscope.com/share/kqnnt5wx1akd/aed288ff-a1f3-49a0-8dc5-37bc2b3102a9
 	        evt.on('card_updated', function () {
@@ -318,6 +322,21 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	        evt.on('bank_account_created', function () {
 		        logger.info("Got to the card_updated");
 	        });
+            /*************************************************************/
+            /**************         END ACCOUNTS AREA         ************/
+            /*************************************************************/
+
+            /*************************************************************/
+            /***************         INVOICES AREA         ***************/
+            /*************************************************************/
+
+            evt.on('invoices', function () {
+                logger.info("Got to the invoices");
+                Invoices.insert(body.events[0].entity.invoices[0]);
+            });
+            /*************************************************************/
+            /************         END INVOICES AREA         **************/
+            /*************************************************************/
         }
 	        // Check the body otherwise any invalid call to the website would still run any of the events after checking the body.
 	        var body = req.body; //request body
