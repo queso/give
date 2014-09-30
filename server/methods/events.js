@@ -350,6 +350,15 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                 id = Invoices.insert(body.events[0].entity.invoices[0]);
                 logger.info("ID: " + id);
             });
+            evt.on('fee_settlement_created', function () {
+                logger.info("Got to the fee_settlement_created");
+            });
+            evt.on('fee_settlement_succeeded', function () {
+                logger.info("Got to the fee_settlement_succeeded");
+            });
+            evt.on('fee_settlement_failed', function () {
+                logger.info("Got to the fee_settlement_failed");
+            });
             /*************************************************************/
             /************         END INVOICES AREA         **************/
             /*************************************************************/
