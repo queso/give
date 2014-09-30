@@ -332,7 +332,8 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 
             evt.on('invoices', function () {
                 logger.info("Got to the invoices");
-                Invoices.insert(body.events[0].entity.invoices[0]);
+                id = Invoices.insert(body.events[0].entity.invoices[0]);
+                logger.info("ID: " + id);
             });
             /*************************************************************/
             /************         END INVOICES AREA         **************/
