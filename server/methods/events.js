@@ -329,8 +329,6 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
             /*************************************************************/
             /***************         INVOICES AREA         ***************/
             /*************************************************************/
-
-
             evt.on('invoice_created', function () {
                 logger.info("Got to the invoice_created");
                 id = Invoices.insert(body.events[0].entity.invoices[0]);
