@@ -330,11 +330,43 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
             /***************         INVOICES AREA         ***************/
             /*************************************************************/
 
-            evt.on('invoices', function () {
-                logger.info("Got to the invoices");
+
+            evt.on('invoice_created', function () {
+                logger.info("Got to the invoice_created");
                 id = Invoices.insert(body.events[0].entity.invoices[0]);
                 logger.info("ID: " + id);
             });
+            evt.on('invoice_updated', function () {
+                logger.info("Got to the invoice_updated");
+                var insertThis = body.events[0].entity.invoices[0].state;
+                Invoices.update({id: body.events[0].entity.invoices[0].id}, 
+                { $set: { state: insertThis}
+                });
+            });
+            /*evt.on('invoice_pending', function () {
+                logger.info("Got to the invoice_pending");
+                id = Invoices.insert(body.events[0].entity.invoices[0]);
+                logger.info("ID: " + id);
+            });
+            evt.on('invoice_succeeded', function () {
+                logger.info("Got to the invoice_succeeded");
+                id = Invoices.insert(body.events[0].entity.invoices[0]);
+                logger.info("ID: " + id);
+            });
+            evt.on('invoice_failed', function () {
+                logger.info("Got to the invoice_failed");
+                id = Invoices.insert(body.events[0].entity.invoices[0]);
+                logger.info("ID: " + id);
+            });*/
+            evt.on('fee_settlement_created', function () {
+                logger.info("Got to the fee_settlement_created");
+            });
+            evt.on('fee_settlement_updated', function () {
+                logger.info("Got to the fee_settlement_updated");
+            });
+            /*evt.on('fee_settlement_failed', function () {
+                logger.info("Got to the fee_settlement_failed");
+            });*/
             /*************************************************************/
             /************         END INVOICES AREA         **************/
             /*************************************************************/
@@ -342,15 +374,19 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	        // Check the body otherwise any invalid call to the website would still run any of the events after checking the body.
 	        var body = req.body; //request body
 
-	        try {
+	        /*try {*/
 		        body.events ? addTo(body) : noBody();
-	        } catch (e) {
+	        /*} catch (e) {
 		        logger.error(e);
-	        }
+	        }*/
 
             function addTo(body) {
                 var type = Object.keys(body.events[0].entity)[0];
-                var billy = Boolean(body.events[0].entity[type][0].meta['billy.transaction_guid']);
+                if(body.events[0].entity[type][0].meta) {
+                    var billy =  Boolean(body.events[0].entity[type][0].meta['billy.transaction_guid']);
+                } else{
+                    var billy = false;
+                }
                 runEvents(body, billy, type);
             }
 	        function noBody() {
