@@ -335,7 +335,14 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                 id = Invoices.insert(body.events[0].entity.invoices[0]);
                 logger.info("ID: " + id);
             });
-            evt.on('invoice_pending', function () {
+            evt.on('invoice_updated', function () {
+                logger.info("Got to the invoice_updated");
+                var insertThis = body.events[0].entity.invoices[0].state;
+                Invoices.update({id: body.events[0].entity.invoices[0].id}, 
+                { $set: { state: insertThis}
+                });
+            });
+            /*evt.on('invoice_pending', function () {
                 logger.info("Got to the invoice_pending");
                 id = Invoices.insert(body.events[0].entity.invoices[0]);
                 logger.info("ID: " + id);
@@ -349,16 +356,16 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                 logger.info("Got to the invoice_failed");
                 id = Invoices.insert(body.events[0].entity.invoices[0]);
                 logger.info("ID: " + id);
-            });
+            });*/
             evt.on('fee_settlement_created', function () {
                 logger.info("Got to the fee_settlement_created");
             });
-            evt.on('fee_settlement_succeeded', function () {
-                logger.info("Got to the fee_settlement_succeeded");
+            evt.on('fee_settlement_updated', function () {
+                logger.info("Got to the fee_settlement_updated");
             });
-            evt.on('fee_settlement_failed', function () {
+            /*evt.on('fee_settlement_failed', function () {
                 logger.info("Got to the fee_settlement_failed");
-            });
+            });*/
             /*************************************************************/
             /************         END INVOICES AREA         **************/
             /*************************************************************/
