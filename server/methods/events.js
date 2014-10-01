@@ -246,6 +246,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        if(billy){
                     this.emit('update_billy', body.events[0].entity.debits[0].id,
 			        body.events[0].entity.debits[0].status);
+                    this.meit('send_received_email')
                 } else{
                     this.emit('update_from_event', body.events[0].entity.debits[0].id,
                     body.events[0].entity.debits[0].status);
@@ -372,15 +373,17 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 	        // Check the body otherwise any invalid call to the website would still run any of the events after checking the body.
 	        var body = req.body; //request body
 
-	        /*try {*/
+	        try {
 		        body.events ? addTo(body) : noBody();
-	        /*} catch (e) {
+	        } catch (e) {
 		        logger.error(e);
-	        }*/
+	        }
 
             function addTo(body) {
                 var type = Object.keys(body.events[0].entity)[0];
-                if(body.events[0].entity[type][0].meta) {
+                if(type === 'fee_settlement.created'){
+                    var billy = false;
+                }else if(body.events[0].entity[type][0].meta) {
                     var billy =  Boolean(body.events[0].entity[type][0].meta['billy.transaction_guid']);
                 } else{
                     var billy = false;
