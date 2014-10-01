@@ -87,9 +87,6 @@ Router.map(function () {
     data: function() {
       var params = this.params;
       var root = Meteor.settings.root;
-    },
-    onBeforeAction: function () {
-      AccountsEntry.signInRequired(this);
     }
   });
   this.route('sign-out', {
@@ -97,9 +94,13 @@ Router.map(function () {
     data: function() {
       var params = this.params;
       var root = Meteor.settings.root;
-    },
-    onBeforeAction: function () {
-      AccountsEntry.signInRequired(this);
+    }
+  });
+  this.route('sign-up', {
+    path: ':root/sign-up',
+    data: function() {
+      var params = this.params;
+      var root = Meteor.settings.root;
     }
   });
 });
