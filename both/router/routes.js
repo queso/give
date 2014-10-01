@@ -62,11 +62,24 @@ Router.map(function () {
               this.render('Loading');
       }
   });
-  this.route('tables', {
+  this.route('dashboard', {
+    path: ':root/dashboard',
+    data: function() {
+      var params = this.params;
+      var root = Meteor.settings.root;
+    },
+    onBeforeAction: function () {
+      AccountsEntry.signInRequired(this);
+    }
+  });
+    this.route('tables', {
     path: ':root/tables',
     data: function() {
       var params = this.params;
       var root = Meteor.settings.root;
+    },
+    onBeforeAction: function () {
+      AccountsEntry.signInRequired(this);
     }
   });
 });

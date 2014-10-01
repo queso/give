@@ -1,0 +1,15 @@
+<template name="tableList">
+	<div class="table">
+		{{#each tables}}
+			{{> tableItem}}
+		{{/each}}
+	</div>
+</template>
+
+<template name="tableItem">
+	<div class="table">
+		<div class="table-content">
+			<h3><a href="https://trashmountain.com/give/{{url}}">{{fname}} {{lname}}</a><span>{{amount}}</span></h3>
+		</div>
+	</div>
+</template>
