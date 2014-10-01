@@ -45,6 +45,106 @@ Utils = {
         });
         return resultSet;
     },
+    send_initial_email: function (id) {
+    try {
+      logger.info("Started send_initial_email with ID: " + id + " --------------------------");
+      var error = {};
+      var lookup_record = Donate.findOne({_id: id});
+      var created_at = moment(Date.parse(lookup_record.created_at)).format('MM/DD/YYYY');
+      console.log(created_at);
+      var debit = lookup_record.debit;
+      var customer = lookup_record.customer;
+      var fees = debit.fees;
+      logger.info("Cover the fees = " + debit.coveredTheFees);
+      logger.info("debit.status: " + debit.status);
+      var slug;
+      if (debit.status === "failed") {
+        return '';
+        } else {
+        slug = "donation-initial-email";
+      }
+      Meteor.Mandrill.sendTemplate({
+        key: Meteor.settings.mandrillKey,
+        templateSlug: slug,
+        templateContent: [
+          {}
+        ],
+        mergeVars: [
+          {
+            "rcpt": customer.email_address,
+            "vars": [
+            {
+              "name": "CreatedAt",
+              "content": created_at
+            },
+            {
+              "name": "DEV",
+              "content": Meteor.settings.dev
+            },
+              {
+                "name": "DonatedTo",
+                "content": debit.donateTo
+              }, {
+                "name": "DonateWith", //eventually send the card brand and the last four instead of just this
+                "content": debit.donateWith
+              }, {
+                "name": "GiftAmount",
+                "content": debit.amount / 100
+              }, {
+                "name": "GiftAmountFees",
+                "content": fees / 100
+              }, {
+                "name": "TotalGiftAmount",
+                "content": debit.total_amount / 100
+              }, {
+                "name": "FailureReason",
+                "content": error.failure_reason
+               },{
+                "name": "FailureReasonCode",
+                "content": error.failure_reason_code
+              },{
+                "name": "FULLNAME",
+                "content": customer.fname + " " + customer.lname
+            }, {
+                "name": "ADDRESS_LINE1",
+                "content": customer.address_line1
+            }, {
+                "name": "ADDRESS_LINE2",
+                "content": customer.address_line2
+            }, {
+                "name": "LOCALITY",
+                "content": customer.city
+            }, {
+                "name": "REGION",
+                "content": customer.region
+            }, {
+                "name": "POSTAL_CODE",
+                "content": customer.postal_code
+            }, {
+                "name": "PHONE",
+                "content": customer.phone_number
+            }, {
+                "name": "ReceiptNumber",
+                "content": id
+            }, {
+                "name": "Path",
+                "content": 'thanks'
+            }, {
+                "name": "ReceiptOrTransNumber",
+                "content": id
+            }
+            ]
+          }
+        ],
+        toEmail: customer.email_address
+      });
+    } //End try
+    catch (e) {
+      logger.error('Mandril sendEmailOutAPI Method error message: ' + e.message);
+      logger.error('Mandril sendEmailOutAPI Method error: ' + e);
+      throw new Meteor.error(e);
+    }
+  },
     send_one_time_email: function (id) {
     try {
       logger.info("Started send_one_time_email with ID: " + id + " --------------------------");

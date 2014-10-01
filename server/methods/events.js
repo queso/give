@@ -189,6 +189,15 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                         }
                     })
                 });*/
+            evt.on('send_received_email', function (eventID, status) {
+                try{
+                    Utils.send_initial_email(id, status);
+                }
+                catch(e){
+                    logger.error(e);
+                }
+            });
+
             evt.on('send_email', function (eventID, status) {
                     try{
                         logger.info("Got to send_email function");
@@ -246,7 +255,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        if(billy){
                     this.emit('update_billy', body.events[0].entity.debits[0].id,
 			        body.events[0].entity.debits[0].status);
-                    this.meit('send_received_email')
+                    this.meit('send_received_email');
                 } else{
                     this.emit('update_from_event', body.events[0].entity.debits[0].id,
                     body.events[0].entity.debits[0].status);
