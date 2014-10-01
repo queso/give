@@ -82,4 +82,24 @@ Router.map(function () {
       AccountsEntry.signInRequired(this);
     }
   });
+  this.route('sign-in', {
+    path: ':root/sign-in',
+    data: function() {
+      var params = this.params;
+      var root = Meteor.settings.root;
+    },
+    onBeforeAction: function () {
+      AccountsEntry.signInRequired(this);
+    }
+  });
+  this.route('sign-out', {
+    path: ':root/sign-out',
+    data: function() {
+      var params = this.params;
+      var root = Meteor.settings.root;
+    },
+    onBeforeAction: function () {
+      AccountsEntry.signInRequired(this);
+    }
+  });
 });
