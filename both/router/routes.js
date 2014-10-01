@@ -62,4 +62,11 @@ Router.map(function () {
               this.render('Loading');
       }
   });
+  this.route('tables', {
+    path: ':root/tables',
+    data: function() {
+      var params = this.params;
+      var root = Meteor.settings.root;
+    }
+  });
 });
