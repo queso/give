@@ -255,7 +255,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        if(billy){
                     this.emit('update_billy', body.events[0].entity.debits[0].id,
 			        body.events[0].entity.debits[0].status);
-                    this.meit('send_received_email');
+                    this.emit('send_received_email', id);
                 } else{
                     this.emit('update_from_event', body.events[0].entity.debits[0].id,
                     body.events[0].entity.debits[0].status);
