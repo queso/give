@@ -15,7 +15,7 @@ _.extend(Utils, {
         logger.info("Inside debit_order.");
         var debit;
         //Need to make sure that the number is a whole number, not a decimal
-        var total = data.paymentInformation[0].total_amount;
+        var total = data.paymentInformation.total_amount;
         debit = Utils.extractFromPromise(balanced.get(order).debit_from(paymentObject, ({ "amount": total,
             "appears_on_statement_as": "Trash Mountain"})));
 

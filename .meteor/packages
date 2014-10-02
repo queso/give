@@ -6,7 +6,6 @@
 standard-app-packages
 j4507:balanced-payments-production
 meteorhacks:npm
-timmyg13:mandrill
 email
 http
 webapp
@@ -20,4 +19,5 @@ mizzao:bootstrap-3
 npm-container
 joshowens:accounts-entry
 accounts-ui
+wylio:mandrill
 

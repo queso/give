@@ -16,11 +16,11 @@ _.extend(Utils,{
         console.log("Inside card create.");
         var card;
         card = Utils.extractFromPromise(balanced.card.create({
-            "name": data.customer[0].fname + " " + data.customer[0].lname,
-            'number': data.paymentInformation[0].card_number,
-            'expiration_year': data.paymentInformation[0].expiry_year,
-            'expiration_month': data.paymentInformation[0].expiry_month,
-            'cvv': data.paymentInformation[0].cvv,
+            "name": data.customer.fname + " " + data.customer.lname,
+            'number': data.paymentInformation.card_number,
+            'expiration_year': data.paymentInformation.expiry_year,
+            'expiration_month': data.paymentInformation.expiry_month,
+            'cvv': data.paymentInformation.cvv,
             "appears_on_statement_as": "Trash Mountain"
         }));
         if (card.cvv_result === 'No Match'){
@@ -48,10 +48,10 @@ _.extend(Utils,{
     check_create: function (data) {
         var check;
         check = Utils.extractFromPromise(balanced.bank_account.create({
-            "name": data.customer[0].fname + " " + data.customer[0].lname,
-            "routing_number": data.paymentInformation[0].routing_number,
-            "account_type": data.paymentInformation[0].account_type,
-            "account_number": data.paymentInformation[0].account_number,
+            "name": data.customer.fname + " " + data.customer.lname,
+            "routing_number": data.paymentInformation.routing_number,
+            "account_type": data.paymentInformation.account_type,
+            "account_number": data.paymentInformation.account_number,
             "appears_on_statement_as": "Trash Mountain"
         }));
         console.dir(JSON.stringify(check));

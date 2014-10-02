@@ -12,7 +12,56 @@ Utils = {
     return fut.wait();
     },
     checkInputs: function(form) {
-        return typeof form.customer[0].fname;
+        return typeof form.customer.fname;
+    },
+    checkFormFields: function(form) {
+
+      check(form, {paymentInformation: {amount: Match.Integer, lname: String, city: String},
+                  customer: {fname: String, lname: String, email_address: String, phone_number: String, }});
+      var form = {
+            "paymentInformation": {
+                "amount": parseInt(($('#amount').val().replace(/[^\d\.\-\ ]/g, ''))* 100),
+                "total_amount": parseInt($('#total_amount').val() * 100),
+                "donateTo": $("#donateTo").val(),
+                "donateWith": $("#donateWith").val(),
+                "is_recurring": $('#is_recurring').val(),
+                "coverTheFees": $('#coverTheFees').is(":checked"),
+                "created_at": moment().format('MM/DD/YYYY, hh:mm')
+            },
+            "customer": {
+                "fname": $('#fname').val(),
+                "lname": $('#lname').val(),
+                "email_address": $('#email_address').val(),
+                "phone_number": $('#phone').val(),
+                "address_line1": $('#address_line1').val(),
+                "address_line2": $('#address_line2').val(),
+                "region": $('#region').val(),
+                "city": $('#city').val(),
+                "postal_code": $('#postal_code').val(),
+                "country": $('#country').val(),
+                "created_at": moment().format('MM/DD/YYYY, hh:mm')
+            },
+            "URL": document.URL,
+            sessionId: Meteor.default_connection._lastSessionId
+        };
+
+        if (form.paymentInformation.total_amount !== form.paymentInformation.amount) {
+            form.paymentInformation.fees = (form.paymentInformation.total_amount - form.paymentInformation.amount);
+        }
+        if (form.paymentInformation.donateWith === "Card") {
+            form.paymentInformation.card_number = $('[name=card_number]').val();
+            form.paymentInformation.expiry_month = $('[name=expiry_month]').val();
+            form.paymentInformation.expiry_year = $('[name=expiry_year]').val();
+            form.paymentInformation.cvv = $('[name=cvv]').val();
+            //set the form type so the server side method knows what to do with the data.
+            form.paymentInformation.type = "Card";
+        } else {
+            form.paymentInformation.account_number = $('[name=account_number]').val();
+            form.paymentInformation.routing_number = $('[name=routing_number]').val();
+            form.paymentInformation.account_type = $('[name=account_type]').val();
+            //set the form type so the server side method knows what to do with the data.
+            form.paymentInformation.type = "Check";
+        }
     },
     getBillySubscriptionGUID: function(invoiceID){
         var IDs = {};

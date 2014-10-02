@@ -30,8 +30,8 @@ function createPaymentMethod(data) {
 		logIt();
 
 		logger.info("Setup variables for data from form inputs inside the billy createPaymentMethod method.");
-		var customerInfo = data.customer[0];
-		var debitType = data.paymentInformation[0].type;
+		var customerInfo = data.customer;
+		var debitType = data.paymentInformation.type;
 		logger.info("ID: " + data._id);
 		logger.info("In create Payment Method before if: " + debitType);
 
@@ -195,27 +195,27 @@ Meteor.methods({
 		logger.info("Started billy method calls.")
 		logIt();
 		// Moved the below from client side to here.  
-      	data._id = Donate.insert({created_at: data.paymentInformation[0].created_at});
+      	data._id = Donate.insert({created_at: data.paymentInformation.created_at});
 
 		Donate.update(data._id, {
 			$set: {
 				sessionId: data.sessionId,
 				URL: data.URL,
-				'customer': data.customer[0],
-				'debit.donateTo': data.paymentInformation[0].donateTo,
-				'debit.donateWith': data.paymentInformation[0].donateWith,
-				'debit.type': data.paymentInformation[0].type,
-				'debit.total_amount': data.paymentInformation[0].total_amount,
-				'debit.amount': data.paymentInformation[0].amount,
-				'debit.fees': data.paymentInformation[0].fees,
-				'debit.coveredTheFees': data.paymentInformation[0].coverTheFees,
+				'customer': data.customer,
+				'debit.donateTo': data.paymentInformation.donateTo,
+				'debit.donateWith': data.paymentInformation.donateWith,
+				'debit.type': data.paymentInformation.type,
+				'debit.total_amount': data.paymentInformation.total_amount,
+				'debit.amount': data.paymentInformation.amount,
+				'debit.fees': data.paymentInformation.fees,
+				'debit.coveredTheFees': data.paymentInformation.coverTheFees,
                 'debit.status': 'pending'
 			}
 		});
 		logger.info("ID: " + data._id);
 
 		balanced.configure(Meteor.settings.balanced_api_key);
-		var customerInfo = data.customer[0];
+		var customerInfo = data.customer;
 		var customerData = '';
 		try {
 			customerData = Utils.extractFromPromise(balanced.marketplace.customers.create({

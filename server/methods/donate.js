@@ -8,24 +8,23 @@ function logIt() {
 Meteor.methods({
     singleDonation: function (data) {
         logIt();
-
         try {
         // Moved the below from client side to here.
-        data._id = Donate.insert({created_at: data.paymentInformation[0].created_at});
+        data._id = Donate.insert({created_at: data.paymentInformation.created_at});
 
         Donate.update(data._id, {
             $set: {
                 sessionId: data.sessionId,
                 URL: data.URL,
-                'customer': data.customer[0],
-                'debit.donateTo': data.paymentInformation[0].donateTo,
-                'debit.donateWith': data.paymentInformation[0].donateWith,
+                'customer': data.customer,
+                'debit.donateTo': data.paymentInformation.donateTo,
+                'debit.donateWith': data.paymentInformation.donateWith,
                 'debit.email_sent': false,
-                'debit.type': data.paymentInformation[0].type,
-                'debit.total_amount': data.paymentInformation[0].total_amount,
-                'debit.amount': data.paymentInformation[0].amount,
-                'debit.fees': data.paymentInformation[0].fees,
-                'debit.coveredTheFees': data.paymentInformation[0].coverTheFees,
+                'debit.type': data.paymentInformation.type,
+                'debit.total_amount': data.paymentInformation.total_amount,
+                'debit.amount': data.paymentInformation.amount,
+                'debit.fees': data.paymentInformation.fees,
+                'debit.coveredTheFees': data.paymentInformation.coverTheFees,
                 'debit.status': 'pending'
             }
         });
@@ -35,8 +34,8 @@ Meteor.methods({
         //initialize the balanced function with our API key.
         balanced.configure(Meteor.settings.balanced_api_key);
 
-        var customerInfo = data.customer[0];
-        var paymentInfo = data.paymentInformation[0];
+        var customerInfo = data.customer;
+        var paymentInfo = data.paymentInformation;
         var customerData = Utils.create_customer(customerInfo, data._id);
 
         //Runs if the form used was the credit card form, which sets type as part of the array which is passed to this server
