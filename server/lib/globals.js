@@ -64,6 +64,9 @@ Utils = {
       Meteor.Mandrill.sendTemplate({
         "key": Meteor.settings.mandrillKey,
         "template_name": slug,
+        "template_content": [
+          {}
+        ],
         "message": {
           "merge_vars": [
           {
@@ -291,6 +294,9 @@ Utils = {
       Meteor.Mandrill.sendTemplate({
         "key": Meteor.settings.mandrillKey,
         "template_name": slug,
+        "template_content": [
+          {}
+        ],
         "message": {
           "merge_vars": [
           {
