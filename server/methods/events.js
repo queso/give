@@ -237,6 +237,17 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
             evt.on('failed_collection_update', function (type, debitID){
                 console.log('failed_collection_update area. ' + debitID);
                 if(Donate.findOne({'debit.id': debitID})) {
+                    /*if(billy){
+                        var returnedIDs = Utils.getBillySubscriptionGUID(invoice_guid);
+                        id = returnedIDs.id;
+                        subscription_guid = subIDs.subscription_guid;
+
+                        //update subscription document to failed status
+                        
+                        var setModifier = { $set: {} };
+                        setModifier.$set['recurring.subscriptions.' + guid] = subscription_guid;
+                        Donate.update({'recurring.subscriptions.guid': subscription_guid}, setModifier);
+                    }*/
                     var id = Donate.findOne({'debit.id': debitID})._id;
                     Donate.update(id, {$set: {'failed.failure_reason': body.events[0].entity[type][0].failure_reason,
                         'failed.failure_reason_code': body.events[0].entity[type][0].failure_reason_code,

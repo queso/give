@@ -7,7 +7,7 @@
 //display error modal if there is an error while initially submitting data from the form.
 function handleErrors(error) {
     //console.log(error.errors);
-    if(error.reason = "Match failed"){
+    if(error.reason === "Match failed"){
         var gatherInfo = {};
         gatherInfo.browser = navigator.userAgent
 
@@ -51,10 +51,10 @@ Location HREF: " + location.href + "'><button type='button' class='btn btn-dange
 
 function fillForm() {
     if (Session.get("paymentMethod") === "Check") {
-        $('#routing_number').val("321174851");
-        $('#account_number').val("9900000003");
+        $('#routing_number').val("100000007"); // Invalid test = 100000007 valid test = 321174851
+        $('#account_number').val("8887776665555"); // Invalid test = 8887776665555 valid test = 9900000003
     } else {
-        $('#card_number').val("4111111111111111"); //Succeeded = 4111111111111111 Failed = 4444444444444448 CVV mismatch = 5112000200000002
+        $('#card_number').val("4444444444444448"); //Succeeded = 4111111111111111 Failed = 4444444444444448 CVV mismatch = 5112000200000002
         $('#expiry_month option').prop('selected', false).filter('[value=12]').prop('selected', true);
         $('select[name=expiry_month]').change();
         $('#expiry_year option').prop('selected', false).filter('[value=2015]').prop('selected', true);

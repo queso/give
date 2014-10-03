@@ -1,16 +1,3 @@
-/*function failTheRecord(errorWithID) {
-    logger.error("Error from inside balanced_calls.js and failTheRecord: Category Code: " + errorWithID.e.category_code);
-
-    // Update this record to reflect failed status.
-    var id = errorWithID.id;
-    var errors = errorWithID.e;
-    Donate.update(id, {
-        $set: {
-            failed: errors
-        }
-    });
-    throw new Meteor.Error(500, errorWithID.e);
-}*/
 _.extend(Utils,{
     card_create: function (data) {
         console.log("Inside card create.");
@@ -24,7 +11,15 @@ _.extend(Utils,{
             "appears_on_statement_as": "Trash Mountain"
         }));
         if (card.cvv_result === 'No Match'){
-            //throw new Meteor.Error(card.cvv_result);
+            logger.error("No match in CVV area of card_create. ID: " + data._id);
+                var failThis = Donate.update(data._id, {
+                    $set: {
+                        'failed.category_code': 'CVV_No_Match',
+                        'failed.in': 'card_create',
+                        'debit.status': 'failed',
+                        'debit.submitted': false
+                    }
+                });
             throw new Meteor.Error('CVV', 'CVV', 'Your CVV code does not match your card number. Please check the code and try again.');
         }
 
@@ -89,6 +84,7 @@ _.extend(Utils,{
                         'failed.category_code': e.category_code,
                         'failed.description': e.description,
                         'failed.in': 'create_association',
+                        'failed.eventID': e.request_id,
                         'debit.status': 'failed'
                     }
                 });

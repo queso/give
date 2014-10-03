@@ -80,11 +80,17 @@ Meteor.methods({
          logger.error("e.category_code = " + e.category_code + " e.descriptoin = " + e.description);
          if(e.category_code) {
             logger.error("Got to catch error area of create_associate. ID: " + data._id + " Category Code: " + e.category_code + ' Description: ' + e.description);
+            var debitSubmitted = '';
+            if(e.category_code === 'invalid-routing-number'){
+                debitSubmitted = false;
+            } 
             Donate.update(data._id, {
                 $set: {
                     'failed.category_code': e.category_code,
                     'failed.description': e.description,
-                    'debit.status': 'failed'
+                    'failed.eventID': e.request_id,
+                    'debit.status': 'failed',
+                    'debit.submitted': debitSubmitted
                 }
             });
             throw new Meteor.Error(500, e.category_code, e.description);
