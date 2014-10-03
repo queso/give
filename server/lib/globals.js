@@ -60,13 +60,12 @@ Utils = {
         } else {
         slug = "donation-initial-email";
       }
+      logger.info("Sending with template name: " + slug);
       Meteor.Mandrill.sendTemplate({
-        key: Meteor.settings.mandrillKey,
-        templateSlug: slug,
-        templateContent: [
-          {}
-        ],
-        mergeVars: [
+        "key": Meteor.settings.mandrillKey,
+        "template_name": slug,
+        "message": {
+          "merge_vars": [
           {
             "rcpt": customer.email_address,
             "vars": [
@@ -136,7 +135,10 @@ Utils = {
             ]
           }
         ],
-        toEmail: customer.email_address
+        "to": [
+          {"email": customer.email_address}
+        ]
+      }
       });
     } //End try
     catch (e) {
@@ -166,13 +168,15 @@ Utils = {
       } else {
         slug = "fall-2014-donation-electronic-receipt";
       }
+      logger.info("Sending with template name: " + slug);
       Meteor.Mandrill.sendTemplate({
-        key: Meteor.settings.mandrillKey,
-        templateSlug: slug,
-        templateContent: [
+        "key": Meteor.settings.mandrillKey,
+        "template_name": slug,
+        "template_content": [
           {}
         ],
-        mergeVars: [
+        "message": {
+          "merge_vars": [
           {
             "rcpt": customer.email_address,
             "vars": [
@@ -242,7 +246,10 @@ Utils = {
             ]
           }
         ],
-        toEmail: customer.email_address
+        "to": [
+          {"email": customer.email_address}
+        ]
+      }
       });
     } //End try
     catch (e) {
@@ -280,13 +287,12 @@ Utils = {
       } else {
         slug = "fall-2014-donation-electronic-receipt";
       }
+      logger.info("Sending with template name: " + slug);
       Meteor.Mandrill.sendTemplate({
-        key: Meteor.settings.mandrillKey,
-        templateSlug: slug,
-        templateContent: [
-          {}
-        ],
-        mergeVars: [
+        "key": Meteor.settings.mandrillKey,
+        "template_name": slug,
+        "message": {
+          "merge_vars": [
           {
             "rcpt": customer.email_address,
             "vars": [
@@ -360,7 +366,10 @@ Utils = {
             ]
           }
         ],
-        toEmail: customer.email_address
+        "to": [
+          {"email": customer.email_address}
+        ]
+      }
       });
     } //End try
     catch (e) {

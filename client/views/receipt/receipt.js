@@ -19,6 +19,11 @@ Template.Receipt.helpers({
     var transaction_guid = Session.get('params.transaction_guid');
       return moment(this.recurring.transactions[transaction_guid].updated_at).format('MM/DD/YYYY');
    },
+   org: function () {
+    if (this.customer.org){
+      return this.customer.org + "</br>"
+    }
+   },
    fname: function () {
    		return this.customer.fname;
    },
