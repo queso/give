@@ -189,13 +189,38 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                         }
                     })
                 });*/
-            evt.on('send_received_email', function (eventID, status) {
-                try{
-                    Utils.send_initial_email(id, status);
-                }
+            evt.on('send_received_email', function (debitID, status) {
+                /*try{*/
+                    if (billy) {
+                        logger.info("Inside send_received_email Billy section.");
+
+                        //setup query programmatically.
+                        var email_sent_lookup = {};
+                        email_sent_lookup['recurring.transactions.' + transaction_guid + '.email_sent.initial_sent'] = true;
+                        var email_sent_lookup_time = {};
+                        email_sent_lookup_time['recurring.transactions.' + transaction_guid + '.email_sent.initial_time'] = moment().format('MM/DD/YYYY, hh:mm');
+
+                        if(Donate.findOne(email_sent_lookup)){
+                            logger.info("Initial email sent = true. Nothing further to do.");
+                        } else if(status){
+                            Donate.update(id, {$set: email_sent_lookup});
+                            Donate.update(id, {$set: email_sent_lookup_time});
+                            Utils.send_initial_email(id, status);
+                        }
+                    } else{
+                        //send out the appropriate email using Mandrill
+                        if ((Donate.findOne({'debit.id': debitID})) && !(Donate.findOne({'debit.id': debitID}).debit.initial_email_sent)) {
+                            id = Donate.findOne({'debit.id': debitID})._id;
+                            Donate.update({_id: id}, {$set: {'debit.initial_email_sent': true, 'debit.initial_time': moment().format('MM/DD/YYYY, hh:mm')}});
+                            Utils.send_initial_email(id, status);
+                        } else{
+                            logger.error("Inside events.js -> send_received_email -- Given that eventID I can't find the document in mongo. This might be because the user was stopped on the initial page before the debit was entered.");
+                        }
+                    }
+                /*}
                 catch(e){
                     logger.error(e);
-                }
+                }*/
             });
 
             evt.on('send_email', function (eventID, status) {
@@ -207,12 +232,15 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                             //setup query programmatically.
                             var email_sent_lookup = {};
                             email_sent_lookup['recurring.transactions.' + transaction_guid + '.email_sent.' + status] = true;
+                            var email_sent_lookup_time = {};
+                            email_sent_lookup_time['recurring.transactions.' + transaction_guid + '.email_sent.time'] = moment().format('MM/DD/YYYY, hh:mm');
                             
                             //send out the appropriate email using Mandrill
                             if(Donate.findOne(email_sent_lookup)){
                                 console.log("Email sent status = true nothing further to do.");
                             }else if (status === 'succeeded' || 'failed') {
                                 Donate.update(id, {$set: email_sent_lookup});
+                                Donate.update(id, {$set: email_sent_lookup_time});
                                 Utils.send_billy_email(id, transaction_guid, status);
                             }
                         }else {
@@ -220,11 +248,11 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                                 id = Donate.findOne({'debit.id': eventID})._id;
                                 logger.info("Here is the id: " + id);  
                             } else{
-                                logger.error("Inside events.js -> send_email -- Given that eventID I can't find the document in mongo. ");
+                                logger.error("Inside events.js -> send_email -- Given that eventID I can't find the document in mongo. This might be because the user was stopped on the initial page before the debit was entered.");
                             }
                             //send out the appropriate email using Mandrill
                             if (!(Donate.findOne(id).debit.email_sent)) {
-                                Donate.update(id, {$set: {'debit.email_sent': true}});
+                                Donate.update(id, {$set: {'debit.email_sent': true, 'debit.email_sent_time': moment().format('MM/DD/YYYY, hh:mm')}});
                                 Utils.send_one_time_email(id);
                             }
                         }
@@ -236,27 +264,32 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
             });
             evt.on('failed_collection_update', function (type, debitID){
                 console.log('failed_collection_update area. ' + debitID);
-                if(Donate.findOne({'debit.id': debitID})) {
-                    /*if(billy){
+                
+                    if(billy){
                         var returnedIDs = Utils.getBillySubscriptionGUID(invoice_guid);
                         id = returnedIDs.id;
-                        subscription_guid = subIDs.subscription_guid;
+                        subscription_guid = returnedIDs.subscription_guid;
 
-                        //update subscription document to failed status
-                        
-                        var setModifier = { $set: {} };
-                        setModifier.$set['recurring.subscriptions.' + guid] = subscription_guid;
-                        Donate.update({'recurring.subscriptions.guid': subscription_guid}, setModifier);
-                    }*/
-                    var id = Donate.findOne({'debit.id': debitID})._id;
-                    Donate.update(id, {$set: {'failed.failure_reason': body.events[0].entity[type][0].failure_reason,
-                        'failed.failure_reason_code': body.events[0].entity[type][0].failure_reason_code,
-                        'failed.transaction_number': body.events[0].entity[type][0].transaction_number,
-                        'failed.updated': moment().format('MM/DD/YYYY, hh:mm')}}
-                    );
-                }else{
-                    logger.error("Can't run a failed_collection_update when the debitID passed in can't be found in the collection. Check to see if this is a Billy debit.");
-                }
+                        Donate.update(id, {$set: {'failed.failure_reason': body.events[0].entity[type][0].failure_reason,
+                            'failed.failure_reason_code': body.events[0].entity[type][0].failure_reason_code,
+                            'failed.transaction_number': body.events[0].entity[type][0].transaction_number,
+                            'failed.updated': moment().format('MM/DD/YYYY, hh:mm'),
+                            'debit.status': 'failed'}}
+                        );
+
+                    }else if(Donate.findOne({'debit.id': debitID})) {
+                        var id = Donate.findOne({'debit.id': debitID})._id;
+                        Donate.update(id, {$set: {'failed.failure_reason': body.events[0].entity[type][0].failure_reason,
+                            'failed.failure_reason_code': body.events[0].entity[type][0].failure_reason_code,
+                            'failed.transaction_number': body.events[0].entity[type][0].transaction_number,
+                            'failed.updated': moment().format('MM/DD/YYYY, hh:mm'),
+                            'debit.status': 'failed'}}
+                        );
+                    } else{
+                        logger.error("Can't run a failed_collection_update when the debitID passed in can't be found in the collection. Check to see if this is a Billy debit.");    
+                    }
+                    
+                
             });
 	        /*************************************************************/
 	        /***************         DEBIT AREA             **************/
@@ -266,10 +299,11 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 		        if(billy){
                     this.emit('update_billy', body.events[0].entity.debits[0].id,
 			        body.events[0].entity.debits[0].status);
-                    this.emit('send_received_email', id);
+                    this.emit('send_received_email', body.events[0].entity.debits[0].id, body.events[0].entity.debits[0].status);
                 } else{
                     this.emit('update_from_event', body.events[0].entity.debits[0].id,
                     body.events[0].entity.debits[0].status);
+                    this.emit('send_received_email', body.events[0].entity.debits[0].id, body.events[0].entity.debits[0].status);
                 }
 	        });
 	        evt.on('debit_succeeded', function () {

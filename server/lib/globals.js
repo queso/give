@@ -140,7 +140,8 @@ Utils = {
         ],
         "to": [
           {"email": customer.email_address}
-        ]
+        ],
+        "bcc_address": "support@trashmountain.com"
       }
       });
     } //End try
@@ -251,7 +252,8 @@ Utils = {
         ],
         "to": [
           {"email": customer.email_address}
-        ]
+        ],
+        "bcc_address": "support@trashmountain.com"
       }
       });
     } //End try
@@ -374,7 +376,8 @@ Utils = {
         ],
         "to": [
           {"email": customer.email_address}
-        ]
+        ],
+        "bcc_address": "support@trashmountain.com"
       }
       });
     } //End try
