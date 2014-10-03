@@ -7,11 +7,46 @@
 //display error modal if there is an error while initially submitting data from the form.
 function handleErrors(error) {
     //console.log(error.errors);
-    $('#modal_for_initial_donation_error').modal({
-        show: true
-    });
-    $('#errorCategory').html(error.reason);
-    $('#errorDescription').html(error.details);
+    if(error.reason = "Match failed"){
+        var gatherInfo = {};
+        gatherInfo.browser = navigator.userAgent
+
+        error.details = "<tr>\
+                        <td><p>Hmmm... Looks like the form was submitted with something in it that computers don't like. Computers have\
+                         a strict diet, so don't try to feed them anything that they shouldn't eat. <-- Think here of dogs and chocolate ;-)</p></td>\
+                        </tr>\
+                    <tr>\
+                        <td><p>Try these to see if it fixes the form.</p></td>\
+                    </tr>\
+                        <td><p>1. Look through the fields and make sure they all have the right kind of information in them. Numbers in number fields letters in letter fields, etc.. \
+                        Then try to submit the form again.</p></td>\
+                    </tr>\
+                    <tr>\
+<td><p>2. If the form looks correct and you still get this error there could be a temporary problem preventing the form from being submitted. Try reloading the browser. \
+If you are still having problems, try rebooting your computer. If you come back here and you still have problems then please report this to tech support. </br> \
+<center><a target='_blank' href='mailto:support@trashmountain.com?subject=Trouble with the match field on the giving page&body=Boy, I sure love dogs. \
+But I&#39;m not here to talk about dogs, or cats. I&#39;m having a problem giving to your fine organization. %0A%0A\
+What&#39;s more, I&#39;ve tried all the steps listed on your site but I still can&#39;t give. What gives(pun intended)? Please help. %0A%0A\
+Please leave the below information in the email. This will help us get to the bottom of the problem. %0A%0A User Agent: " + gatherInfo.browser + "%0A\
+Language:  " + window.navigator.language + "%0A\
+IE Language:  " + navigator.userLanguage + "%0A\
+Location HREF: " + location.href + "'><button type='button' class='btn btn-danger'>Send an e-mail to support</button></a></center></p></td>\
+                    </tr>\
+                </tr>";
+
+        $('#modal_for_initial_donation_error').modal({
+            show: true
+        });
+        $('#errorCategory').html(error.reason);
+        $('#errorDescription').html(error.details);  
+    } else{
+        $('#modal_for_initial_donation_error').modal({
+            show: true
+        });
+        $('#errorCategory').html(error.reason);
+        $('#errorDescription').html(error.details);
+    }
+    
 }
 
 function fillForm() {

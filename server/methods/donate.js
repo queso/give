@@ -9,6 +9,7 @@ Meteor.methods({
     singleDonation: function (data) {
         logIt();
         /*try {*/
+            Utils.checkFormFields(data);
         // Moved the below from client side to here.
         data._id = Donate.insert({created_at: data.paymentInformation.created_at});
 
