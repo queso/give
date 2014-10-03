@@ -118,7 +118,7 @@ Template.DonationForm.events({
             backdrop: 'static'
         });
         var form = {
-            "paymentInformation": [{
+            "paymentInformation": {
                 "amount": parseInt(($('#amount').val().replace(/[^\d\.\-\ ]/g, ''))* 100),
                 "total_amount": parseInt($('#total_amount').val() * 100),
                 "donateTo": $("#donateTo").val(),
@@ -126,8 +126,8 @@ Template.DonationForm.events({
                 "is_recurring": $('#is_recurring').val(),
                 "coverTheFees": $('#coverTheFees').is(":checked"),
                 "created_at": moment().format('MM/DD/YYYY, hh:mm')
-            }],
-            "customer": [{
+            },
+            "customer": {
                 "fname": $('#fname').val(),
                 "lname": $('#lname').val(),
                 "email_address": $('#email_address').val(),
@@ -139,7 +139,7 @@ Template.DonationForm.events({
                 "postal_code": $('#postal_code').val(),
                 "country": $('#country').val(),
                 "created_at": moment().format('MM/DD/YYYY, hh:mm')
-            }],
+            },
             "URL": document.URL,
             sessionId: Meteor.default_connection._lastSessionId
         };

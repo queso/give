@@ -111,7 +111,7 @@ _.extend(Utils,{
             'phone': customerInfo.phone_number
         }));
         //add customer create response from Balanced to the database
-        Donate.update(id, {$set: {
+        Donate.update({id: id}, {$set: {
             'customer.type': customerData._type,
              status: 'Customer created.',
             'customer.id': customerData.id

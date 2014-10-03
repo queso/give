@@ -8,7 +8,7 @@ function logIt() {
 Meteor.methods({
     singleDonation: function (data) {
         logIt();
-        try {
+        /*try {*/
         // Moved the below from client side to here.
         data._id = Donate.insert({created_at: data.paymentInformation.created_at});
 
@@ -33,7 +33,7 @@ Meteor.methods({
         // ^^^^^^^^^^^^^^^ Moved the above from the client side to here.
         //initialize the balanced function with our API key.
         balanced.configure(Meteor.settings.balanced_api_key);
-
+        console.dir(data.customer);
         var customerInfo = data.customer;
         var paymentInfo = data.paymentInformation;
         var customerData = Utils.create_customer(customerInfo, data._id);
@@ -71,7 +71,7 @@ Meteor.methods({
         }
         return data._id;
 
-        } catch (e) {
+        /*} catch (e) {
          logger.error("Got to catch error area of processPayment function." + e + " " + e.reason);
          logger.error("e.category_code = " + e.category_code + " e.descriptoin = " + e.description);
          if(e.category_code) {
@@ -87,6 +87,6 @@ Meteor.methods({
          }else {
              throw new Meteor.Error(500, e.reason, e.details);
          }
-         }
+         }*/
     }
 });
