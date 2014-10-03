@@ -6,7 +6,7 @@
 // amount that is shown to the user and passed as total_amount through the form
 //display error modal if there is an error while initially submitting data from the form.
 function handleErrors(error) {
-    //console.log(error.errors[0]);
+    //console.log(error.errors);
     $('#modal_for_initial_donation_error').modal({
         show: true
     });
@@ -118,7 +118,7 @@ Template.DonationForm.events({
             backdrop: 'static'
         });
         var form = {
-            "paymentInformation": [{
+            "paymentInformation": {
                 "amount": parseInt(($('#amount').val().replace(/[^\d\.\-\ ]/g, ''))* 100),
                 "total_amount": parseInt($('#total_amount').val() * 100),
                 "donateTo": $("#donateTo").val(),
@@ -126,8 +126,8 @@ Template.DonationForm.events({
                 "is_recurring": $('#is_recurring').val(),
                 "coverTheFees": $('#coverTheFees').is(":checked"),
                 "created_at": moment().format('MM/DD/YYYY, hh:mm')
-            }],
-            "customer": [{
+            },
+            "customer": {
                 "fname": $('#fname').val(),
                 "lname": $('#lname').val(),
                 "email_address": $('#email_address').val(),
@@ -139,27 +139,27 @@ Template.DonationForm.events({
                 "postal_code": $('#postal_code').val(),
                 "country": $('#country').val(),
                 "created_at": moment().format('MM/DD/YYYY, hh:mm')
-            }],
+            },
             "URL": document.URL,
             sessionId: Meteor.default_connection._lastSessionId
         };
         //
-        if (form.paymentInformation[0].total_amount !== form.paymentInformation[0].amount) {
-            form.paymentInformation[0].fees = (form.paymentInformation[0].total_amount - form.paymentInformation[0].amount);
+        if (form.paymentInformation.total_amount !== form.paymentInformation.amount) {
+            form.paymentInformation.fees = (form.paymentInformation.total_amount - form.paymentInformation.amount);
         }
-        if (form.paymentInformation[0].donateWith === "Card") {
-            form.paymentInformation[0].card_number = $('[name=card_number]').val();
-            form.paymentInformation[0].expiry_month = $('[name=expiry_month]').val();
-            form.paymentInformation[0].expiry_year = $('[name=expiry_year]').val();
-            form.paymentInformation[0].cvv = $('[name=cvv]').val();
+        if (form.paymentInformation.donateWith === "Card") {
+            form.paymentInformation.card_number = $('[name=card_number]').val();
+            form.paymentInformation.expiry_month = $('[name=expiry_month]').val();
+            form.paymentInformation.expiry_year = $('[name=expiry_year]').val();
+            form.paymentInformation.cvv = $('[name=cvv]').val();
             //set the form type so the server side method knows what to do with the data.
-            form.paymentInformation[0].type = "Card";
+            form.paymentInformation.type = "Card";
         } else {
-            form.paymentInformation[0].account_number = $('[name=account_number]').val();
-            form.paymentInformation[0].routing_number = $('[name=routing_number]').val();
-            form.paymentInformation[0].account_type = $('[name=account_type]').val();
+            form.paymentInformation.account_number = $('[name=account_number]').val();
+            form.paymentInformation.routing_number = $('[name=routing_number]').val();
+            form.paymentInformation.account_type = $('[name=account_type]').val();
             //set the form type so the server side method knows what to do with the data.
-            form.paymentInformation[0].type = "Check";
+            form.paymentInformation.type = "Check";
         }
         //Move inert and update from here.
         if ($('#is_recurring').val() === 'one_time') {
