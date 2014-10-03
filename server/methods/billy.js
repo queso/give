@@ -194,30 +194,35 @@ Meteor.methods({
     recurringDonation: function(data) {
 		logger.info("Started billy method calls.")
 		logIt();
-		// Moved the below from client side to here.  
-      	data._id = Donate.insert({created_at: data.paymentInformation.created_at});
-
-		Donate.update(data._id, {
-			$set: {
-				sessionId: data.sessionId,
-				URL: data.URL,
-				'customer': data.customer,
-				'debit.donateTo': data.paymentInformation.donateTo,
-				'debit.donateWith': data.paymentInformation.donateWith,
-				'debit.type': data.paymentInformation.type,
-				'debit.total_amount': data.paymentInformation.total_amount,
-				'debit.amount': data.paymentInformation.amount,
-				'debit.fees': data.paymentInformation.fees,
-				'debit.coveredTheFees': data.paymentInformation.coverTheFees,
-                'debit.status': 'pending'
-			}
-		});
-		logger.info("ID: " + data._id);
-
-		balanced.configure(Meteor.settings.balanced_api_key);
-		var customerInfo = data.customer;
-		var customerData = '';
 		try {
+
+			//Check the form to make sure nothing malicious is being submitted to the server
+	        Utils.checkFormFields(data);
+
+			// Moved the below from client side to here.  
+	      	data._id = Donate.insert({created_at: data.paymentInformation.created_at});
+
+			Donate.update(data._id, {
+				$set: {
+					sessionId: data.sessionId,
+					URL: data.URL,
+					'customer': data.customer,
+					'debit.donateTo': data.paymentInformation.donateTo,
+					'debit.donateWith': data.paymentInformation.donateWith,
+					'debit.type': data.paymentInformation.type,
+					'debit.total_amount': data.paymentInformation.total_amount,
+					'debit.amount': data.paymentInformation.amount,
+					'debit.fees': data.paymentInformation.fees,
+					'debit.coveredTheFees': data.paymentInformation.coverTheFees,
+	                'debit.status': 'pending'
+				}
+			});
+			logger.info("ID: " + data._id);
+
+			balanced.configure(Meteor.settings.balanced_api_key);
+			var customerInfo = data.customer;
+			var customerData = '';
+		
 			customerData = Utils.extractFromPromise(balanced.marketplace.customers.create({
 				'name': customerInfo.fname + " " + customerInfo.lname,
 				"address": {
