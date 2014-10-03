@@ -5,7 +5,7 @@
             <!--[if lt IE 9]>
                 <label>First Name</label>
             <![endif]-->        
-			<input {{attributes_Input_FName}} class="form-control" />
+			<input {{attributes_Input_FName}} class="form-control" data-parsley-error-message="Please enter your first name." >
 		</div>
     </div>
     <div class="form-group">
@@ -13,16 +13,26 @@
             <!--[if lt IE 9]>
                 <label>Last Name</label>
             <![endif]-->        
-            <input {{attributes_Input_LName}} class="form-control" />
+            <input {{attributes_Input_LName}} class="form-control" data-parsley-error-message="Please enter your last name." >
         </div>
 	</div>
+
+    <div class="form-group">
+        <div class="col-sm-12">
+            <!--[if lt IE 9]>
+                <label>Make a donation on behalf of your organization</label>
+            <![endif]--> 
+            <input type="text" id="org" class="form-control" placeholder="Business Name (If applicable)" > 
+        </div>
+    </div><!-- /form-group -->
+
     <!-- email address input-->
     <div class="form-group">
         <div class="col-sm-12">
             <!--[if lt IE 9]>
                 <label>Email Address</label>
             <![endif]-->        
-            <input {{attributes_Input_Email_Address}} class="form-control email" />
+            <input {{attributes_Input_Email_Address}} class="form-control email" >
         </div>
     </div>
     <!-- phone number input-->
@@ -33,7 +43,7 @@
             <![endif]-->        
             <input {{attributes_Input_Phone_Number}} 
             oninvalid="setCustomValidity('Please enter only numbers')"
-            onchange="try{setCustomValidity('')}catch(e){}" class="form-control" />
+            onchange="try{setCustomValidity('')}catch(e){}" class="form-control" >
         </div>
     </div>
 	<!-- address-line1 input-->
@@ -42,7 +52,7 @@
             <!--[if lt IE 9]>
                 <label>Address Line 1</label>
             <![endif]-->        
-            <input {{attributes_Input_AddressLine1}} class="form-control" >
+            <input {{attributes_Input_AddressLine1}} class="form-control" data-parsley-error-message="Please enter your first name.">
         </div>
     </div>
     <!-- address-line2 input-->
@@ -51,7 +61,7 @@
             <!--[if lt IE 9]>
                 <label>Address Line 2</label>
             <![endif]-->        
-            <input {{attributes_Input_AddressLine2}} class="form-control" >
+            <input {{attributes_Input_AddressLine2}} class="form-control" data-parsley-error-message="Please enter your street address." >
         </div>
     </div>
     <!-- city input-->
@@ -60,7 +70,7 @@
             <!--[if lt IE 9]>
                 <label>City</label>
             <![endif]-->        
-            <input {{attributes_Input_City}} class="form-control" >
+            <input {{attributes_Input_City}} class="form-control" data-parsley-error-message="Please enter your city name.">
         </div>
     </div>
     <!-- region input-->
@@ -69,7 +79,7 @@
             <!--[if lt IE 9]>
                 <label>State</label>
             <![endif]-->        
-            <input {{attributes_Input_State}} class="form-control text-capitalize" >
+            <input {{attributes_Input_State}} class="form-control text-capitalize" data-parsley-error-message="Please enter your state name." >
         </div>
     </div>
     <!-- postal-code input-->
@@ -78,7 +88,7 @@
             <!--[if lt IE 9]>
                 <label>Postal Code</label>
             <![endif]-->        
-            <input {{attributes_Input_Zip}} pattern="(\d{5}([\-]\d{4})?)" class="form-control" >
+            <input {{attributes_Input_Zip}} pattern="(\d{5}([\-]\d{4})?)" class="form-control" data-parsley-error-message="Please enter your postal code.">
         </div>
     </div>
     <!-- country select -->

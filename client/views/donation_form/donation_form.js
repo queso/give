@@ -63,6 +63,7 @@ function fillForm() {
     }
     $('#fname').val("John");
     $('#lname').val("Doe");
+    $('#org').val("Business Name");
     $('#email_address').val("josh@trashmountain.com");
     $('#phone').val("(785) 246-6845");
     $('#address_line1').val("Address Line 1");
@@ -165,6 +166,7 @@ Template.DonationForm.events({
             "customer": {
                 "fname": $('#fname').val(),
                 "lname": $('#lname').val(),
+                "org":   $('#org').val(),
                 "email_address": $('#email_address').val(),
                 "phone_number": $('#phone').val(),
                 "address_line1": $('#address_line1').val(),

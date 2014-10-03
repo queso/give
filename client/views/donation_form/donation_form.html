@@ -40,7 +40,6 @@
                         <label class="checkbox" for="coverTheFees">
                             <input type="checkbox" name="coverTheFees" id="coverTheFees" data-toggle="checkbox" {{coverTheFeesChecked}} /> I'll cover the credit card processing fees.&nbsp;&nbsp; <i id="coverTheFeesQuestion" class="fa fa-question-circle"></i>
                         </label>
-
                     </div>
                 </div>
                 <div class="row">
@@ -62,7 +61,7 @@
                                 <label>Amount</label>
                             <![endif]-->
     				            <span class="input-group-addon">$</span>
-    				            <input {{attributes_Input_Amount}} value="{{amount}}" class="form-control" required />
+    				            <input {{attributes_Input_Amount}} value="{{amount}}" class="form-control" required data-parsley-error-message="Please enter an amount with no commas." />
     				        </div>
     				    </div>
     				</div>

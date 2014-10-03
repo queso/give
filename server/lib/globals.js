@@ -11,9 +11,6 @@ Utils = {
     });
     return fut.wait();
     },
-    checkInputs: function(form) {
-        return typeof form.customer.fname;
-    },
     getBillySubscriptionGUID: function(invoiceID){
         var IDs = {};
         var invoice = HTTP.get("https://billy.balancedpayments.com/v1/invoices/" + invoiceID, {
@@ -104,8 +101,11 @@ Utils = {
                 "content": error.failure_reason_code
               },{
                 "name": "FULLNAME",
-                "content": customer.fname + " " + customer.lname
-            }, {
+                "content": customer.org + "</br>" + customer.fname + " " + customer.lname
+            },{
+                "name": "ORG",
+                "content": customer.org
+            },{
                 "name": "ADDRESS_LINE1",
                 "content": customer.address_line1
             }, {
@@ -207,7 +207,10 @@ Utils = {
                 "content": error.failure_reason_code
               },{
                 "name": "FULLNAME",
-                "content": customer.fname + " " + customer.lname
+                "content": customer.org + "</br>" + customer.fname + " " + customer.lname
+            }, {
+                "name": "ORG",
+                "content": customer.org
             }, {
                 "name": "ADDRESS_LINE1",
                 "content": customer.address_line1
@@ -322,8 +325,11 @@ Utils = {
                 "content": error.failure_reason_code
               },{
                 "name": "FULLNAME",
-                "content": customer.fname + " " + customer.lname
+                "content": customer.org + "</br>" + customer.fname + " " + customer.lname
             }, {
+                "name": "ORG",
+                "content": customer.org
+            },{
                 "name": "ADDRESS_LINE1",
                 "content": customer.address_line1
             }, {
@@ -386,6 +392,7 @@ Utils = {
         customer: {
           fname: String, 
           lname: String, 
+          org: Match.Optional(String), 
           email_address: String, 
           phone_number: Match.Optional(String), 
           address_line1: String,
