@@ -167,10 +167,12 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                     logger.info("Going to go find the subscription, insert the invoice into that subscription and " + 
                         "return the id of the collection as well as the subscription GUID.");
                     var subIDs = Utils.getBillySubscriptionGUID(invoice_guid);
-                    id = subIDs.id;
-                    subscription_guid = subIDs.subscription_guid;
-                    this.emit('billy_trans_insert', status);
-                    //Need subscription here too, need to make id an object with id and subscription GUID
+                    if(subIDs){
+                        id = subIDs.id;
+                        subscription_guid = subIDs.subscription_guid;
+                        this.emit('billy_trans_insert', status);
+                        //Need subscription here too, need to make id an object with id and subscription GUID
+                    }
                 }
 
             });
@@ -199,10 +201,12 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                         email_sent_lookup['recurring.transactions.' + transaction_guid + '.email_sent.initial_sent'] = true;
                         var email_sent_lookup_time = {};
                         email_sent_lookup_time['recurring.transactions.' + transaction_guid + '.email_sent.initial_time'] = moment().format('MM/DD/YYYY, hh:mm');
+                        var transaction_guid_exists = {};
+                        transaction_guid_exists['recurring.transactions.' + transaction_guid + '.guid'] = transaction_guid;
 
                         if(Donate.findOne(email_sent_lookup)){
                             logger.info("Initial email sent = true. Nothing further to do.");
-                        } else if(status){
+                        } else if(transaction_guid_exists){
                             Donate.update(id, {$set: email_sent_lookup});
                             Donate.update(id, {$set: email_sent_lookup_time});
                             Utils.send_initial_email(id, status);
@@ -267,15 +271,17 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                 
                     if(billy){
                         var returnedIDs = Utils.getBillySubscriptionGUID(invoice_guid);
-                        id = returnedIDs.id;
-                        subscription_guid = returnedIDs.subscription_guid;
+                        if(returnedIDs){
+                            id = returnedIDs.id;
+                            subscription_guid = returnedIDs.subscription_guid;
 
-                        Donate.update(id, {$set: {'failed.failure_reason': body.events[0].entity[type][0].failure_reason,
-                            'failed.failure_reason_code': body.events[0].entity[type][0].failure_reason_code,
-                            'failed.transaction_number': body.events[0].entity[type][0].transaction_number,
-                            'failed.updated': moment().format('MM/DD/YYYY, hh:mm'),
-                            'debit.status': 'failed'}}
-                        );
+                            Donate.update(id, {$set: {'failed.failure_reason': body.events[0].entity[type][0].failure_reason,
+                                'failed.failure_reason_code': body.events[0].entity[type][0].failure_reason_code,
+                                'failed.transaction_number': body.events[0].entity[type][0].transaction_number,
+                                'failed.updated': moment().format('MM/DD/YYYY, hh:mm'),
+                                'debit.status': 'failed'}}
+                            );
+                        }
 
                     }else if(Donate.findOne({'debit.id': debitID})) {
                         var id = Donate.findOne({'debit.id': debitID})._id;
