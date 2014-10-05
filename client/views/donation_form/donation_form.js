@@ -23,7 +23,7 @@ function handleErrors(error) {
                     </tr>\
                     <tr>\
 <td><p>2. If the form looks correct and you still get this error there could be a temporary problem preventing the form from being submitted. Try reloading the browser. \
-If you are still having problems, try rebooting your computer. If you come back here and you still have problems then please report this to tech support. </br> \
+If you are still having problems, try rebooting your computer. If you come back here and you still have problems then please report this to tech support. <br> \
 <center><a target='_blank' href='mailto:support@trashmountain.com?subject=Trouble with the match field on the giving page&body=Boy, I sure love dogs. \
 But I&#39;m not here to talk about dogs, or cats. I&#39;m having a problem giving to your fine organization. %0A%0A\
 What&#39;s more, I&#39;ve tried all the steps listed on your site but I still can&#39;t give. What gives(pun intended)? Please help. %0A%0A\
@@ -140,7 +140,7 @@ Template.DonationForm.events({
                         <td>2. Call us and give your gift over the phone by ACH.&nbsp; <tel>(785)246-6845</tel></td>\
                     </tr>\
                     <tr>\
-                        <td>3. Mail your check of any amount to</br> 1555 NW Gage BLVD. </br>Topeka, KS 66618</td>\
+                        <td>3. Mail your check of any amount to<br> 1555 NW Gage BLVD. <br>Topeka, KS 66618</td>\
                     </tr>\
                 </tr>";
             handleErrors(error);

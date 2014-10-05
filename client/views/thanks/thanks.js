@@ -26,7 +26,7 @@ Template.Thanks.helpers({
     }
     return "<h3 class='text-center badText'>Something went wrong.</h3>\
           <p class='text-center alert alert-error'>\
-            We weren't able to process your gift. Here is the error: </br><strong>" + errorMessage + "</strong></br> Please <a href='" + referrer + "'>go back</a> and try again.\
+            We weren't able to process your gift. Here is the error: <br><strong>" + errorMessage + "</strong><br> Please <a href='" + referrer + "'>go back</a> and try again.\
             <br>\
             <a id='failed_icon' href='" + referrer + "'><i class='fa fa-arrow-left'></i></a>\
           </p>";
@@ -40,8 +40,9 @@ Template.Gift.helpers({
     return (transaction_status === 'succeeded');
   },
   successOrPendingPayment: function () {
-        var debitStatus = this.debit.status;
-      return (debitStatus === 'succeeded' || debitStatus === 'pending');
+    var transaction_guid = Session.get('params.transaction_guid');
+    var transaction_status = this.recurring.transactions[transaction_guid].status;
+    return (transaction_status === 'succeeded' || transaction_status === 'pending');
   },
   successOrPendingTrans: function () {
     return "<h3 class='text-center'>Thank you for your gift!</h3>\
@@ -62,7 +63,7 @@ Template.Gift.helpers({
     }
     return "<h3 class='text-center badText'>Something went wrong.</h3>\
           <p class='text-center alert alert-error'>\
-            We weren't able to process your gift. Here is the error: </br><strong>" + errorMessage + "</strong></br> Please <a href='" + referrer + "'>go back</a> and try again.\
+            We weren't able to process your gift. Here is the error: <br><strong>" + errorMessage + "</strong><br> Please <a href='" + referrer + "'>go back</a> and try again.\
             <br>\
             <a href='" + referrer + "'><i class='fa fa-arrow-left'></i></a>\
           </p>";

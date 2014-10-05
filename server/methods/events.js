@@ -118,13 +118,6 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                 var setModifier = { $set: {} };
                 setModifier.$set['recurring.transactions.' + transaction_guid + '.status'] = status;
                 Donate.update({_id: id}, setModifier);
-
-                /*Donate.update({
-                    _id: id, 'recurring.subscriptions.transactions.guid': transaction_guid}, {
-                    $set: {
-                        'recurring.transactions.status': status
-                    }
-                }); */
             });
             evt.on('billy_trans_insert', function (status) {
                 var transaction = HTTP.get("https://billy.balancedpayments.com/v1/transactions/" + transaction_guid, {
@@ -134,11 +127,6 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                 lookup_transaction_guid['recurring.transactions.' + transaction_guid + '.guid'] = transaction_guid;
                 if(Donate.findOne(lookup_transaction_guid)){
                     this.emit('billy_trans_status', status);
-                    /*if(bodyType === 'debit.succeeded' || 'debit.failed'){
-                        Utils.send_billy_email(id, transaction_guid, status);
-                        return;    
-                    }*/
-                    
                 }else{
                     var setModifier = { $set: {} };
                     transaction.data.email_sent = {};
@@ -176,21 +164,6 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                 }
 
             });
-
-            /*evt.on('update_status_for_first_time_billy_debit', function (id, eventID, status){
-                Donate.update({
-                _id: id,
-                'recurring.subscriptions.invoices': billySubscribeCustomer.data.guid}, {
-                $addToSet: {
-                    'recurring.subscriptions.$.invoices': billyGetInvoiceID.data
-                }
-            });
-                    Donate.update(id, {
-                        $set: {
-                            'recurring.subscriptions.invoices.debit': invoice_guid
-                        }
-                    })
-                });*/
             evt.on('send_received_email', function (debitID, status) {
                 /*try{*/
                     if (billy) {
@@ -402,30 +375,12 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                 { $set: { state: insertThis}
                 });
             });
-            /*evt.on('invoice_pending', function () {
-                logger.info("Got to the invoice_pending");
-                id = Invoices.insert(body.events[0].entity.invoices[0]);
-                logger.info("ID: " + id);
-            });
-            evt.on('invoice_succeeded', function () {
-                logger.info("Got to the invoice_succeeded");
-                id = Invoices.insert(body.events[0].entity.invoices[0]);
-                logger.info("ID: " + id);
-            });
-            evt.on('invoice_failed', function () {
-                logger.info("Got to the invoice_failed");
-                id = Invoices.insert(body.events[0].entity.invoices[0]);
-                logger.info("ID: " + id);
-            });*/
             evt.on('fee_settlement_created', function () {
                 logger.info("Got to the fee_settlement_created");
             });
             evt.on('fee_settlement_updated', function () {
                 logger.info("Got to the fee_settlement_updated");
             });
-            /*evt.on('fee_settlement_failed', function () {
-                logger.info("Got to the fee_settlement_failed");
-            });*/
             /*************************************************************/
             /************         END INVOICES AREA         **************/
             /*************************************************************/

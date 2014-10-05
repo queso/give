@@ -21,7 +21,7 @@ Template.Receipt.helpers({
    },
    org: function () {
     if (this.customer.org){
-      return this.customer.org + "</br>"
+      return this.customer.org + "<br>"
     }
    },
    fname: function () {

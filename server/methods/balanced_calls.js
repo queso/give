@@ -58,14 +58,6 @@ _.extend(Utils,{
         });
         return check;
     },
-    /*debit_create: function (data, checkHref) {
-        var associate;
-        var processor_uri = Donate.findOne(data._id).recurring.customer.processor_uri;
-        logger.info(checkHref + ' ' + processor_uri);
-        logger.info("Associate uri: " + processor_uri);
-        associate = Utils.extractFromPromise(balanced.get(checkHref).associate_to_customer(processor_uri));
-        logger.info("Associate and debit: ");
-    },*/
     create_association: function (data, paymentHref, otherHref) {
             try {
                 console.log("Inside create_association function");

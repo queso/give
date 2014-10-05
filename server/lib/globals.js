@@ -52,6 +52,11 @@ Utils = {
       var debit = lookup_record.debit;
       var customer = lookup_record.customer;
       var fees = debit.fees;
+      if(customer.org){
+        var fullName = customer.org + "<br>" + customer.fname + " " + customer.lname;
+      }else{
+        var fullName = customer.fname + " " + customer.lname;
+      } 
       logger.info("Cover the fees = " + debit.coveredTheFees);
       logger.info("debit.status: " + debit.status);
       var slug;
@@ -103,7 +108,7 @@ Utils = {
                 "content": error.failure_reason_code
               },{
                 "name": "FULLNAME",
-                "content": customer.org + "</br>" + customer.fname + " " + customer.lname
+                "content": fullName
             },{
                 "name": "ORG",
                 "content": customer.org
@@ -161,6 +166,11 @@ Utils = {
       var debit = lookup_record.debit;
       var customer = lookup_record.customer;
       var fees = debit.fees;
+      if(customer.org){
+        var fullName = customer.org + "<br>" + customer.fname + " " + customer.lname;
+      }else{
+        var fullName = customer.fname + " " + customer.lname;
+      }
       logger.info("Cover the fees = " + debit.coveredTheFees);
       logger.info("debit.status: " + debit.status);
       var slug;
@@ -215,7 +225,7 @@ Utils = {
                 "content": error.failure_reason_code
               },{
                 "name": "FULLNAME",
-                "content": customer.org + "</br>" + customer.fname + " " + customer.lname
+                "content": fullName
             }, {
                 "name": "ORG",
                 "content": customer.org
@@ -275,6 +285,11 @@ Utils = {
       var debit = lookup_record.debit;
       var customer = lookup_record.customer;
       var fees = (debit.fees);
+      if(customer.org){
+        var fullName = customer.org + "<br>" + customer.fname + " " + customer.lname;
+      }else{
+        var fullName = customer.fname + " " + customer.lname;
+      }
       logger.info("Cover the fees = " + debit.coveredTheFees);
       logger.info("Transaction Status: " + lookup_record.recurring.transactions[transaction_guid].status);
 
@@ -336,7 +351,7 @@ Utils = {
                 "content": error.failure_reason_code
               },{
                 "name": "FULLNAME",
-                "content": customer.org + "</br>" + customer.fname + " " + customer.lname
+                "content": fullName
             }, {
                 "name": "ORG",
                 "content": customer.org
