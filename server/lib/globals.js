@@ -273,14 +273,11 @@ Utils = {
       var lookup_record = Donate.findOne({_id: id});
       var created_at = moment(lookup_record.recurring.transactions[transaction_guid].created_at).format('MM/DD/YYYY');
       var debit = lookup_record.debit;
-      console.log("**********HERE IS WHAT YOU ARE LOOKING FOR******************");
-      console.dir(debit);
       var customer = lookup_record.customer;
       var fees = (debit.fees);
       logger.info("Cover the fees = " + debit.coveredTheFees);
       logger.info("Transaction Status: " + lookup_record.recurring.transactions[transaction_guid].status);
 
-      console.log("HERE*******" + transaction_guid);
       var slug;
       //TODO: Fix this so that it looks into the transaciton sub-document, not just into the top level, or when it fails, put the transaction GUID into the failed record 
       //that is probably the way to go. 
