@@ -77,15 +77,21 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                 try {
                     if(billy){
                         var amount = Donate.findOne({_id: mixedID}).recurring.subscriptions.amount;
-                        logger.info("*****NEW RECURRING GIFT**** id: " + mixedID + " transaction_guid: " + transaction_guid + " Total Amount: $" + amount / 100);
+                        logger.info("*****NEW GIFT IN RECURRING**** id: " + mixedID + " transaction_guid: " + transaction_guid + " Total Amount: $" + amount / 100);
+                        if(amount >= 50000){
+                            Utils.large_gift_email(mixedID, true, transaction_guid, amount);
+                        }
                     }else{
                         var amount = Donate.findOne({"debit.id": mixedID}).debit.total_amount;
                         logger.info("*************NEW GIFT************* id: " + mixedID + " Total Amount: $" + amount / 100);
-                    }
-                    
+                        if(amount >= 50000){
+                            var sendThisID = Donate.findOne({"debit.id": mixedID})._id;
+                            Utils.large_gift_email(sendThisID, false, mixedID, amount);
+                        }                        
+                    }                    
                 }
                 catch (e) {
-                    logger.error("events.js caught an error when trying to log_new_gift: " + e);
+                    logger.error("Events.js caught an error when trying to log_new_gift: " + e);
                     throw new Meteor.Error(e);
                 }
             });
@@ -165,7 +171,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                     }
                 }catch(e){
                     logger.error(e);
-                    }
+                }
 
             });
             evt.on('send_received_email', function (debitID, status) {
@@ -188,7 +194,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                             Donate.update(id, {$set: email_sent_lookup_time});
                             Utils.send_initial_email(id, status);
                         } else{
-                            throw new Meteor.Error(404, 'Error 404: Not found', transaction_guid);
+                            throw new Meteor.Error(404, 'Error: Not found', transaction_guid);
                         }
                     } else{
                         //send out the appropriate email using Mandrill
