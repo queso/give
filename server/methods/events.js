@@ -77,7 +77,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                 try {
                     if(billy){
                         var amount = Donate.findOne({_id: mixedID}).debit.total_amount;
-                        logger.info("*****NEW RECURRING GIFT**** id: " + mixedID + "transaction_guid: " + transaction_guid + " Total Amount: $" + amount / 100)
+                        logger.info("*****NEW RECURRING GIFT**** id: " + mixedID + " transaction_guid: " + transaction_guid + " Total Amount: $" + amount / 100)
                     }else{
                         var amount = Donate.findOne({"debit.id": mixedID}).debit.total_amount;
                         logger.info("*************NEW GIFT************* id: " + mixedID + " Total Amount: $" + amount / 100)
@@ -135,37 +135,41 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                 }
             });
             evt.on('update_billy', function (eventID, status){
-                logger.info("Inside Billy update function.");
+                try{
+                    logger.info("Inside Billy update function.");
 
-                var lookup_transaction_guid = {};
-                lookup_transaction_guid['recurring.transactions.' + transaction_guid + '.guid'] = transaction_guid;
-                var lookup_invoice_guid = {};
-                lookup_invoice_guid['recurring.invoices.' + invoice_guid + '.guid'] = invoice_guid;
+                    var lookup_transaction_guid = {};
+                    lookup_transaction_guid['recurring.transactions.' + transaction_guid + '.guid'] = transaction_guid;
+                    var lookup_invoice_guid = {};
+                    lookup_invoice_guid['recurring.invoices.' + invoice_guid + '.guid'] = invoice_guid;
 
-                if(Donate.findOne(lookup_transaction_guid)){
-                    logger.info("FOUND A transaction_guid in the collection");
-                    id = Donate.findOne(lookup_transaction_guid)._id;
-                    this.emit('billy_trans_status', status);
-                }else if(Donate.findOne(lookup_invoice_guid)){
-                    id = Donate.findOne(lookup_invoice_guid)._id;
-                    logger.info("Found the invoice GUID in invoices");
-                    this.emit('billy_trans_insert', status);                    
-                } else{
-                    logger.info("Couldn't find the invoice GUID in invoices, let's go look for it.");
-                    logger.info("Going to go find the subscription, insert the invoice into that subscription and " + 
-                        "return the id of the collection as well as the subscription GUID.");
-                    var subIDs = Utils.getBillySubscriptionGUID(invoice_guid);
-                    if(subIDs){
-                        id = subIDs.id;
-                        subscription_guid = subIDs.subscription_guid;
-                        this.emit('billy_trans_insert', status);
-                        //Need subscription here too, need to make id an object with id and subscription GUID
+                    if(Donate.findOne(lookup_transaction_guid)){
+                        logger.info("FOUND A transaction_guid in the collection");
+                        id = Donate.findOne(lookup_transaction_guid)._id;
+                        this.emit('billy_trans_status', status);
+                    }else if(Donate.findOne(lookup_invoice_guid)){
+                        id = Donate.findOne(lookup_invoice_guid)._id;
+                        logger.info("Found the invoice GUID in invoices");
+                        this.emit('billy_trans_insert', status);                    
+                    } else{
+                        logger.info("Couldn't find the invoice GUID in invoices, let's go look for it.");
+                        logger.info("Going to go find the subscription, insert the invoice into that subscription and " + 
+                            "return the id of the collection as well as the subscription GUID.");
+                        var subIDs = Utils.getBillySubscriptionGUID(invoice_guid);
+                        if(subIDs){
+                            id = subIDs.id;
+                            subscription_guid = subIDs.subscription_guid;
+                            this.emit('billy_trans_insert', status);
+                            //Need subscription here too, need to make id an object with id and subscription GUID
+                        } 
                     }
-                }
+                }catch(e){
+                    logger.error(e);
+                    }
 
             });
             evt.on('send_received_email', function (debitID, status) {
-                /*try{*/
+                try{
                     if (billy) {
                         logger.info("Inside send_received_email Billy section.");
 
@@ -179,10 +183,12 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 
                         if(Donate.findOne(email_sent_lookup)){
                             logger.info("Initial email sent = true. Nothing further to do.");
-                        } else if(transaction_guid_exists){
+                        } else if(Donate.findOne(transaction_guid_exists)){
                             Donate.update(id, {$set: email_sent_lookup});
                             Donate.update(id, {$set: email_sent_lookup_time});
                             Utils.send_initial_email(id, status);
+                        } else{
+                            throw new Meteor.Error(404, 'Error 404: Not found', transaction_guid);
                         }
                     } else{
                         //send out the appropriate email using Mandrill
@@ -194,10 +200,10 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                             logger.error("Inside events.js -> send_received_email -- Given that eventID I can't find the document in mongo. This might be because the user was stopped on the initial page before the debit was entered.");
                         }
                     }
-                /*}
+                }
                 catch(e){
                     logger.error(e);
-                }*/
+                }
             });
 
             evt.on('send_email', function (eventID, status) {

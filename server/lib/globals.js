@@ -25,7 +25,7 @@ Utils = {
             logger.info("Got the _id: " + IDs.id);
         }else{
             logger.error("Couldn't find the subscription for this invoice...bummer: " + invoiceID);
-            return;
+            throw new Meteor.Error(404, 'Error 404: Not found', invoiceID); 
         }
 
         //update the collection with this invoice
