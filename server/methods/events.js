@@ -76,11 +76,11 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
             evt.on('log_new_gift', function (mixedID, transaction_guid) {
                 try {
                     if(billy){
-                        var amount = Donate.findOne({_id: mixedID}).debit.total_amount;
-                        logger.info("*****NEW RECURRING GIFT**** id: " + mixedID + " transaction_guid: " + transaction_guid + " Total Amount: $" + amount / 100)
+                        var amount = Donate.findOne({_id: mixedID}).recurring.subscriptions.amount;
+                        logger.info("*****NEW RECURRING GIFT**** id: " + mixedID + " transaction_guid: " + transaction_guid + " Total Amount: $" + amount / 100);
                     }else{
                         var amount = Donate.findOne({"debit.id": mixedID}).debit.total_amount;
-                        logger.info("*************NEW GIFT************* id: " + mixedID + " Total Amount: $" + amount / 100)
+                        logger.info("*************NEW GIFT************* id: " + mixedID + " Total Amount: $" + amount / 100);
                     }
                     
                 }

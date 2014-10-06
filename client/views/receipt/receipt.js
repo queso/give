@@ -1,6 +1,13 @@
 /*****************************************************************************/
 /* Receipt: Event Handlers and Helpers */
 /*****************************************************************************/
+Template.Receipt.events({
+  'click #matchLink': function (){
+    e.preventDefault();
+    window.location.href = "https://trashmountain.com/match";
+  }
+});
+
 Template.Receipt.helpers({
     billy: function () {
       return (this.recurring);
