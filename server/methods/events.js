@@ -183,7 +183,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                         var email_sent_lookup = {};
                         email_sent_lookup['recurring.transactions.' + transaction_guid + '.email_sent.initial_sent'] = true;
                         var email_sent_lookup_time = {};
-                        email_sent_lookup_time['recurring.transactions.' + transaction_guid + '.email_sent.initial_time'] = moment().format('MM/DD/YYYY, hh:mm');
+                        email_sent_lookup_time['recurring.transactions.' + transaction_guid + '.email_sent.initial_time'] = moment.utc().format('MM/DD/YYYY, hh:mm');
                         var transaction_guid_exists = {};
                         transaction_guid_exists['recurring.transactions.' + transaction_guid + '.guid'] = transaction_guid;
 
@@ -200,7 +200,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                         //send out the appropriate email using Mandrill
                         if ((Donate.findOne({'debit.id': debitID})) && !(Donate.findOne({'debit.id': debitID}).debit.initial_email_sent)) {
                             id = Donate.findOne({'debit.id': debitID})._id;
-                            Donate.update({_id: id}, {$set: {'debit.initial_email_sent': true, 'debit.initial_time': moment().format('MM/DD/YYYY, hh:mm')}});
+                            Donate.update({_id: id}, {$set: {'debit.initial_email_sent': true, 'debit.initial_time': moment.utc().format('MM/DD/YYYY, hh:mm')}});
                             Utils.send_initial_email(id, status);
                         } else{
                             logger.error("Inside events.js -> send_received_email -- Given that eventID I can't find the document in mongo. This might be because the user was stopped on the initial page before the debit was entered.");
@@ -222,7 +222,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                             var email_sent_lookup = {};
                             email_sent_lookup['recurring.transactions.' + transaction_guid + '.email_sent.' + status] = true;
                             var email_sent_lookup_time = {};
-                            email_sent_lookup_time['recurring.transactions.' + transaction_guid + '.email_sent.time'] = moment().format('MM/DD/YYYY, hh:mm');
+                            email_sent_lookup_time['recurring.transactions.' + transaction_guid + '.email_sent.time'] = moment.utc().format('MM/DD/YYYY, hh:mm');
                             
                             //send out the appropriate email using Mandrill
                             if(Donate.findOne(email_sent_lookup)){
@@ -241,7 +241,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                             }
                             //send out the appropriate email using Mandrill
                             if (!(Donate.findOne(id).debit.email_sent)) {
-                                Donate.update(id, {$set: {'debit.email_sent': true, 'debit.email_sent_time': moment().format('MM/DD/YYYY, hh:mm')}});
+                                Donate.update(id, {$set: {'debit.email_sent': true, 'debit.email_sent_time': moment.utc().format('MM/DD/YYYY, hh:mm')}});
                                 Utils.send_one_time_email(id);
                             }
                         }
@@ -263,7 +263,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                             Donate.update(id, {$set: {'failed.failure_reason': body.events[0].entity[type][0].failure_reason,
                                 'failed.failure_reason_code': body.events[0].entity[type][0].failure_reason_code,
                                 'failed.transaction_number': body.events[0].entity[type][0].transaction_number,
-                                'failed.updated': moment().format('MM/DD/YYYY, hh:mm'),
+                                'failed.updated': moment.utc().format('MM/DD/YYYY, hh:mm'),
                                 'debit.status': 'failed'}}
                             );
                         }
@@ -273,7 +273,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                         Donate.update(id, {$set: {'failed.failure_reason': body.events[0].entity[type][0].failure_reason,
                             'failed.failure_reason_code': body.events[0].entity[type][0].failure_reason_code,
                             'failed.transaction_number': body.events[0].entity[type][0].transaction_number,
-                            'failed.updated': moment().format('MM/DD/YYYY, hh:mm'),
+                            'failed.updated': moment.utc().format('MM/DD/YYYY, hh:mm'),
                             'debit.status': 'failed'}}
                         );
                     } else{
