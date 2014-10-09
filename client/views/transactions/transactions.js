@@ -35,8 +35,8 @@ Template.transaction.helpers({
 				return "<span class='label label-default'>Canceled</span>";
 			}else if(this.recurring.subscriptions && this.recurring.subscriptions.canceled){
 					return "<span class='label label-default'>Canceled</span>";	
-			}else if(!this.recurring.subscription && !this.recurring.subscription.canceled){
-				return "<span class='label label-success'>Active</span>";				
+			}else if(!this.recurring.subscription && !this.recurring.subscriptions){
+				return "";	
 			}
 		}
 		else {
