@@ -46,7 +46,7 @@ Template.transaction.helpers({
 			}
 		}
 		else {
-			if(!this.recurring && (this.debit.status === 'succeeded'){
+			if(!this.recurring && (this.debit.status === 'succeeded')){
 				return "<span class='label label-success'>Succeeded</span>"
 			}else if(!this.recurring && (this.debit.status === 'pending')){
 				return "<span class='label label-warning'>Pending</span>"
