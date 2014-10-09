@@ -72,7 +72,8 @@ Router.map(function () {
     },
     onBeforeAction: function () {
       AccountsEntry.signInRequired(this);
-    }
+    },
+    layoutTemplate: 'AdminLayout'
   });
   this.route('transactions', {
     path: ':root/transactions',
@@ -91,7 +92,8 @@ Router.map(function () {
     },
     onBeforeAction: function () {
       AccountsEntry.signInRequired(this);
-    }
+    },
+    layoutTemplate: 'AdminLayout'
   });
     this.route('tables', {
     path: ':root/tables',
@@ -101,7 +103,8 @@ Router.map(function () {
     },
     onBeforeAction: function () {
       AccountsEntry.signInRequired(this);
-    }
+    },
+    layoutTemplate: 'AdminLayout'
   });
   this.route('sign-in', {
     path: ':root/sign-in',

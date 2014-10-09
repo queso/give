@@ -89,7 +89,7 @@ $.fn.editableTableWidget = function (options) {
 				editor.removeClass('error');
 			}
 		});
-		element.on('click keypress dblclick', showEditor)
+		element.on('dblclick', showEditor) //removed click keypress from element.on('') area
 		.css('cursor', 'pointer')
 		.keydown(function (e) {
 			var prevent = true,

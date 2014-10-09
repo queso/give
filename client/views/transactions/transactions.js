@@ -40,8 +40,13 @@ Template.transaction.helpers({
 	}
 });
 Template.transaction.events({
-	'click #delete': function () {
-		// ...
+	'click #delete': function (e, tmpl) {
+		e.preventDefault();
+		console.log("Started delete process");
+		console.log(this._id);
+		Meteor.call('cancel_recurring', this._id, function (error, result) {
+			console.log(error, result);
+		});
 	}
 });
 

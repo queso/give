@@ -61,7 +61,7 @@
                                 <label>Amount</label>
                             <![endif]-->
     				            <span class="input-group-addon">$</span>
-    				            <input {{attributes_Input_Amount}} value="{{amount}}" class="form-control" required data-parsley-error-message="Please enter an amount with no commas." />
+    				            <input {{attributes_Input_Amount}} value="{{amount}}" class="form-control slim-borders" required data-parsley-error-message="Please enter an amount with no commas." />
     				        </div>
     				    </div>
     				</div>
@@ -118,7 +118,7 @@
             <!--[if lt IE 9]>
                 <label>Account Number</label>
             <![endif]-->
-			<input {{attributes_Input_AccountNumber}} data-parsley-type="number" class="form-control" />
+			<input {{attributes_Input_AccountNumber}} data-parsley-type="number" class="form-control slim-borders" />
 		</div>
 	</div>
 	<div class="form-group">
@@ -126,7 +126,7 @@
             <!--[if lt IE 9]>
                 <label>Routing Number</label>
             <![endif]-->
-			<input {{attributes_Input_RoutingNumber}} class="form-control" />
+			<input {{attributes_Input_RoutingNumber}} class="form-control slim-borders" />
 		</div>
 	</div>
     <div class="form-group">
@@ -152,19 +152,19 @@
             <!--[if lt IE 9]>
                 <label>Card Number</label>
             <![endif]-->
-          <input type="text" class="form-control" name="card_number" id="card_number" placeholder="Debit/Credit Card Number" data-parsley-type="number" data-parsley-length="[16,16]" required>
+          <input type="text" class="form-control slim-borders" name="card_number" id="card_number" placeholder="Debit/Credit Card Number" data-parsley-type="number" data-parsley-length="[16,16]" required>
         </div> <!-- 4111111111111111 -->
         <div class="col-md-3 col-sm-3 col-xs-4">
             <!--[if lt IE 9]>
                 <label>CVV Code</label>
             <![endif]-->        
-            <input type="text" class="form-control" name="cvv" id="cvv" placeholder="CVV" data-parsley-type="number" data-parsley-minlength="3" required>
+            <input type="text" class="form-control slim-borders" name="cvv" id="cvv" placeholder="CVV" data-parsley-type="number" data-parsley-minlength="3" required>
         </div>
     </div>
     <div class="form-group">
         <label class="col-lg-3 col-md-4 col-sm-4 col-xs-3 control-label noRightPadding" for="expiry_month">Expiration Date <i class="fa fa-question-circle" id="expirationDataQuestion"></i></label>
         <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6" id="expiry_monthDiv">
-            <select class="form-control smallerHeight" name="expiry_month" id="expiry_month" required="true">
+            <select class="form-control smallerHeight slim-borders" name="expiry_month" id="expiry_month" required="true">
                 <option value="">Month</option>
                 <option value="01">Jan (01)</option>
                 <option value="02">Feb (02)</option>
@@ -181,7 +181,7 @@
             </select>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 marginRight" name="expiry_yearDiv">
-            <select class="form-control smallerHeight" name="expiry_year" id="expiry_year" required="true">
+            <select class="form-control smallerHeight slim-borders" name="expiry_year" id="expiry_year" required="true">
                 <option value="">Year</option>
                 <option value="2014">2014</option>
                 <option value="2015">2015</option>

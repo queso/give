@@ -7,5 +7,10 @@ Meteor.publish('donate', function (input) {
 });
 
 Meteor.publish('donate_list', function () {
-	 return Donate.find();
+	//check to see that the user is the admin user
+	 if(this.userId === Meteor.settings.admin_user){
+	 	return Donate.find({viewable: true});
+	 }else{
+	 	return '';
+	 }
 });

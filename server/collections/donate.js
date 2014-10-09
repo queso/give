@@ -1,27 +1,51 @@
 Donate.allow({
   insert: function (userId, doc) {
-    return false;
+    if(userId === Meteor.settings.admin_user){
+      return true;
+    } else{
+      return false;  
+    }
   },
 
   update: function (userId, doc, fieldNames, modifier) {
-    return false;
+    if(userId === Meteor.settings.admin_user){
+      return true;
+    } else{
+      return false;  
+    }
   },
 
   remove: function (userId, doc) {
-    return false;
+    if(userId === Meteor.settings.admin_user){
+      return true;
+    } else{
+      return false;  
+    }
   }
 });
 
 Donate.deny({
   insert: function (userId, doc) {
-    return true;
+    if(userId === Meteor.settings.admin_user){
+      return true;
+    } else{
+      return false;  
+    }
   },
 
   update: function (userId, doc, fieldNames, modifier) {
-    return true;
+    if(userId === Meteor.settings.admin_user){
+      return true;
+    } else{
+      return false;  
+    }
   },
 
   remove: function (userId, doc) {
-    return true;
+    if(userId === Meteor.settings.admin_user){
+      return true;
+    } else{
+      return false;  
+    }
   }
 });

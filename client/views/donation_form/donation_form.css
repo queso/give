@@ -38,7 +38,7 @@
 	opacity:.7
 }
 
-input {
+.capitalize_this {
 	text-transform:capitalize
 }
 
@@ -336,4 +336,8 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button {
 
 legend {
 	text-align: center;
+}
+
+.slim-borders {
+	border: 1px solid #bdc3c7; 
 }
