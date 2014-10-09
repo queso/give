@@ -18,13 +18,24 @@ Template.transaction.helpers({
 		}
 	},
 	recurring_subscription_id: function () {
-		return this.recurring.subscriptions.guid || this.recurring.subscription.guid;
+		if(this.recurring){
+			if(this.recurring.subscription){
+				return this.recurring.subscription.guid;	
+			}
+			else if(this.recurring.subscriptions){
+				return this.recurring.subscriptions.guid;
+			}
+		}else{
+			return '';
+		}
 	},
 	status: function () {
 		if(this.recurring) {
-			if(this.recurring.subscription.canceled){
+			if(this.recurring.subscription && this.recurring.subscription.canceled){
 				return "<span class='label label-default'>Canceled</span>";
-			}else{
+			}else if(this.recurring.subscriptions && this.recurring.subscriptions.canceled){
+					return "<span class='label label-default'>Canceled</span>";	
+			}else if(!this.recurring.subscription && !this.recurring.subscription.canceled){
 				return "<span class='label label-success'>Active</span>";				
 			}
 		}
