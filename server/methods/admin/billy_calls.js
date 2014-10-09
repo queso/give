@@ -12,6 +12,5 @@ Meteor.methods({
     }else{
 		Donate.update({_id: id}, {$set:{viewable: false}});
     }
-    
   }
 });

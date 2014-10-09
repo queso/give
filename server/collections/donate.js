@@ -27,25 +27,25 @@ Donate.allow({
 Donate.deny({
   insert: function (userId, doc) {
     if(userId === Meteor.settings.admin_user){
-      return true;
+      return false;
     } else{
-      return false;  
+      return true;  
     }
   },
 
   update: function (userId, doc, fieldNames, modifier) {
     if(userId === Meteor.settings.admin_user){
-      return true;
+      return false;
     } else{
-      return false;  
+      return true;  
     }
   },
 
   remove: function (userId, doc) {
     if(userId === Meteor.settings.admin_user){
-      return true;
+      return false;
     } else{
-      return false;  
+      return true;  
     }
   }
 });

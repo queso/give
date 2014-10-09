@@ -17,6 +17,9 @@ Template.transaction.helpers({
 			return 'No';
 		}
 	},
+	recurring_subscription_id: function () {
+		return this.recurring.subscriptions.guid || this.recurring.subscription.guid;
+	},
 	status: function () {
 		if(this.recurring) {
 			if(this.recurring.subscription.canceled){
@@ -44,9 +47,11 @@ Template.transaction.events({
 		e.preventDefault();
 		console.log("Started delete process");
 		console.log(this._id);
-		Meteor.call('cancel_recurring', this._id, function (error, result) {
-			console.log(error, result);
-		});
+		$('#delete').html('<a id="delete" class="fa fa-spinner fa-spin" href="">');
+		Donate.update({_id: this._id}, {$set:{viewable: false}});
+	},
+	'click #view': function(e, tmpl) {
+
 	}
 });
 
