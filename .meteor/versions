@@ -32,7 +32,7 @@ iron:dynamic-template@0.4.1
 iron:layout@0.4.1
 iron:router@0.9.4
 j4507:balanced-payments-production@0.3.3
-j4507:datatables-bootstrap-3@0.2.1
+j4507:datatables-bootstrap-3@0.2.2
 joshowens:accounts-entry@0.9.0
 joshowens:simple-form@0.1.8
 jquery@1.0.0
@@ -45,7 +45,7 @@ meteor-platform@1.1.1
 meteor@1.1.1
 meteorhacks:async@1.0.0
 meteorhacks:kadira-binary-deps@1.2.0
-meteorhacks:kadira@2.11.7
+meteorhacks:kadira@2.11.2
 meteorhacks:npm@1.2.0
 minifiers@1.1.0
 minimongo@1.0.3
