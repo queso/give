@@ -31,20 +31,26 @@ Template.transaction.helpers({
 	},
 	status: function () {
 		if(this.recurring) {
-			if(this.recurring.subscription && this.recurring.subscription.canceled){
-				return "<span class='label label-default'>Canceled</span>";
-			}else if(this.recurring.subscriptions && this.recurring.subscriptions.canceled){
+			if(this.recurring.subscription){
+				if(this.recurring.subscription.canceled){					
+					return "<span class='label label-default'>Canceled</span>";
+				}else if(!this.recurring.subscription.canceled){
+					return "<span class='label label-success'>Active</span>";	
+				}
+			}else if(this.recurring.subscriptions){
+				if(this.recurring.subscriptions.canceled){
 					return "<span class='label label-default'>Canceled</span>";	
-			}else if(!this.recurring.subscription && !this.recurring.subscriptions){
-				return "";	
+				}else if(!this.recurring.subscriptions.canceled){
+					return "<span class='label label-success'>Active</span>";	
+				}
 			}
 		}
 		else {
-			if(this.debit.status === 'succeeded'){
+			if(!this.recurring && (this.debit.status === 'succeeded'){
 				return "<span class='label label-success'>Succeeded</span>"
-			}else if(this.debit.status === 'pending'){
+			}else if(!this.recurring && (this.debit.status === 'pending')){
 				return "<span class='label label-warning'>Pending</span>"
-			}else{
+			}else if(!this.recurring && (this.debit.status === 'failed')){
 				return "<span class='label label-danger'>Failed</span>"
 			}
 		}
