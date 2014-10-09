@@ -48,7 +48,8 @@ Router.map(function () {
     //this is the route for recurring gift acknowledgements
       path: ':root/gift/:_id',
       waitOn: function() { //console.log(this.params._id);
-      return Meteor.subscribe('donate', this.params._id)},
+        return Meteor.subscribe('donate', this.params._id)
+      },
       data: function () {
         var params = this.params;
         Session.set('params.print', params.print);
@@ -71,7 +72,28 @@ Router.map(function () {
     },
     onBeforeAction: function () {
       AccountsEntry.signInRequired(this);
-    }
+    },
+    layoutTemplate: 'AdminLayout'
+  });
+  this.route('transactions', {
+    path: ':root/transactions',
+    waitOn: function() { //console.log(this.params._id);
+        return Meteor.subscribe('donate_list');
+    },
+    data: function() {
+      var params = this.params;
+      var root = Meteor.settings.root;
+    },
+    action: function () {
+        if (this.ready())
+            this.render();
+        else
+            this.render('Loading');
+    },
+    onBeforeAction: function () {
+      AccountsEntry.signInRequired(this);
+    },
+    layoutTemplate: 'AdminLayout'
   });
     this.route('tables', {
     path: ':root/tables',
@@ -81,7 +103,8 @@ Router.map(function () {
     },
     onBeforeAction: function () {
       AccountsEntry.signInRequired(this);
-    }
+    },
+    layoutTemplate: 'AdminLayout'
   });
   this.route('sign-in', {
     path: ':root/sign-in',

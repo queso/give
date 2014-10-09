@@ -32,6 +32,7 @@ iron:dynamic-template@0.4.1
 iron:layout@0.4.1
 iron:router@0.9.4
 j4507:balanced-payments-production@0.3.3
+j4507:datatables-bootstrap-3@0.2.1
 joshowens:accounts-entry@0.9.0
 joshowens:simple-form@0.1.8
 jquery@1.0.0
@@ -48,7 +49,7 @@ meteorhacks:kadira@2.11.7
 meteorhacks:npm@1.2.0
 minifiers@1.1.0
 minimongo@1.0.3
-mizzao:bootstrap-3@3.2.0_1
+mizzao:bootstrap-3@3.2.0
 mobile-status-bar@1.0.0
 mongo-livedata@1.0.5
 mongo@1.0.6
