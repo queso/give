@@ -60,7 +60,8 @@ Utils = {
           cvv: Match.Optional(String),
           account_number: Match.Optional(String),
           account_type: Match.Optional(String),
-          routing_number: Match.Optional(String)
+          routing_number: Match.Optional(String),
+          fees: Match.Optional(Number)
         },
         customer: {
           fname: String, 

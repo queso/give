@@ -17,6 +17,7 @@
 						  <thead>
 							  <tr>
 								  <th>Name</th>
+								  <th>Amount</th>
 								  <th>Gift Date</th>
 								  <th>Recurring?</th>
 								  <th>Status</th>
@@ -41,8 +42,9 @@
 <template name="transaction">
 	<tr id="table_row">
 		<td>{{name}}</td>
+		<td>{{amount}}</td>
 		<td>{{gift_date}}</td>
-		<td>{{recurring}}</td>
+		<td id="recurring">{{recurring}}</td>
 		<td>
 			{{{status}}}
 		</td>

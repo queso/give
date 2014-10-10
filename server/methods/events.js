@@ -162,12 +162,15 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                         logger.info("Going to go find the subscription, insert the invoice into that subscription and " + 
                             "return the id of the collection as well as the subscription GUID.");
                         var subIDs = Utils.getBillySubscriptionGUID(invoice_guid);
-                        if(subIDs){
+                        if(subIDs && subIDs.id){
                             id = subIDs.id;
                             subscription_guid = subIDs.subscription_guid;
                             this.emit('billy_trans_insert', status);
                             //Need subscription here too, need to make id an object with id and subscription GUID
-                        } 
+                        } else {
+                            logger.info("No id found");
+                            id = "NoIDFound";
+                        }
                     }
                 }catch(e){
                     logger.error(e);
@@ -178,7 +181,11 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                 try{
                     if (billy) {
                         logger.info("Inside send_received_email Billy section.");
-
+                        var amount = Donate.findOne({_id: id}).recurring.subscriptions.amount;
+                        if(body.events[0].entity.debits[0].amount !== amount){
+                            logger.error("The amount in the event and the amount in the lookup record do not match");
+                            return "Amounts do not match, exiting";
+                        }
                         //setup query programmatically.
                         var email_sent_lookup = {};
                         email_sent_lookup['recurring.transactions.' + transaction_guid + '.email_sent.initial_sent'] = true;
@@ -217,7 +224,11 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                         logger.info("Got to send_email function");
                         if (billy) {
                             logger.info("Already have the id: " + id);
-
+                            var amount = Donate.findOne({_id: id}).recurring.subscriptions.amount;
+                            if(body.events[0].entity.debits[0].amount !== amount){
+                                logger.errror("The amount in the event and the amount in the lookup record do not match");
+                                return "Amounts do not match, exiting";
+                            }
                             //setup query programmatically.
                             var email_sent_lookup = {};
                             email_sent_lookup['recurring.transactions.' + transaction_guid + '.email_sent.' + status] = true;
