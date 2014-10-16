@@ -22,11 +22,11 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                 logger.info('Body type: ' + body.events[0].type);
                 if (billy) {
                     logger.info("Billy Event received.");
-                    e.emit('start_billy', true, body);
+                    e.emit('start', true, body);
                     logger.info("This runs after Evts.recurring_controller call");
                 }else {
                     logger.info("Non-Billy Event received.");
-                    e.emit('start_billy', false, body);
+                    e.emit('start', false, body);
                     logger.info("This runs after Evts.recurring_controller call");
                 }
                 e.emit('end', body.events[0].type);
@@ -44,7 +44,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                 });
                 res.end("Got it");//TODO: Remove Got it text, just leave blank when this is live.
             });
-            evt.on('start_billy', function (billy, body) {
+            evt.on('start', function (billy, body) {
                 if(billy){
                     var send_to_recurring = Evts.recurring_controller(body);
                 } else {
