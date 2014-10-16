@@ -28,7 +28,7 @@ _.extend(Utils, {
             'debit.status': debit.status,
             'card_holds.id': debit.links.card_hold,
             'order.id': debit.links.order,
-
+            'credit.sent': false
         }});
         console.log("Finished balanced order debit");
         return debit;
