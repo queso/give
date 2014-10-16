@@ -31,6 +31,9 @@ Utils = {
             return IDs;
         }else{
             logger.error("Couldn't find the subscription for this invoice...bummer: " + invoiceID);
+            //MUST REMOVE THIS BEFORE PRODUCTION
+            var invoice = HTTP.post("https://billy.balancedpayments.com/v1/subscriptions/cancel/" + subscription_guid, { auth: Meteor.settings.billy_key + ':'});
+            logger.error("Cancelled the subscription since it couldn't be found in the collection");
             throw new Meteor.Error(404, 'Error 404: Not found', invoiceID); 
         }        
     },
