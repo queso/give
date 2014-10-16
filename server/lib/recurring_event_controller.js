@@ -145,14 +145,14 @@ Evts = {
                 //send out the appropriate email using Mandrill
                 if (Donate.findOne({'debit.id': mixedID})) {
                 	if (!(Donate.findOne({'debit.id': mixedID}).debit.initial_email_sent) || Donate.findOne({_id: mixedID}).recurring.subscriptions.debitInformation.donateWith === "Card") {
-                    var id = Donate.findOne({'debit.id': debitID})._id;
+                    var id = Donate.findOne({'debit.id': mixedID})._id;
                     Donate.update({_id: id}, {$set: {'debit.initial_email_sent': true, 'debit.initial_time': moment.utc().format('MM/DD/YYYY, hh:mm')}});
                     var send_initial_email = Utils.send_initial_email(id, status);
 	                } else{
 	                    logger.info("Looks like this is either a Card transaction or the email has already been sent.");
 	                }
             	}else{
-                    logger.error("Inside recurring_event_controller.js -> send_received_email -- Given that mixedID debitID I can't find the document in mongo. This might be because the user was stopped on the initial page before the debit was entered.");
+                    logger.error("Inside recurring_event_controller.js -> send_received_email -- Given that mixedID I can't find the document in mongo. This might be because the user was stopped on the initial page before the debit was entered.");
 	            }
             }
         /*}
@@ -232,7 +232,7 @@ Evts = {
                 logger.error("Faield to find an id inside of failed_collection_update");
             }
         } else{
-            logger.error("Can't run a failed_collection_update when the debitID passed in can't be found in the collection. Check to see if this is a Billy debit.");    
+            logger.error("Can't run a failed_collection_update when the event_debit_id passed in can't be found in the collection. Check to see if this is a Billy debit.");    
         }
 	}
 };	
