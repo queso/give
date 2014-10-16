@@ -17,23 +17,22 @@ Utils = {
                 auth: Meteor.settings.billy_key + ':'
         });
         logger.info("getBillySubscriptionGUID");
-        console.dir(invoice);
         IDs.subscription_guid = invoice.data.subscription_guid;
         logger.info("Got the subscription_guid: " + IDs.subscription_guid);
         if(Donate.findOne({'recurring.subscriptions.guid': IDs.subscription_guid})){
             IDs.id = Donate.findOne({'recurring.subscriptions.guid': IDs.subscription_guid})._id;
             logger.info("Got the _id: " + IDs.id);
+
+            //update the collection with this invoice
+            var invoice_guid = invoice.data.guid;
+            var setModifier = { $set: {} };
+            setModifier.$set['recurring.invoices.' + invoice_guid] = invoice.data;
+            Donate.update({_id: IDs.id}, setModifier);
+            return IDs;
         }else{
             logger.error("Couldn't find the subscription for this invoice...bummer: " + invoiceID);
             throw new Meteor.Error(404, 'Error 404: Not found', invoiceID); 
-        }
-
-        //update the collection with this invoice
-        var invoice_guid = invoice.data.guid;
-        var setModifier = { $set: {} };
-        setModifier.$set['recurring.invoices.' + invoice_guid] = invoice.data;
-        Donate.update({_id: IDs.id}, setModifier);
-        return IDs;
+        }        
     },
     getInvoice: function(subGUID){
         var resultSet;

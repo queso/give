@@ -1,0 +1,71 @@
+commit 1753f653d56a65c6645f30ded74c955fde2c94ca
+Author: Joshua Bechard <josh.bechard@gmail.com>
+Date:   Thu Sep 18 18:30:20 2014 +0000
+
+    Cleaned up code
+
+commit 7a86698aac1551f832a90a6e0dc3360325ef9541
+Author: Joshua Bechard <josh.bechard@gmail.com>
+Date:   Thu Sep 18 15:55:49 2014 +0000
+
+    Changes
+
+commit 859086db60d35545d6eae6e1c3c77e585ea7ea04
+Author: Joshua Bechard <josh.bechard@gmail.com>
+Date:   Tue Sep 16 19:42:59 2014 +0000
+
+    Put promise call into global method
+
+commit 17e215981aa69299495c46fea3bf5f65a5a1536d
+Author: Joshua Bechard <josh.bechard@gmail.com>
+Date:   Tue Sep 16 19:33:44 2014 +0000
+
+    Added order into the process
+
+commit 4ac4ed36a1030bb65e0c8fba5308999e04d63b81
+Author: Joshua Bechard <josh.bechard@gmail.com>
+Date:   Mon Sep 8 18:16:37 2014 +0000
+
+    Added common function file for balanced functions
+
+commit cf6c5bc23769a99a985f3a5e2c8c798fe2f4f367
+Author: root <josh.bechard@gmail.com>
+Date:   Fri Sep 5 01:32:03 2014 -0400
+
+    removed callbacks.js in order to check events.js
+
+commit 2abfff2ca306bb628e55a0fe36baaaa62a33e426
+Author: Joshua Bechard <josh.bechard@gmail.com>
+Date:   Fri Aug 22 21:38:14 2014 +0000
+
+    Changes, upon Balanced recommendation, they don't all seem necessary though
+
+commit 79bb1e98a7019513732305431183b517b139ce07
+Author: Joshua Bechard <josh.bechard@gmail.com>
+Date:   Wed Aug 20 19:44:45 2014 +0000
+
+    Added a new event.js file for a new way of processing events from Balanced
+
+commit c0debf2427c08c8a403abaa746b30ad46cf213fb
+Author: Joshua Bechard <josh.bechard@gmail.com>
+Date:   Tue Jul 1 19:52:29 2014 +0000
+
+    Many changes, also have initial Billy customer create function working
+
+commit c9052c6da0d896fbea2b8badc9eb4d9b76280da1
+Author: Joshua Bechard <josh.bechard@gmail.com>
+Date:   Sun Jun 8 06:34:58 2014 +0000
+
+    Renamed posts.js file to callbacks.js
+
+commit c5bb7c86ea734b87d80ca839511afd71ae3cb624
+Author: Joshua Bechard <josh.bechard@gmail.com>
+Date:   Sun Jun 8 05:07:07 2014 +0000
+
+    Setup connect, still need to test post and customize
+
+commit dadda35f82f45c92106d5f5ae0b53649157154fa
+Author: Joshua Bechard <josh.bechard@gmail.com>
+Date:   Wed May 21 20:53:49 2014 +0000
+
+    Updated form helpers with cover the fees ability, fixed promise errors
