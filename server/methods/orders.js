@@ -34,28 +34,30 @@ _.extend(Utils, {
         return debit;
     },
     credit_order: function(debitID) {
-        //Check to see if this order has already been credited.
-        if(!Donate.findOne({'debit.id': debitID}).credit.sent){
-            //initialize the balanced function with our API key.
-            balanced.configure(Meteor.settings.balanced_api_key);
+        if(Donate.findOne({'debit.id': debitID}){
+            //Check to see if this order has already been credited.
+            if(!Donate.findOne({'debit.id': debitID}).credit.sent){
+                //initialize the balanced function with our API key.
+                balanced.configure(Meteor.settings.balanced_api_key);
 
-            logger.info("Inside credit_order.");
-            if(Donate.findOne({'debit.id': debitID})) {
-                var name = Donate.findOne({'debit.id': debitID}).customer.fname + " " + Donate.findOne({'debit.id': debitID}).customer.lname;
-                name = name.substring(0, 13);
-                var orderHref = Donate.findOne({'debit.id': debitID}).order.id;
-                orderHref = "/orders/" + orderHref;
-                var bank_account = Utils.extractFromPromise(balanced.get(Meteor.settings.bank_account_uri));
+                logger.info("Inside credit_order.");
+                if(Donate.findOne({'debit.id': debitID})) {
+                    var name = Donate.findOne({'debit.id': debitID}).customer.fname + " " + Donate.findOne({'debit.id': debitID}).customer.lname;
+                    name = name.substring(0, 13);
+                    var orderHref = Donate.findOne({'debit.id': debitID}).order.id;
+                    orderHref = "/orders/" + orderHref;
+                    var bank_account = Utils.extractFromPromise(balanced.get(Meteor.settings.bank_account_uri));
 
-                var amount = Donate.findOne({'debit.id': debitID}).debit.total_amount;
-                console.log("Amount from one-time credit order: " + amount);
+                    var amount = Donate.findOne({'debit.id': debitID}).debit.total_amount;
+                    console.log("Amount from one-time credit order: " + amount);
 
-                var credit = Utils.extractFromPromise(balanced.get(orderHref).credit_to(bank_account, {"amount": amount,
-                    "appears_on_statement_as": name}));
-                Donate.update({'debit.id': debitID}, {$set: {'credit.id': credit.id,
-                    'credit.amount': credit.amount,
-                    'credit.sent': true}});
-                return credit;
+                    var credit = Utils.extractFromPromise(balanced.get(orderHref).credit_to(bank_account, {"amount": amount,
+                        "appears_on_statement_as": name}));
+                    Donate.update({'debit.id': debitID}, {$set: {'credit.id': credit.id,
+                        'credit.amount': credit.amount,
+                        'credit.sent': true}});
+                    return credit;
+                }
             }
         }
     },
