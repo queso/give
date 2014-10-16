@@ -144,10 +144,10 @@ Evts = {
             } else{
                 //send out the appropriate email using Mandrill
                 if (Donate.findOne({'debit.id': mixedID})) {
-                	if (!(Donate.findOne({'debit.id': mixedID}).debit.initial_email_sent) || Donate.findOne({_id: mixedID}).recurring.subscriptions.debitInformation.donateWith === "Card") {
-                    var id = Donate.findOne({'debit.id': mixedID})._id;
-                    Donate.update({_id: id}, {$set: {'debit.initial_email_sent': true, 'debit.initial_time': moment.utc().format('MM/DD/YYYY, hh:mm')}});
-                    var send_initial_email = Utils.send_initial_email(id, status);
+                	if ((!(Donate.findOne({'debit.id': mixedID}).debit.initial_email_sent)) || Donate.findOne({_id: mixedID}).debit.donateWith !== "Card") {
+                        var id = Donate.findOne({'debit.id': mixedID})._id;
+                        Donate.update({_id: id}, {$set: {'debit.initial_email_sent': true, 'debit.initial_time': moment.utc().format('MM/DD/YYYY, hh:mm')}});
+                        var send_initial_email = Utils.send_initial_email(id, status);
 	                } else{
 	                    logger.info("Looks like this is either a Card transaction or the email has already been sent.");
 	                }
