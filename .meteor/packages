@@ -12,7 +12,6 @@ webapp
 pfafman:font-awesome-4
 less
 amr:parsley.js
-meteorhacks:kadira
 iron:router
 mrt:moment
 npm-container
@@ -20,4 +19,3 @@ joshowens:accounts-entry
 accounts-ui
 wylio:mandrill
 j4507:datatables-bootstrap-3
-
