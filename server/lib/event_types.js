@@ -29,6 +29,7 @@ Event_types = {
             this.emit('log_new_gift', body.events[0].entity.debits[0].id);
         }
         this.emit('send_email', body.events[0].entity.debits[0].id, 'succeeded');*/
+        Utils.credit_billy_order(id, transaction_guid);
         
     },
     debit_failed: function (billy, body) {
