@@ -6,8 +6,6 @@ Evts = {
         	var invoice_guid = 		Evts.get_invoice_guid(type, body);
      		var transaction_guid = 	Evts.get_transaction_guid(type, body);
      		var select_type = 		Evts.select_type(body);
-     		//var route_type = 		Event_types[select_type](true, body);
-            logger.info("Router Type = " + route_type);            
      		var status = 			body.events[0].entity[type][0].status;
      		var billy_id = 			Evts.update_billy(transaction_guid, invoice_guid, type, status, body);
      		if(select_type === "debit_created") {
@@ -84,12 +82,7 @@ Evts = {
             lookup_transaction_guid['recurring.transactions.' + transaction_guid + '.guid'] = transaction_guid;
             var lookup_invoice_guid = {};
             lookup_invoice_guid['recurring.invoices.' + invoice_guid + '.guid'] = invoice_guid;
-
-            logger.info("Before findOne");
-            var testValue = Donate.findOne(lookup_transaction_guid);
-            logger.info("After testValue var setup");
-            if(testValue){
-
+            if(Donate.findOne(lookup_transaction_guid)){
                 logger.info("FOUND A transaction_guid in the collection");
                 var id = Donate.findOne(lookup_transaction_guid)._id;
                 var status_update = Evts.update_status(type, id, body);
