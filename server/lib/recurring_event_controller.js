@@ -6,7 +6,7 @@ Evts = {
         	var invoice_guid = 		Evts.get_invoice_guid(type, body);
      		var transaction_guid = 	Evts.get_transaction_guid(type, body);
      		var select_type = 		Evts.select_type(body);
-     		var route_type = 		Event_types[select_type](true, body);
+     		//var route_type = 		Event_types[select_type](true, body);
             logger.info("Router Type = " + route_type);            
      		var status = 			body.events[0].entity[type][0].status;
      		var billy_id = 			Evts.update_billy(transaction_guid, invoice_guid, type, status, body);
@@ -14,6 +14,7 @@ Evts = {
      			var sending_email_for_created = Evts.send_received_email(true, billy_id, transaction_guid, body);
      		}else if(select_type === "debit_succeeded") {
      			var sending_email = Evts.send_email(true, billy_id, body);
+                var route_type =        Event_types[select_type](true, billy_id, transaction_guid);
      		}
      		if(select_type === "debit_failed"){
      			var failed_update = Evts.failed_collection_update(true, 'debits', body.events[0].entity.debits[0].id, invoice_guid, body);

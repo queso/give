@@ -14,7 +14,7 @@ Event_types = {
         }*/
         return "test";
     }, 
-    debit_succeeded: function (billy, body) {
+    debit_succeeded: function (billy, id, transaction_guid) {
         logger.info("Got to the debit_succeeded");
         /*if(billy){
             this.emit('update_billy', body.events[0].entity.debits[0].id,
