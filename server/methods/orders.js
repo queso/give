@@ -34,7 +34,7 @@ _.extend(Utils, {
         return debit;
     },
     credit_order: function(debitID) {
-        if(Donate.findOne({'debit.id': debitID})) {
+        if(Donate.findOne({'debit.id': debitID, 'credit.sent': {$exists: true}})) {
             //Check to see if this order has already been credited.
             if(!Donate.findOne({'debit.id': debitID}).credit.sent){
                 //initialize the balanced function with our API key.
@@ -74,7 +74,7 @@ _.extend(Utils, {
             name = name.substring(0, 13);
             var lookup_credit_status = {};
             lookup_credit_status['recurring.transactions.' + transaction_guid + '.credit.sent'] = true;
-
+            
             if(Donate.findOne(lookup_credit_status)){    
                 logger.info("No need to run the credit again, this transaction has already had it's balance credited.");
                 return '';
