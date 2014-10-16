@@ -213,7 +213,8 @@ Meteor.methods({
 					'debit.amount': data.paymentInformation.amount,
 					'debit.fees': data.paymentInformation.fees,
 					'debit.coveredTheFees': data.paymentInformation.coverTheFees,
-	                'debit.status': 'pending'
+	                'debit.status': 'pending',
+                    'viewable': true
 				}
 			});
 			logger.info("ID: " + data._id);
