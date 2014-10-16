@@ -11,8 +11,15 @@ Evts = {
      		if(select_type === "debit_created") {
      			var sending_email_for_created = Evts.send_received_email(true, billy_id, transaction_guid, status, body.events[0].entity.debits[0].amount);
      		}else if(select_type === "debit_succeeded") {
-     			var sending_email = Evts.send_email(true, billy_id, transaction_guid, status, body.events[0].entity.debits[0].amount);
-                var route_type =        Event_types[select_type](true, billy_id, transaction_guid, null);
+     			;
+                var amount = Donate.findOne({_id: billy_id}).recurring.subscriptions.amount;
+                if(amount === body.events[0].entity.debits[0].amount) {
+                    var sending_email = Evts.send_email(true, billy_id, transaction_guid, status, body.events[0].entity.debits[0].amount)
+                    var route_type =    Event_types[select_type](true, billy_id, transaction_guid, null);
+                } else{
+                    logger.error("The amount from the received event and the amount of the subscription do not match!");
+                }
+                
      		}
      		if(select_type === "debit_failed"){
      			var failed_update = Evts.failed_collection_update(true, 'debits', body.events[0].entity.debits[0].id, invoice_guid, body);
