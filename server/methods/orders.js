@@ -34,7 +34,7 @@ _.extend(Utils, {
         return debit;
     },
     credit_order: function(debitID) {
-        if(Donate.findOne({'debit.id': debitID}){
+        if(Donate.findOne({'debit.id': debitID})) {
             //Check to see if this order has already been credited.
             if(!Donate.findOne({'debit.id': debitID}).credit.sent){
                 //initialize the balanced function with our API key.
