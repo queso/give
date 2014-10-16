@@ -105,9 +105,9 @@ Evts = {
                 logger.info("Going to go find the subscription, insert the invoice into that subscription and " + 
                     "return the id of the collection as well as the subscription GUID.");
                 var subscription_info = Utils.getBillySubscriptionGUID(invoice_guid);
-                if(subIDs && subIDs.id){
-                    var id = subIDs.id;
-                    var subscription_guid = subIDs.subscription_guid;
+                if(subscription_info && subscription_info.id){
+                    var id = subscription_info.id;
+                    var subscription_guid = subscription_info.subscription_guid;
                     var insert_trans = Evts.insert_transaction(transaction_guid, id, type, body);
                     return id;
                     //Need subscription here too, need to make id an object with id and subscription GUID
