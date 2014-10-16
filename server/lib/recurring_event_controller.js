@@ -167,11 +167,11 @@ Evts = {
             logger.error(e);
         }*/
 	},
-	send_email: function(billy, id, transaction_guid, status, body_amount) {
+	send_email: function(billy, mixedID, transaction_guid, status, body_amount) {
 		// try{
             logger.info("Got to send_email function");
             if (billy) {
-                var amount = Donate.findOne({_id: id}).recurring.subscriptions.amount;
+                var amount = Donate.findOne({_id: mixedID}).recurring.subscriptions.amount;
                 if(body_amount !== amount){
                     logger.error("The amount in the event and the amount in the lookup record do not match");
                     return "Amounts do not match, exiting";
@@ -186,21 +186,23 @@ Evts = {
                 if(Donate.findOne(email_sent_lookup)){
                     console.log("Email sent status = true nothing further to do.");
                 }else if (status === 'succeeded' || 'failed') {
-                    Donate.update(id, {$set: email_sent_lookup});
-                    Donate.update(id, {$set: email_sent_lookup_time});
-                    var send_billy_email = Utils.send_billy_email(id, transaction_guid, status);
+                    Donate.update(mixedID, {$set: email_sent_lookup});
+                    Donate.update(mixedID, {$set: email_sent_lookup_time});
+                    var send_billy_email = Utils.send_billy_email(mixedID, transaction_guid, status);
                 }
             }else {
-                if(Donate.findOne({'debit.id': eventID})){
-                    id = Donate.findOne({'debit.id': eventID})._id;
+                if(Donate.findOne({'debit.id': mixedID})){
+                    var id = Donate.findOne({'debit.id': mixedID})._id;
                     logger.info("Here is the id: " + id);  
                 } else{
                     logger.error("Inside events.js -> send_email -- Given that eventID I can't find the document in mongo. This might be because the user was stopped on the initial page before the debit was entered.");
                 }
                 //send out the appropriate email using Mandrill
-                if (!(Donate.findOne(id).debit.email_sent)) {
-                    Donate.update(id, {$set: {'debit.email_sent': true, 'debit.email_sent_time': moment.utc().format('MM/DD/YYYY, hh:mm')}});
-                    var send_billy_email = Utils.send_one_time_email(id);
+                if(id){
+                    if (!(Donate.findOne(id).debit.email_sent)) {
+                        Donate.update(id, {$set: {'debit.email_sent': true, 'debit.email_sent_time': moment.utc().format('MM/DD/YYYY, hh:mm')}});
+                        var send_billy_email = Utils.send_one_time_email(id);
+                    }    
                 }
             }
             
@@ -226,12 +228,16 @@ Evts = {
 
         }else if(Donate.findOne({'debit.id': event_debit_id})) {
             var id = Donate.findOne({'debit.id': event_debit_id})._id;
-            Donate.update(id, {$set: {'failed.failure_reason': body.events[0].entity[type][0].failure_reason,
-                'failed.failure_reason_code': body.events[0].entity[type][0].failure_reason_code,
-                'failed.transaction_number': body.events[0].entity[type][0].transaction_number,
-                'failed.updated': moment.utc().format('MM/DD/YYYY, hh:mm'),
-                'debit.status': 'failed'}}
-            );
+            if (id){
+                Donate.update(id, {$set: {'failed.failure_reason': body.events[0].entity[type][0].failure_reason,
+                    'failed.failure_reason_code': body.events[0].entity[type][0].failure_reason_code,
+                    'failed.transaction_number': body.events[0].entity[type][0].transaction_number,
+                    'failed.updated': moment.utc().format('MM/DD/YYYY, hh:mm'),
+                    'debit.status': 'failed'}}
+                );
+            } else{
+                logger.error("Faield to find an id inside of failed_collection_update");
+            }
         } else{
             logger.error("Can't run a failed_collection_update when the debitID passed in can't be found in the collection. Check to see if this is a Billy debit.");    
         }
