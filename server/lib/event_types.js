@@ -14,22 +14,24 @@ Event_types = {
         }*/
         return "test";
     }, 
-    debit_succeeded: function (billy, id, transaction_guid) {
+    debit_succeeded: function (billy, id, transaction_guid, debitID) {
         logger.info("Got to the debit_succeeded");
-        /*if(billy){
-            this.emit('update_billy', body.events[0].entity.debits[0].id,
+        if(billy){
+            /*this.emit('update_billy', body.events[0].entity.debits[0].id,
             body.events[0].entity.debits[0].status);
             console.log('ID Here is : '+ id);
             Utils.credit_billy_order(id, transaction_guid);
-            this.emit('log_new_gift', id, transaction_guid);
+            this.emit('log_new_gift', id, transaction_guid);*/
+            Utils.credit_billy_order(id, transaction_guid);
         } else{
-            this.emit('update_from_event', body.events[0].entity.debits[0].id,
+            /*this.emit('update_from_event', body.events[0].entity.debits[0].id,
             body.events[0].entity.debits[0].status);
             Utils.credit_order(body.events[0].entity.debits[0].id);
-            this.emit('log_new_gift', body.events[0].entity.debits[0].id);
+            this.emit('log_new_gift', body.events[0].entity.debits[0].id);*/
+            Utils.credit_order(debitID);
         }
-        this.emit('send_email', body.events[0].entity.debits[0].id, 'succeeded');*/
-        Utils.credit_billy_order(id, transaction_guid);
+        //this.emit('send_email', body.events[0].entity.debits[0].id, 'succeeded');
+        
         
     },
     debit_failed: function (billy, body) {
