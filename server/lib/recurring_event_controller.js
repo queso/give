@@ -13,7 +13,7 @@ Evts = {
      		if(select_type === "debit_created") {
      			var sending_email_for_created = Evts.send_received_email(true, billy_id, transaction_guid, body);
      		}else if(select_type === "debit_succeeded") {
-     			var sending_email = Evts.send_email(true, billy_id, body);
+     			var sending_email = Evts.send_email(true, billy_id, transaction_guid, body);
                 var route_type =        Event_types[select_type](true, billy_id, transaction_guid);
      		}
      		if(select_type === "debit_failed"){
@@ -167,7 +167,7 @@ Evts = {
             logger.error(e);
         }*/
 	},
-	send_email: function(billy, id, body) {
+	send_email: function(billy, id, transaction_guid, body) {
 		// try{
             logger.info("Got to send_email function");
             if (billy) {
