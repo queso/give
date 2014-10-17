@@ -63,10 +63,11 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
 
             function check_body(body) {
                 var type = Object.keys(body.events[0].entity)[0];
-                if(type === 'fee_settlement.created' || 'fee_settlement.updated'){
+                logger.info("Type = " + type);
+                if(type === 'fee_settlement_created' || 'fee_settlement_updated'){
                     var billy = false;
                 } 
-                if(type !== 'fee_settlement.created' || 'fee_settlement.updated' && body.events[0].entity[type][0].meta) {
+                if(type !== 'fee_settlement_created' || 'fee_settlement_updated' && body.events[0].entity[type][0].meta) {
                     var billy =  Boolean(body.events[0].entity[type][0].meta['billy.transaction_guid']);
                 } else{
                     var billy = false;
