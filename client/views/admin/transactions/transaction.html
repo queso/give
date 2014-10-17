@@ -1,0 +1,20 @@
+<template name="transaction">
+	<tr id="table_row">
+		<td>{{name}}</td>
+		<td>{{amount}}</td>
+		<td>{{gift_date}}</td>
+		<td id="recurring">{{recurring}}</td>
+		<td>
+			{{{status}}}
+		</td>
+		<td>{{recurring_subscription_id}}</td>
+		<td>{{detail_record}}</td>
+		<td>
+			<a id="view" class="btn btn-success" href="{{root_url}}/trasnaction_item/{{detail_record}}"  title="View details">
+				<i class="fa fa-search-plus"></i>  
+			</a>
+			{{{delete_record}}}
+			{{{stop_recurring}}}
+		</td>
+	</tr>
+</template>

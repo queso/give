@@ -18,7 +18,7 @@ Router.map(function () {
     path: ':root',
     data: function() {
       var params = this.params;
-      var root = Meteor.settings.root;
+      var root = Meteor.settings.public.root;
       Session.set('params.donateTo', this.params.donateTo);
       Session.set('params.amount', this.params.amount);
       Session.set('params.donateWith', this.params.donateWith);
@@ -34,7 +34,7 @@ Router.map(function () {
       waitOn: function() { //console.log(this.params._id);
 	    return Meteor.subscribe('donate', this.params._id)},
       data: function () {
-        var root = Meteor.settings.root;
+        var root = Meteor.settings.public.root;
       return Donate.findOne(this.params._id);
           },
       action: function () {
@@ -53,7 +53,7 @@ Router.map(function () {
       data: function () {
         var params = this.params;
         Session.set('params.print', params.print);
-        var root = Meteor.settings.root;
+        var root = Meteor.settings.public.root;
         Session.set('params.transaction_guid', this.params.transaction_guid);
       return Donate.findOne(this.params._id);
           },
@@ -68,7 +68,7 @@ Router.map(function () {
     path: ':root/dashboard',
     data: function() {
       var params = this.params;
-      var root = Meteor.settings.root;
+      var root = Meteor.settings.public.root;
     },
     onBeforeAction: function () {
       AccountsEntry.signInRequired(this);
@@ -82,7 +82,7 @@ Router.map(function () {
     },
     data: function() {
       var params = this.params;
-      var root = Meteor.settings.root;
+      var root = Meteor.settings.public.root;
     },
     action: function () {
         if (this.ready())
@@ -95,11 +95,36 @@ Router.map(function () {
     },
     layoutTemplate: 'AdminLayout'
   });
+  
+
+  this.route('transactionItem', {
+    path: ':root/transaction_item/:_id',
+    waitOn: function() { //console.log(this.params._id);
+      return Meteor.subscribe('donate', this.params._id);
+    },
+    data: function () {
+        var params = this.params;
+        var root = Meteor.settings.public.root;
+      return Donate.findOne(this.params._id);
+          },
+    action: function () {
+        if (this.ready())
+            this.render();
+        else
+            this.render('Loading');
+    },
+    onBeforeAction: function () {
+      AccountsEntry.signInRequired(this);
+    },
+    layoutTemplate: 'AdminLayout'
+  });
+
+
     this.route('tables', {
     path: ':root/tables',
     data: function() {
       var params = this.params;
-      var root = Meteor.settings.root;
+      var root = Meteor.settings.public.root;
     },
     onBeforeAction: function () {
       AccountsEntry.signInRequired(this);
@@ -110,21 +135,21 @@ Router.map(function () {
     path: ':root/sign-in',
     data: function() {
       var params = this.params;
-      var root = Meteor.settings.root;
+      var root = Meteor.settings.public.root;
     }
   });
   this.route('sign-out', {
     path: ':root/sign-out',
     data: function() {
       var params = this.params;
-      var root = Meteor.settings.root;
+      var root = Meteor.settings.public.root;
     }
   });
   this.route('sign-up', {
     path: ':root/sign-up',
     data: function() {
       var params = this.params;
-      var root = Meteor.settings.root;
+      var root = Meteor.settings.public.root;
     }
   });
 });
