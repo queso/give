@@ -67,8 +67,10 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                 if(type === 'fee_settlement_created' || 'fee_settlement_updated'){
                     var billy = false;
                 } 
-                if(type !== 'fee_settlement_created' || 'fee_settlement_updated' && body.events[0].entity[type][0].meta) {
-                    var billy =  Boolean(body.events[0].entity[type][0].meta['billy.transaction_guid']);
+                if(body.events[0].entity[type][0].meta) {
+                    if(type !== 'fee_settlement_created' || 'fee_settlement_updated' && body.events[0].entity[type][0].meta) {
+                        var billy =  Boolean(body.events[0].entity[type][0].meta['billy.transaction_guid']);
+                    }
                 } else{
                     var billy = false;
                 }

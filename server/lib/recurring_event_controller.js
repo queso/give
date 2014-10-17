@@ -138,7 +138,7 @@ Evts = {
                 var transaction_guid_exists = {};
                 transaction_guid_exists['recurring.transactions.' + transaction_guid + '.guid'] = transaction_guid;
 
-                if(Donate.findOne(email_sent_lookup) || Donate.findOne({_id: mixedID}).recurring.subscriptions.debitInformation.donateWith === "Card"){
+                if(Donate.findOne(email_sent_lookup) || Donate.findOne({_id: mixedID}).recurring.subscriptions.debitInformation.donateWith !== "Card" || "card"){
                     logger.info("Initial email sent = true or this is a credit card transaction. Nothing further to do.");
                 } else if(Donate.findOne(transaction_guid_exists)){
                     Donate.update(mixedID, {$set: email_sent_lookup});
@@ -150,7 +150,7 @@ Evts = {
             } else{
                 //send out the appropriate email using Mandrill
                 if (Donate.findOne({'debit.id': mixedID})) {
-                	if ((!(Donate.findOne({'debit.id': mixedID}).debit.initial_email_sent)) || Donate.findOne({_id: mixedID}).debit.donateWith !== "Card") {
+                	if ((!(Donate.findOne({'debit.id': mixedID}).debit.initial_email_sent)) || Donate.findOne({_id: mixedID}).debit.donateWith !== "Card" || "card") {
                         var id = Donate.findOne({'debit.id': mixedID})._id;
                         Donate.update({_id: id}, {$set: {'debit.initial_email_sent': true, 'debit.initial_time': moment.utc().format('MM/DD/YYYY, hh:mm')}});
                         var send_initial_email = Utils.send_initial_email(id, status);
