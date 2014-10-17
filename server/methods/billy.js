@@ -145,6 +145,8 @@ function subscribeToBillyPlan(data) {
 function getInvoice(subGUID) {
 	try {
 		logIt();
+		var resultSet = '';
+		
 		logger.info("inside getInvoice");
 		resultSet = HTTP.post("https://billy.balancedpayments.com/v1/subscriptions/" + subGUID + "/invoices", {
 			auth: Meteor.settings.billy_key + ':'
@@ -160,6 +162,8 @@ function getInvoice(subGUID) {
 function getTransaction(invoiceID) {
 	try {
 		logIt();
+		var resultSet = '';
+
 		logger.info("inside getTransaction");
 		resultSet = HTTP.get("https://billy.balancedpayments.com/v1/invoices/" + invoiceID + "/transactions", {
 			auth: Meteor.settings.billy_key + ':'
@@ -173,23 +177,6 @@ function getTransaction(invoiceID) {
 }
 
 Meteor.methods({
-	/*createBillyPlan: function(data) {
-		logIt();	
-		this is the layout, need to convert this to HTTP.post instead of curl
-		curl https://billy.balancedpayments.com/v1/plans \
-    -X POST \
-    -u Meteor.settings.billyKey: \
-    -d "plan_type=debit" \
-    -d "amount=500" \
-    -d "frequency=monthly"
-	},
-	cancelBillySubscription: function(data) {
-		logIt();
-		//this is the layout, need to convert this to HTTP.post instead of curl
-		/*curl https://billy.balancedpayments.com/v1/subscriptions/SU4ST39srWVLGbiTg174QyfF/cancel \
-    -X POST \
-    -u Meteor.settings.billyKey:
-	},*/
     recurringDonation: function(data) {
 		logger.info("Started billy method calls.")
 		logIt();

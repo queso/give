@@ -51,17 +51,11 @@
 		<td>{{recurring_subscription_id}}</td>
 		<td>{{detail_record}}</td>
 		<td>
-			<a id="view" class="btn btn-success" href="/trasnaction_details/{{detail_record}}">
-				<i class="fa fa-search-plus "></i>  
+			<a id="view" class="btn btn-success" href="/trasnaction_details/{{detail_record}}"  title="View details">
+				<i class="fa fa-search-plus"></i>  
 			</a>
-			<!-- <a class="btn btn-info" href=""> Need to setup click action here so that this line changes to editable text OR just remove this line and allow double clicking to edit a line
-				<i class="fa fa-edit "></i>  
-			</a> -->
-			<a id="delete" class="btn btn-danger" href=""> <!-- I like the idea of being able to remove a record, but I think the best practice is probably to 
-			1. Make sure all connections outside are removed and then delete it from the database OR
-			2. Same as above, but just hide this record from view -->
-				<i class="fa fa-trash-o "></i> 
-			</a>
+			{{{delete_record}}}
+			{{{stop_recurring}}}
 		</td>
 	</tr>
 </template>

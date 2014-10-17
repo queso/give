@@ -127,7 +127,11 @@ function toggleBox() {
 }
 Template.DonationForm.events({
     'submit form': function(e) {
+        //prevent the default reaction to submitting this form
         e.preventDefault();
+        // Stop propagation prevents the form from being submitted more than once.
+        e.stopPropagation();
+
         updateTotal();
         if(($('#total_amount').val()) > 15000){
             var error = {};
