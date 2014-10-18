@@ -97,15 +97,23 @@ Router.map(function () {
   });
   
 
-  this.route('transactionItem', {
-    path: ':root/transaction_item/:_id',
+  this.route('subscription', {
+    path: ':root/subscription/:_id',
     waitOn: function() { //console.log(this.params._id);
       return Meteor.subscribe('donate', this.params._id);
     },
     data: function () {
         var params = this.params;
         var root = Meteor.settings.public.root;
-      return Donate.findOne(this.params._id);
+        return Donate.findOne(this.params._id);
+        //return return_thiss
+        /*var params = this.params;
+        var root = Meteor.settings.public.root;
+        console.log(this._id);
+        var record = Donate.findOne({_id: this._id});
+        console.log(record);
+        var return_this = {'subscription': record.recurring.transactions};
+        return return_this;*/
           },
     action: function () {
         if (this.ready())
