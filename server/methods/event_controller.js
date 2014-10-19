@@ -64,6 +64,7 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
             function check_body(body) {
                 var type = Object.keys(body.events[0].entity)[0];
                 logger.info("Type = " + type);
+                console.log(moment.utc().format('MM/DD/YYYY, hh:mm'));
                 if(type === 'fee_settlement_created' || 'fee_settlement_updated'){
                     var billy = false;
                 } 
