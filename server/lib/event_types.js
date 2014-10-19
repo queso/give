@@ -95,7 +95,7 @@ Event_types = {
     /*************************************************************/
     /***************         INVOICES AREA         ***************/
     /*************************************************************/
-    /*invoice_created: function () {
+    invoice_created: function () {
         logger.info("Got to the invoice_created");
         id = Invoices.insert(body.events[0].entity.invoices[0]);
         logger.info("ID: " + id);
@@ -112,7 +112,7 @@ Event_types = {
     }, 
     fee_settlement_updated: function () {
         logger.info("Got to the fee_settlement_updated");
-    }, */
+    }, 
     /*************************************************************/
     /************         END INVOICES AREA         **************/
     /*************************************************************/
