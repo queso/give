@@ -65,13 +65,12 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                 var type = Object.keys(body.events[0].entity)[0];
                 logger.info("Type = " + type);
                 console.log(moment.utc().format('MM/DD/YYYY, hh:mm'));
-                if(type === 'fee_settlement_created' || 'fee_settlement_updated'){
+                if(type === 'links'){
                     var billy = false;
+                    type = body.events[0].type;
                 } 
-                if(body.events[0].entity[type][0].meta) {
-                    if(type !== 'fee_settlement_created' || 'fee_settlement_updated' && body.events[0].entity[type][0].meta) {
-                        var billy =  Boolean(body.events[0].entity[type][0].meta['billy.transaction_guid']);
-                    }
+                else if(body.events[0].entity[type][0].meta) {
+                    var billy =  Boolean(body.events[0].entity[type][0].meta['billy.transaction_guid']);
                 } else{
                     var billy = false;
                 }

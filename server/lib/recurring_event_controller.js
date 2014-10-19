@@ -1,6 +1,6 @@
 Evts = {
 	recurring_controller: function(body) {
-        console.log("Got to recurring_controller");
+        logger.info("Got to recurring_controller");
 		var type = 				   Object.keys(body.events[0].entity)[0]; //this is the type of event, less specific, like debit or credit
         if(type === "debits"){
         	var invoice_guid = 		Evts.get_invoice_guid(type, body);
@@ -144,7 +144,6 @@ Evts = {
                     logger.info("Initial email sent = true or this is a credit card transaction. Nothing further to do.");
                     logger.info(Donate.findOne({_id: mixedID}).recurring.subscriptions.debitInformation.donateWith);
                 } else if(Donate.findOne(transaction_guid_exists)){
-                    console.log("Got to checkpoint");
                     Donate.update(mixedID, {$set: email_sent_lookup});
                     Donate.update(mixedID, {$set: email_sent_lookup_time});
                     var send_initial_email = Utils.send_initial_email(mixedID, status);
@@ -189,7 +188,7 @@ Evts = {
                 
                 //send out the appropriate email using Mandrill
                 if(Donate.findOne(email_sent_lookup)){
-                    console.log("Email sent status = true nothing further to do.");
+                    logger.info("Email sent status = true nothing further to do.");
                 }else if (status === 'succeeded' || 'failed') {
                     Donate.update(mixedID, {$set: email_sent_lookup});
                     Donate.update(mixedID, {$set: email_sent_lookup_time});
