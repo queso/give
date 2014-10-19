@@ -138,9 +138,12 @@ Evts = {
                 var transaction_guid_exists = {};
                 transaction_guid_exists['recurring.transactions.' + transaction_guid + '.guid'] = transaction_guid;
 
+
                 if(Donate.findOne(email_sent_lookup) || Donate.findOne({_id: mixedID}).recurring.subscriptions.debitInformation.donateWith !== "Card" || "card"){
                     logger.info("Initial email sent = true or this is a credit card transaction. Nothing further to do.");
+                    logger.info(Donate.findOne({_id: mixedID}).recurring.subscriptions.debitInformation.donateWith);
                 } else if(Donate.findOne(transaction_guid_exists)){
+                    console.log("Got to checkpoint");
                     Donate.update(mixedID, {$set: email_sent_lookup});
                     Donate.update(mixedID, {$set: email_sent_lookup_time});
                     var send_initial_email = Utils.send_initial_email(mixedID, status);
