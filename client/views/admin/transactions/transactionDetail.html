@@ -1,0 +1,50 @@
+<template name="transactionDetail">
+	<div class="panel panel-default panel-top-margin">
+		<div class="panel-heading">
+			<h2><i class="fa fa-list"></i><strong>{{trans_guid}}</strong></h2>
+			<div class="panel-actions">
+				<a href="widgets.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+				<a href="widgets.html#" class="btn-close"><i class="fa fa-times"></i></a>
+			</div>
+		</div>
+		<div class="panel-body no-padding">
+
+			<div class="invoice">
+
+				<div class="row header">
+
+					<div class="col-sm-6">
+						<div class="panel panel-default">
+							<div class="panel-body padding-horizontal">
+								<h2>From</h2>
+								<p><strong>{{{org}}} {{fname}} {{lname}}</strong></p>
+								<div class="street-address">{{address_line1}}
+	                            {{{address_line2}}}</div>
+		                        <span class="locality">{{city}}</span>
+		                        <span class="region">{{region}}</span>
+		                        <span class="postal-code">{{postal_code}}</span>
+								<span><a href="mailto{{email_address}}">{{email_address}} </a></span><br>
+								<span class="tel">{{phone_number}}</span>
+							</div>	
+						</div>
+					</div><!--/col-->
+
+					<div class="col-sm-6">
+						<div class="panel panel-default">
+							<div class="panel-body padding-horizontal">
+								<h2>Details</h2>
+								<span><strong>{{#if billy}}
+			                        {{transaction_guid}}
+			                    {{else}}
+			                        {{receiptNumber}}
+			                    {{/if}}</strong></span><br>
+								<span><a href="{{paymentLink}}">{{donateWith}}</a></span>
+							</div>
+						</div>
+					</div><!--/col-->		
+
+				</div><!--/row-->
+			</div>
+		</div>
+	</div>
+</template>

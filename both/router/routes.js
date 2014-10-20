@@ -100,7 +100,7 @@ Router.map(function () {
   this.route('subscription', {
     path: ':root/subscription/:_id',
     waitOn: function() { //console.log(this.params._id);
-      return Meteor.subscribe('donate', this.params._id);
+      return Meteor.subscribe('transaction', this.params._id);
     },
     data: function () {
         var params = this.params;
