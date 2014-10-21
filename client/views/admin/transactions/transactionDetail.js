@@ -2,10 +2,6 @@
 /* transactionDetail: Event Handlers and Helpers */
 /*****************************************************************************/
 Template.transactionDetail.events({
-  'click #matchLink': function (){
-    e.preventDefault();
-    window.location.href = "https://trashmountain.com/match";
-  }
 });
 
 Template.transactionDetail.helpers({
@@ -24,7 +20,7 @@ Template.transactionDetail.helpers({
    },
    transaction_date: function () {
       var transaction_guid = Session.get('transaction_guid');
-      return moment(this.recurring.transactions[transaction_guid].updated_at).format('MM/DD/YYYY');
+      return moment(this.recurring.transactions[transaction_guid].updated_at).format('MM/DD/YYYY hh:mma');
    },
    org: function () {
     if (this.customer.org){
@@ -112,8 +108,8 @@ Template.transactionDetail.helpers({
         return "";
         }
     },
-    paymentLink: function() {
-      return "https://dashboard.balancedpayments.com/#/marketplaces/" + Meteor.settings.balanced_uri + this.bank_account.href; //TODO: Need to fix this
+    paymentLink: function(parent) {
+      return '<a href="https://dashboard.balancedpayments.com/' + Meteor.settings.public.balanced_payments_uri + (this.bank_account ? this.bank_account.href: this.card.href) + '" target="_blank">' + this.debit.donateWith + '</a>';
     }
 });
 
@@ -122,17 +118,8 @@ Template.transactionDetail.helpers({
 /*****************************************************************************/
 
 Template.transactionDetail.rendered = function () {
-  $.fn.scrollView = function () {
-      return this.each(function () {
-          $('html, body').animate({
-              scrollTop: $(this).offset().top
-          }, 1000);
-      });
-  }
-  $('#invoice').scrollView();
-  
-  //Look for print url param and if it is set to yes, send the js command to show the print dialog
-  if (Session.equals('params.print', 'yes')) {
-      return window.print();
-  }
+  Session.set("transaction_guid", '');
+  Session.set("transaction_amount", '');
+  Session.set("transaction_date", '');
+  Session.set("transaction_status", '');
 };

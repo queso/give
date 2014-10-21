@@ -127,7 +127,6 @@ Router.map(function () {
     layoutTemplate: 'AdminLayout'
   });
 
-
     this.route('tables', {
     path: ':root/tables',
     data: function() {

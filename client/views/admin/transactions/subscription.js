@@ -3,8 +3,9 @@ Template.subscription.events({
 		e.preventDefault();
 		Session.set("transaction_guid", this.value.guid);
 		Session.set("transaction_amount", this.value.amount);
-		Session.set("transaction_date", moment(this.value.updated_at).format("MM-DD-YYYY HH:MM"));
+		Session.set("transaction_date", moment(this.value.updated_at).format("MM-DD-YYYY hh:mma"));
 		Session.set("transaction_status", this.value.status);
+		$('.transaction_details').show(300).fadeIn();
 	}	
 });
 
@@ -34,7 +35,7 @@ Template.subscription.helpers({
 		return this.value.status;
 	},
 	trans_date: function() {
-		return moment(this.value.updated_at).format("MM-DD-YYYY HH:MM");
+		return moment(this.value.updated_at).format("MM-DD-YYYY hh:mma");
 	},
 	fund: function(parentContext) {
 		return parentContext.debit.donateTo;//getDonateTo();
@@ -47,3 +48,5 @@ Template.registerHelper('addKeys', function (all) {
         return {key: k, value: i};
     });
 });
+//return _.chain(all).map(function(i, k) { return {key: k, value: i}; }).filter(all, function(obj){ if(obj.i === "2014-10-05T11:15:56.710351+00:00") return true; }).value();
+//TODO: would like to be able to chain underscore to use in displaying a set time frame
