@@ -38,7 +38,6 @@ Meteor.methods({
             // ^^^^^^^^^^^^^^^ Moved the above from the client side to here.
             //initialize the balanced function with our API key.
             balanced.configure(Meteor.settings.balanced_api_key);
-            console.dir(data.customer);
             var customerInfo = data.customer;
             var paymentInfo = data.paymentInformation;
             var customerData = Utils.create_customer(customerInfo, data._id);

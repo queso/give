@@ -11,7 +11,7 @@ _.extend(Utils,{
             "appears_on_statement_as": "Trash Mountain"
         }));
         if (card.cvv_result === 'No Match'){
-            logger.error("No match in CVV area of card_create. ID: " + data._id);
+            console.log("No match in CVV area of card_create. ID: " + data._id);
                 var failThis = Donate.update(data._id, {
                     $set: {
                         'failed.category_code': 'CVV_No_Match',
@@ -49,7 +49,6 @@ _.extend(Utils,{
             "account_number": data.paymentInformation.account_number,
             "appears_on_statement_as": "Trash Mountain"
         }));
-        console.dir(JSON.stringify(check));
         Donate.update(data._id, {
             $set: {
                 'bank_account.id': check.id,
@@ -75,7 +74,7 @@ _.extend(Utils,{
                     });
                     return associate;
             } catch(e) {
-                logger.error("Got to catch error area of create_associate. ID: " + data._id + " Category Code: " + e.category_code + ' Description: ' + e.description);
+                console.log("Got to catch error area of create_associate. ID: " + data._id + " Category Code: " + e.category_code + ' Description: ' + e.description);
                 Donate.update(data._id, {
                     $set: {
                         'failed.category_code': e.category_code,

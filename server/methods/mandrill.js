@@ -82,7 +82,7 @@ _.extend(Utils,{
 	      var error = {};
 	      var lookup_record = Donate.findOne({_id: id});
 	      var created_at = moment(Date.parse(lookup_record.created_at)).format('MM/DD/YYYY');
-	      console.log(created_at);
+	      logger.info(created_at);
 	      var debit = lookup_record.debit;
 	      var customer = lookup_record.customer;
 	      var fees = debit.fees;
@@ -195,7 +195,7 @@ _.extend(Utils,{
 	      var error = {};
 	      var lookup_record = Donate.findOne({_id: id});
 	      var created_at = moment(Date.parse(lookup_record.created_at)).format('MM/DD/YYYY');
-	      console.log(created_at);
+	      logger.info(created_at);
 	      var debit = lookup_record.debit;
 	      var customer = lookup_record.customer;
 	      var fees = debit.fees;

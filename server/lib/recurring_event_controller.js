@@ -44,7 +44,7 @@ Evts = {
 	},
 	update_status: function(type, id, status, body) { //TODO: need to fix this if I move to a seperated collection system
 		var lookup = type;
-        //try {
+        try {
                 lookup = 'debit';
                 var lookup_this = {};
                 lookup_this[lookup + '.id'] = id;
@@ -53,9 +53,9 @@ Evts = {
                 return Donate.update({_id: id}, {$set: {'[lookup].status': status}});
             }*/
 
-        /*} catch (e) {
+        } catch (e) {
 	        logger.error(e);
-        }*/
+        }
 	},
 	insert_transaction: function(transaction_guid, id, type, body) {
 		var transaction = HTTP.get("https://billy.balancedpayments.com/v1/transactions/" + transaction_guid, {
@@ -80,7 +80,7 @@ Evts = {
         }
 	},
 	update_billy: function(transaction_guid, invoice_guid, type, status, body) {
-		/*try{*/
+		try{
             logger.info("Inside update_billy function.");
 
             //programatic search operators setup
@@ -116,12 +116,12 @@ Evts = {
                     return id;
                 }
             }
-        /*}catch(e){
+        }catch(e){
             logger.error(e);
-        }*/
+        }
 	},
 	send_received_email: function (billy, mixedID, transaction_guid, status, body_amount) {
-		/*try{*/
+		try{
             
             if (billy) {
                 logger.info("Inside send_received_email Billy section.");
@@ -166,13 +166,13 @@ Evts = {
                     logger.error("Inside recurring_event_controller.js -> send_received_email -- Given that mixedID I can't find the document in mongo. This might be because the user was stopped on the initial page before the debit was entered.");
 	            }
             }
-        /*}
+        }
         catch(e){
             logger.error(e);
-        }*/
+        }
 	},
 	send_email: function(billy, mixedID, transaction_guid, status, body_amount) {
-		// try{
+		try{
             logger.info("Got to send_email function");
             if (billy) {
                 var amount = Donate.findOne({_id: mixedID}).recurring.subscriptions.amount;
@@ -210,10 +210,10 @@ Evts = {
                 }
             }
             
-        /*}
+        }
         catch(e) {
             logger.error(e);
-        }*/
+        }
 	},
 	failed_collection_update: function (billy, type, event_debit_id, invoice_guid, body){
 		if(billy){

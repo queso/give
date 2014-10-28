@@ -55,16 +55,16 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
         
         var body = req.body; //request body
 
-        /*try {*/
+        try {
                 body.events ? check_body(body) : noBody();
-            /*} catch (e) {
+            } catch (e) {
                 logger.error(e);
-            }*/
+            }
 
             function check_body(body) {
                 var type = Object.keys(body.events[0].entity)[0];
                 logger.info("Type = " + type);
-                console.log(moment.utc().format('MM/DD/YYYY, hh:mm'));
+                logger.info(moment.utc().format('MM/DD/YYYY, hh:mm'));
                 if(type === 'links'){
                     var billy = false;
                     type = body.events[0].type;

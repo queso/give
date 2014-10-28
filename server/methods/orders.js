@@ -8,7 +8,7 @@ _.extend(Utils, {
         var orderResponse = Donate.update(id, {$set: {
             'order.description': "Order #" + id
         }});
-        console.log("Finished balanced order create");
+        logger.info("Finished balanced order create");
         return order;
     },
     debit_order: function (data, order, paymentObject) {
@@ -30,7 +30,7 @@ _.extend(Utils, {
             'order.id': debit.links.order,
             'credit.sent': false
         }});
-        console.log("Finished balanced order debit");
+        logger.info("Finished balanced order debit");
         return debit;
     },
     credit_order: function(debitID) {
@@ -49,7 +49,7 @@ _.extend(Utils, {
                     var bank_account = Utils.extractFromPromise(balanced.get(Meteor.settings.bank_account_uri));
 
                     var amount = Donate.findOne({'debit.id': debitID}).debit.total_amount;
-                    console.log("Amount from one-time credit order: " + amount);
+                    logger.info("Amount from one-time credit order: " + amount);
 
                     var credit = Utils.extractFromPromise(balanced.get(orderHref).credit_to(bank_account, {"amount": amount,
                         "appears_on_statement_as": name}));
