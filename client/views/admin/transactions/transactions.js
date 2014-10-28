@@ -1,6 +1,6 @@
 Template.transactions.rendered = function () {
 	$('.datatable').dataTable();
-	$('#mainTable').editableTableWidget(); //this needs to run each time the data on the screen changes, otherwise it doesn't work. 
+	//$('#mainTable').editableTableWidget(); //this needs to run each time the data on the screen changes, otherwise it doesn't work. 
 };
 
 Template.transactions.helpers({
