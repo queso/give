@@ -54,7 +54,12 @@ _.extend(Utils,{
             $set: {
                 'bank_account.id': check.id,
                 'bank_account.type': check.account_type,
-                'bank_account.href': check.href}
+                'bank_account.href': check.href,
+                'bank_account.account_number': check.account_number,
+                'bank_account.bank_name': check.bank_name,
+                'bank_account.fingerprint': check.fingerprint,
+                'bank_account.routing_number': check.routing_number
+            }
         });
         return check;
     },

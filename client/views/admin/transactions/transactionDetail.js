@@ -109,7 +109,7 @@ Template.transactionDetail.helpers({
         }
     },
     paymentLink: function(parent) {
-      return '<a href="https://dashboard.balancedpayments.com/' + Meteor.settings.public.balanced_payments_uri + (this.bank_account ? this.bank_account.href: this.card.href) + '" target="_blank">' + this.debit.donateWith + '</a>';
+      return '<a href="https://dashboard.balancedpayments.com/' + Meteor.settings.public.balanced_payments_uri + (this.bank_account ? this.bank_account.href: this.card.href) + '" target="_blank">' + this.bank_account ? this.bank_account.number: this.card.number + '</a>';
     }
 });
 
