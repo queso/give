@@ -89,6 +89,8 @@ Router.route(':root/transactions', function () {
     this.layout('AdminLayout');
     var root = Meteor.settings.public.root;
 
+    this.subscribe('donate_list').wait();
+
     if (this.ready()) {
         this.render('Transactions');
     }else {
@@ -96,12 +98,18 @@ Router.route(':root/transactions', function () {
     }
 });
 
-Router.route(':root/subscription', function () {
+Router.route(':root/subscription/:_id', function () {
     this.layout('AdminLayout');
     var root = Meteor.settings.public.root;
 
+    this.subscribe('transaction', this.params._id).wait();
+
     if (this.ready()) {
-        this.render('Subscription');
+        this.render('Subscription', {
+            data: function () {
+                return Donate.findOne(this.params._id);
+            }
+        });
     }else {
         this.render('Loading');
     }

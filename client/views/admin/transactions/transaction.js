@@ -1,4 +1,4 @@
-Template.transaction.helpers({
+Template.Transaction.helpers({
 	name: function () {
 		if(this.customer.org){
 			return this.customer.org + " " + this.customer.fname + " " + this.customer.lname;
@@ -78,7 +78,7 @@ Template.transaction.helpers({
 		return Meteor.settings.public.root;
 	}
 });
-Template.transaction.events({
+Template.Transaction.events({
 	'click .stop_recurring': function (e, tmpl) {
 		e.preventDefault();
 		e.stopPropagation();
