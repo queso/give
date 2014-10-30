@@ -318,6 +318,9 @@ Template.DonationForm.helpers({
     },
     errorDescription: function() {
         return 'Error Description';
+    },
+    amount: function() {
+        return Session.get('params.amount');
     }
 });
 /*****************************************************************************/

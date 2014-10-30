@@ -1,4 +1,4 @@
-Template.subscription.events({
+Template.Subscription.events({
 	'click .trans-table-row': function (e, tmpl) {
 		e.preventDefault();
 		Session.set("transaction_guid", this.value.guid);
@@ -9,7 +9,7 @@ Template.subscription.events({
 	}	
 });
 
-Template.subscription.helpers({
+Template.Subscription.helpers({
 	subscription: function () {
 		return this.recurring.transactions; //The subscription filters out the records marked viewable: false
 	},

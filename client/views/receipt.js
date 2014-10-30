@@ -16,14 +16,14 @@ Template.Receipt.helpers({
    		return this._id;
    },
    transaction_guid: function () {
-    var transaction_guid = Session.get('params.transaction_guid');
+    var transaction_guid = Session.get('transaction_guid');
     return transaction_guid;
    },
    date: function () {
    		return moment(this.debit.created_at).format('MM/DD/YYYY');
    },
    transaction_date: function () {
-    var transaction_guid = Session.get('params.transaction_guid');
+    var transaction_guid = Session.get('transaction_guid');
       return moment(this.recurring.transactions[transaction_guid].updated_at).format('MM/DD/YYYY');
    },
    org: function () {
@@ -131,7 +131,7 @@ Template.Receipt.rendered = function () {
   $('#invoice').scrollView();
   
   //Look for print url param and if it is set to yes, send the js command to show the print dialog
-  if (Session.equals('params.print', 'yes')) {
+  if (Session.equals('print', 'yes')) {
       return window.print();
   }
 };

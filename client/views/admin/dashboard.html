@@ -1,6 +1,9 @@
 <template name="Dashboard">
 	<div class="Admin">
-		{{> AdminNavBar}}
+		{{#if currentUser}}
+			{{> AdminNavBar}}
+		{{else}}
+		{{/if}}
 		
 		<div class="row">	
 			<div class="col-lg-12">

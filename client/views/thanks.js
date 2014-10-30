@@ -35,12 +35,12 @@ Template.Thanks.helpers({
 
 Template.Gift.helpers({
   displayReceipt: function () {
-    var transaction_guid = Session.get('params.transaction_guid');
+    var transaction_guid = Session.get('transaction_guid');
     var transaction_status = this.recurring.transactions[transaction_guid].status;
     return (transaction_status === 'succeeded');
   },
   successOrPendingPayment: function () {
-    var transaction_guid = Session.get('params.transaction_guid');
+    var transaction_guid = Session.get('transaction_guid');
     var transaction_status = this.recurring.transactions[transaction_guid].status;
     return (transaction_status === 'succeeded' || transaction_status === 'pending');
   },

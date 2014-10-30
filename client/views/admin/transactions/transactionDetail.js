@@ -1,10 +1,10 @@
 /*****************************************************************************/
 /* transactionDetail: Event Handlers and Helpers */
 /*****************************************************************************/
-Template.transactionDetail.events({
+Template.TransactionDetail.events({
 });
 
-Template.transactionDetail.helpers({
+Template.TransactionDetail.helpers({
     billy: function () {
       return (this.recurring);
     },
@@ -117,7 +117,7 @@ Template.transactionDetail.helpers({
 /* transactionDetail: Lifecycle Hooks */
 /*****************************************************************************/
 
-Template.transactionDetail.rendered = function () {
+Template.TransactionDetail.rendered = function () {
   Session.set("transaction_guid", '');
   Session.set("transaction_amount", '');
   Session.set("transaction_date", '');
