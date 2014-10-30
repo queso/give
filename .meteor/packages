@@ -15,7 +15,8 @@ amr:parsley.js
 iron:router
 mrt:moment
 npm-container
-joshowens:accounts-entry
-accounts-ui
 wylio:mandrill
 j4507:datatables-bootstrap-3
+useraccounts:bootstrap
+accounts-password
+
