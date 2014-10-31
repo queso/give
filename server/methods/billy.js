@@ -26,7 +26,7 @@ function logIt() {
 }
 
 function createPaymentMethod(data) {
-	try {
+	/*try {*/
 		logIt();
 
 		logger.info("Setup variables for data from form inputs inside the billy createPaymentMethod method.");
@@ -60,7 +60,7 @@ function createPaymentMethod(data) {
             associate = Utils.create_association(data, check.href, processor_uri);
 
         }
-    }catch (e) {
+    /*}catch (e) {
         if(e.category_code) {
             logger.error("Category_code area: e.details " + e.details);
             throw new Meteor.Error(500, e.category_code, e.description);
@@ -69,7 +69,7 @@ function createPaymentMethod(data) {
             throw new Meteor.Error(500, e.reason, e.details);
         }
 		//throwTheError(e);
-	}
+	}*/
 }
 
 function createBillyCustomer(customerID) {
@@ -95,23 +95,23 @@ function createBillyCustomer(customerID) {
 	}
 }
 
-function subscribeToBillyPlan(data) {
+function subscribeToBillyPlan(id) {
 	try {
 		logIt();
-		var paymentType = Donate.findOne(data).debit.type;
+		var paymentType = Donate.findOne(id).debit.type;
 		if (paymentType === "credit" || paymentType === "debit") {
 			logger.info("Payment Type: " + paymentType);
-			var funding_instrument_uri = Donate.findOne(data).card.href;
+			var funding_instrument_uri = Donate.findOne(id).card[0].href;
 		} else {
 			logger.info("Payment Type: " + paymentType);
-			var funding_instrument_uri = Donate.findOne(data).bank_account.href;
+			var funding_instrument_uri = Donate.findOne(id).bank_account[0].href;
 		}
-		logger.info("Amount: " + Math.ceil(Donate.findOne(data).debit.total_amount));
-		var billyAmount = Math.ceil(Donate.findOne(data).debit.total_amount);
+		logger.info("Amount: " + Math.ceil(Donate.findOne(id).debit.total_amount));
+		var billyAmount = Math.ceil(Donate.findOne(id).debit.total_amount);
 		var resultSet = '';
 		resultSet = HTTP.post("https://billy.balancedpayments.com/v1/subscriptions", {
 			params: {
-				"customer_guid": Donate.findOne(data).billy_customer.guid,
+				"customer_guid": Donate.findOne(id).billy_customer.guid,
 				"plan_guid": Meteor.settings.billy_monthly_GUID,
 				"funding_instrument_uri": "/" + Meteor.settings.balanced_uri + funding_instrument_uri,
 				"appears_on_statement_as": "Trash Mountain",
@@ -126,7 +126,7 @@ function subscribeToBillyPlan(data) {
 		} else {
 			var error = {};
             error.e = JSON.stringify(resultSet.data);
-            error.id = data._id;
+            error.id = id;
             failTheRecord(error);
 
 			Meteor.error(resultSet.statusCode);
@@ -136,7 +136,7 @@ function subscribeToBillyPlan(data) {
 		e._id = AllErrors.insert(e.response);
 		var error = {};
         error.e = JSON.stringify(resultSet.data);
-        error.id = data._id;
+        error.id = id;
         failTheRecord(error);
 		throw new Meteor.Error(error, e._id);
 	}
@@ -180,7 +180,7 @@ Meteor.methods({
     recurringDonation: function(data) {
 		logger.info("Started billy method calls.")
 		logIt();
-		try {
+		/*try {*/
 
 			//Check the form to make sure nothing malicious is being submitted to the server
 	        Utils.checkFormFields(data);
@@ -233,7 +233,7 @@ Meteor.methods({
 			billyCustomer = createBillyCustomer(customerData.id);
 			Donate.update(data._id, {
 				$set: {
-					'customer': billyCustomer.data
+					'billy_customer': billyCustomer.data
 				}
 			});
 			Donate.update(data._id, {
@@ -294,11 +294,11 @@ Meteor.methods({
 			return return_this;
 
 
-		} catch (e) {
+		/*} catch (e) {
 			logger.info(e);
 			logger.info(e.error_message);
 			logger.info(e.reason);
 			throw new Meteor.Error(500, e.reason, e.details);
-		}
+		}*/
 	}
 });

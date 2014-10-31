@@ -81,11 +81,20 @@ _.extend(Utils,{
 	      throw new Meteor.error(e);
 	    }
 	},
-	send_initial_email: function (id) {
+	send_initial_email: function (id, billy, transaction_guid) {
 	    try {
 	      logger.info("Started send_initial_email with ID: " + id + " --------------------------");
 	      var error = {};
 	      var lookup_record = Donate.findOne({_id: id});
+	      if(!billy){
+	      	logger.info("Record id = " + lookup_record._id);
+	      	var created_at = moment(Date.parse(lookup_record.created_at)).format('MM/DD/YYYY');
+	      }else {
+	      	logger.info("Record id = " + lookup_record._id);
+	      	var lookup_record = Donate.findOne({'transactions.guid': transaction_guid});
+	      	var lookup_transaction = Donate.findOne({'transactions.guid': transaction_guid}, {'transactions.guid': 1});
+	      	var created_at = moment(Date.parse(lookup_transaction.transactions[0].created_at)).format('MM/DD/YYYY');
+		}
 
 	      var debit = lookup_record.debit;
 	      var customer = lookup_record.customer;

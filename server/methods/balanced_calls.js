@@ -25,17 +25,19 @@ _.extend(Utils,{
 
         //add card create response from Balanced to the database
         var cardResponse = Donate.update(data._id, {$push: {
-            'card.fingerprint': card.fingerprint,
-            'card.id': card.id,
-            'card.type': card.type,
-            'card.cvv_result': card.cvv_result,
-            'card.number': card.number,
-            'card.expiration_month': card.expiration_month,
-            'card.expiration_year': card.expiration_year,
-            'card.href': card.href,
-            'card.bank_name': card.bank_name,
-            'card.created_at': card.created_at,
-            'card.can_debit': card.can_debit
+            'card': {
+                'fingerprint': card.fingerprint,
+                'id': card.id,
+                'type': card.type,
+                'cvv_result': card.cvv_result,
+                'number': card.number,
+                'expiration_month': card.expiration_month,
+                'expiration_year': card.expiration_year,
+                'href': card.href,
+                'bank_name': card.bank_name,
+                'created_at': card.created_at,
+                'can_debit': card.can_debit
+            }
         }});
         var cardMiscSet = Donate.update(data._id, {$set: {
             'debit.customer': card.links.customer
@@ -53,13 +55,15 @@ _.extend(Utils,{
         }));
         Donate.update(data._id, {
             $push: {
-                'bank_account.id': check.id,
-                'bank_account.type': check.account_type,
-                'bank_account.href': check.href,
-                'bank_account.account_number': check.account_number,
-                'bank_account.bank_name': check.bank_name,
-                'bank_account.fingerprint': check.fingerprint,
-                'bank_account.routing_number': check.routing_number
+                'bank_account': {                
+                    'id': check.id,
+                    'type': check.account_type,
+                    'href': check.href,
+                    'account_number': check.account_number,
+                    'bank_name': check.bank_name,
+                    'fingerprint': check.fingerprint,
+                    'routing_number': check.routing_number
+                }
             }
         });
         return check;

@@ -135,9 +135,6 @@ Evts = {
                     logger.error("The amount in the event and the amount in the lookup record do not match");
                     return "Amounts do not match, exiting";
                 }
-
-                
-
                 var checkThis = Donate.findOne({'transactions.guid':transaction_guid}, {'transactions.$': 1});
 
                 var paymentType = subscription_values[0].debitInformation.donateWith;
@@ -152,7 +149,7 @@ Evts = {
                             email_sent_update['transactions.$.email_sent.initial_sent'] = true;
                             email_sent_update['transactions.$.email_sent.initial_time'] = moment.utc();
                             Donate.update({'transactions.guid': transaction_guid}, {$set: email_sent_update});
-                            var send_initial_email = Utils.send_initial_email(mixedID, status);
+                            var send_initial_email = Utils.send_initial_email(checkThis._id, true, transaction_guid);
                         }else {
                             email_sent_update['transactions.$.email_sent.succeeded_sent'] = true;
                             email_sent_update['transactions.$.email_sent.succeeded_time'] = moment.utc();
@@ -164,14 +161,15 @@ Evts = {
                     throw new Meteor.Error(404, 'Error: Not found', transaction_guid);
                 }
             } else if(Donate.findOne({'debit.id': mixedID})){
-                    var id = Donate.findOne({'debit.id': mixedID})._id;
-                    if (!id.debit.email_sent[email_type]) { //|| !paymentType === "Card" || !paymentType === "card"
+                    var record_lookup = Donate.findOne({'debit.id': mixedID});
+                    logger.info("Found an ID: " + record_lookup._id);
+                    if (!record_lookup.debit.email_sent[email_type]) { //|| !paymentType === "Card" || !paymentType === "card"
                         if(email_type === 'initial_sent') {
-                            Donate.update(id, {$set: {'debit.email_sent.initial_sent': true, 'debit.email_sent.initial_time': moment.utc()}});
-                            var send_billy_email = Utils.send_initial_email(id);
+                            Donate.update({_id: record_lookup._id}, {$set: {'debit.email_sent.initial_sent': true, 'debit.email_sent.initial_time': moment.utc()}});
+                            var send_initial = Utils.send_initial_email(record_lookup._id, false, null);
                         }else {
-                            Donate.update(id, {$set: {'debit.email_sent.succeeded_sent': true, 'debit.email_sent.succeeded_time': moment.utc()}});
-                            var send_billy_email = Utils.send_one_time_email(id);
+                            Donate.update({_id: record_lookup._id}, {$set: {'debit.email_sent.succeeded_sent': true, 'debit.email_sent.succeeded_time': moment.utc()}});
+                            var send_one_time = Utils.send_one_time_email(record_lookup._id);
                         }
                     } else{
                         logger.info("Looks like this is either a Card transaction or the email has already been sent.");
