@@ -5,7 +5,7 @@ html, body, .container {
 .fa-check-square {
     color: #7ccc79;
 }
-.container {
+.fix-height {
     display: table;
     vertical-align: middle;
     height: 400px;

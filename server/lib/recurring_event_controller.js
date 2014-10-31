@@ -11,11 +11,11 @@ Evts = {
      		var status = 			body.events[0].entity[type][0].status;
      		var billy_id = 			Evts.update_billy(transaction_guid, invoice_guid, subscription_info, type, status, body);
      		if(select_type === "debit_created") {
-     			var sending_email_for_created = Evts.send_received_email(true, billy_id, transaction_guid, subscription_guid, subscription_guidstatus, body.events[0].entity.debits[0].amount);
+     			var sending_email_for_created = Evts.send_email(true, billy_id, transaction_guid, subscription_guid, 'initial_sent', status, body.events[0].entity.debits[0].amount);
      		}else if(select_type === "debit_succeeded") {
                 var amount = Donate.findOne({_id: billy_id}).recurring.subscriptions.amount;
                 if(amount === body.events[0].entity.debits[0].amount) {
-                    var sending_email = Evts.send_email(true, billy_id, transaction_guid, status, body.events[0].entity.debits[0].amount);
+                    var sending_email = Evts.send_email(true, billy_id, transaction_guid, subscription_guid, 'succeeded_sent', status, body.events[0].entity.debits[0].amount);
                     var route_type =    Event_types[select_type](true, billy_id, transaction_guid, null);
                 } else{
                     logger.error("The amount from the received event and the amount of the subscription do not match!");
@@ -94,6 +94,8 @@ Evts = {
             lookup_invoice_guid['invoices.guid'] = invoice_guid;
             if(Donate.findOne(lookup_transaction_guid)){
                 logger.info("FOUND A transaction_guid in the collection");
+
+
                 var id = Donate.findOne(lookup_transaction_guid)._id;
                 var status_update = Evts.update_status(type, id, body);
                 return id;
@@ -121,103 +123,64 @@ Evts = {
             logger.error(e);
         }
 	},
-	send_received_email: function (billy, mixedID, transaction_guid, subscription_guid, status, body_amount) {
+	send_email: function (billy, mixedID, transaction_guid, subscription_guid, email_type, status, body_amount) {
 		try{
-            
+            logger.info("Got to send_email function.");
             if (billy) {
-                logger.info("Inside send_received_email Billy section.");
+                logger.info("Inside send_email Billy section.");
 
-                var get_amount = Donate.findOne({'subscriptions.guid': subscription_guid}, {'subscriptions.$': 1}).subscriptions;
-                var amount = get_amount[0].amount;
+                var subscription_values = Donate.findOne({'subscriptions.guid': subscription_guid}, {'subscriptions.$': 1}).subscriptions;
+                var amount = subscription_values[0].amount;
                 if(body_amount !== amount){
                     logger.error("The amount in the event and the amount in the lookup record do not match");
                     return "Amounts do not match, exiting";
                 }
 
-                /*var email_sent_lookup = {};
-                email_sent_lookup['transactions.' + transaction_guid + '.email_sent.initial_sent'] = true;*/
+                
 
+                var checkThis = Donate.findOne({'transactions.guid':transaction_guid}, {'transactions.$': 1});
 
-                var email_sent_lookup = Donate.findOne({'transactions.guid': transaction_guid}, {'transactions.$': 1});
+                var paymentType = subscription_values[0].debitInformation.donateWith;
 
-                var email_sent_time = moment.utc();
-                var transaction_guid_exists = {};
-                transaction_guid_exists['recurring.transactions.' + transaction_guid + '.guid'] = transaction_guid;
-
-                var checkThis = Donate.findOne({_id: mixedID}).recurring.subscriptions.debitInformation.donateWith;
-
-                if(email_sent_lookup.transactions[0].email_sent.initial_sent || checkThis === "card" || checkThis === "Card"){
-                    logger.info("Initial email sent = true or this is a credit card transaction. Nothing further to do.");
-                    //logger.info(Donate.findOne({_id: mixedID}).recurring.subscriptions.debitInformation.donateWith);
-                } else if(Donate.findOne(transaction_guid_exists)){
-                    Donate.update(mixedID, {$set: email_sent_lookup[0].email_sent});
-                    Donate.update(mixedID, {$set: email_sent_lookup_time});
-                    var send_initial_email = Utils.send_initial_email(mixedID, status);
-                } else{
+                if(checkThis){
+                    if(checkThis.transactions[0].email_sent[email_type] || paymentType === "card" || paymentType === "Card") {
+                        logger.info("Initial email sent = true or this is a credit card transaction. Nothing further to do.");
+                        //logger.info(Donate.findOne({_id: mixedID}).recurring.subscriptions.debitInformation.donateWith);
+                    } else {
+                        var email_sent_update = {};
+                        if(email_type === 'initial_sent') {
+                            email_sent_update['transactions.$.email_sent.initial_sent'] = true;
+                            email_sent_update['transactions.$.email_sent.initial_time'] = moment.utc();
+                            Donate.update({'transactions.guid': transaction_guid}, {$set: email_sent_update});
+                            var send_initial_email = Utils.send_initial_email(mixedID, status);
+                        }else {
+                            email_sent_update['transactions.$.email_sent.succeeded_sent'] = true;
+                            email_sent_update['transactions.$.email_sent.succeeded_time'] = moment.utc();
+                            Donate.update({'transactions.guid': transaction_guid}, {$set: email_sent_update});
+                            var send_billy_email = Utils.send_billy_email(mixedID, transaction_guid, status);
+                        }
+                    } 
+                }else{
                     throw new Meteor.Error(404, 'Error: Not found', transaction_guid);
                 }
-            } else{
-                //send out the appropriate email using Mandrill
-                var checkThis = Donate.findOne({'debit.id': mixedID}).debit.donateWith;
-
-                if (Donate.findOne({'debit.id': mixedID})) {
-                	if ((!(Donate.findOne({'debit.id': mixedID}).debit.initial_email_sent)) || checkThis === "Card" || checkThis === "card") {
-                        var id = Donate.findOne({'debit.id': mixedID})._id;
-                        Donate.update({_id: id}, {$set: {'debit.initial_email_sent': true, 'debit.initial_time': moment.utc().format('MM/DD/YYYY, hh:mm')}});
-                        var send_initial_email = Utils.send_initial_email(id, status);
-	                } else{
-	                    logger.info("Looks like this is either a Card transaction or the email has already been sent.");
-	                }
-            	}else{
-                    logger.error("Inside recurring_event_controller.js -> send_received_email -- Given that mixedID I can't find the document in mongo. This might be because the user was stopped on the initial page before the debit was entered.");
-	            }
-            }
-        }
-        catch(e){
-            logger.error(e);
-        }
-	},
-	send_email: function(billy, mixedID, transaction_guid, status, body_amount) {
-		try{
-            logger.info("Got to send_email function");
-            if (billy) {
-                var amount = Donate.findOne({_id: mixedID}).recurring.subscriptions.amount;
-                if(body_amount !== amount){
-                    logger.error("The amount in the event and the amount in the lookup record do not match");
-                    return "Amounts do not match, exiting";
-                }
-                //setup query programmatically.
-                var email_sent_lookup = {};
-                email_sent_lookup['recurring.transactions.' + transaction_guid + '.email_sent.' + status] = true;
-                var email_sent_lookup_time = {};
-                email_sent_lookup_time['recurring.transactions.' + transaction_guid + '.email_sent.time'] = moment.utc().format('MM/DD/YYYY, hh:mm');
-                
-                //send out the appropriate email using Mandrill
-                if(Donate.findOne(email_sent_lookup)){
-                    logger.info("Email sent status = true nothing further to do.");
-                }else if (status === 'succeeded' || 'failed') {
-                    Donate.update(mixedID, {$set: email_sent_lookup});
-                    Donate.update(mixedID, {$set: email_sent_lookup_time});
-                    var send_billy_email = Utils.send_billy_email(mixedID, transaction_guid, status);
-                }
-            }else {
-                if(Donate.findOne({'debit.id': mixedID})){
+            } else if(Donate.findOne({'debit.id': mixedID})){
                     var id = Donate.findOne({'debit.id': mixedID})._id;
-                    logger.info("Here is the id: " + id);  
-                } else{
+                    if (!id.debit.email_sent[email_type]) { //|| !paymentType === "Card" || !paymentType === "card"
+                        if(email_type === 'initial_sent') {
+                            Donate.update(id, {$set: {'debit.email_sent.initial_sent': true, 'debit.email_sent.initial_time': moment.utc()}});
+                            var send_billy_email = Utils.send_initial_email(id);
+                        }else {
+                            Donate.update(id, {$set: {'debit.email_sent.succeeded_sent': true, 'debit.email_sent.succeeded_time': moment.utc()}});
+                            var send_billy_email = Utils.send_one_time_email(id);
+                        }
+                    } else{
+                        logger.info("Looks like this is either a Card transaction or the email has already been sent.");
+                    }    
+                }else{
                     logger.error("Inside events.js -> send_email -- Given that eventID I can't find the document in mongo. This might be because the user was stopped on the initial page before the debit was entered.");
                 }
-                //send out the appropriate email using Mandrill
-                if(id){
-                    if (!(Donate.findOne(id).debit.email_sent)) {
-                        Donate.update(id, {$set: {'debit.email_sent': true, 'debit.email_sent_time': moment.utc().format('MM/DD/YYYY, hh:mm')}});
-                        var send_billy_email = Utils.send_one_time_email(id);
-                    }    
-                }
             }
-            
-        }
-        catch(e) {
+        catch(e){
             logger.error(e);
         }
 	},

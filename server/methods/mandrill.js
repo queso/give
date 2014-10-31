@@ -1,14 +1,19 @@
 _.extend(Utils,{
-	large_gift_email: function (id, billy, debit_or_trans_id, amount){
+	//Need to fix this after finding out what it should actually show here
+	large_gift_email: function (billy, debit_or_trans_id, amount){
 	    try {
 	      logger.info("Started large_gift_email with ID: " + id);
-	      var lookup_record = Donate.findOne({_id: id});
+	      
 	      if(!billy){
+	      	var lookup_record = Donate.findOne({'debit.id': debit_or_trans_id});
+	      	logger.info("large_gift_email lookup_record = " + lookup_record._id);
 	      	var created_at = moment(Date.parse(lookup_record.created_at)).format('MM/DD/YYYY');
 	      	var path = 'thanks';
 	      	var transaction_guid = '';
 	      }else {
-	      	var created_at = moment(Date.parse(lookup_record.recurring.transactions[debit_or_trans_id].created_at)).format('MM/DD/YYYY');
+	      	var lookup_record = Donate.findOne({'transactions.guid': debit_or_trans_id});
+	      	var lookup_transaction = Donate.findOne({'transactions.guid': debit_or_trans_id}, {'transactions.guid': 1});
+	      	var created_at = moment(Date.parse(lookup_transaction.transactions[0].created_at)).format('MM/DD/YYYY');
 	      	var path = 'gift';
 	      	var transaction_guid = debit_or_trans_id;
 	      }
@@ -81,8 +86,7 @@ _.extend(Utils,{
 	      logger.info("Started send_initial_email with ID: " + id + " --------------------------");
 	      var error = {};
 	      var lookup_record = Donate.findOne({_id: id});
-	      var created_at = moment(Date.parse(lookup_record.created_at)).format('MM/DD/YYYY');
-	      logger.info(created_at);
+
 	      var debit = lookup_record.debit;
 	      var customer = lookup_record.customer;
 	      var fees = debit.fees;
@@ -194,8 +198,7 @@ _.extend(Utils,{
 	      logger.info("Started send_one_time_email with ID: " + id + " --------------------------");
 	      var error = {};
 	      var lookup_record = Donate.findOne({_id: id});
-	      var created_at = moment(Date.parse(lookup_record.created_at)).format('MM/DD/YYYY');
-	      logger.info(created_at);
+	      var created_at = moment(lookup_record.debit.created_at).format('MM/DD/YYYY');
 	      var debit = lookup_record.debit;
 	      var customer = lookup_record.customer;
 	      var fees = debit.fees;
@@ -317,8 +320,8 @@ _.extend(Utils,{
 	      logger.info("Started send_billy_email with status: " + status + " --------------------------");
 	      var error = {};
 	      
-	      var lookup_record = Donate.findOne({_id: id});
-	      var created_at = moment(lookup_record.recurring.transactions[transaction_guid].created_at).format('MM/DD/YYYY');
+	      var lookup_record = Donate.findOne({'transactions.guid': transaction_guid}, {'transactions.$': 1});
+	      var created_at = moment(lookup_record.transactions[0].created_at).format('MM/DD/YYYY');
 	      var debit = lookup_record.debit;
 	      var customer = lookup_record.customer;
 	      var fees = (debit.fees);
@@ -328,13 +331,13 @@ _.extend(Utils,{
 	        var fullName = customer.fname + " " + customer.lname;
 	      }
 	      logger.info("Cover the fees = " + debit.coveredTheFees);
-	      logger.info("Transaction Status: " + lookup_record.recurring.transactions[transaction_guid].status);
+	      logger.info("Transaction Status: " + lookup_record.transactions[0].status);
 
 	      var slug;
 	      //TODO: Fix this so that it looks into the transaciton sub-document, not just into the top level, or when it fails, put the transaction GUID into the failed record 
 	      //that is probably the way to go. 
 	      if (status === "failed") {
-	        error = lookup_record.failed;
+	        error = Donate.findOne({_id: id}).failed;
 	        slug = "failedpayment";
 	        } else if (debit.coveredTheFees){
 	        slug = "fall-2014-donation-electronic-receipt-with-fees";

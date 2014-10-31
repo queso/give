@@ -70,25 +70,22 @@ _.extend(Utils, {
         
         if(Donate.findOne({_id: id})) {
             var name = Donate.findOne({_id: id}).customer.fname + " " + Donate.findOne({_id: id}).customer.lname;
+
             var amount = Donate.findOne({_id: id}).debit.total_amount;
             name = name.substring(0, 13);
-            var lookup_credit_status = {};
-            lookup_credit_status['recurring.transactions.' + transaction_guid + '.credit.sent'] = true;
+            var lookup_transaction = Donate.findOne({'transactions.guid': transaction_guid}, {'trasnactions.$': 1});
             
-            if(Donate.findOne(lookup_credit_status)){    
+            if(lookup_transaction.transactions[0].credit.sent){    
                 logger.info("No need to run the credit again, this transaction has already had it's balance credited.");
                 return '';
             }else{
                 logger.info("Credit status was false or not set, starting to send out a credit.");
-                var setModifier = { $set: {} };
-                setModifier.$set['recurring.transactions.' + transaction_guid + '.credit'] = {sent: true};
-                Donate.update({_id: id}, setModifier);
+                //Donate.update({'transactions.guid': transaction_guid}, {$set: {'trasnactions.$.credit.sent': true}});
 
                 var credit = Utils.extractFromPromise(balanced.get(Meteor.settings.bank_account_uri).credit({"appears_on_statement_as": name, "amount": amount}));
 
-                var setModifierAgain = { $set: {} };
-                setModifierAgain.$set['recurring.transactions.' + transaction_guid + '.credit'] = {'amount': credit.amount, 'id': credit.id, 'sent': true};
-                Donate.update({_id: id}, setModifierAgain);
+                Donate.update({'transactions.guid': transaction_guid}, {$set: {'trasnactions.$.credit.sent': true, 'transactions.$.credit.amount': credit.amount, 'transactions.$.credit.id': credit.id}});
+
             }
             return credit;
         }

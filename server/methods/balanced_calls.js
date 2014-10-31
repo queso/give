@@ -24,7 +24,7 @@ _.extend(Utils,{
         }
 
         //add card create response from Balanced to the database
-        var cardResponse = Donate.update(data._id, {$set: {
+        var cardResponse = Donate.update(data._id, {$push: {
             'card.fingerprint': card.fingerprint,
             'card.id': card.id,
             'card.type': card.type,
@@ -35,7 +35,9 @@ _.extend(Utils,{
             'card.href': card.href,
             'card.bank_name': card.bank_name,
             'card.created_at': card.created_at,
-            'card.can_debit': card.can_debit,
+            'card.can_debit': card.can_debit
+        }});
+        var cardMiscSet = Donate.update(data._id, {$set: {
             'debit.customer': card.links.customer
         }});
         return card;
@@ -50,7 +52,7 @@ _.extend(Utils,{
             "appears_on_statement_as": "Trash Mountain"
         }));
         Donate.update(data._id, {
-            $set: {
+            $push: {
                 'bank_account.id': check.id,
                 'bank_account.type': check.account_type,
                 'bank_account.href': check.href,

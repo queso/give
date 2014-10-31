@@ -26,7 +26,7 @@ Utils = {
             //update the collection with this invoice
             Donate.update({_id: IDs.id}, {
               $push: {
-                'recurring.invoices': invoice.data
+                'invoices': invoice.data
               }
             });
             return IDs;

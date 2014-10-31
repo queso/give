@@ -83,6 +83,8 @@ Router.route(':root/dashboard', function () {
     }else {
         this.render('Loading');
     }
+}, {
+    name: 'admin.dashboard'
 });
 
 Router.route(':root/transactions', function () {

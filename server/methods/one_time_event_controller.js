@@ -11,7 +11,11 @@ _.extend(Evts,{
 	 			var sending_email_for_created = Evts.send_received_email(false, body.events[0].entity.debits[0].id, null, status, body.events[0].entity.debits[0].amount);
 	 		}else if(select_type === "debit_succeeded") {
 		 		var amount = Donate.findOne({'debit.id': body.events[0].entity.debits[0].id}).debit.amount;
+
                 if(amount === body.events[0].entity.debits[0].amount) {	
+			 		if(amount > 50000){
+			 			var large_gift_email = 	Evts.large_gift_email(false, body.events[0].entity.debits[0].id, body.events[0].entity.debits[0].amount);
+			 		}
 		 			var sending_email = 	Evts.send_email(false, body.events[0].entity.debits[0].id, null, status, body.events[0].entity.debits[0].amount);
 		 			var route_type =        Event_types[select_type](false, null, null, body.events[0].entity.debits[0].id);
 	 			} else{

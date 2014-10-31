@@ -1,4 +1,37 @@
-<template name="AdminNavBar">
+<template name="Nav">
+  <nav class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-8">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <span class="navbar-brand">
+            AccountsTemplates
+          </span>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-8">
+          <ul class="nav navbar-nav">
+            <li class="{{isActiveRoute regex='admin.dashboard'}}">{{#linkTo route="admin.dashboard"}}Dashboard{{/linkTo}}</li>
+            <li class="{{isActiveRoute regex='donation.form'}}">{{#linkTo route='donation.form'}}Give{{/linkTo}}</li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            {{#if isNotActiveRoute regex='signIn'}}
+              <button type="button" id="nav-signinout" class="btn btn-default navbar-btn">{{signInOut}}</button>
+            {{/if}}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+</template>
+
+
+<!-- <template name="AdminNavBar">
 	<div class="container-fluid Admin">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
@@ -13,7 +46,7 @@
 			<li><a href="table.html#" id="main-menu-toggle"><i class="fa fa-bars"></i></a></li>
 		</ul>
 	    <ul class="nav navbar-nav navbar-right">
-			<!-- <li class="dropdown">
+			<li class="dropdown">
 				    		<a href="table.html#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-comments-o"></i><span class="badge">4</span></a>
 				    		<ul class="dropdown-menu">
 					<li class="dropdown-menu-header">
@@ -72,7 +105,7 @@
 						<a href="table.html#">View all messages</a>
 					</li>	
 				    		</ul>
-				  		</li> -->
+				  		</li>
 			<li><a href="table.html#"><i class="fa fa-cog"></i></a></li>
 			<li><a href="table.html#"><i class="fa fa-power-off"></i></a></li>
 			<li class="dropdown">
@@ -104,4 +137,4 @@
 			<input type="text" class="form-control" placeholder="Search..." id="admin_search">
 		</form>
 	</div>
-</template>
+</template> -->
