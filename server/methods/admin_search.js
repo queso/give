@@ -5,9 +5,7 @@ Meteor.methods({
     	}else{
     		if (search_string.substring(0, 2) == "TX") {
     			logger.info("Looking up a transaction from inside the admin panel");
-    			var lookup_transaction_guid = {};
-	            lookup_transaction_guid['recurring.transactions.' + search_string + '.guid'] = search_string;
-	            var record = Donate.find(lookup_transaction_guid).fetch(); 
+	            var record = Donate.find({'transactions.guid': search_string}).fetch(); 
     			return record;
     		} else{
     			var records = Donate.find({$or: [ {_id: search_string}, {'customer.lname': search_string}, {'customer.fname': search_string}]}).fetch();

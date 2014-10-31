@@ -4,12 +4,14 @@ Evts = {
 		var type = 				   Object.keys(body.events[0].entity)[0]; //this is the type of event, less specific, like debit or credit
         if(type === "debits"){
         	var invoice_guid = 		Evts.get_invoice_guid(type, body);
+            var subscription_info = Evts.getBillySubscriptionGUID(invoice_guid);
+            var subscription_guid = subscription_info.subscription_guid;
      		var transaction_guid = 	Evts.get_transaction_guid(type, body);
      		var select_type = 		Evts.select_type(body);
      		var status = 			body.events[0].entity[type][0].status;
-     		var billy_id = 			Evts.update_billy(transaction_guid, invoice_guid, type, status, body);
+     		var billy_id = 			Evts.update_billy(transaction_guid, invoice_guid, subscription_info, type, status, body);
      		if(select_type === "debit_created") {
-     			var sending_email_for_created = Evts.send_received_email(true, billy_id, transaction_guid, status, body.events[0].entity.debits[0].amount);
+     			var sending_email_for_created = Evts.send_received_email(true, billy_id, transaction_guid, subscription_guid, subscription_guidstatus, body.events[0].entity.debits[0].amount);
      		}else if(select_type === "debit_succeeded") {
                 var amount = Donate.findOne({_id: billy_id}).recurring.subscriptions.amount;
                 if(amount === body.events[0].entity.debits[0].amount) {
@@ -63,31 +65,33 @@ Evts = {
         });
      
         var lookup_transaction_guid = {};
-        lookup_transaction_guid['recurring.transactions.' + transaction_guid + '.guid'] = transaction_guid;
+        lookup_transaction_guid['transactions.guid'] = transaction_guid;
      
         if(Donate.findOne(lookup_transaction_guid)){
             var status_update = Evts.update_status(type, id, body);
             return status_update;
             //this.emit('billy_trans_status', status);
         }else{
-            var setModifier = { $set: {} };
             transaction.data.email_sent = {};
-            setModifier.$set['recurring.transactions.' + transaction_guid] = transaction.data;
             
             //update the document with the data received from billy on this transaction
-            var inserted = Donate.update({_id: id}, setModifier);
+            var inserted = Donate.update({'transactions.guid': trasnaction_guid}, {
+                $set: {
+                    'transactions.$': transactions.data
+               }
+            });
             return inserted;
         }
 	},
-	update_billy: function(transaction_guid, invoice_guid, type, status, body) {
+	update_billy: function(transaction_guid, invoice_guid, subscription_info, type, status, body) {
 		try{
             logger.info("Inside update_billy function.");
 
             //programatic search operators setup
             var lookup_transaction_guid = {};
-            lookup_transaction_guid['recurring.transactions.' + transaction_guid + '.guid'] = transaction_guid;
+            lookup_transaction_guid['transactions.guid'] = transaction_guid;
             var lookup_invoice_guid = {};
-            lookup_invoice_guid['recurring.invoices.' + invoice_guid + '.guid'] = invoice_guid;
+            lookup_invoice_guid['invoices.guid'] = invoice_guid;
             if(Donate.findOne(lookup_transaction_guid)){
                 logger.info("FOUND A transaction_guid in the collection");
                 var id = Donate.findOne(lookup_transaction_guid)._id;
@@ -98,12 +102,9 @@ Evts = {
                 logger.info("Found the invoice GUID in invoices");
                 var insert_trans = Evts.insert_transaction(transaction_guid, id, type, body);
                 return id;
-                //this.emit('billy_trans_insert', status);                    
             } else{
                 logger.info("Couldn't find the invoice GUID in invoices, let's go look for it.");
-                logger.info("Going to go find the subscription, insert the invoice into that subscription and " + 
-                    "return the id of the collection as well as the subscription GUID.");
-                var subscription_info = Utils.getBillySubscriptionGUID(invoice_guid);
+                logger.info("Going to go find the subscription, insert the invoice into that subscription and return the id of the collection as well as the subscription GUID.");
                 if(subscription_info && subscription_info.id){
                     var id = subscription_info.id;
                     var subscription_guid = subscription_info.subscription_guid;
@@ -120,31 +121,36 @@ Evts = {
             logger.error(e);
         }
 	},
-	send_received_email: function (billy, mixedID, transaction_guid, status, body_amount) {
+	send_received_email: function (billy, mixedID, transaction_guid, subscription_guid, status, body_amount) {
 		try{
             
             if (billy) {
                 logger.info("Inside send_received_email Billy section.");
-                var amount = Donate.findOne({_id: mixedID}).recurring.subscriptions.amount;
+
+                var get_amount = Donate.findOne({'subscriptions.guid': subscription_guid}, {'subscriptions.$': 1}).subscriptions;
+                var amount = get_amount[0].amount;
                 if(body_amount !== amount){
                     logger.error("The amount in the event and the amount in the lookup record do not match");
                     return "Amounts do not match, exiting";
                 }
-                //setup query programmatically.
-                var email_sent_lookup = {};
-                email_sent_lookup['recurring.transactions.' + transaction_guid + '.email_sent.initial_sent'] = true;
-                var email_sent_lookup_time = {};
-                email_sent_lookup_time['recurring.transactions.' + transaction_guid + '.email_sent.initial_time'] = moment.utc().format('MM/DD/YYYY, hh:mm');
+
+                /*var email_sent_lookup = {};
+                email_sent_lookup['transactions.' + transaction_guid + '.email_sent.initial_sent'] = true;*/
+
+
+                var email_sent_lookup = Donate.findOne({'transactions.guid': transaction_guid}, {'transactions.$': 1});
+
+                var email_sent_time = moment.utc();
                 var transaction_guid_exists = {};
                 transaction_guid_exists['recurring.transactions.' + transaction_guid + '.guid'] = transaction_guid;
 
                 var checkThis = Donate.findOne({_id: mixedID}).recurring.subscriptions.debitInformation.donateWith;
 
-                if(Donate.findOne(email_sent_lookup) || checkThis === "card" || checkThis === "Card"){
+                if(email_sent_lookup.transactions[0].email_sent.initial_sent || checkThis === "card" || checkThis === "Card"){
                     logger.info("Initial email sent = true or this is a credit card transaction. Nothing further to do.");
-                    logger.info(Donate.findOne({_id: mixedID}).recurring.subscriptions.debitInformation.donateWith);
+                    //logger.info(Donate.findOne({_id: mixedID}).recurring.subscriptions.debitInformation.donateWith);
                 } else if(Donate.findOne(transaction_guid_exists)){
-                    Donate.update(mixedID, {$set: email_sent_lookup});
+                    Donate.update(mixedID, {$set: email_sent_lookup[0].email_sent});
                     Donate.update(mixedID, {$set: email_sent_lookup_time});
                     var send_initial_email = Utils.send_initial_email(mixedID, status);
                 } else{

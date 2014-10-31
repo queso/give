@@ -35,7 +35,7 @@ function createPaymentMethod(data) {
 		logger.info("ID: " + data._id);
 		logger.info("In create Payment Method before if: " + debitType);
 
-    var processor_uri = Donate.findOne(data._id).recurring.customer.processor_uri;
+    var processor_uri = Donate.findOne(data._id).billy_customer.processor_uri;
     if (debitType === "Card") {
         logger.info("Stepped into createPaymentMethod card if statement");
 
@@ -111,7 +111,7 @@ function subscribeToBillyPlan(data) {
 		var resultSet = '';
 		resultSet = HTTP.post("https://billy.balancedpayments.com/v1/subscriptions", {
 			params: {
-				"customer_guid": Donate.findOne(data).recurring.customer.guid,
+				"customer_guid": Donate.findOne(data).billy_customer.guid,
 				"plan_guid": Meteor.settings.billy_monthly_GUID,
 				"funding_instrument_uri": "/" + Meteor.settings.balanced_uri + funding_instrument_uri,
 				"appears_on_statement_as": "Trash Mountain",
@@ -233,12 +233,12 @@ Meteor.methods({
 			billyCustomer = createBillyCustomer(customerData.id);
 			Donate.update(data._id, {
 				$set: {
-					'recurring.customer': billyCustomer.data
+					'customer': billyCustomer.data
 				}
 			});
 			Donate.update(data._id, {
 				$set: {
-					'recurring.isRecurring': true
+					'isRecurring': true
 				}
 			});
 			var billyPayment = {};
@@ -246,44 +246,51 @@ Meteor.methods({
 			var billySubscribeCustomer = '';
 			billySubscribeCustomer = subscribeToBillyPlan(data._id);
 			Donate.update(data._id, {
-				$set: {
-					'recurring.subscriptions': billySubscribeCustomer.data
+				$push: {
+					'subscriptions': billySubscribeCustomer.data
 				}
 			});
 			//Copy debit information into the subscription
 			var debitInformation = Donate.findOne(data._id).debit;
 			debitInformation.subscription_guid = billySubscribeCustomer.data.guid;
-			Donate.update({_id: data._id},
+
+			Donate.update({'subscriptions.guid': billySubscribeCustomer.data.guid},
 				{
 				$set: {
-					'recurring.subscriptions.debitInformation': debitInformation
+					'subscriptions.$.debitInformation': debitInformation
 				}
 			});
 			
 
-
-			var billyGetInvoiceID = {};
-			billyGetInvoiceID = getInvoice(billySubscribeCustomer.data.guid);
-
-			//update the collection with this invoice
-	        var invoice_guid = billyGetInvoiceID.data.items[0].guid;
-	        var setModifier = { $set: {} };
-	        setModifier.$set['recurring.invoices.' + invoice_guid] = billyGetInvoiceID.data.items[0]
-	        Donate.update({_id: data._id}, setModifier);
+			//Get the whole invoice
+			var billyInvoice = {};
+			billyInvoice = getInvoice(billySubscribeCustomer.data.guid);
+			billyInvoice.data.items[0].subscription_guid = billySubscribeCustomer.data.guid;
+			//push this invoice into the document
+	        Donate.update({_id: data._id}, {
+				$push: {
+					'invoices': billyInvoice.data.items[0]
+				}
+			});
 			logger.info("Inserted invoice into appropriate subscription.");
 
-			var billyGetTransactionID = {};
-			billyGetTransactionID = getTransaction(billyGetInvoiceID.data.items[0].guid);
+
+			//Get the whole Transaction
+			var billyTransaction = {};
+			billyTransaction = getTransaction(billyInvoice.data.items[0].guid);
 
 			//update the collection with this transaction
-			var transaction_guid = billyGetTransactionID.data.items[0].guid;
-			var setModifier = { $set: {} };
-            billyGetTransactionID.data.items[0].email_sent = {};
-            setModifier.$set['recurring.transactions.' + transaction_guid] = billyGetTransactionID.data.items[0];
-            Donate.update({_id: data._id}, setModifier);
+            billyTransaction.data.items[0].email_sent = {};
+			billyTransaction.data.items[0].subscription_guid = billySubscribeCustomer.data.guid;
+            var transaction_guid = billyTransaction.data.items[0].guid;
+
+            Donate.update({_id: data._id}, {
+            	$push: {
+            		'transactions': billyTransaction.data.items[0]
+            	}
+            });
 
 			var return_this = {_id: data._id, transaction_guid: transaction_guid};
-			//return data._id;
 			return return_this;
 
 
