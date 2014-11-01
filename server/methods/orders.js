@@ -72,20 +72,20 @@ _.extend(Utils, {
             var name = Donate.findOne({_id: id}).customer.fname + " " + Donate.findOne({_id: id}).customer.lname;
 
             var amount = Donate.findOne({_id: id}).debit.total_amount;
+            logger.info("Amount: " + amount);
             name = name.substring(0, 13);
             var lookup_transaction = Donate.findOne({'transactions.guid': transaction_guid}, {'trasnactions.$': 1});
             
-            if(lookup_transaction.transactions[0].credit.sent){    
-                logger.info("No need to run the credit again, this transaction has already had it's balance credited.");
-                return '';
-            }else{
+            if(lookup_transaction.transactions[0] && lookup_transaction.transactions[0].credit && lookup_transaction.transactions[0].credit.sent === false){    
                 logger.info("Credit status was false or not set, starting to send out a credit.");
                 //Donate.update({'transactions.guid': transaction_guid}, {$set: {'trasnactions.$.credit.sent': true}});
 
                 var credit = Utils.extractFromPromise(balanced.get(Meteor.settings.bank_account_uri).credit({"appears_on_statement_as": name, "amount": amount}));
 
-                Donate.update({'transactions.guid': transaction_guid}, {$set: {'trasnactions.$.credit.sent': true, 'transactions.$.credit.amount': credit.amount, 'transactions.$.credit.id': credit.id}});
-
+                var insert_credit_info = Donate.update({'transactions.guid': transaction_guid}, {$set: {'transactions.$.credit.sent': true, 'transactions.$.credit.amount': credit.amount, 'transactions.$.credit.id': credit.id}});                
+            }else{
+                logger.info("No need to run the credit again, this transaction has already had it's balance credited.");
+                return '';
             }
             return credit;
         }

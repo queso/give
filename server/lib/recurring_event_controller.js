@@ -4,7 +4,7 @@ Evts = {
 		var type = 				   Object.keys(body.events[0].entity)[0]; //this is the type of event, less specific, like debit or credit
         if(type === "debits"){
         	var invoice_guid = 		Evts.get_invoice_guid(type, body);
-            var subscription_info = Evts.getBillySubscriptionGUID(invoice_guid);
+            var subscription_info = Utils.getBillySubscriptionGUID(invoice_guid);
             var subscription_guid = subscription_info.subscription_guid;
      		var transaction_guid = 	Evts.get_transaction_guid(type, body);
      		var select_type = 		Evts.select_type(body);
@@ -13,7 +13,8 @@ Evts = {
      		if(select_type === "debit_created") {
      			var sending_email_for_created = Evts.send_email(true, billy_id, transaction_guid, subscription_guid, 'initial_sent', status, body.events[0].entity.debits[0].amount);
      		}else if(select_type === "debit_succeeded") {
-                var amount = Donate.findOne({_id: billy_id}).recurring.subscriptions.amount;
+                var amount = Donate.findOne({'subscriptions.guid': subscription_guid}, {'subscriptions.guid': 1});
+                amount = amount.subscriptions[0].amount;
                 if(amount === body.events[0].entity.debits[0].amount) {
                     var sending_email = Evts.send_email(true, billy_id, transaction_guid, subscription_guid, 'succeeded_sent', status, body.events[0].entity.debits[0].amount);
                     var route_type =    Event_types[select_type](true, billy_id, transaction_guid, null);
@@ -44,7 +45,7 @@ Evts = {
 	log_new_gift: function(billy, mixedID, transaction_guid) {
 		//TODO: Need to complete this
 	},
-	update_status: function(type, id, status, body) { //TODO: need to fix this if I move to a seperated collection system
+	update_status: function(type, id, status, body) { 
 		var lookup = type;
         try {
                 lookup = 'debit';
@@ -73,13 +74,13 @@ Evts = {
             //this.emit('billy_trans_status', status);
         }else{
             transaction.data.email_sent = {};
-            
             //update the document with the data received from billy on this transaction
-            var inserted = Donate.update({'transactions.guid': trasnaction_guid}, {
-                $set: {
-                    'transactions.$': transactions.data
+            var inserted = Donate.update({_id: id}, {
+                $push: {
+                    'transactions': transaction.data
                }
             });
+            //var setThis = Donate.update({'transactions.guid': transaction_guid}, {$set: {'transactions.$.credit.sent': false}});
             return inserted;
         }
 	},
@@ -140,16 +141,18 @@ Evts = {
                 var paymentType = subscription_values[0].debitInformation.donateWith;
 
                 if(checkThis){
-                    if(checkThis.transactions[0].email_sent[email_type] || paymentType === "card" || paymentType === "Card") {
+                    if(checkThis.transactions[0].email_sent[email_type]) {
                         logger.info("Initial email sent = true or this is a credit card transaction. Nothing further to do.");
                         //logger.info(Donate.findOne({_id: mixedID}).recurring.subscriptions.debitInformation.donateWith);
                     } else {
                         var email_sent_update = {};
                         if(email_type === 'initial_sent') {
-                            email_sent_update['transactions.$.email_sent.initial_sent'] = true;
-                            email_sent_update['transactions.$.email_sent.initial_time'] = moment.utc();
-                            Donate.update({'transactions.guid': transaction_guid}, {$set: email_sent_update});
-                            var send_initial_email = Utils.send_initial_email(checkThis._id, true, transaction_guid);
+                            if(paymentType !== "card" && paymentType !== "Card") {
+                                email_sent_update['transactions.$.email_sent.initial_sent'] = true;
+                                email_sent_update['transactions.$.email_sent.initial_time'] = moment.utc();
+                                Donate.update({'transactions.guid': transaction_guid}, {$set: email_sent_update});
+                                var send_initial_email = Utils.send_initial_email(checkThis._id, true, transaction_guid);
+                            }
                         }else {
                             email_sent_update['transactions.$.email_sent.succeeded_sent'] = true;
                             email_sent_update['transactions.$.email_sent.succeeded_time'] = moment.utc();

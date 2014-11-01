@@ -282,6 +282,7 @@ Meteor.methods({
 			//update the collection with this transaction
             billyTransaction.data.items[0].email_sent = {};
 			billyTransaction.data.items[0].subscription_guid = billySubscribeCustomer.data.guid;
+			billyTransaction.data.items[0].credit = {sent: false};
             var transaction_guid = billyTransaction.data.items[0].guid;
 
             Donate.update({_id: data._id}, {
