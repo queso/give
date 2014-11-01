@@ -8,9 +8,7 @@ Template.Transaction.helpers({
 	},
 	amount: function () {
 		if(this.isRecurring && this.subscriptions){
-			return this.subscriptions.amount / 100;
-		}else if(this.isRecurring && this.subscription){
-			return this.subscription.amount / 100;
+			return this.subscriptions[0].amount / 100;
 		}else if (!this.isRecurring && this.debit && this.debit.amount){
 			return this.debit.amount / 100;	
 		}
