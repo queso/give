@@ -22,16 +22,14 @@
 								</tr>
 							</thead>   
 							<tbody>
-								{{#each addKeys subscription}}
-									{{#with values}}
-									    <tr id="{{trans_guid}}" class="trans-table-row">
-											<td><span class="label label-success">{{status}}</span></td> <!-- label-warning label-info label-danger label-success  -->
-											<td>{{trans_date}}</td>
-											<td>{{fund ../..}}</td>
-											<td>{{amount}}</td>
-											<td><b>{{trans_guid}}</b></td>
-										</tr>
-									{{/with}}						
+								{{#each transaction}}
+								    <tr id="{{trans_guid}}" class="trans-table-row">
+										<td><span class="label label-success">{{status}}</span></td> <!-- label-warning label-info label-danger label-success  -->
+										<td>{{trans_date}}</td>
+										<td>{{fund ../..}}</td>
+										<td>{{amount}}</td>
+										<td><b>{{trans_guid}}</b></td>
+									</tr>
 								{{/each}}																
 							</tbody>
 						</table>

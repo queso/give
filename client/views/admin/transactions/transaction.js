@@ -7,11 +7,11 @@ Template.Transaction.helpers({
 		}
 	},
 	amount: function () {
-		if(this.recurring && this.recurring.subscriptions){
-			return this.recurring.subscriptions.amount / 100;
-		}else if(this.recurring && this.recurring.subscription){
-			return this.recurring.subscription.amount / 100;
-		}else if (!this.recurring && this.debit && this.debit.amount){
+		if(this.isRecurring && this.subscriptions){
+			return this.subscriptions.amount / 100;
+		}else if(this.isRecurring && this.subscription){
+			return this.subscription.amount / 100;
+		}else if (!this.isRecurring && this.debit && this.debit.amount){
 			return this.debit.amount / 100;	
 		}
 	},
@@ -19,7 +19,7 @@ Template.Transaction.helpers({
 		return this.created_at
 	},
 	recurring: function () {
-		if(this.recurring) {
+		if(this.isRecurring) {
 			return 'Yes';
 		}
 		else {
@@ -27,30 +27,30 @@ Template.Transaction.helpers({
 		}
 	},
 	recurring_subscription_id: function () {
-		if(this.recurring){
-			if(this.recurring.subscriptions){
-				return this.recurring.subscriptions.guid;	
+		if(this.isRecurring){
+			if(this.subscriptions){
+				return this.subscriptions[0].guid;	
 			}
 		}else{
 			return '';
 		}
 	},
 	status: function () {
-		if(this.recurring) {
-			if(this.recurring.subscriptions){
-				if(this.recurring.subscriptions.canceled){
+		if(this.isRecurring) {
+			if(this.subscriptions){
+				if(this.subscriptions.canceled){
 					return "<span id='status' class='label label-default'>Canceled</span>";	
-				}else if(!this.recurring.subscriptions.canceled){
+				}else if(!this.subscriptions.canceled){
 					return "<span id='status' class='label label-success'>Active</span>";	
 				}
 			}
 		}
 		else {
-			if(!this.recurring && (this.debit.status === 'succeeded')){
+			if(!this.isRecurring && (this.debit.status === 'succeeded')){
 				return "<span id='status' class='label label-success'>Succeeded</span>"
-			}else if(!this.recurring && (this.debit.status === 'pending')){
+			}else if(!this.isRecurring && (this.debit.status === 'pending')){
 				return "<span id='status' class='label label-warning'>Pending</span>"
-			}else if(!this.recurring && (this.debit.status === 'failed')){
+			}else if(!this.isRecurring && (this.debit.status === 'failed')){
 				return "<span id='status' class='label label-danger'>Failed</span>"
 			}
 		}
@@ -59,12 +59,12 @@ Template.Transaction.helpers({
 		return this._id;		
 	},
 	stop_recurring: function(e, tmpl) {
-		if(this.recurring &&  this.recurring.subscriptions && !(this.recurring.subscriptions.canceled === true)){
+		if(this.isRecurring &&  this.subscriptions && !(this.subscriptions.canceled === true)){
 			return '<a id="stop' + this._id + '" class="stop_recurring btn btn-warning" href="" title="Stop this recurring donation"><i class="fa fa-stop"></i></a>';
 		}
 	},
 	delete_record: function(e, tmpl) {
-		if(!this.recurring){
+		if(!this.isRecurring){
 			return '<a id="delete' + this._id + '"class="delete btn btn-danger" href="" title="Stop showing this contribution in our system"><i class="fa fa-trash-o"></i>';
 		}
 	},
@@ -89,11 +89,11 @@ Template.Transaction.events({
 		console.log("Started delete process");
 		console.log(this._id);
 
-		if(this.recurring && this.recurring.subscriptions && this.recurring.subscriptions.canceled === false ){
+		if(this.isRecurring && this.subscriptions && this.subscriptions.canceled === false ){
 			$('#'+stop_id_is).html('<a id="' + stop_id_is + '" class="fa fa-spinner fa-spin" href="">');
-			Meteor.call('cancel_recurring', this._id, this.recurring.subscriptions.guid, function (error, result) {
+			Meteor.call('cancel_recurring', this._id, this.subscriptions.guid, function (error, result) {
 				if(result){
-					Donate.update({_id: this._id}, {$set:{'recurring.subscriptions.canceled': true, viewable: false}});
+					Donate.update({_id: this._id}, {$set:{'subscriptions.canceled': true, viewable: false}});
 		            console.warn("Cancelled the subscription and removed this record from view: " + result);
 					$('#'+stop_id_is).remove();
 					//$('#'+delete_id_is).html('<a id="{{delete_id}}" class="delete btn btn-danger" href="" title="Stop showing this contribution in our system"><i class="fa fa-trash-o"></i>'); 

@@ -10,7 +10,7 @@ Template.Receipt.events({
 
 Template.Receipt.helpers({
     billy: function () {
-      return (this.recurring);
+      return (this.isRecurring);
     },
    receiptNumber: function () {
    		return this._id;
@@ -24,7 +24,8 @@ Template.Receipt.helpers({
    },
    transaction_date: function () {
     var transaction_guid = Session.get('transaction_guid');
-      return moment(this.recurring.transactions[transaction_guid].updated_at).format('MM/DD/YYYY');
+    var transaction = _.findWhere(this.transactions, { guid: transaction_guid });    
+      return moment(transaction.updated_at).format('MM/DD/YYYY');
    },
    org: function () {
     if (this.customer.org){
@@ -77,8 +78,14 @@ Template.Receipt.helpers({
    		return this.debit.donateTo;
    },
    donateWith: function () {
-         //need to add the last four digits of the account numer here
-   		return this.debit.donateWith;
+      var payment_device;
+      if(this.card){
+        payment_device = this.card[0].number
+        return this.debit.donateWith + " ending with " + payment_device.slice(-4);
+      } else {
+        payment_device = this.bank_account[0].account_number
+        return this.debit.donateWith + " account ending with " + payment_device.slice(-4);
+      }   		
    },
    amount: function () {
           if(this.debit.amount){

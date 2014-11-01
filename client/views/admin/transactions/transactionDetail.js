@@ -6,7 +6,7 @@ Template.TransactionDetail.events({
 
 Template.TransactionDetail.helpers({
     billy: function () {
-      return (this.recurring);
+      return (this.isRecurring);
     },
    receiptNumber: function () {
    		return this._id;
@@ -20,7 +20,8 @@ Template.TransactionDetail.helpers({
    },
    transaction_date: function () {
       var transaction_guid = Session.get('transaction_guid');
-      return moment(this.recurring.transactions[transaction_guid].updated_at).format('MM/DD/YYYY hh:mma');
+      var transaction = _findWhere(this.transactions, {guid: transaction_guid});
+      return moment(transaction.updated_at).format('MM/DD/YYYY hh:mma');
    },
    org: function () {
     if (this.customer.org){
@@ -109,7 +110,7 @@ Template.TransactionDetail.helpers({
         }
     },
     paymentLink: function(parent) {
-      return '<a href="https://dashboard.balancedpayments.com/' + Meteor.settings.public.balanced_payments_uri + (this.bank_account ? this.bank_account.href: this.card.href) + '" target="_blank">' + this.bank_account ? this.bank_account.number: this.card.number + '</a>';
+      return '<a href="https://dashboard.balancedpayments.com/' + Meteor.settings.public.balanced_payments_uri + (this.bank_account ? this.bank_account[0].href: this.card[0].href) + '" target="_blank">' + this.bank_account ? this.bank_account[0].number: this.card[0].number + '</a>';
     }
 });
 
