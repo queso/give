@@ -13,8 +13,8 @@ Evts = {
      		if(select_type === "debit_created") {
      			var sending_email_for_created = Evts.send_email(true, billy_id, transaction_guid, subscription_guid, 'initial_sent', status, body.events[0].entity.debits[0].amount);
      		}else if(select_type === "debit_succeeded") {
-                var amount = Donate.findOne({'subscriptions.guid': subscription_guid}, {'subscriptions.guid': 1});
-                amount = amount.subscriptions[0].amount;
+                var amount = Donate.findOne({'subscriptions.guid': subscription_guid}, {'subscriptions': 1}).subscriptions;
+                amount = amount[0].amount;
                 if(amount === body.events[0].entity.debits[0].amount) {
                     var sending_email = Evts.send_email(true, billy_id, transaction_guid, subscription_guid, 'succeeded_sent', status, body.events[0].entity.debits[0].amount);
                     var route_type =    Event_types[select_type](true, billy_id, transaction_guid, null);
@@ -65,28 +65,41 @@ Evts = {
                 auth: Meteor.settings.billy_key + ':'
         });
      
+        var invoice = HTTP.get("https://billy.balancedpayments.com/v1/invoices/" + transaction.data.invoice_guid, {
+                auth: Meteor.settings.billy_key + ':'
+        });
+
         var lookup_transaction_guid = {};
         lookup_transaction_guid['transactions.guid'] = transaction_guid;
      
         if(Donate.findOne(lookup_transaction_guid)){
             var status_update = Evts.update_status(type, id, body);
             return status_update;
-            //this.emit('billy_trans_status', status);
         }else{
             transaction.data.email_sent = {};
             //update the document with the data received from billy on this transaction
-            var inserted = Donate.update({_id: id}, {
+            var transaction_inserted = Donate.update({_id: id}, {
                 $push: {
                     'transactions': transaction.data
                }
             });
+
+            //Also push this invoice
+            var invoice_inserted = Donate.update({_id: id}, {
+                $push: {
+                    'invoices': invoice.data
+               }
+            });
+
+
             //var setThis = Donate.update({'transactions.guid': transaction_guid}, {$set: {'transactions.$.credit.sent': false}});
-            return inserted;
+            return transaction_inserted;
         }
 	},
 	update_billy: function(transaction_guid, invoice_guid, subscription_info, type, status, body) {
 		try{
             logger.info("Inside update_billy function.");
+            logger.info("Invoices GUID: " + invoice_guid);
 
             //programatic search operators setup
             var lookup_transaction_guid = {};
@@ -136,14 +149,13 @@ Evts = {
                     logger.error("The amount in the event and the amount in the lookup record do not match");
                     return "Amounts do not match, exiting";
                 }
-                var checkThis = Donate.findOne({'transactions.guid':transaction_guid}, {'transactions.$': 1});
+                var checkThis = Donate.findOne({'transactions.guid':transaction_guid}, {'transactions.$': 1}).transactions;
 
                 var paymentType = subscription_values[0].debitInformation.donateWith;
 
                 if(checkThis){
-                    if(checkThis.transactions[0].email_sent[email_type]) {
-                        logger.info("Initial email sent = true or this is a credit card transaction. Nothing further to do.");
-                        //logger.info(Donate.findOne({_id: mixedID}).recurring.subscriptions.debitInformation.donateWith);
+                    if(!checkThis[0].email_sent[email_type]) {
+                        logger.info("Initial email sent = true Nothing further to do.");
                     } else {
                         var email_sent_update = {};
                         if(email_type === 'initial_sent') {

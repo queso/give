@@ -24,13 +24,26 @@ Utils = {
             logger.info("Got the _id: " + IDs.id);
 
             //update the collection with this invoice
-            Donate.update({_id: IDs.id}, {
+            /*Donate.update({_id: IDs.id}, {
               $push: {
                 'invoices': invoice.data
               }
-            });
+            });*/
             return IDs;
-        }else{
+        }else if (Donate.findOne({'recurring.subscriptions.guid': IDs.subscription_guid})){
+            logger.warn("Need to remove this from recurring since that is no longer used.");
+            IDs.id = Donate.findOne({'recurring.subscriptions.guid': IDs.subscription_guid})._id;
+            logger.info("Got the _id: " + IDs.id);
+
+            //update the collection with this invoice
+            /*Donate.update({_id: IDs.id}, {
+              $push: {
+                'recurring.invoices': invoice.data
+              }
+            });*/
+            return IDs;
+        }
+        else{
             logger.error("Couldn't find the subscription for this invoice...bummer: " + invoiceID);
             throw new Meteor.Error(404, 'Error 404: Not found', invoiceID); 
         }        
