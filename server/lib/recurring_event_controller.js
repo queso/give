@@ -161,13 +161,13 @@ Evts = {
                         if(email_type === 'initial_sent') {
                             if(paymentType !== "card" && paymentType !== "Card") {
                                 email_sent_update['transactions.$.email_sent.initial_sent'] = true;
-                                email_sent_update['transactions.$.email_sent.initial_time'] = moment.utc();
+                                email_sent_update['transactions.$.email_sent.initial_time'] = moment().valueOf();
                                 Donate.update({'transactions.guid': transaction_guid}, {$set: email_sent_update});
                                 var send_initial_email = Utils.send_initial_email(checkThis._id, true, transaction_guid);
                             }
                         }else {
                             email_sent_update['transactions.$.email_sent.succeeded_sent'] = true;
-                            email_sent_update['transactions.$.email_sent.succeeded_time'] = moment.utc();
+                            email_sent_update['transactions.$.email_sent.succeeded_time'] = moment().valueOf();
                             Donate.update({'transactions.guid': transaction_guid}, {$set: email_sent_update});
                             var send_billy_email = Utils.send_billy_email(mixedID, transaction_guid, status);
                         }
@@ -180,10 +180,10 @@ Evts = {
                     logger.info("Found an ID: " + record_lookup._id);
                     if (!record_lookup.debit.email_sent[email_type]) { //|| !paymentType === "Card" || !paymentType === "card"
                         if(email_type === 'initial_sent') {
-                            Donate.update({_id: record_lookup._id}, {$set: {'debit.email_sent.initial_sent': true, 'debit.email_sent.initial_time': moment.utc()}});
+                            Donate.update({_id: record_lookup._id}, {$set: {'debit.email_sent.initial_sent': true, 'debit.email_sent.initial_time': moment().valueOf()}});
                             var send_initial = Utils.send_initial_email(record_lookup._id, false, null);
                         }else {
-                            Donate.update({_id: record_lookup._id}, {$set: {'debit.email_sent.succeeded_sent': true, 'debit.email_sent.succeeded_time': moment.utc()}});
+                            Donate.update({_id: record_lookup._id}, {$set: {'debit.email_sent.succeeded_sent': true, 'debit.email_sent.succeeded_time': moment().valueOf()}});
                             var send_one_time = Utils.send_one_time_email(record_lookup._id);
                         }
                     } else{
@@ -207,7 +207,7 @@ Evts = {
                 Donate.update(id, {$set: {'failed.failure_reason': body.events[0].entity[type][0].failure_reason,
                     'failed.failure_reason_code': body.events[0].entity[type][0].failure_reason_code,
                     'failed.transaction_number': body.events[0].entity[type][0].transaction_number,
-                    'failed.updated': moment.utc().format('MM/DD/YYYY, hh:mm'),
+                    'failed.updated': moment().valueOf(),
                     'debit.status': 'failed'}}
                 );
             }
@@ -218,7 +218,7 @@ Evts = {
                 Donate.update(id, {$set: {'failed.failure_reason': body.events[0].entity[type][0].failure_reason,
                     'failed.failure_reason_code': body.events[0].entity[type][0].failure_reason_code,
                     'failed.transaction_number': body.events[0].entity[type][0].transaction_number,
-                    'failed.updated': moment.utc().format('MM/DD/YYYY, hh:mm'),
+                    'failed.updated': moment().valueOf(),
                     'debit.status': 'failed'}}
                 );
             } else{
