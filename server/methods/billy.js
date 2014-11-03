@@ -298,11 +298,11 @@ Meteor.methods({
 			return return_this;
 
 
-		/*} catch (e) {
+		} catch (e) {
 			logger.info(e);
 			logger.info(e.error_message);
 			logger.info(e.reason);
 			throw new Meteor.Error(500, e.reason, e.details);
-		}*/
+		}
 	}
 });

@@ -121,9 +121,11 @@ _.extend(Utils,{
         switch(donateTo) {
             case 'JoshuaBechard':
                 returnToCalled = 'Joshua Bechard';
+                return returnToCalled;
                 break;
             default:
-                default 'Where Most Needed'
+                returnToCalled ='Where Most Needed';
+                return returnToCalled;
         }
     }
 });
