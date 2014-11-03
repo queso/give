@@ -180,7 +180,10 @@ Meteor.methods({
     recurringDonation: function(data) {
 		logger.info("Started billy method calls.")
 		logIt();
-		/*try {*/
+		try {
+
+			//Convert donation to more readable format
+            var donateTo = Utils.getDonateTo(data.paymentInformation.donateTo);
 
 			//Check the form to make sure nothing malicious is being submitted to the server
 	        Utils.checkFormFields(data);

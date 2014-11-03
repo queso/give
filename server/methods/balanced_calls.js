@@ -116,4 +116,14 @@ _.extend(Utils,{
         }});
         return customerData;
     }
+    getDonateTo: function(donateTo) {
+        var returnToCalled;
+        switch(donateTo) {
+            case 'JoshuaBechard':
+                returnToCalled = 'Joshua Bechard';
+                break;
+            default:
+                default 'Where Most Needed'
+        }
+    }
 });
