@@ -123,6 +123,78 @@ _.extend(Utils,{
                 returnToCalled = 'Joshua Bechard';
                 return returnToCalled;
                 break;
+            case 'WhereMostNeeded':
+                returnToCalled = 'Where Most Needed';
+                return returnToCalled;
+                break;
+            case 'TimmCollins':
+                returnToCalled = 'Timm Collins';
+                return returnToCalled;
+                break;
+            case 'JonDeMeo':
+                returnToCalled = 'Jon DeMeo';
+                return returnToCalled;
+                break;
+            case 'BrettDurbin':
+                returnToCalled = 'Brett Durbin';
+                return returnToCalled;
+                break;
+            case 'JohnKazaklis':
+                returnToCalled = 'John Kazaklis';
+                return returnToCalled;
+                break;
+            case 'ChirsMammoliti':
+                returnToCalled = 'Chirs Mammoliti';
+                return returnToCalled;
+                break;
+            case 'ShelleySetchell':
+                returnToCalled = 'Shelley Setchell';
+                return returnToCalled;
+                break;
+            case 'IsaacTarwater':
+                returnToCalled = 'Isaac Tarwater';
+                return returnToCalled;
+                break;
+            case 'UrgentOperationalNeeds':
+                returnToCalled = 'Urgent Operational Needs';
+                return returnToCalled;
+                break;
+            case 'DRUrgent':
+                returnToCalled = 'DR Urgent';
+                return returnToCalled;
+                break;
+            case 'DRCS':
+                returnToCalled = 'DR Community Sponsorship';
+                return returnToCalled;
+                break;
+            case 'DRInfrastructure':
+                returnToCalled = 'DR Infrastructure';
+                return returnToCalled;
+                break;
+            case 'HondurasUrgent':
+                returnToCalled = 'Honduras Urgent';
+                return returnToCalled;
+                break;
+            case 'HondurasCS':
+                returnToCalled = 'Honduras Community Sponsorship';
+                return returnToCalled;
+                break;
+            case 'HondurasInfrastructure':
+                returnToCalled = 'Honduras Infrastructure';
+                return returnToCalled;
+                break;
+            case 'PhilippinesUrgent':
+                returnToCalled = 'Philippines Urgent';
+                return returnToCalled;
+                break;
+            case 'PhilippinesCS':
+                returnToCalled = 'Philippines Community Sponsorship';
+                return returnToCalled;
+                break;
+            case 'PhilippinesInfrastructure':
+                returnToCalled = 'Philippines Infrastructure';
+                return returnToCalled;
+                break;
             default:
                 returnToCalled ='Where Most Needed';
                 return returnToCalled;
