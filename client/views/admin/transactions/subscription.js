@@ -23,11 +23,9 @@ Template.Subscription.helpers({
 		return "$" + (Math.floor(this.amount) / 100).toFixed(2);
 	},
 	subscription_guid: function() {
-		console.log(this.guid);
 		return this.guid;
 	},	
 	trans_guid: function() {
-		console.log(this.guid);
 		return this.guid;
 	},
 	values: function() {
@@ -45,11 +43,11 @@ Template.Subscription.helpers({
 
 });
 
-Template.registerHelper('addKeys', function (all) {
+/*Template.registerHelper('addKeys', function (all) {
     return _.map(all, function(i, k) {
         return {key: k, value: i};
     });
-});
+});*/
 
 /*
 Template.Subscription.events({

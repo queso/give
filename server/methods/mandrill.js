@@ -1,26 +1,33 @@
+function get_billy_info (transaction_guid) {
+	var the_info = {};
+	the_info.mongo_doc = Donate.findOne({'transactions.guid': transaction_guid});
+    the_info.transaction = _.findWhere(the_info.mongo_doc.transactions, { guid: transaction_guid });
+	the_info.created_at = moment(the_info.transaction.created_at).format('MM/DD/YYYY');
+	return the_info;
+}
+
 _.extend(Utils,{
 	//Need to fix this after finding out what it should actually show here
 	large_gift_email: function (billy, debit_or_trans_id, amount){
 	    try {
-	      logger.info("Started large_gift_email with ID: " + id);
+	      logger.info("Started large_gift_email with ID: " + debit_or_trans_id);
 	      
 	      if(!billy){
-	      	var lookup_record = Donate.findOne({'debit.id': debit_or_trans_id});
-	      	logger.info("large_gift_email lookup_record = " + lookup_record._id);
-	      	var created_at = moment(Date.parse(lookup_record.created_at)).format('MM/DD/YYYY');
+	      	var the_info = {};
+	      	the_info.mongo_doc = Donate.findOne({'debit.id': debit_or_trans_id});
+	      	logger.info("large_gift_email the _id = " + the_info.mongo_doc._id);
+	      	the_info.created_at = moment(the_info.mongo_doc.created_at).format('MM/DD/YYYY');
 	      	var path = 'thanks';
 	      	var transaction_guid = '';
 	      }else {
-	      	var lookup_record = Donate.findOne({'transactions.guid': debit_or_trans_id});
-	      	var lookup_transaction = Donate.findOne({'transactions.guid': debit_or_trans_id}, {'transactions.guid': 1});
-	      	var created_at = moment(Date.parse(lookup_transaction.transactions[0].created_at)).format('MM/DD/YYYY');
+	      	var the_info = get_billy_info(debit_or_trans_id);
 	      	var path = 'gift';
 	      	var transaction_guid = debit_or_trans_id;
 	      }
-	      if(lookup_record.customer.org){
-	      	var fullName = lookup_record.customer.org + " <br>" + lookup_record.customer.fname + " " + lookup_record.customer.lname + " <br>";
+	      if(the_info.mongo_doc.customer.org){
+	      	var fullName = the_info.mongo_doc.customer.org + " <br>" + the_info.mongo_doc.customer.fname + " " + the_info.mongo_doc.customer.lname + " <br>";
 	      } else{
-	      	var fullName = lookup_record.customer.fname + " " + lookup_record.customer.lname + " <br>";
+	      	var fullName = the_info.mongo_doc.customer.fname + " " + the_info.mongo_doc.customer.lname + " <br>";
 	      }
 	      var slug = "large-gift-notice";
 
@@ -43,25 +50,25 @@ _.extend(Utils,{
 					"vars": [
 						{
 						"name": "CreatedAt",
-						"content": created_at
+						"content": the_info.created_at
 						}, {
 						"name": "DEV",
 						"content": Meteor.settings.dev
 						}, {
 						"name": "DonatedTo",
-						"content": lookup_record.debit.donateTo
+						"content": the_info.mongo_doc.debit.donateTo
 						}, {
 						"name": "DonateWith", //eventually send the card brand and the last four instead of just this
-						"content": lookup_record.debit.donateWith
+						"content": the_info.mongo_doc.debit.donateWith
 						}, {
 						"name": "TotalGiftAmount",
-						"content": amount / 100
+						"content": the_info.mongo_doc.debit.amount / 100
 						}, {
 						"name": "FULLNAME",
 						"content": fullName
 						}, {
 						"name": "ReceiptNumber",
-						"content": id
+						"content": the_info.mongo_doc._id
 						}, {
 						"name": "Path",
 						"content": path
@@ -93,7 +100,8 @@ _.extend(Utils,{
 	      	logger.info("Record id = " + lookup_record._id);
 	      	var lookup_record = Donate.findOne({'transactions.guid': transaction_guid});
 	      	var lookup_transaction = Donate.findOne({'transactions.guid': transaction_guid}, {'transactions.guid': 1});
-	      	var created_at = moment(Date.parse(lookup_transaction.transactions[0].created_at)).format('MM/DD/YYYY');
+	      	var transaction = _.findWhere(lookup_transaction.transactions, { guid: transaction_guid });
+	      	var created_at = moment(Date.parse(transaction.created_at)).format('MM/DD/YYYY');
 		}
 
 	      var debit = lookup_record.debit;
@@ -330,7 +338,10 @@ _.extend(Utils,{
 	      var error = {};
 	      
 	      var lookup_record = Donate.findOne({'transactions.guid': transaction_guid}, {'transactions.$': 1});
-	      var created_at = moment(lookup_record.transactions[0].created_at).format('MM/DD/YYYY');
+          var transaction = _.findWhere(lookup_record.transactions, { guid: transaction_guid });
+	      var created_at = moment(transaction.created_at).format('MM/DD/YYYY');
+
+	      var lookup_trans = get_billy_info(transaction_guid);
 	      var debit = lookup_record.debit;
 	      var customer = lookup_record.customer;
 	      var fees = (debit.fees);
@@ -340,7 +351,7 @@ _.extend(Utils,{
 	        var fullName = customer.fname + " " + customer.lname;
 	      }
 	      logger.info("Cover the fees = " + debit.coveredTheFees);
-	      logger.info("Transaction Status: " + lookup_record.transactions[0].status);
+	      logger.info("Transaction Status: " + transaction.status);
 
 	      var slug;
 	      //TODO: Fix this so that it looks into the transaciton sub-document, not just into the top level, or when it fails, put the transaction GUID into the failed record 

@@ -46,8 +46,10 @@ Router.route(':root/thanks/:_id', function () {
                 return Donate.findOne(params._id);
             }
         });
+        this.next();
     }else {
         this.render('Loading');
+        this.next();
     }
     }, {
     name: 'donation.thanks'
@@ -67,8 +69,10 @@ Router.route(':root/gift/:_id', function () {
                 return Donate.findOne(params._id);
             }
         });
+        this.next();
     }else {
         this.render('Loading');
+        this.next();
     }
     }, {
     name: 'donation.gift'
@@ -95,8 +99,10 @@ Router.route(':root/transactions', function () {
 
     if (this.ready()) {
         this.render('Transactions');
+        this.next();
     }else {
         this.render('Loading');
+        this.next();
     }
 });
 
@@ -112,18 +118,35 @@ Router.route(':root/subscription/:_id', function () {
                 return Donate.findOne(this.params._id);
             }
         });
+        this.next();
     }else {
         this.render('Loading');
+        this.next();
     }
 });
 
-Router.route(':root/tables', function () {
-    this.layout('AdminLayout');
-    var root = Meteor.settings.public.root;
+Router.route(':root/tables', {
+    template: 'Tables',
+    name: 'admin.tables',
+    layout: 'AdminLayout',
+    data: function () {
+        var root = Meteor.settings.public.root;
+    },
+    action: function () {
+        this.render('Tables')
+    }
+});
 
-    if (this.ready()) {
-        this.render('Tables');
-    }else {
-        this.render('Loading');
+Router.route(':root/report', {
+    template: 'Report',
+    name: 'admin.report',
+
+    layoutTemplate: 'AdminLayout',
+
+    data: function () {
+        var root = Meteor.settings.public.root;
+    },
+    waitOn: function () {
+        return Meteor.subscribe('donate_list');
     }
 });

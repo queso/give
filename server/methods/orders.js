@@ -74,9 +74,10 @@ _.extend(Utils, {
             var amount = Donate.findOne({_id: id}).debit.total_amount;
             logger.info("Amount: " + amount);
             name = name.substring(0, 13);
-            var lookup_transaction = Donate.findOne({'transactions.guid': transaction_guid}, {'trasnactions.$': 1});
+            var lookup_transaction = Donate.findOne({'transactions.guid': transaction_guid}, {'transactions.$': 1});
+            var transaction = _.findWhere(lookup_transaction.transactions, {guid: transaction_guid});
             
-            if(lookup_transaction.transactions[0] && lookup_transaction.transactions[0].credit && lookup_transaction.transactions[0].credit.sent === false){    
+            if(transaction && !transaction.credit.sent){    
                 logger.info("Credit status was false or not set, starting to send out a credit.");
                 //Donate.update({'transactions.guid': transaction_guid}, {$set: {'trasnactions.$.credit.sent': true}});
 

@@ -1,0 +1,12 @@
+<template name="Report">
+	<div class="Admin">
+	<p>Test</p>
+		{{#each test_top}}
+			<p>Test
+			{{#each test_middle ..}}
+				<p>{{transaction_guid}}</p>
+			{{/each}}
+			</p>
+		{{/each}}
+	</div>
+</template>

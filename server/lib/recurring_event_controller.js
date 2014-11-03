@@ -14,7 +14,7 @@ Evts = {
      			var sending_email_for_created = Evts.send_email(true, billy_id, transaction_guid, subscription_guid, 'initial_sent', status, body.events[0].entity.debits[0].amount);
      		}else if(select_type === "debit_succeeded") {
                 var amount = Donate.findOne({'subscriptions.guid': subscription_guid}, {'subscriptions': 1}).subscriptions;
-                amount = amount[0].amount;
+                amount = _.findWhere(amount, {guid: subscription_guid}).amount;
                 if(amount === body.events[0].entity.debits[0].amount) {
                     var sending_email = Evts.send_email(true, billy_id, transaction_guid, subscription_guid, 'succeeded_sent', status, body.events[0].entity.debits[0].amount);
                     var route_type =    Event_types[select_type](true, billy_id, transaction_guid, null);
@@ -60,7 +60,7 @@ Evts = {
 	        logger.error(e);
         }
 	},
-	insert_transaction: function(transaction_guid, id, type, body) {
+	insert_transaction: function(transaction_guid, subscription_guid, id, type, body) {
 		var transaction = HTTP.get("https://billy.balancedpayments.com/v1/transactions/" + transaction_guid, {
                 auth: Meteor.settings.billy_key + ':'
         });
@@ -76,7 +76,9 @@ Evts = {
             var status_update = Evts.update_status(type, id, body);
             return status_update;
         }else{
-            transaction.data.email_sent = {};
+            transaction.data.email_sent = {'initial_sent': false, 'succeeded_sent': false};
+            transaction.data.credit = {};
+            transaction.data.subscription_guid = subscription_guid;
             //update the document with the data received from billy on this transaction
             var transaction_inserted = Donate.update({_id: id}, {
                 $push: {
@@ -116,15 +118,14 @@ Evts = {
             }else if(Donate.findOne(lookup_invoice_guid)){
                 var id = Donate.findOne(lookup_invoice_guid)._id;
                 logger.info("Found the invoice GUID in invoices");
-                var insert_trans = Evts.insert_transaction(transaction_guid, id, type, body);
+                var insert_trans = Evts.insert_transaction(transaction_guid, subscription_info.subscription_guid, id, type, body);
                 return id;
             } else{
                 logger.info("Couldn't find the invoice GUID in invoices, let's go look for it.");
                 logger.info("Going to go find the subscription, insert the invoice into that subscription and return the id of the collection as well as the subscription GUID.");
                 if(subscription_info && subscription_info.id){
                     var id = subscription_info.id;
-                    var subscription_guid = subscription_info.subscription_guid;
-                    var insert_trans = Evts.insert_transaction(transaction_guid, id, type, body);
+                    var insert_trans = Evts.insert_transaction(transaction_guid, subscription_info.subscription_guid, id, type, body);
                     return id;
                     //Need subscription here too, need to make id an object with id and subscription GUID
                 } else {
@@ -138,24 +139,29 @@ Evts = {
         }
 	},
 	send_email: function (billy, mixedID, transaction_guid, subscription_guid, email_type, status, body_amount) {
-		try{
+		/*try{*/
             logger.info("Got to send_email function.");
             if (billy) {
                 logger.info("Inside send_email Billy section.");
 
                 var subscription_values = Donate.findOne({'subscriptions.guid': subscription_guid}, {'subscriptions.$': 1}).subscriptions;
-                var amount = subscription_values[0].amount;
+                var subscription = _.findWhere(subscription_values, {guid: subscription_guid});
+                var amount = subscription.amount;
                 if(body_amount !== amount){
                     logger.error("The amount in the event and the amount in the lookup record do not match");
                     return "Amounts do not match, exiting";
                 }
-                var checkThis = Donate.findOne({'transactions.guid':transaction_guid}, {'transactions.$': 1}).transactions;
+                console.log("transaction_guid: " + transaction_guid);
+                var checkThis = Donate.findOne({'transactions.guid': transaction_guid}, {'transactions.$': 1});
+                var transaction = _.findWhere(checkThis.transactions, { guid: transaction_guid });
+                console.log("transaction : " + transaction);
 
-                var paymentType = subscription_values[0].debitInformation.donateWith;
+                var paymentType = subscription.debitInformation.donateWith;
 
-                if(checkThis){
-                    if(!checkThis[0].email_sent[email_type]) {
-                        logger.info("Initial email sent = true Nothing further to do.");
+                if(transaction){
+                    console.log(transaction.email_sent[email_type]);
+                    if(transaction.email_sent[email_type]) {
+                        logger.info("Email sent = true Nothing further to do.");
                     } else {
                         var email_sent_update = {};
                         if(email_type === 'initial_sent') {
@@ -192,10 +198,10 @@ Evts = {
                 }else{
                     logger.error("Inside events.js -> send_email -- Given that eventID I can't find the document in mongo. This might be because the user was stopped on the initial page before the debit was entered.");
                 }
-            }
+            /*}
         catch(e){
             logger.error(e);
-        }
+        }*/
 	},
 	failed_collection_update: function (billy, type, event_debit_id, invoice_guid, body){
 		if(billy){
