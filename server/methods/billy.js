@@ -196,7 +196,7 @@ Meteor.methods({
 					sessionId: data.sessionId,
 					URL: data.URL,
 					'customer': data.customer,
-					'debit.donateTo': data.paymentInformation.donateTo,
+					'debit.donateTo': donateTo,
 					'debit.donateWith': data.paymentInformation.donateWith,
 					'debit.type': data.paymentInformation.type,
 					'debit.total_amount': data.paymentInformation.total_amount,

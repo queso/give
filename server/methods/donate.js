@@ -24,7 +24,7 @@ Meteor.methods({
                     sessionId: data.sessionId,
                     URL: data.URL,
                     'customer': data.customer,
-                    'debit.donateTo': data.paymentInformation.donateTo,
+                    'debit.donateTo': donateTo,
                     'debit.donateWith': data.paymentInformation.donateWith,
                     'debit.email_sent.initial_sent': false,
                     'debit.email_sent.succeeded_sent': false,
