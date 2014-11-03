@@ -115,7 +115,7 @@ _.extend(Utils,{
             'customer.id': customerData.id
         }});
         return customerData;
-    }
+    },
     getDonateTo: function(donateTo) {
         var returnToCalled;
         switch(donateTo) {
