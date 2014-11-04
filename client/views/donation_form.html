@@ -85,6 +85,7 @@
                     </div>
     			</fieldset>
             </div>
+            <input type="hidden" id="enteredWriteInValue" value="{{writeInValue}}" />
     	</form>
     </div>
     <div class="modal" id="loading1" >
@@ -105,6 +106,30 @@
                 <div class="alert alert-warning">
                     <p><strong>Error category:</strong> <span id="errorCategory"></span></p>
                     <p><strong>Error Description:</strong> <span id="errorDescription"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--This area is the modal that takes the write in information from the user when they first get to the donation page. 
+    It only appears if they had previously selected "Support a trip participant" -->
+    <div class="modal fade" id="modal_for_write_in">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title"><strong>Enter</strong> a designation below.</h4>
+                </div>
+                <div class="modal-body">
+                    <p>You selected the 'Support a Trip Participant', please enter a description of where you want the funds to be directed. If you have any questions or don't seem to be finding what you are looking for please email us. Thanks </p>
+                    <a href="mailto:info@trashmountain.com?Subject=Donation Question">info@trashmountain.com.</a>
+                    <p>
+                        <input id="writeIn" data-parsley-type="text" class="form-control slim-borders" placeholder="Name or other designation." />
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="write_in_save">Save changes</button>
                 </div>
             </div>
         </div>
@@ -140,6 +165,7 @@
         <div name="checkGraphic" class="center-block check-graphic col-lg-6 col-md-7 col-sm-5 col-xs-10">
         </div>
     </div>
+    
 
 
 </template>

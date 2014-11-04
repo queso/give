@@ -267,8 +267,6 @@ Template.DonationForm.events({
     'click [name=donateWith]': function() {
         var selectedValue = $("[name=donateWith]").val();
         Session.set("paymentMethod", selectedValue);
-        /*
-         updateTotal(selectedValue);*/
     },
     'change [name=donateWith]': function() {
         setTimeout(function() {
@@ -295,6 +293,31 @@ Template.DonationForm.events({
         $('#card_number').on('mousewheel.disableScroll', function(e) {
             e.preventDefault();
         });
+    },
+    'click #write_in_save': function (e) {
+        $('#modal_for_write_in').modal('hide');
+        function removeParam(key, sourceURL) {
+            var rtn = sourceURL.split("?")[0],
+                param,
+                params_arr = [],
+                queryString = (sourceURL.indexOf("?") !== -1) ? sourceURL.split("?")[1] : "";
+            if (queryString !== "") {
+                params_arr = queryString.split("&");
+                for (var i = params_arr.length - 1; i >= 0; i -= 1) {
+                    param = params_arr[i].split("=")[0];
+                    if (param === key) {
+                        params_arr.splice(i, 1);
+                    }
+                }
+                rtn = rtn + "?" + params_arr.join("&");
+            }
+            return rtn;
+        }
+        var goHere = removeParam('enteredWriteInValue', window.location.href);
+        console.log(goHere);
+        Session.set('showWriteIn', 'no');
+        var goHere = goHere + '&enteredWriteInValue=' + $('#writeIn').val();
+        Router.go(goHere);
     }
 });;
 Template.DonationForm.helpers({
@@ -321,6 +344,9 @@ Template.DonationForm.helpers({
     },
     amount: function() {
         return Session.get('params.amount');
+    },
+    writeInValue: function () {
+        return Session.get('params.enteredWriteInValue');
     }
 });
 /*****************************************************************************/
@@ -354,6 +380,14 @@ Template.DonationForm.rendered = function() {
         style: 'btn-primary',
         menuStyle: 'dropdown-inverse'
     });
+    //setup modal for entering give toward information
+
+    if (Session.equals('params.donateTo', 'WriteIn') && !(Session.equals('showWriteIn', 'no'))) {
+        $('#modal_for_write_in').modal({
+            show: true,
+            backdrop: 'static'
+        });
+    }
 };
 Template.DonationForm.destroyed = function() {};
 Template.checkPaymentInformation.helpers({

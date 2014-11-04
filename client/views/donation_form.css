@@ -341,3 +341,17 @@ legend {
 .slim-borders {
 	border: 1px solid #bdc3c7; 
 }
+.notice-top-wrapper {
+    left: 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+}
+
+.notice-top {
+    text-align: left;
+    background-repeat:no-repeat;
+    background-color:#00ed32;
+    color:#FFF;
+    padding:15px;
+}

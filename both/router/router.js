@@ -28,6 +28,8 @@ Router.route(':root', function () {
     Session.set('params.amount', params.query.amount);
     Session.set('params.donateWith', params.query.donateWith);
     Session.set('params.recurring', params.query.recurring);
+    Session.set('params.writeIn', params.query.writeIn);
+    Session.set('params.enteredWriteInValue', params.query.enteredWriteInValue);
     
     this.render('DonationForm');
 }, {

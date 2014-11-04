@@ -1,6 +1,6 @@
 <template name="DonationTo">
 	<div name="donateTo" class="addSomePaddingLeft">
-		<select {{attributes_Input_DonationTo}} class="form-control noBorder">
+		<select {{attributes_Input_DonationTo}} class="form-control noBorder custom-select-item">
 	       	<optgroup label="">
 				<option value="Where Most Needed" selected >Where Most Needed</option>
 			</optgroup>
@@ -32,6 +32,9 @@
 				<option value="HondurasUrgent">Urgent Field Needs</option>
 				<option value="HondurasCS">Community Sponsorship</option>
 				<option value="HondurasInfrastructure">Infrastructure</option>
+			</optgroup>
+			<optgroup label="Write In">
+				<option value="WriteIn">Write In</option>
 			</optgroup>
 		</select>
 	</div>
