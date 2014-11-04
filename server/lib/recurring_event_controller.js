@@ -131,10 +131,9 @@ Evts = {
             lookup_invoice_guid['invoices.guid'] = invoice_guid;
             if(Donate.findOne(lookup_transaction_guid)){
                 logger.info("FOUND A transaction_guid in the collection: " + transaction_guid);
-
-
+                
                 var id = Donate.findOne(lookup_transaction_guid)._id;
-                var status_update = Evts.update_status(type, id, body, transaction_guid, invoice_guid);
+                var status_update = Evts.update_status(type, id, status, body, transaction_guid, invoice_guid);
                 return id;
             }else if(Donate.findOne(lookup_invoice_guid)){
                 var id = Donate.findOne(lookup_invoice_guid)._id;
