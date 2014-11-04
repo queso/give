@@ -93,7 +93,8 @@ Evts = {
         lookup_transaction_guid['transactions.guid'] = transaction_guid;
      
         if(Donate.findOne(lookup_transaction_guid)){
-            var status_update = Evts.update_status(type, id, body, transaction_guid, transaction.data.invoice_guid);
+            console.log(transaction_guid);
+            var status_update = Evts.update_status(type, id, transaction.data.status, body, transaction_guid, transaction.data.invoice_guid);
             return status_update;
         }else{
             transaction.data.email_sent = {'initial_sent': false, 'succeeded_sent': false};
@@ -129,7 +130,7 @@ Evts = {
             var lookup_invoice_guid = {};
             lookup_invoice_guid['invoices.guid'] = invoice_guid;
             if(Donate.findOne(lookup_transaction_guid)){
-                logger.info("FOUND A transaction_guid in the collection");
+                logger.info("FOUND A transaction_guid in the collection: " + transaction_guid);
 
 
                 var id = Donate.findOne(lookup_transaction_guid)._id;
