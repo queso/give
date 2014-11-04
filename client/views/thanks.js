@@ -36,14 +36,17 @@ Template.Thanks.helpers({
 Template.Gift.helpers({
   displayReceipt: function () {
     var transaction_guid = Session.get('transaction_guid');
-    var transaction = _.findWhere(this.transactions, { guid: transaction_guid });
+    var transactions = this.transactions;
+    var transaction = _.findWhere(transactions, { guid: transaction_guid });
+    console.log(transaction);
     var transaction_status = transaction.status;
     return (transaction_status === 'succeeded');
   },
   successOrPendingPayment: function () {
     var transaction_guid = Session.get('transaction_guid');
-    var transaction = _.findWhere(this.transactions, { guid: transaction_guid });
-
+    var transactions = this.transactions;
+    var transaction = _.findWhere(transactions, { guid: transaction_guid });
+    console.log(transaction);
     var transaction_status = transaction.status;
     return (transaction_status === 'succeeded' || transaction_status === 'pending');
   },

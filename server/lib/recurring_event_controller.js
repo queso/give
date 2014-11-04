@@ -45,9 +45,28 @@ Evts = {
 	log_new_gift: function(billy, mixedID, transaction_guid) {
 		//TODO: Need to complete this
 	},
-	update_status: function(type, id, status, body) { 
+	update_status: function(type, id, status, body, transaction_guid, invoice_guid) { 
 		var lookup = type;
         try {
+                var transaction = HTTP.get("https://billy.balancedpayments.com/v1/transactions/" + transaction_guid, {
+                    auth: Meteor.settings.billy_key + ':'
+                });
+                console.log(transaction);
+             
+                var invoice = HTTP.get("https://billy.balancedpayments.com/v1/invoices/" + transaction.data.invoice_guid, {
+                    auth: Meteor.settings.billy_key + ':'
+                });
+
+                Donate.update({'transactions.guid': transaction_guid}, {$set: {
+                    'transactions.$.status': transaction.data.status, 
+                    'transactions.$.processor_uri': transaction.data.processor_uri
+                }});
+
+                Donate.update({'invoices.guid': invoice_guid}, {$set: {
+                    'invoices.$.status': invoice.data.status, 
+                    'invoices.$.processor_uri': invoice.data.processor_uri
+                }});
+
                 lookup = 'debit';
                 var lookup_this = {};
                 lookup_this[lookup + '.id'] = id;
@@ -64,6 +83,7 @@ Evts = {
 		var transaction = HTTP.get("https://billy.balancedpayments.com/v1/transactions/" + transaction_guid, {
                 auth: Meteor.settings.billy_key + ':'
         });
+        console.log(transaction);
      
         var invoice = HTTP.get("https://billy.balancedpayments.com/v1/invoices/" + transaction.data.invoice_guid, {
                 auth: Meteor.settings.billy_key + ':'
@@ -73,7 +93,7 @@ Evts = {
         lookup_transaction_guid['transactions.guid'] = transaction_guid;
      
         if(Donate.findOne(lookup_transaction_guid)){
-            var status_update = Evts.update_status(type, id, body);
+            var status_update = Evts.update_status(type, id, body, transaction_guid, transaction.data.invoice_guid);
             return status_update;
         }else{
             transaction.data.email_sent = {'initial_sent': false, 'succeeded_sent': false};
@@ -113,7 +133,7 @@ Evts = {
 
 
                 var id = Donate.findOne(lookup_transaction_guid)._id;
-                var status_update = Evts.update_status(type, id, body);
+                var status_update = Evts.update_status(type, id, body, transaction_guid, invoice_guid);
                 return id;
             }else if(Donate.findOne(lookup_invoice_guid)){
                 var id = Donate.findOne(lookup_invoice_guid)._id;
