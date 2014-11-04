@@ -10,6 +10,9 @@ Meteor.methods({
         logIt();
         try {
 
+            //Convert donation to more readable format
+            var donateTo = Utils.getDonateTo(data.paymentInformation.donateTo);
+
             //Check the form to make sure nothing malicious is being submitted to the server
             Utils.checkFormFields(data);
 
@@ -21,7 +24,7 @@ Meteor.methods({
                     sessionId: data.sessionId,
                     URL: data.URL,
                     'customer': data.customer,
-                    'debit.donateTo': data.paymentInformation.donateTo,
+                    'debit.donateTo': donateTo,
                     'debit.donateWith': data.paymentInformation.donateWith,
                     'debit.email_sent.initial_sent': false,
                     'debit.email_sent.succeeded_sent': false,

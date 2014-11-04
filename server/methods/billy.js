@@ -180,7 +180,10 @@ Meteor.methods({
     recurringDonation: function(data) {
 		logger.info("Started billy method calls.")
 		logIt();
-		/*try {*/
+		try {
+
+			//Convert donation to more readable format
+            var donateTo = Utils.getDonateTo(data.paymentInformation.donateTo);
 
 			//Check the form to make sure nothing malicious is being submitted to the server
 	        Utils.checkFormFields(data);
@@ -193,7 +196,7 @@ Meteor.methods({
 					sessionId: data.sessionId,
 					URL: data.URL,
 					'customer': data.customer,
-					'debit.donateTo': data.paymentInformation.donateTo,
+					'debit.donateTo': donateTo,
 					'debit.donateWith': data.paymentInformation.donateWith,
 					'debit.type': data.paymentInformation.type,
 					'debit.total_amount': data.paymentInformation.total_amount,
@@ -295,11 +298,11 @@ Meteor.methods({
 			return return_this;
 
 
-		/*} catch (e) {
+		} catch (e) {
 			logger.info(e);
 			logger.info(e.error_message);
 			logger.info(e.reason);
 			throw new Meteor.Error(500, e.reason, e.details);
-		}*/
+		}
 	}
 });
