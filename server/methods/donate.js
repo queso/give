@@ -51,7 +51,7 @@ Meteor.methods({
             if (paymentInfo.donateWith === "Card") {
                 
                 //Get the card data from balanced and store it
-                var card = Utils.get_card(data._id, paymentInformation.href);
+                var card = Utils.get_card(data._id, data.paymentInformation.href);
 
                 //Order function
                 var orders = Utils.create_order(data._id, customerData.href);
@@ -65,9 +65,9 @@ Meteor.methods({
             }
             //for running ACH
             else {
-
+                console.log(paymentInfo.href);
                 //Get the bank account data from balanced and store it
-                var card = Utils.get_check(data._id, paymentInformation.href);
+                var card = Utils.get_check(data._id, paymentInfo.href);
 
                 //Order function
                 var orders = Utils.create_order(data._id, customerData.href);

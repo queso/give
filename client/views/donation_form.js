@@ -275,15 +275,14 @@ Template.DonationForm.events({
             form.paymentInformation.type = "Check";
             var payload = {
                 name: $('#fname').val() + ' ' + $('lname').val(),
-                account_number: $('[name=card_number]').val(),
-                routing_number: $('[name=expiry_month]').val(),
-                account_type: $('[name=expiry_year]').val()
+                account_number: $('#account_number').val(),
+                routing_number: $('#routing_number').val(),
+                account_type: $('#account_type').val()
             };
-
-            balanced.bank_account.create(payload, function (response) {
+            balanced.bankAccount.create(payload, function (response) {
                 // Successful tokenization
                 if (response.status_code === 201) {
-                    var fundingInstrument = response.cards != null ? response.cards[0] : response.bank_accounts[0];
+                    var fundingInstrument = response.bank_accounts != null ? response.bank_accounts[0] : response.cards[0];
                     // Call your backend
                     handleCalls(fundingInstrument, form);
                 } else {
