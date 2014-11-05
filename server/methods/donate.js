@@ -49,8 +49,9 @@ Meteor.methods({
             //Runs if the form used was the credit card form, which sets type as part of the array which is passed to this server
             // side function
             if (paymentInfo.donateWith === "Card") {
-                //Tokenize card
-                var card = paymentInfo;
+                
+                //Get the card data from balanced and store it
+                var card = Utils.get_card(data._id, paymentInformation.href);
 
                 //Order function
                 var orders = Utils.create_order(data._id, customerData.href);
@@ -65,8 +66,9 @@ Meteor.methods({
             //for running ACH
             else {
 
-                //Create bank account
-                var check = paymentInfo;
+                //Get the bank account data from balanced and store it
+                var card = Utils.get_check(data._id, paymentInformation.href);
+
                 //Order function
                 var orders = Utils.create_order(data._id, customerData.href);
 
