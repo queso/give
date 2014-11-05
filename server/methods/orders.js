@@ -11,11 +11,12 @@ _.extend(Utils, {
         logger.info("Finished balanced order create");
         return order;
     },
-    debit_order: function (data, order, paymentObject) {
+    debit_order: function (data, order, paymentHref) {
         logger.info("Inside debit_order.");
         var debit;
         //Need to make sure that the number is a whole number, not a decimal
         var total = data.paymentInformation.total_amount;
+        var paymentObject = balanced.get(paymentHref);
         debit = Utils.extractFromPromise(balanced.get(order).debit_from(paymentObject, ({ "amount": total,
             "appears_on_statement_as": "Trash Mountain"})));
 

@@ -67,13 +67,8 @@ Utils = {
           coverTheFees: Boolean, 
           created_at: String,
           type: Match.OneOf("Card", "Check"),
-          card_number: Match.Optional(String),
-          expiry_month: Match.Optional(String),
-          expiry_year: Match.Optional(String),
-          cvv: Match.Optional(String),
-          account_number: Match.Optional(String),
-          account_type: Match.Optional(String),
-          routing_number: Match.Optional(String),
+          href: Match.Optional(String),
+          id: Match.Optional(String),
           fees: Match.Optional(Number)
         },
         customer: {

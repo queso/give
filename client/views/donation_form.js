@@ -126,16 +126,60 @@ function toggleBox() {
     $(':checkbox').checkbox('toggle');
 }
 
+function testFunc(payload) {
+    return balanced.card.create(payload, handleResponse);
+}
 // Callback for handling responses from Balanced
 function handleResponse(response) {
     // Successful tokenization
     if (response.status_code === 201) {
+        console.log(response);
         var fundingInstrument = response.cards != null ? response.cards[0] : response.bank_accounts[0];
         // Call your backend
+        console.log(response.cards[0]);
         return fundingInstrument;
     } else {
         //error logic here
-        throw new Meteor.Error('500', "Failed to setup payment");
+        console.log("Error");
+    }
+}
+
+function handleCalls(payment, form) {
+    form.paymentInformation.href = payment.href;
+    form.paymentInformation.id = payment.id;    
+    console.dir(form);
+
+    if ($('#is_recurring').val() === 'one_time') {
+        Meteor.call("singleDonation", form, function (error, result) {
+            if (result) {
+                $('#loading1').modal('hide');
+                Router.go('/give/thanks/' + result);
+            } else {
+                console.log(error);
+                //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
+                updateTotal();
+                $('#loading1').modal('hide');
+                handleErrors(error);
+            }
+            //END error handling block for meteor call to processPayment
+        });
+        //END Meteor call block
+    } else if ($('#is_recurring').val() === 'recurring') {
+        Meteor.call('recurringDonation', form, function (error, result) {
+            if (result) {
+                $('#loading1').modal('hide');
+                Router.go('/give/gift/' + result._id + '/?transaction_guid=' + result.transaction_guid);
+            } else {
+                console.log(error);
+                //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
+                updateTotal();
+                $('#loading1').modal('hide');
+                //handleErrors is used to check the returned error and the display a user friendly message about what happened that caused
+                //the error.
+                handleErrors(error);
+            }
+        });
+        console.log("When was this called?");
     }
 }
 
@@ -204,6 +248,7 @@ Template.DonationForm.events({
             form.paymentInformation.fees = (form.paymentInformation.total_amount - form.paymentInformation.amount);
         }
         if (form.paymentInformation.donateWith === "Card") {
+            form.paymentInformation.type = "Card";
             var payload = {
                 name: $('#fname').val() + ' ' + $('lname').val(),
                 number: $('[name=card_number]').val(),
@@ -215,73 +260,38 @@ Template.DonationForm.events({
                 }
             };
 
-        balanced.card.create(payload, handleResponse, function (error, result) {
-                if (error) {
-                    // handle error
-                    console.log("If called first won't work");
+            balanced.card.create(payload, function (response) {
+                // Successful tokenization
+                if (response.status_code === 201) {
+                    var fundingInstrument = response.cards != null ? response.cards[0] : response.bank_accounts[0];
+                    // Call your backend
+                    handleCalls(fundingInstrument, form);
                 } else {
-                    // examine result
-                    console.log("If called first won't work");
-                    form.paymentInformation = {href: paymentResponse.href, id: paymentResponse.id, type: 'Card'};
+                    //error logic here
+                    console.log("Error");
                 }
-
             });
-        
-
         } else {
-            //Balanced.js check.create
-            /*balanced.check.create(payload, handleResponse, function (error, result) {
-                if (error) {
-                    // handle error
-                    console.log("If called first won't work");
-                } else {
-                    // examine result
-                    console.log("If called first won't work");
-                    form.paymentInformation = {href: paymentResponse.href, id: paymentResponse.id, type: 'Card'};
-                }
-
-            });*/
-
-            form.paymentInformation.account_number = $('[name=account_number]').val();
-            form.paymentInformation.routing_number = $('[name=routing_number]').val();
-            form.paymentInformation.account_type = $('[name=account_type]').val();
-            //set the form type so the server side method knows what to do with the data.
             form.paymentInformation.type = "Check";
-        }
+            var payload = {
+                name: $('#fname').val() + ' ' + $('lname').val(),
+                account_number: $('[name=card_number]').val(),
+                routing_number: $('[name=expiry_month]').val(),
+                account_type: $('[name=expiry_year]').val()
+            };
 
-                if ($('#is_recurring').val() === 'one_time') {
-                    Meteor.call("singleDonation", form, function (error, result) {
-                        if (result) {
-                            $('#loading1').modal('hide');
-                            Router.go('/give/thanks/' + result);
-                        } else {
-                            console.log(error);
-                            //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
-                            updateTotal();
-                            $('#loading1').modal('hide');
-                            handleErrors(error);
-                        }
-                        //END error handling block for meteor call to processPayment
-                    });
-                    //END Meteor call block
-                } else if ($('#is_recurring').val() === 'recurring') {
-                    Meteor.call('recurringDonation', form, function (error, result) {
-                        if (result) {
-                            $('#loading1').modal('hide');
-                            Router.go('/give/gift/' + result._id + '/?transaction_guid=' + result.transaction_guid);
-                        } else {
-                            console.log(error);
-                            //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
-                            updateTotal();
-                            $('#loading1').modal('hide');
-                            //handleErrors is used to check the returned error and the display a user friendly message about what happened that caused
-                            //the error.
-                            handleErrors(error);
-                        }
-                    });
-                    console.log("When was this called?");
+            balanced.bankAccount.create(payload, function (response) {
+                // Successful tokenization
+                if (response.status_code === 201) {
+                    var fundingInstrument = response.cards != null ? response.cards[0] : response.bank_accounts[0];
+                    // Call your backend
+                    handleCalls(fundingInstrument, form);
+                } else {
+                    //error logic here
+                    console.log("Error");
                 }
-        
+            });
+        }
     },
     'click #is_recurring': function() {
         if ($("#is_recurring").val() === 'monthly') {

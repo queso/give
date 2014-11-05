@@ -1,5 +1,5 @@
 _.extend(Utils,{
-    card_create: function (data) {
+    /*card_create: function (data) {
         console.log("Inside card create.");
         var card;
         card = Utils.extractFromPromise(balanced.card.create({
@@ -67,7 +67,7 @@ _.extend(Utils,{
             }
         });
         return check;
-    },
+    },*/
     create_association: function (data, paymentHref, otherHref) {
             try {
                 console.log("Inside create_association function");

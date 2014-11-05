@@ -59,7 +59,7 @@ Meteor.methods({
                 var associate = Utils.create_association(data, card.href, customerData.href);
 
                 //Debit the order
-                var debitOrder = Utils.debit_order(data, orders.href, card);
+                var debitOrder = Utils.debit_order(data, orders.href, card.href);
 
             }
             //for running ACH
