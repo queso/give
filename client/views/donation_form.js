@@ -280,7 +280,7 @@ Template.DonationForm.events({
                 account_type: $('[name=expiry_year]').val()
             };
 
-            balanced.bankAccount.create(payload, function (response) {
+            balanced.bank_account.create(payload, function (response) {
                 // Successful tokenization
                 if (response.status_code === 201) {
                     var fundingInstrument = response.cards != null ? response.cards[0] : response.bank_accounts[0];
@@ -288,7 +288,7 @@ Template.DonationForm.events({
                     handleCalls(fundingInstrument, form);
                 } else {
                     //error logic here
-                    console.log("Error");
+                    error(response);
                 }
             });
         }
