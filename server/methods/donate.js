@@ -8,7 +8,7 @@ function logIt() {
 Meteor.methods({
     singleDonation: function (data) {
         logIt();
-        try {
+        /*try {*/
 
             //Convert donation to more readable format
             var donateTo = Utils.getDonateTo(data.paymentInformation.donateTo);
@@ -28,7 +28,7 @@ Meteor.methods({
                     'debit.donateWith': data.paymentInformation.donateWith,
                     'debit.email_sent.initial_sent': false,
                     'debit.email_sent.succeeded_sent': false,
-                    'debit.type': data.paymentInformation.type,
+                    'debit.type': data.paymentInformation.donateWith,
                     'debit.total_amount': data.paymentInformation.total_amount,
                     'debit.amount': data.paymentInformation.amount,
                     'debit.fees': data.paymentInformation.fees,
@@ -48,9 +48,9 @@ Meteor.methods({
 
             //Runs if the form used was the credit card form, which sets type as part of the array which is passed to this server
             // side function
-            if (paymentInfo.type === "Card") {
+            if (paymentInfo.donateWith === "Card") {
                 //Tokenize card
-                var card = Utils.card_create(data);
+                var card = paymentInfo;
 
                 //Order function
                 var orders = Utils.create_order(data._id, customerData.href);
@@ -66,7 +66,7 @@ Meteor.methods({
             else {
 
                 //Create bank account
-                var check = Utils.check_create(data);
+                var check = paymentInfo;
                 //Order function
                 var orders = Utils.create_order(data._id, customerData.href);
 
@@ -79,7 +79,7 @@ Meteor.methods({
             }
             return data._id;
 
-        } catch (e) {
+        /*} catch (e) {
          logger.error("Got to catch error area of processPayment function." + e + " " + e.reason);
          logger.error("e.category_code = " + e.category_code + " e.descriptoin = " + e.description);
          if(e.category_code) {
@@ -101,6 +101,6 @@ Meteor.methods({
          }else {
              throw new Meteor.Error(500, e.reason, e.details);
          }
-         }
+         }*/
     }
 });

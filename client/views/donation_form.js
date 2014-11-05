@@ -125,6 +125,20 @@ function updateTotal() {
 function toggleBox() {
     $(':checkbox').checkbox('toggle');
 }
+
+// Callback for handling responses from Balanced
+function handleResponse(response) {
+    // Successful tokenization
+    if (response.status_code === 201) {
+        var fundingInstrument = response.cards != null ? response.cards[0] : response.bank_accounts[0];
+        // Call your backend
+        return fundingInstrument;
+    } else {
+        //error logic here
+        throw new Meteor.Error('500', "Failed to setup payment");
+    }
+}
+
 Template.DonationForm.events({
     'submit form': function(e) {
         //prevent the default reaction to submitting this form
@@ -133,9 +147,9 @@ Template.DonationForm.events({
         e.stopPropagation();
 
         updateTotal();
-        if(($('#total_amount').val()) > 15000){
+        if (($('#total_amount').val()) > 15000) {
             var error = {};
-        error.reason = 'Exceeds processor amount';
+            error.reason = 'Exceeds processor amount';
             error.details = "<tr>\
                         <td>Sorry, our processor will not allow us to accept gifts larger than $15,000.&nbsp; Here are a couple of options.</td>\
                     <tr>\
@@ -159,9 +173,10 @@ Template.DonationForm.events({
         });
         var form = {
             "paymentInformation": {
-                "amount": parseInt(($('#amount').val().replace(/[^\d\.\-\ ]/g, ''))* 100),
+                "amount": parseInt(($('#amount').val().replace(/[^\d\.\-\ ]/g, '')) * 100),
                 "total_amount": parseInt($('#total_amount').val() * 100),
                 "donateTo": $("#donateTo").val(),
+                "writeIn": $("#enteredWriteInValue").val(),
                 "donateWith": $("#donateWith").val(),
                 "is_recurring": $('#is_recurring').val(),
                 "coverTheFees": $('#coverTheFees').is(":checked"),
@@ -170,7 +185,7 @@ Template.DonationForm.events({
             "customer": {
                 "fname": $('#fname').val(),
                 "lname": $('#lname').val(),
-                "org":   $('#org').val(),
+                "org": $('#org').val(),
                 "email_address": $('#email_address').val(),
                 "phone_number": $('#phone').val(),
                 "address_line1": $('#address_line1').val(),
@@ -189,53 +204,86 @@ Template.DonationForm.events({
             form.paymentInformation.fees = (form.paymentInformation.total_amount - form.paymentInformation.amount);
         }
         if (form.paymentInformation.donateWith === "Card") {
-            form.paymentInformation.card_number = $('[name=card_number]').val();
-            form.paymentInformation.expiry_month = $('[name=expiry_month]').val();
-            form.paymentInformation.expiry_year = $('[name=expiry_year]').val();
-            form.paymentInformation.cvv = $('[name=cvv]').val();
-            //set the form type so the server side method knows what to do with the data.
-            form.paymentInformation.type = "Card";
+            var payload = {
+                name: $('#fname').val() + ' ' + $('lname').val(),
+                number: $('[name=card_number]').val(),
+                expiration_month: $('[name=expiry_month]').val(),
+                expiration_year: $('[name=expiry_year]').val(),
+                cvv: $('[name=cvv]').val(),
+                address: {
+                    postal_code: $('#postal_code').val()
+                }
+            };
+
+        balanced.card.create(payload, handleResponse, function (error, result) {
+                if (error) {
+                    // handle error
+                    console.log("If called first won't work");
+                } else {
+                    // examine result
+                    console.log("If called first won't work");
+                    form.paymentInformation = {href: paymentResponse.href, id: paymentResponse.id, type: 'Card'};
+                }
+
+            });
+        
+
         } else {
+            //Balanced.js check.create
+            /*balanced.check.create(payload, handleResponse, function (error, result) {
+                if (error) {
+                    // handle error
+                    console.log("If called first won't work");
+                } else {
+                    // examine result
+                    console.log("If called first won't work");
+                    form.paymentInformation = {href: paymentResponse.href, id: paymentResponse.id, type: 'Card'};
+                }
+
+            });*/
+
             form.paymentInformation.account_number = $('[name=account_number]').val();
             form.paymentInformation.routing_number = $('[name=routing_number]').val();
             form.paymentInformation.account_type = $('[name=account_type]').val();
             //set the form type so the server side method knows what to do with the data.
             form.paymentInformation.type = "Check";
         }
-        //Move inert and update from here.
-        if ($('#is_recurring').val() === 'one_time') {
-            Meteor.call("singleDonation", form, function(error, result) {
-                if (result) {
-                    $('#loading1').modal('hide');
-                    Router.go('/give/thanks/' + result);
-                } else {
-                    console.log(error);
-                    //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
-                    updateTotal();
-                    $('#loading1').modal('hide');
-                    handleErrors(error);
+
+                if ($('#is_recurring').val() === 'one_time') {
+                    Meteor.call("singleDonation", form, function (error, result) {
+                        if (result) {
+                            $('#loading1').modal('hide');
+                            Router.go('/give/thanks/' + result);
+                        } else {
+                            console.log(error);
+                            //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
+                            updateTotal();
+                            $('#loading1').modal('hide');
+                            handleErrors(error);
+                        }
+                        //END error handling block for meteor call to processPayment
+                    });
+                    //END Meteor call block
+                } else if ($('#is_recurring').val() === 'recurring') {
+                    Meteor.call('recurringDonation', form, function (error, result) {
+                        if (result) {
+                            $('#loading1').modal('hide');
+                            Router.go('/give/gift/' + result._id + '/?transaction_guid=' + result.transaction_guid);
+                        } else {
+                            console.log(error);
+                            //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
+                            updateTotal();
+                            $('#loading1').modal('hide');
+                            //handleErrors is used to check the returned error and the display a user friendly message about what happened that caused
+                            //the error.
+                            handleErrors(error);
+                        }
+                    });
+                    console.log("When was this called?");
                 }
-                //END error handling block for meteor call to processPayment
-            });
-            //END Meteor call block
-        } else {
-            Meteor.call('recurringDonation', form, function(error, result) {
-                if (result) {
-                    $('#loading1').modal('hide');
-                    Router.go('/give/gift/' + result._id + '/?transaction_guid=' + result.transaction_guid);
-                } else {
-                    console.log(error);
-                    //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
-                    updateTotal();
-                    $('#loading1').modal('hide');
-                    //handleErrors is used to check the returned error and the display a user friendly message about what happened that caused
-                    //the error.
-                    handleErrors(error);
-                }
-            });
-        }
+        
     },
-    'click [name=is_recurring]': function() {
+    'click #is_recurring': function() {
         if ($("#is_recurring").val() === 'monthly') {
             Session.set('recurring', true);
         } else {
@@ -267,8 +315,6 @@ Template.DonationForm.events({
     'click [name=donateWith]': function() {
         var selectedValue = $("[name=donateWith]").val();
         Session.set("paymentMethod", selectedValue);
-        /*
-         updateTotal(selectedValue);*/
     },
     'change [name=donateWith]': function() {
         setTimeout(function() {
@@ -295,6 +341,31 @@ Template.DonationForm.events({
         $('#card_number').on('mousewheel.disableScroll', function(e) {
             e.preventDefault();
         });
+    },
+    'click #write_in_save': function (e) {
+        $('#modal_for_write_in').modal('hide');
+        function removeParam(key, sourceURL) {
+            var rtn = sourceURL.split("?")[0],
+                param,
+                params_arr = [],
+                queryString = (sourceURL.indexOf("?") !== -1) ? sourceURL.split("?")[1] : "";
+            if (queryString !== "") {
+                params_arr = queryString.split("&");
+                for (var i = params_arr.length - 1; i >= 0; i -= 1) {
+                    param = params_arr[i].split("=")[0];
+                    if (param === key) {
+                        params_arr.splice(i, 1);
+                    }
+                }
+                rtn = rtn + "?" + params_arr.join("&");
+            }
+            return rtn;
+        }
+        var goHere = removeParam('enteredWriteInValue', window.location.href);
+        console.log(goHere);
+        Session.set('showWriteIn', 'no');
+        var goHere = goHere + '&enteredWriteInValue=' + $('#writeIn').val();
+        Router.go(goHere);
     }
 });;
 Template.DonationForm.helpers({
@@ -321,6 +392,9 @@ Template.DonationForm.helpers({
     },
     amount: function() {
         return Session.get('params.amount');
+    },
+    writeInValue: function () {
+        return Session.get('params.enteredWriteInValue');
     }
 });
 /*****************************************************************************/
@@ -354,6 +428,14 @@ Template.DonationForm.rendered = function() {
         style: 'btn-primary',
         menuStyle: 'dropdown-inverse'
     });
+    //setup modal for entering give toward information
+
+    if (Session.equals('params.donateTo', 'WriteIn') && !(Session.equals('showWriteIn', 'no'))) {
+        $('#modal_for_write_in').modal({
+            show: true,
+            backdrop: 'static'
+        });
+    }
 };
 Template.DonationForm.destroyed = function() {};
 Template.checkPaymentInformation.helpers({

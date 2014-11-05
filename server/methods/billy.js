@@ -31,7 +31,7 @@ function createPaymentMethod(data) {
 
 		logger.info("Setup variables for data from form inputs inside the billy createPaymentMethod method.");
 		var customerInfo = data.customer;
-		var debitType = data.paymentInformation.type;
+		var debitType = data.paymentInformation.donateWith;
 		logger.info("ID: " + data._id);
 		logger.info("In create Payment Method before if: " + debitType);
 
