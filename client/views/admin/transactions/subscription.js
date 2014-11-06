@@ -20,7 +20,7 @@ Template.Subscription.helpers({
 		return this.customer.lname;
 	},
 	amount: function() {
-		return "$" + (Math.floor(this.amount) / 100).toFixed(2);
+		return "$" + (Math.floor(this.total_amount) / 100).toFixed(2);
 	},
 	subscription_guid: function() {
 		return this.guid;

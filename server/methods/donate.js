@@ -8,7 +8,7 @@ function logIt() {
 Meteor.methods({
     singleDonation: function (data) {
         logIt();
-        /*try {*/
+        try {
 
             //Convert donation to more readable format
             var donateTo = Utils.getDonateTo(data.paymentInformation.donateTo);
@@ -51,7 +51,7 @@ Meteor.methods({
             if (paymentInfo.donateWith === "Card") {
                 
                 //Get the card data from balanced and store it
-                var card = Utils.get_card(data._id, data.paymentInformation.href);
+                var card = Utils.get_card(data._id, paymentInfo.href);
 
                 //Order function
                 var orders = Utils.create_order(data._id, customerData.href);
@@ -67,7 +67,7 @@ Meteor.methods({
             else {
                 console.log(paymentInfo.href);
                 //Get the bank account data from balanced and store it
-                var card = Utils.get_check(data._id, paymentInfo.href);
+                var check = Utils.get_check(data._id, paymentInfo.href);
 
                 //Order function
                 var orders = Utils.create_order(data._id, customerData.href);
@@ -76,12 +76,12 @@ Meteor.methods({
                 var associate = Utils.create_association(data, check.href, customerData.href);
 
                 //Debit the order
-                var debitOrder = Utils.debit_order(data, orders.href, check);
+                var debitOrder = Utils.debit_order(data, orders.href, check.href);
 
             }
             return data._id;
 
-        /*} catch (e) {
+        } catch (e) {
          logger.error("Got to catch error area of processPayment function." + e + " " + e.reason);
          logger.error("e.category_code = " + e.category_code + " e.descriptoin = " + e.description);
          if(e.category_code) {
@@ -103,6 +103,6 @@ Meteor.methods({
          }else {
              throw new Meteor.Error(500, e.reason, e.details);
          }
-         }*/
+         }
     }
 });

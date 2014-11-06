@@ -45,7 +45,7 @@ _.extend(Utils,{
         }});
         return card;
     },
-    check_create: function (id, checkHref) {
+    get_check: function (id, checkHref) {
         var check;
         check = Utils.extractFromPromise(balanced.get(checkHref));
         Donate.update(id, {

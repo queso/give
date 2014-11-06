@@ -11,7 +11,7 @@ _.extend(Evts,{
 				logger.info(body.events[0].entity.debits[0].id);
 	 			var sending_email_for_created = Evts.send_email(false, body.events[0].entity.debits[0].id, null, null, 'initial_sent', status, body.events[0].entity.debits[0].amount);
 	 		}else if(select_type === "debit_succeeded") {
-		 		var amount = Donate.findOne({'debit.id': body.events[0].entity.debits[0].id}).debit.amount;
+		 		var amount = Donate.findOne({'debit.id': body.events[0].entity.debits[0].id}).debit.total_amount;
 
                 if(amount === body.events[0].entity.debits[0].amount) {	
 			 		if(amount > 50000){

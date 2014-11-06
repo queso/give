@@ -34,15 +34,12 @@ Location HREF: " + location.href + "'><button type='button' class='btn btn-dange
                     </tr>\
                 </tr>";
 
-        $('#modal_for_initial_donation_error').modal({
-            show: true
-        });
+        $('#modal_for_initial_donation_error').modal('show');
         $('#errorCategory').html(error.reason);
         $('#errorDescription').html(error.details);  
     } else{
-        $('#modal_for_initial_donation_error').modal({
-            show: true
-        });
+        //$('#modal_for_initial_donation_error').modal('show');
+        $('#error-alert').show();
         $('#errorCategory').html(error.reason);
         $('#errorDescription').html(error.details);
     }
@@ -126,28 +123,10 @@ function toggleBox() {
     $(':checkbox').checkbox('toggle');
 }
 
-function testFunc(payload) {
-    return balanced.card.create(payload, handleResponse);
-}
-// Callback for handling responses from Balanced
-function handleResponse(response) {
-    // Successful tokenization
-    if (response.status_code === 201) {
-        console.log(response);
-        var fundingInstrument = response.cards != null ? response.cards[0] : response.bank_accounts[0];
-        // Call your backend
-        console.log(response.cards[0]);
-        return fundingInstrument;
-    } else {
-        //error logic here
-        console.log("Error");
-    }
-}
-
+//This is the callback for the client side tokenization of cards and bank_accounts.
 function handleCalls(payment, form) {
     form.paymentInformation.href = payment.href;
     form.paymentInformation.id = payment.id;    
-    console.dir(form);
 
     if ($('#is_recurring').val() === 'one_time') {
         Meteor.call("singleDonation", form, function (error, result) {
@@ -155,7 +134,6 @@ function handleCalls(payment, form) {
                 $('#loading1').modal('hide');
                 Router.go('/give/thanks/' + result);
             } else {
-                console.log(error);
                 //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
                 updateTotal();
                 $('#loading1').modal('hide');
@@ -164,13 +142,12 @@ function handleCalls(payment, form) {
             //END error handling block for meteor call to processPayment
         });
         //END Meteor call block
-    } else if ($('#is_recurring').val() === 'recurring') {
+    } else if ($('#is_recurring').val() === 'monthly') {
         Meteor.call('recurringDonation', form, function (error, result) {
             if (result) {
                 $('#loading1').modal('hide');
                 Router.go('/give/gift/' + result._id + '/?transaction_guid=' + result.transaction_guid);
             } else {
-                console.log(error);
                 //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
                 updateTotal();
                 $('#loading1').modal('hide');
@@ -179,7 +156,6 @@ function handleCalls(payment, form) {
                 handleErrors(error);
             }
         });
-        console.log("When was this called?");
     }
 }
 
@@ -287,7 +263,7 @@ Template.DonationForm.events({
                     handleCalls(fundingInstrument, form);
                 } else {
                     //error logic here
-                    error(response);
+                    console.error(response);
                 }
             });
         }
@@ -302,10 +278,7 @@ Template.DonationForm.events({
     'keyup, change #amount': function() {
         return updateTotal();
     },
-    /*
-     'change #amount': function() {
-     return updateTotal();
-     },*/ // disable mousewheel on a input number field when in focus
+    // disable mousewheel on a input number field when in focus
     // (to prevent Cromium browsers change the value when scrolling)
     'focus #amount': function(e, tmpl) {
         $('#amount').on('mousewheel.disableScroll', function(e) {
@@ -376,7 +349,7 @@ Template.DonationForm.events({
         var goHere = goHere + '&enteredWriteInValue=' + $('#writeIn').val();
         Router.go(goHere);
     }
-});;
+});
 Template.DonationForm.helpers({
     paymentWithCard: function() {
         return Session.equals("paymentMethod", "Card");
@@ -413,7 +386,7 @@ Template.DonationForm.created = function() {};
 Template.DonationForm.rendered = function() {
     // Setup parsley form validation
     $('#donation_form').parsley();
-    
+
     //Set the checkboxes to unchecked
     $(':checkbox').checkbox('uncheck');
     //Set the tooltips for the question mark icons.
@@ -446,7 +419,6 @@ Template.DonationForm.rendered = function() {
         });
     }
 };
-Template.DonationForm.destroyed = function() {};
 Template.checkPaymentInformation.helpers({
     attributes_Input_AccountNumber: function() {
         return {
@@ -483,7 +455,6 @@ Template.checkPaymentInformation.rendered = function() {
         placement: 'auto top'
     });
 };
-Template.checkPaymentInformation.created = function() {};
 //Card Payment Template mods
 Template.cardPaymentInformation.rendered = function() {
     $('#expirationDataQuestion').tooltip({
