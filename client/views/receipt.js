@@ -81,10 +81,10 @@ Template.Receipt.helpers({
       var payment_device;
       if(this.card){
         payment_device = this.card[0].number
-        return this.debit.donateWith + " ending with " + payment_device.slice(-4);
+        return "Card (last four) " + payment_device.slice(-4);
       } else {
         payment_device = this.bank_account[0].account_number
-        return this.debit.donateWith + " account ending with " + payment_device.slice(-4);
+        return "Bank account (last four) " + payment_device.slice(-4);
       }   		
    },
    amount: function () {
