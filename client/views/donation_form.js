@@ -308,7 +308,12 @@ Template.DonationForm.events({
         /*
          updateTotal(selectedValue);*/
     },
-    //keypress input detection for autofilling form with test data
+    'change #donateTo': function() {
+        if($('#donateTo').val() !== 'WriteIn') {
+            $('#giftDesignationText').hide();
+        }
+    },
+        //keypress input detection for autofilling form with test data
     'keypress input': function(e) {
         if (e.which === 17) { //17 is ctrl + q
             fillForm();
