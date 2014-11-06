@@ -62,7 +62,7 @@ _.extend(Utils,{
 						"content": the_info.mongo_doc.debit.donateWith
 						}, {
 						"name": "TotalGiftAmount",
-						"content": the_info.mongo_doc.debit.amount / 100
+						"content": the_info.mongo_doc.debit.total_amount / 100
 						}, {
 						"name": "FULLNAME",
 						"content": fullName
