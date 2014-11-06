@@ -185,6 +185,10 @@ Meteor.methods({
 			//Convert donation to more readable format
             var donateTo = Utils.getDonateTo(data.paymentInformation.donateTo);
 
+            if(donateTo === 'Write In') {
+                donateTo = data.paymentInformation.writeIn;
+            }
+
 			//Check the form to make sure nothing malicious is being submitted to the server
 	        Utils.checkFormFields(data);
 

@@ -125,6 +125,20 @@ function updateTotal() {
 function toggleBox() {
     $(':checkbox').checkbox('toggle');
 }
+
+// Callback for handling responses from Balanced
+function handleResponse(response) {
+    // Successful tokenization
+    if (response.status_code === 201) {
+        var fundingInstrument = response.cards != null ? response.cards[0] : response.bank_accounts[0];
+        // Call your backend
+        return fundingInstrument;
+    } else {
+        //error logic here
+        return response.status_code;
+    }
+}
+
 Template.DonationForm.events({
     'submit form': function(e) {
         //prevent the default reaction to submitting this form
@@ -162,6 +176,7 @@ Template.DonationForm.events({
                 "amount": parseInt(($('#amount').val().replace(/[^\d\.\-\ ]/g, ''))* 100),
                 "total_amount": parseInt($('#total_amount').val() * 100),
                 "donateTo": $("#donateTo").val(),
+                "writeIn": $("#enteredWriteInValue").val(),
                 "donateWith": $("#donateWith").val(),
                 "is_recurring": $('#is_recurring').val(),
                 "coverTheFees": $('#coverTheFees').is(":checked"),
@@ -189,6 +204,18 @@ Template.DonationForm.events({
             form.paymentInformation.fees = (form.paymentInformation.total_amount - form.paymentInformation.amount);
         }
         if (form.paymentInformation.donateWith === "Card") {
+            var payload = {
+            name: $('#fname').val() + ' ' + $('lname').val(),
+            number: $('[name=card_number]').val(),
+            expiration_month: $('[name=expiry_month]').val(),
+            expiration_year: $('[name=expiry_year]').val(),
+            cvv: $('[name=cvv]').val(),
+            address: {
+                postal_code: $('#postal_code').val()
+                }
+            };
+            balanced.card.create(payload, )
+
             form.paymentInformation.card_number = $('[name=card_number]').val();
             form.paymentInformation.expiry_month = $('[name=expiry_month]').val();
             form.paymentInformation.expiry_year = $('[name=expiry_year]').val();
@@ -196,6 +223,9 @@ Template.DonationForm.events({
             //set the form type so the server side method knows what to do with the data.
             form.paymentInformation.type = "Card";
         } else {
+
+
+
             form.paymentInformation.account_number = $('[name=account_number]').val();
             form.paymentInformation.routing_number = $('[name=routing_number]').val();
             form.paymentInformation.account_type = $('[name=account_type]').val();

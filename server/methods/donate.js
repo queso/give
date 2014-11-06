@@ -12,6 +12,9 @@ Meteor.methods({
 
             //Convert donation to more readable format
             var donateTo = Utils.getDonateTo(data.paymentInformation.donateTo);
+            if(donateTo === 'Write In') {
+                donateTo = data.paymentInformation.writeIn;
+            }
 
             //Check the form to make sure nothing malicious is being submitted to the server
             Utils.checkFormFields(data);
@@ -50,6 +53,8 @@ Meteor.methods({
             // side function
             if (paymentInfo.type === "Card") {
                 //Tokenize card
+                
+                //Replace this with a function that just records the tokenized info passed from the client side
                 var card = Utils.card_create(data);
 
                 //Order function
@@ -66,7 +71,9 @@ Meteor.methods({
             else {
 
                 //Create bank account
+                //Replace this with a function that just records the tokenized info passed from the client side
                 var check = Utils.check_create(data);
+
                 //Order function
                 var orders = Utils.create_order(data._id, customerData.href);
 

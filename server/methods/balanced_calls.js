@@ -119,6 +119,8 @@ _.extend(Utils,{
     getDonateTo: function(donateTo) {
         var returnToCalled;
         switch(donateTo) {
+            case 'WriteIn':
+                return 'Write In';
             case 'JoshuaBechard':
                 returnToCalled = 'Joshua Bechard';
                 return returnToCalled;
