@@ -348,6 +348,7 @@ Template.DonationForm.events({
         Session.set('showWriteIn', 'no');
         var goHere = goHere + '&enteredWriteInValue=' + $('#writeIn').val();
         Router.go(goHere);
+        $('#giftDesignationText').show();
     }
 });
 Template.DonationForm.helpers({
