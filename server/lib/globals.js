@@ -23,24 +23,12 @@ Utils = {
             IDs.id = Donate.findOne({'subscriptions.guid': IDs.subscription_guid})._id;
             logger.info("Got the _id: " + IDs.id);
 
-            //update the collection with this invoice
-            /*Donate.update({_id: IDs.id}, {
-              $push: {
-                'invoices': invoice.data
-              }
-            });*/
             return IDs;
         }else if (Donate.findOne({'recurring.subscriptions.guid': IDs.subscription_guid})){
             logger.warn("Need to remove this from recurring since that is no longer used.");
             IDs.id = Donate.findOne({'recurring.subscriptions.guid': IDs.subscription_guid})._id;
             logger.info("Got the _id: " + IDs.id);
 
-            //update the collection with this invoice
-            /*Donate.update({_id: IDs.id}, {
-              $push: {
-                'recurring.invoices': invoice.data
-              }
-            });*/
             return IDs;
         }
         else{

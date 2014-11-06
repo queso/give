@@ -41,7 +41,7 @@ _.extend(Utils,{
 	        "message": {
 	        	"to": [
 	        	    {
-	                "email": "large_gift@trashmountain.com",
+	                "email": "large_gift@trashmountain.com"
 	            	}
 			    ],
 	          	"merge_vars": [
@@ -62,7 +62,7 @@ _.extend(Utils,{
 						"content": the_info.mongo_doc.debit.donateWith
 						}, {
 						"name": "TotalGiftAmount",
-						"content": the_info.mongo_doc.debit.total_amount / 100
+						"content": (the_info.mongo_doc.debit.total_amount / 100).toFixed(2)
 						}, {
 						"name": "FULLNAME",
 						"content": fullName
@@ -151,13 +151,13 @@ _.extend(Utils,{
 	                "content": debit.donateWith
 	              }, {
 	                "name": "GiftAmount",
-	                "content": debit.amount / 100
+	                "content": (debit.amount / 100).toFixed(2)
 	              }, {
 	                "name": "GiftAmountFees",
-	                "content": fees / 100
+	                "content": (fees / 100).toFixed(2)
 	              }, {
 	                "name": "TotalGiftAmount",
-	                "content": debit.total_amount / 100
+	                "content": (debit.total_amount / 100).toFixed(2)
 	              }, {
 	                "name": "FailureReason",
 	                "content": error.failure_reason
@@ -268,13 +268,13 @@ _.extend(Utils,{
 	                "content": debit.donateWith
 	              }, {
 	                "name": "GiftAmount",
-	                "content": debit.amount / 100
+	                "content": (debit.amount / 100).toFixed(2)
 	              }, {
 	                "name": "GiftAmountFees",
-	                "content": fees / 100
+	                "content": (fees / 100).toFixed(2)
 	              }, {
 	                "name": "TotalGiftAmount",
-	                "content": debit.total_amount / 100
+	                "content": (debit.total_amount / 100).toFixed(2)
 	              }, {
 	                "name": "FailureReason",
 	                "content": error.failure_reason
@@ -400,13 +400,13 @@ _.extend(Utils,{
 	                "content": debit.donateWith
 	              }, {
 	                "name": "GiftAmount",
-	                "content": debit.amount /100
+	                "content": (debit.amount /100).toFixed(2)
 	              }, {
 	                "name": "GiftAmountFees",
-	                "content": fees / 100
+	                "content": (fees / 100).toFixed(2)
 	              }, {
 	                "name": "TotalGiftAmount",
-	                "content": debit.total_amount / 100
+	                "content": (debit.total_amount / 100).toFixed(2)
 	              }, {
 	                "name": "FailureReason",
 	                "content": error.failure_reason

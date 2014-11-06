@@ -3,21 +3,6 @@ _.extend(Utils,{
         console.log("Inside card create.");
         var card;
         card = Utils.extractFromPromise(balanced.get(cardHref));
-        
-
-        //Need to move this to the client side
-        /*if (card.cvv_result === 'No Match'){
-            console.log("No match in CVV area of card_create. ID: " + data._id);
-                var failThis = Donate.update(data._id, {
-                    $set: {
-                        'failed.category_code': 'CVV_No_Match',
-                        'failed.in': 'card_create',
-                        'debit.status': 'failed',
-                        'debit.submitted': false
-                    }
-                });
-            throw new Meteor.Error('CVV', 'CVV', 'Your CVV code does not match your card number. Please check the code and try again.');
-        }*/
 
         //add card create response from Balanced to the database
         var cardResponse = Donate.update(id, {

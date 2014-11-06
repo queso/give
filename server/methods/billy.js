@@ -26,7 +26,7 @@ function logIt() {
 }
 
 function createPaymentMethod(data) {
-	/*try {*/
+	try {
 		logIt();
 
 		logger.info("Setup variables for data from form inputs inside the billy createPaymentMethod method.");
@@ -60,7 +60,7 @@ function createPaymentMethod(data) {
             associate = Utils.create_association(data, check.href, processor_uri);
 
         }
-    /*}catch (e) {
+    }catch (e) {
         if(e.category_code) {
             logger.error("Category_code area: e.details " + e.details);
             throw new Meteor.Error(500, e.category_code, e.description);
@@ -69,7 +69,7 @@ function createPaymentMethod(data) {
             throw new Meteor.Error(500, e.reason, e.details);
         }
 		//throwTheError(e);
-	}*/
+	}
 }
 
 function createBillyCustomer(customerID) {
@@ -178,7 +178,7 @@ function getTransaction(invoiceID) {
 
 Meteor.methods({
     recurringDonation: function(data) {
-		logger.info("Started billy method calls.")
+		logger.info("Started billy method calls.");
 		logIt();
 		try {
 

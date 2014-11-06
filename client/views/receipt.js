@@ -89,7 +89,7 @@ Template.Receipt.helpers({
    },
    amount: function () {
           if(this.debit.amount){
-          return (this.debit.amount / 100);   
+          return (this.debit.amount / 100).toFixed(2);
           }else {
             return '';   
           }
@@ -97,7 +97,7 @@ Template.Receipt.helpers({
    },
    total_amount: function () {
       if(this.debit.total_amount){
-        return (this.debit.total_amount / 100);   
+        return (this.debit.total_amount / 100).toFixed(2);
       }else {
        return '';   
       }
@@ -108,12 +108,12 @@ Template.Receipt.helpers({
             <tr>\
                 <th>Covered fees:</th>\
                 <td></td>\
-                <td>$' + (this.debit.fees / 100) + '</td>\
+                <td>$' + (this.debit.fees / 100).toFixed(2) + '</td>\
             </tr>\
             <tr>\
                 <th>Total:</th>\
                 <td></td>\
-                <td>$' + (this.debit.total_amount / 100)+ '</td>\
+                <td>$' + (this.debit.total_amount / 100).toFixed(2) + '</td>\
             </tr>';
         } else {
         return "";
