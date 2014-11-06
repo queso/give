@@ -31,7 +31,7 @@ Meteor.methods({
                     'debit.donateWith': data.paymentInformation.donateWith,
                     'debit.email_sent.initial_sent': false,
                     'debit.email_sent.succeeded_sent': false,
-                    'debit.type': data.paymentInformation.type,
+                    'debit.type': data.paymentInformation.donateWith,
                     'debit.total_amount': data.paymentInformation.total_amount,
                     'debit.amount': data.paymentInformation.amount,
                     'debit.fees': data.paymentInformation.fees,
@@ -51,11 +51,11 @@ Meteor.methods({
 
             //Runs if the form used was the credit card form, which sets type as part of the array which is passed to this server
             // side function
-            if (paymentInfo.type === "Card") {
-                //Tokenize card
+
+            if (paymentInfo.donateWith === "Card") {
                 
-                //Replace this with a function that just records the tokenized info passed from the client side
-                var card = Utils.card_create(data);
+                //Get the card data from balanced and store it
+                var card = Utils.get_card(data._id, paymentInfo.href);
 
                 //Order function
                 var orders = Utils.create_order(data._id, customerData.href);
@@ -64,15 +64,14 @@ Meteor.methods({
                 var associate = Utils.create_association(data, card.href, customerData.href);
 
                 //Debit the order
-                var debitOrder = Utils.debit_order(data, orders.href, card);
+                var debitOrder = Utils.debit_order(data, orders.href, card.href);
 
             }
             //for running ACH
             else {
-
-                //Create bank account
-                //Replace this with a function that just records the tokenized info passed from the client side
-                var check = Utils.check_create(data);
+                console.log(paymentInfo.href);
+                //Get the bank account data from balanced and store it
+                var check = Utils.get_check(data._id, paymentInfo.href);
 
                 //Order function
                 var orders = Utils.create_order(data._id, customerData.href);
@@ -81,7 +80,7 @@ Meteor.methods({
                 var associate = Utils.create_association(data, check.href, customerData.href);
 
                 //Debit the order
-                var debitOrder = Utils.debit_order(data, orders.href, check);
+                var debitOrder = Utils.debit_order(data, orders.href, check.href);
 
             }
             return data._id;

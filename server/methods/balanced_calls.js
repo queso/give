@@ -1,16 +1,12 @@
 _.extend(Utils,{
-    card_create: function (data) {
+    get_card: function (id, cardHref) {
         console.log("Inside card create.");
         var card;
-        card = Utils.extractFromPromise(balanced.card.create({
-            "name": data.customer.fname + " " + data.customer.lname,
-            'number': data.paymentInformation.card_number,
-            'expiration_year': data.paymentInformation.expiry_year,
-            'expiration_month': data.paymentInformation.expiry_month,
-            'cvv': data.paymentInformation.cvv,
-            "appears_on_statement_as": "Trash Mountain"
-        }));
-        if (card.cvv_result === 'No Match'){
+        card = Utils.extractFromPromise(balanced.get(cardHref));
+        
+
+        //Need to move this to the client side
+        /*if (card.cvv_result === 'No Match'){
             console.log("No match in CVV area of card_create. ID: " + data._id);
                 var failThis = Donate.update(data._id, {
                     $set: {
@@ -21,51 +17,60 @@ _.extend(Utils,{
                     }
                 });
             throw new Meteor.Error('CVV', 'CVV', 'Your CVV code does not match your card number. Please check the code and try again.');
-        }
+        }*/
 
         //add card create response from Balanced to the database
-        var cardResponse = Donate.update(data._id, {$push: {
-            'card': {
-                'fingerprint': card.fingerprint,
-                'id': card.id,
-                'type': card.type,
-                'cvv_result': card.cvv_result,
-                'number': card.number,
-                'expiration_month': card.expiration_month,
-                'expiration_year': card.expiration_year,
-                'href': card.href,
-                'bank_name': card.bank_name,
-                'created_at': card.created_at,
-                'can_debit': card.can_debit
+        var cardResponse = Donate.update(id, {
+            $push: {
+                'card': {
+                    'fingerprint': card.fingerprint,
+                    'id':               card.id,
+                    'type':             card.type,
+                    'href':             card.href,
+                    'cvv_result':       card.cvv_result,
+                    'number':           card.number,
+                    'expiration_month': card.expiration_month,
+                    'expiration_year':  card.expiration_year,
+                    'bank_name':        card.bank_name,
+                    'brand':            card.brand,
+                    'created_at':       card.created_at,
+                    'can_debit':        card.can_debit
+                }
             }
-        }});
-        var cardMiscSet = Donate.update(data._id, {$set: {
+        });
+
+        //TODO: need to refactor this once we are taking multiple cards
+        var cardMiscSet = Donate.update(id, {$set: {
             'debit.customer': card.links.customer
         }});
         return card;
     },
-    check_create: function (data) {
+    get_check: function (id, checkHref) {
         var check;
-        check = Utils.extractFromPromise(balanced.bank_account.create({
-            "name": data.customer.fname + " " + data.customer.lname,
-            "routing_number": data.paymentInformation.routing_number,
-            "account_type": data.paymentInformation.account_type,
-            "account_number": data.paymentInformation.account_number,
-            "appears_on_statement_as": "Trash Mountain"
-        }));
-        Donate.update(data._id, {
+        check = Utils.extractFromPromise(balanced.get(checkHref));
+        Donate.update(id, {
             $push: {
-                'bank_account': {                
-                    'id': check.id,
-                    'type': check.account_type,
-                    'href': check.href,
-                    'account_number': check.account_number,
-                    'bank_name': check.bank_name,
-                    'fingerprint': check.fingerprint,
-                    'routing_number': check.routing_number
+                'bank_account': { 
+                    'fingerprint':      check.fingerprint,               
+                    'id':               check.id,
+                    'type':             check.account_type,
+                    'href':             check.href,
+                    'account_number':   check.account_number,
+                    'routing_number':   check.routing_number,
+                    'bank_name':        check.bank_name,
+                    'account_type':     check.account_type,
+                    'name':             check.name,
+                    'created_at':       check.created_at,
+                    'can_debit':        check.can_debit,
+                    'can_credit':       check.can_credit
                 }
             }
         });
+
+        //TODO: need to refactor this once we are taking multiple bank_accounts
+        var cardMiscSet = Donate.update(id, {$set: {
+            'debit.customer': check.links.customer
+        }});
         return check;
     },
     create_association: function (data, paymentHref, otherHref) {

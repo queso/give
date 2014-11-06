@@ -9,8 +9,8 @@ Template.Transaction.helpers({
 	amount: function () {
 		if(this.isRecurring && this.subscriptions){
 			return this.subscriptions[0].amount / 100;
-		}else if (!this.isRecurring && this.debit && this.debit.amount){
-			return this.debit.amount / 100;	
+		}else if (!this.isRecurring && this.debit && this.debit.total_amount){
+			return this.debit.total_amount / 100;
 		}
 	},
 	gift_date: function () {

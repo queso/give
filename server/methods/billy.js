@@ -31,32 +31,32 @@ function createPaymentMethod(data) {
 
 		logger.info("Setup variables for data from form inputs inside the billy createPaymentMethod method.");
 		var customerInfo = data.customer;
-		var debitType = data.paymentInformation.type;
+		var debitType = data.paymentInformation.donateWith;
 		logger.info("ID: " + data._id);
 		logger.info("In create Payment Method before if: " + debitType);
 
-    var processor_uri = Donate.findOne(data._id).billy_customer.processor_uri;
-    if (debitType === "Card") {
-        logger.info("Stepped into createPaymentMethod card if statement");
+	var processor_uri = Donate.findOne(data._id).billy_customer.processor_uri;
+	if (debitType === "Card") {
+		logger.info("Stepped into createPaymentMethod card if statement");
 
-        //Tokenize card
-        var card = Utils.card_create(data);
+		//Get card URL
+		var card = Utils.get_card(data._id, data.paymentInformation.href);
 
+		logger.info("Finished adding card into the collection.");
+		logger.info("Started Associate Function.");
 
-        logger.info("Finished adding card into the collection.");
-        logger.info("Started Associate Function.");
+		var associate = Utils.create_association(data, card.href, processor_uri);
 
-        var associate = Utils.create_association(data, card.href, processor_uri);
-
-    }
+	}
         //for running ACH
     else
         {
             logger.info("In check portion of create payment Method");
             //Create bank account
-            var check = Utils.check_create(data);
+            var check = Utils.get_check(data._id, data.paymentInformation.href);
 
-
+			logger.info("Finished adding bank_account into the collection.");
+			logger.info("Started Associate Function.");
             associate = Utils.create_association(data, check.href, processor_uri);
 
         }

@@ -50,5 +50,3 @@ Template.Transactions.events({
 	    }
 	}
 });
-
-Template
