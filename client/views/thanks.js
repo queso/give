@@ -38,7 +38,6 @@ Template.Gift.helpers({
     var transaction_guid = Session.get('transaction_guid');
     var transactions = this.transactions;
     var transaction = _.findWhere(transactions, { guid: transaction_guid });
-    console.log(transaction);
     var transaction_status = transaction.status;
     return (transaction_status === 'succeeded');
   },
@@ -46,7 +45,6 @@ Template.Gift.helpers({
     var transaction_guid = Session.get('transaction_guid');
     var transactions = this.transactions;
     var transaction = _.findWhere(transactions, { guid: transaction_guid });
-    console.log(transaction);
     var transaction_status = transaction.status;
     return (transaction_status === 'succeeded' || transaction_status === 'pending');
   },

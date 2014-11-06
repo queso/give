@@ -69,7 +69,8 @@ Utils = {
           type: Match.OneOf("Card", "Check"),
           href: Match.Optional(String),
           id: Match.Optional(String),
-          fees: Match.Optional(Number)
+          fees: Match.Optional(Number),
+          writeIn: Match.Optional(String)
         },
         customer: {
           fname: String, 
