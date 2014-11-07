@@ -6,7 +6,6 @@
 // amount that is shown to the user and passed as total_amount through the form
 //display error modal if there is an error while initially submitting data from the form.
 function handleErrors(error) {
-    //console.log(error.errors);
     if(error.reason === "Match failed"){
         var gatherInfo = {};
         gatherInfo.browser = navigator.userAgent
@@ -34,12 +33,12 @@ Location HREF: " + location.href + "'><button type='button' class='btn btn-dange
                     </tr>\
                 </tr>";
 
-        $('#modal_for_initial_donation_error').modal('show');
+        $('#modal_for_initial_donation_error').modal({show: true});
         $('#errorCategory').html(error.reason);
         $('#errorDescription').html(error.details);  
     } else{
         //$('#modal_for_initial_donation_error').modal('show');
-        $('#error-alert').show();
+        $('#modal_for_initial_donation_error').modal({show: true});
         $('#errorCategory').html(error.reason);
         $('#errorDescription').html(error.details);
     }
@@ -244,7 +243,9 @@ Template.DonationForm.events({
                     handleCalls(fundingInstrument, form);
                 } else {
                     //error logic here
-                    console.log("Error");
+                    var sendError = {reason: response.errors[0].category_code, details: response.errors[0].description};
+                    $('#loading1').modal('hide');
+                    handleErrors(sendError);
                 }
             });
         } else {
