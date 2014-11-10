@@ -14,7 +14,3 @@ Meteor.publish('donate_list', function () {
 	 	return '';
 	 }
 });
-
-Meteor.publish('transaction', function (input) {
-	 return Donate.find({_id: input});
-});

@@ -110,7 +110,7 @@ Template.TransactionDetail.helpers({
         }
     },
     paymentLink: function() {
-      var number = this.card ? this.card[0].number : this.bank_account[0].number;
+      var number = this.card ? this.card[0].number : this.bank_account[0].account_number;
       var href = this.card ? this.card[0].href : this.bank_account[0].href;
       return '<strong>Payed with: </strong> <a href="https://dashboard.balancedpayments.com/' + Meteor.settings.public.balanced_payments_uri + href + '" target="_blank">' + number + '</a>';
     }

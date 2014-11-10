@@ -54,7 +54,11 @@ Template.Transaction.helpers({
 		}
 	},
 	detail_record: function () {
-		return this._id;		
+		if (this.transactions) {
+			return 'subscription/' + this._id;
+		} else {
+			return 'order/' + this._id;
+		}
 	},
 	stop_recurring: function(e, tmpl) {
 		if(this.isRecurring &&  this.subscriptions && !(this.subscriptions.canceled === true)){
@@ -87,9 +91,9 @@ Template.Transaction.events({
 		console.log("Started delete process");
 		console.log(this._id);
 
-		if(this.isRecurring && this.subscriptions && this.subscriptions.canceled === false ){
+		if(this.isRecurring && this.subscriptions && this.subscriptions[0].canceled === false ){
 			$('#'+stop_id_is).html('<a id="' + stop_id_is + '" class="fa fa-spinner fa-spin" href="">');
-			Meteor.call('cancel_recurring', this._id, this.subscriptions.guid, function (error, result) {
+			Meteor.call('cancel_recurring', this._id, this.subscriptions[0].guid, function (error, result) {
 				if(result){
 					Donate.update({_id: this._id}, {$set:{'subscriptions.canceled': true, viewable: false}});
 		            console.warn("Cancelled the subscription and removed this record from view: " + result);

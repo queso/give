@@ -10,14 +10,14 @@
             <span class="icon-bar"></span>
           </button>
           <span class="navbar-brand">
-            AccountsTemplates
+            Give Dashboard
           </span>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-8">
           <ul class="nav navbar-nav">
-            <li class="{{isActiveRoute regex='admin.dashboard'}}">{{#linkTo route="admin.dashboard"}}Dashboard{{/linkTo}}</li>
-            <li class="{{isActiveRoute regex='donation.form'}}">{{#linkTo route='donation.form'}}Give{{/linkTo}}</li>
+            <li class="{{isActiveRoute regex='admin.dashboard'}}"><a href="dashboard">Dashboard</a></li>
+            <li class="{{isActiveRoute regex='donation.form'}}"><a href="/give" >Give</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             {{#if isNotActiveRoute regex='signIn'}}

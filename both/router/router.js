@@ -7,9 +7,7 @@ Router.configure({
 });
 
 Router.onBeforeAction(function () {
-    if (Meteor.loggingIn()){
-        return;
-    }else if(!Meteor.user()) {
+    if(!Meteor.user()) {
         // if the user is not logged in, render the Login template
         this.render('Login');
     } else {
@@ -112,10 +110,29 @@ Router.route(':root/subscription/:_id', function () {
     this.layout('AdminLayout');
     var root = Meteor.settings.public.root;
 
-    this.subscribe('transaction', this.params._id).wait();
+    this.subscribe('donate', this.params._id).wait();
 
     if (this.ready()) {
         this.render('Subscription', {
+            data: function () {
+                return Donate.findOne(this.params._id);
+            }
+        });
+        this.next();
+    }else {
+        this.render('Loading');
+        this.next();
+    }
+});
+
+Router.route(':root/order/:_id', function () {
+    this.layout('AdminLayout');
+    var root = Meteor.settings.public.root;
+
+    this.subscribe('donate', this.params._id).wait();
+
+    if (this.ready()) {
+        this.render('Order', {
             data: function () {
                 return Donate.findOne(this.params._id);
             }
