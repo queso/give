@@ -36,9 +36,9 @@ Template.Transaction.helpers({
 	status: function () {
 		if(this.isRecurring) {
 			if(this.subscriptions){
-				if(this.subscriptions.canceled){
+				if(this.subscriptions[0].canceled){
 					return "<span id='status' class='label label-default'>Canceled</span>";	
-				}else if(!this.subscriptions.canceled){
+				}else if(!this.subscriptions[0].canceled){
 					return "<span id='status' class='label label-success'>Active</span>";	
 				}
 			}
@@ -61,7 +61,7 @@ Template.Transaction.helpers({
 		}
 	},
 	stop_recurring: function(e, tmpl) {
-		if(this.isRecurring &&  this.subscriptions && !(this.subscriptions.canceled === true)){
+		if(this.isRecurring &&  this.subscriptions && !(this.subscriptions[0].canceled)){
 			return '<a id="stop' + this._id + '" class="stop_recurring btn btn-warning" href="" title="Stop this recurring donation"><i class="fa fa-stop"></i></a>';
 		}
 	},
@@ -95,8 +95,11 @@ Template.Transaction.events({
 			$('#'+stop_id_is).html('<a id="' + stop_id_is + '" class="fa fa-spinner fa-spin" href="">');
 			Meteor.call('cancel_recurring', this._id, this.subscriptions[0].guid, function (error, result) {
 				if(result){
-					Donate.update({_id: this._id}, {$set:{'subscriptions.canceled': true, viewable: false}});
-		            console.warn("Cancelled the subscription and removed this record from view: " + result);
+					Donate.update({_id: this._id}, {$set:
+						{'subscriptions[0].canceled': true, 'subscriptions[0].canceled_at': result.data.canceled_at}
+					});
+		            console.warn("Cancelled the subscription and removed this record from view: ");
+					console.dir(result);
 					$('#'+stop_id_is).remove();
 					//$('#'+delete_id_is).html('<a id="{{delete_id}}" class="delete btn btn-danger" href="" title="Stop showing this contribution in our system"><i class="fa fa-trash-o"></i>'); 
 				} else{

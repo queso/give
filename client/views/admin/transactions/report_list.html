@@ -1,0 +1,21 @@
+<template name="Report_list">
+    {{#each transactions}}
+      <tr id="table_row">
+          <td>{{name ..}}</td>
+          <td>{{amount}}</td>
+          <td>{{gift_date}}</td>
+          <td>{{isReucrring ..}}</td>
+          <td>{{{status}}}</td>
+          <td>{{subscription_guid}}</td>
+          <td>{{transaction_guid}}</td>
+          <td>{{id ..}}</td>
+          <td>
+              <a id="view" class="btn btn-success" href="{{root_url}}/{{detail_record}}"  title="View details">
+                  <i class="fa fa-search-plus"></i>
+              </a>
+            {{{delete_record}}}
+            {{{stop_recurring}}}
+          </td>
+      </tr>
+    {{/each}}
+</template>
