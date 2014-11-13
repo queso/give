@@ -11,9 +11,13 @@ Template.TransactionDetail.helpers({
    receiptNumber: function () {
    		return this._id;
    },
+    transaction_id: function () {
+      var transaction_guid = Session.get('transaction_guid');
+      return transaction_guid;
+    },
    transaction_guid: function () {
     var transaction_guid = Session.get('transaction_guid');
-    return transaction_guid;
+    return '<a href="https://trashmountain.com/give/gift/' + this._id + '/?transaction_guid=' + transaction_guid + '&print=yes">' + transaction_guid + '</a>';
    },
    date: function () {
    		return moment(this.debit.created_at).format('MM/DD/YYYY');

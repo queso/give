@@ -2,7 +2,7 @@
 	<div class="panel panel-default panel-top-margin">
 		<div class="panel-heading">
 			<h2><i class="fa fa-list"></i><strong>{{#if billy}}
-			                        {{transaction_guid}}
+			                        {{transaction_id}}
 			                    {{else}}
 			                        {{receiptNumber}}
 			                    {{/if}}</strong></h2>
@@ -38,7 +38,7 @@
 							<div class="panel-body padding-horizontal">
 								<h2>Details</h2>
 								<span><strong>{{#if billy}}
-			                        {{transaction_guid}}
+									{{{transaction_guid}}}
 			                    {{else}}
 			                        {{receiptNumber}}
 			                    {{/if}}</strong></span><br>
