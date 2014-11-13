@@ -22,6 +22,8 @@ Template.Report_list.helpers({
     },
     gift_date: function () {
         return moment(this.created_at).format('MM/DD/YYYY');
+    },
+    root_url: function () {
+        return Meteor.settings.public.root + '/subscription';
     }
-
 });

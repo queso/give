@@ -215,6 +215,7 @@ _.extend(Utils,{
 	      logger.info("Started send_one_time_email with ID: " + id + " --------------------------");
 	      var error = {};
 	      var lookup_record = Donate.findOne({_id: id});
+			var payment_type = lookup_record.card ? lookup_record.card[0] : lookup_record.bank_account[0];
 	      var created_at = moment(lookup_record.debit.created_at).format('MM/DD/YYYY');
 	      var debit = lookup_record.debit;
 	      var customer = lookup_record.customer;
@@ -264,9 +265,9 @@ _.extend(Utils,{
 	                "name": "DonatedTo",
 	                "content": debit.donateTo
 	              }, {
-	                "name": "DonateWith", //eventually send the card brand and the last four instead of just this
-	                "content": debit.donateWith
-	              }, {
+	                "name": "DonateWith",
+	                "content": debit.donateWith === 'Card' ? payment_type.brand + ', ending in ' + payment_type.number.slice(-4) : payment_type.bank_name + ', ending in ' + payment_type.account_number.slice(-4)
+					}, {
 	                "name": "GiftAmount",
 	                "content": (debit.amount / 100).toFixed(2)
 	              }, {
@@ -338,6 +339,7 @@ _.extend(Utils,{
 	      var error = {};
 	      
 	      var lookup_record = Donate.findOne({'transactions.guid': transaction_guid}, {'transactions.$': 1});
+			var payment_type = lookup_record.card ? lookup_record.card[0] : lookup_record.bank_account[0];
           var transaction = _.findWhere(lookup_record.transactions, { guid: transaction_guid });
 	      var created_at = moment(transaction.created_at).format('MM/DD/YYYY');
 
@@ -396,8 +398,8 @@ _.extend(Utils,{
 	                "name": "DonatedTo",
 	                "content": debit.donateTo
 	              }, {
-	                "name": "DonateWith", //eventually send the card brand and the last four instead of just this
-	                "content": debit.donateWith
+	                "name": "DonateWith",
+	                "content": debit.donateWith === 'Card' ? payment_type.brand + ', ending in ' + payment_type.number.slice(-4) : payment_type.bank_name + ', ending in ' + payment_type.account_number.slice(-4)  //debit.donateWith
 	              }, {
 	                "name": "GiftAmount",
 	                "content": (debit.amount /100).toFixed(2)

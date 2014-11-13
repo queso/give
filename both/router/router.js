@@ -43,6 +43,7 @@ Router.route(':root/thanks/:_id', function () {
     if (this.ready()) {
         this.render('Thanks', {
             data: function () {
+                Session.set('print', params.query.print);
                 return Donate.findOne(params._id);
             }
         });

@@ -50,5 +50,8 @@ Template.Transactions.events({
 			row.child( format(row.data()) ).show();
 			tr.addClass('shown');
 		}
+	},
+	'click #exportButton': function () {
+		$('#mainTable').tableExport({type:'excel',escape:'false', tableName: 'transactions'});
 	}
 });
