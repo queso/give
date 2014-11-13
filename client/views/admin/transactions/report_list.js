@@ -1,6 +1,9 @@
 Template.Report_list.helpers({
+    transactions: function () {
+        return this.transactions;
+    },
     transaction_guid: function () {
-        return this.guid;
+        return '<td>' + this.guid + '</td>';
     },
     id: function (parent) {
         return parent._id;

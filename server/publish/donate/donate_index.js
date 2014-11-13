@@ -14,3 +14,13 @@ Meteor.publish('donate_list', function () {
 	 	return '';
 	 }
 });
+
+//Still searching for the appropriate to return the embedded dates in a range
+/*
+Meteor.publish('filter_date', function (date) {
+	if(this.userId === Meteor.settings.admin_user) {
+		return Donate.find({created_at: date});
+	} else {
+		return '';
+	}
+});*/
