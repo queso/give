@@ -20,7 +20,8 @@ Template.Thanks.helpers({
   },
   failedTrans: function () {
     var referrer = this.URL;
-    var errorMessage = this.failed.failure_reason + " " + this.failed.failure_reason_code;
+    var errorMessage = this.failed.failure_reason ? this.failed.failure_reason + " " + this.failed.failure_reason_code : 'The error we got from the card \
+    processor was not very helpful so instead of displaying their cryptic error message you got this message, sorry we could not be more helpful.';
     if(!referrer || !errorMessage) {
       return;
     }
