@@ -216,7 +216,7 @@ _.extend(Utils,{
 	      var error = {};
 	      var lookup_record = Donate.findOne({_id: id});
 			var payment_type = lookup_record.card ? lookup_record.card[0] : lookup_record.bank_account[0];
-	      var created_at = moment(lookup_record.debit.created_at).format('MM/DD/YYYY');
+	      var created_at = moment(Date.parse(lookup_record.created_at)).format('MM/DD/YYYY');
 	      var debit = lookup_record.debit;
 	      var customer = lookup_record.customer;
 	      var fees = debit.fees;
@@ -341,7 +341,7 @@ _.extend(Utils,{
 	      var lookup_record = Donate.findOne({'transactions.guid': transaction_guid}, {'transactions.$': 1});
 			var payment_type = lookup_record.card ? lookup_record.card[0] : lookup_record.bank_account[0];
           var transaction = _.findWhere(lookup_record.transactions, { guid: transaction_guid });
-	      var created_at = moment(transaction.created_at).format('MM/DD/YYYY');
+	      var created_at = moment(Date.parse(transaction.created_at)).format('MM/DD/YYYY');
 
 	      var lookup_trans = get_billy_info(transaction_guid);
 	      var debit = lookup_record.debit;
