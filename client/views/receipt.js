@@ -2,7 +2,7 @@
 /* Receipt: Event Handlers and Helpers */
 /*****************************************************************************/
 Template.Receipt.events({
-  'click #matchLink': function (){
+  'click #matchLink': function (e){
     e.preventDefault();
     window.location.href = "https://trashmountain.com/match";
   }
