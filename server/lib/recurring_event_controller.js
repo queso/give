@@ -21,7 +21,6 @@ Evts = {
                 } else{
                     logger.error("The amount from the received event and the amount of the subscription do not match!");
                 }
-                
      		}
      		if(select_type === "debit_failed"){
      			var failed_update = Evts.failed_collection_update(true, 'debits', body.events[0].entity.debits[0].id, invoice_guid, body);
@@ -51,7 +50,7 @@ Evts = {
                 var transaction = HTTP.get("https://billy.balancedpayments.com/v1/transactions/" + transaction_guid, {
                     auth: Meteor.settings.billy_key + ':'
                 });
-                console.log(transaction);
+                logger.info(transaction);
              
                 var invoice = HTTP.get("https://billy.balancedpayments.com/v1/invoices/" + transaction.data.invoice_guid, {
                     auth: Meteor.settings.billy_key + ':'
@@ -71,9 +70,6 @@ Evts = {
                 var lookup_this = {};
                 lookup_this[lookup + '.id'] = id;
                 return Donate.update(lookup_this, {$set: {'[lookup].status': status}});
-            /*} else {
-                return Donate.update({_id: id}, {$set: {'[lookup].status': status}});
-            }*/
 
         } catch (e) {
 	        logger.error(e);
@@ -83,7 +79,7 @@ Evts = {
 		var transaction = HTTP.get("https://billy.balancedpayments.com/v1/transactions/" + transaction_guid, {
                 auth: Meteor.settings.billy_key + ':'
         });
-        console.log(transaction);
+        logger.info(transaction);
      
         var invoice = HTTP.get("https://billy.balancedpayments.com/v1/invoices/" + transaction.data.invoice_guid, {
                 auth: Meteor.settings.billy_key + ':'
@@ -93,7 +89,7 @@ Evts = {
         lookup_transaction_guid['transactions.guid'] = transaction_guid;
      
         if(Donate.findOne(lookup_transaction_guid)){
-            console.log(transaction_guid);
+            logger.info(transaction_guid);
             var status_update = Evts.update_status(type, id, transaction.data.status, body, transaction_guid, transaction.data.invoice_guid);
             return status_update;
         }else{
@@ -159,7 +155,7 @@ Evts = {
         }
 	},
 	send_email: function (billy, mixedID, transaction_guid, subscription_guid, email_type, status, body_amount) {
-		/*try{*/
+		try{
             logger.info("Got to send_email function.");
             if (billy) {
                 logger.info("Inside send_email Billy section.");
@@ -171,10 +167,10 @@ Evts = {
                     logger.error("The amount in the event and the amount in the lookup record do not match");
                     return "Amounts do not match, exiting";
                 }
-                console.log("transaction_guid: " + transaction_guid);
+                logger.info("transaction_guid: " + transaction_guid);
                 var checkThis = Donate.findOne({'transactions.guid': transaction_guid}, {'transactions.$': 1});
                 var transaction = _.findWhere(checkThis.transactions, { guid: transaction_guid });
-                console.log("transaction : " + transaction);
+                logger.info("transaction : " + transaction);
 
                 var paymentType = subscription.debitInformation.donateWith;
 
@@ -218,10 +214,10 @@ Evts = {
                 }else{
                     logger.error("Inside events.js -> send_email -- Given that eventID I can't find the document in mongo. This might be because the user was stopped on the initial page before the debit was entered.");
                 }
-            /*}
+            }
         catch(e){
             logger.error(e);
-        }*/
+        }
 	},
 	failed_collection_update: function (billy, type, event_debit_id, invoice_guid, body){
 		if(billy){
