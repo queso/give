@@ -167,6 +167,7 @@ Router.route(':root/report', {
         var root = Meteor.settings.public.root;
     },
     waitOn: function () {
-        return Meteor.subscribe('donate_list');
+        var query = this.params.query;
+        return Meteor.subscribe('give_report', query.startDate, query.endDate);
     }
 });
