@@ -12,10 +12,10 @@ Template.Report.helpers({
 		return returnThisValue;
 	},
 	start_date: function () {
-		return moment(Session.get('endDate')).format('MMM D, YYYY');
+		return moment(Session.get('startDate')).format('MMM D, YYYY');
 	},
 	end_date: function () {
-		return moment(Session.get('startDate')).format('MMM D, YYYY');
+		return moment(Session.get('endDate')).format('MMM D, YYYY');
 	}
 });
 
@@ -36,8 +36,8 @@ Template.Report.rendered = function () {
 				'This Month': [moment().startOf('month'), moment().endOf('month')],
 				'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
 			},
-			startDate: moment().subtract('days', 29),
-			endDate: moment()
+			startDate: moment(Session.get('startDate')).format('MM/DD/YYYY'),
+			endDate: moment(Session.get('endDate')).format('MM/DD/YYYY')
 		},
 		function(start, end) {
 			$('#reportrange span').html(start.format('MMM D, YYYY') + ' - ' + end.format('MMM D, YYYY'));
