@@ -3635,7 +3635,7 @@ fieldset[disabled] .twitter-typeahead .tt-hint {
   background-color: #edeff1;
   color: #34495e;
 }
-.dropdown-menu {
+/*.dropdown-menu {
   background-color: #f3f4f5;
   border: none;
   display: block;
@@ -3647,7 +3647,7 @@ fieldset[disabled] .twitter-typeahead .tt-hint {
   box-shadow: none;
   -webkit-transition: 0.25s;
   transition: 0.25s;
-}
+}*/
 .open > .dropdown-menu {
   margin-top: 18px !important;
   opacity: 1;

@@ -6,30 +6,16 @@ Template.Report.helpers({
 		var returnThisValue = [];
 		this.transactions.forEach(function(entry) {
 			if (entry.created_at > Session.get('startDate') && entry.created_at < Session.get('endDate')) {
-				console.log(entry);
 				returnThisValue.push(entry);
 			}
 		});
 		return returnThisValue;
-		//var transactions = this;
-		/*return this.forEach(function(entry) {
-			entry.transactions.forEach(function(entry) {
-				entry.created_at > '2014-11-10T16:43:18.414627+00:00' && entry.created_at < '2014-11-17T17:43:18.414627+00:00' ? console.log(entry) : console.log('');
-			});
-		});*/
 	},
-	individuals: function () {
-		if(this.created_at > '2014-11-10T16:43:18.414627+00:00' && this.created_at < '2014-11-17T17:43:18.414627+00:00') {
-			return this;
-		} else {
-			return '';
-		}
+	start_date: function () {
+		return moment(Session.get('endDate')).format('MMM D, YYYY');
 	},
-	today: function () {
-		return moment().format('D MMMM, YYYY');
-	},
-	today_minus_30: function () {
-		return moment().subtract(30, 'days').format('D MMMM, YYYY');
+	end_date: function () {
+		return moment(Session.get('startDate')).format('MMM D, YYYY');
 	}
 });
 
@@ -39,34 +25,8 @@ Template.Report.events({
 	}
 });
 
-Template.Report.rendered =  function () {
-	/*var datepickerStart = '#datepicker-start';
-	var datepickerEnd = '#datepicker-end';
-	$(datepickerStart).datepicker({
-		showOtherMonths: true,
-		selectOtherMonths: true,
-		dateFormat: "d MM, yy",
-		yearRange: '-1:+1'
-	}).prev('.btn').on('click', function (e) {
-		e && e.preventDefault();
-		$(datepickerStart).focus();
-	});
-	// Now let's align datepicker with the prepend button
-	$(datepickerStart).datepicker('widget').css({'margin-left': -$(datepickerStart).prev('.btn').outerWidth()});
-
-	$(datepickerEnd).datepicker({
-		showOtherMonths: true,
-		selectOtherMonths: true,
-		dateFormat: "d MM, yy",
-		yearRange: '-1:+1'
-	}).prev('.btn').on('click', function (e) {
-		e && e.preventDefault();
-		$(datepickerEnd).focus();
-	});
-	// Now let's align datepicker with the prepend button
-	$(datepickerEnd).datepicker('widget').css({'margin-left': -$(datepickerEnd).prev('.btn').outerWidth()});*/
-
-	/*$('#reportrange2').daterangepicker(
+Template.Report.rendered = function () {
+	$('#reportrange').daterangepicker(
 		{
 			ranges: {
 				'Today': [moment(), moment()],
@@ -80,8 +40,10 @@ Template.Report.rendered =  function () {
 			endDate: moment()
 		},
 		function(start, end) {
-			$('#reportrange2 span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+			$('#reportrange span').html(start.format('MMM D, YYYY') + ' - ' + end.format('MMM D, YYYY'));
+			Session.set('startDate', start.format('YYYY-MM-DD'));
+			Session.set('endDate', end.format('YYYY-MM-DD'));
+			Router.go('/give/report?startDate=' + start.format('YYYY-MM-DD') + '&endDate=' + end.format('YYYY-MM-DD') );
 		}
-	);*/
-
-}
+	);
+};
