@@ -80,11 +80,19 @@ Template.Receipt.helpers({
    donateWith: function () {
       var payment_device;
       if(this.card){
-        payment_device = this.card[0].number
-        return this.card[0].brand +  ", ending in " + payment_device.slice(-4);
+          if(this.card[0].number && this.card[0].brand) {
+              payment_device = this.card[0].number;
+              return this.card[0].brand + ", ending in " + payment_device.slice(-4);
+          } else {
+              return 'Card';
+          }
       } else {
-        payment_device = this.bank_account[0].account_number
-        return  this.bank_account[0].bank_name +  ", ending in " + payment_device.slice(-4);
+          if(this.bank_account && this.bank_account[0].account_number && this.bank_account[0].bank_name) {
+              payment_device = this.bank_account[0].account_number;
+              return  this.bank_account[0].bank_name +  ", ending in " + payment_device.slice(-4);
+          } else {
+              return 'Check';
+          }
       }   		
    },
    amount: function () {
