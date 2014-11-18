@@ -2,7 +2,7 @@
 html, body, .container {
     margin-top: 0;
 }
-.fa-check-square {
+.large-check {
     color: #7ccc79;
 }
 .fix-height {
@@ -19,11 +19,11 @@ html, body, .container {
 }
 
 @media only screen and (min-width: 320px) {
-    .fa-check-square {
+    .large-check {
         font-size: 7em;
         color: #7ccc79;
     }
-    .fa-arrow-left {
+    .large-arrow {
         font-size: 7em;
         color: #cb4b31;
     }
@@ -38,10 +38,10 @@ html, body, .container {
 
 /* Custom, iPhone Retina */
 @media only screen and (min-width: 480px) {
-    .fa-check-square {
+    .large-check {
         font-size: 10em;
     }
-    .fa-arrow-left {
+    .large-arrow {
         font-size: 10em;
         color: #cb4b31;
     }
@@ -59,10 +59,10 @@ html, body, .container {
 }
 /* Custom, iPhone Retina */
 @media only screen and (min-width: 760px) {
-    .fa-check-square {
+    .large-check{
         font-size: 15em;
     }
-    .fa-arrow-left {
+    .large-arrow {
         font-size: 15em;
         color: #cb4b31;
     }

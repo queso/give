@@ -161,13 +161,28 @@ Router.route(':root/report', {
     template: 'Report',
     name: 'admin.report',
 
-    layoutTemplate: 'AdminLayout',
+    data: function () {
+        var root = Meteor.settings.public.root;
+    },
+    waitOn: function () {
+        var query = this.params.query;
+        Session.set('startDate', query.startDate);
+        Session.set('endDate', query.endDate);
+        return Meteor.subscribe('give_report', query.startDate, query.endDate);
+    }
+});
+
+Router.route(':root/test', {
+    template: 'Test',
+    name: 'admin.test',
 
     data: function () {
         var root = Meteor.settings.public.root;
     },
     waitOn: function () {
         var query = this.params.query;
+        Session.set('startDate', query.startDate);
+        Session.set('endDate', query.endDate);
         return Meteor.subscribe('give_report', query.startDate, query.endDate);
     }
 });

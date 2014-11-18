@@ -13,10 +13,10 @@ pfafman:font-awesome-4
 less
 amr:parsley.js
 iron:router
-mrt:moment
 npm-container
 wylio:mandrill
 j4507:datatables-bootstrap-3
 useraccounts:bootstrap
 accounts-password
 zimme:iron-router-active
+mrt:moment
