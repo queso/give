@@ -148,7 +148,7 @@ Router.route(':root/order/:_id', function () {
 Router.route(':root/tables', {
     template: 'Tables',
     name: 'admin.tables',
-    layout: 'AdminLayout',
+    layoutTemplate: 'AdminLayout',
     data: function () {
         var root = Meteor.settings.public.root;
     },
@@ -158,16 +158,17 @@ Router.route(':root/tables', {
 });
 
 Router.route(':root/report', {
-    template: 'Report',
     name: 'admin.report',
+    template: 'Report',
+    layoutTemplate: 'AdminLayout',
 
-    data: function () {
-        var root = Meteor.settings.public.root;
-    },
     waitOn: function () {
         var query = this.params.query;
         Session.set('startDate', query.startDate);
         Session.set('endDate', query.endDate);
         return Meteor.subscribe('give_report', query.startDate, query.endDate);
+    },
+    data: function () {
+        var root = Meteor.settings.public.root;
     }
 });
