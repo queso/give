@@ -31,7 +31,12 @@ Meteor.publish('give_report', function (start_date, finish_date) {
 });
 
 Meteor.publish('card_expiring', function () {
-	var today = new Date();
-	var future_date = new Date(new Date(today).setMonth(today.getMonth()+3));
-	return Donate.find( { $and : [ {'card.expires' : {$lte : future_date }}, { isRecurring: true}] }, { card : true } );
+	//check to see that the user is the admin user
+	if(this.userId === Meteor.settings.admin_user){
+		var today = new Date();
+		var future_date = new Date(new Date(today).setMonth(today.getMonth()+3));
+		return Donate.find( { $and : [ {'card.expires' : {$lte : future_date }}, { isRecurring: true}] }, { card : true } );
+	}else{
+		return '';
+	}
 });
