@@ -20,7 +20,7 @@ Template.Expiring.helpers({
     fname: function (parent) {
         return parent.customer.fname;
     },
-    lname: function () {
+    lname: function (parent) {
         return parent.customer.lname;
     },
     email_address: function (parent) {
