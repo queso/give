@@ -16,7 +16,6 @@ Meteor.publish('donate_list', function () {
 });
 
 Meteor.publish('give_report', function (start_date, finish_date) {
-
 	//check to see that the user is the admin user
 	if(this.userId === Meteor.settings.admin_user){
 		start_date = moment(Date.parse(start_date)).format('YYYY-MM-DD').slice(0,10);
