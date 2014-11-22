@@ -16,6 +16,7 @@ _.extend(Utils,{
                     'number':           card.number,
                     'expiration_month': card.expiration_month,
                     'expiration_year':  card.expiration_year,
+                    'expires':          moment(new Date(card.expiration_year + '-' + card.expiration_month)),
                     'bank_name':        card.bank_name,
                     'brand':            card.brand,
                     'created_at':       card.created_at,

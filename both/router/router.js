@@ -172,3 +172,16 @@ Router.route(':root/report', {
         var root = Meteor.settings.public.root;
     }
 });
+
+Router.route(':root/expiring', {
+    name: 'admin.expiring',
+    template: 'Expiring',
+    layoutTemplate: 'AdminLayout',
+
+    waitOn: function () {
+        return Meteor.subscribe('card_expiring');
+    },
+    data: function () {
+        var root = Meteor.settings.public.root;
+    }
+});
