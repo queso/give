@@ -22,10 +22,16 @@ Template.Transactions.rendered = function () {
 			{ className: "details-control", "targets": [ 0 ] }
 		]
 	} );
-	//$('#mainTable').editableTableWidget(); //this needs to run each time the data on the screen changes, otherwise it doesn't work.
-	/* Formatting function for row details - modify as you need */
-	format(this);
-	
+
+	//order by the date field
+	$('#mainTable').dataTable().api().order(2, 'desc').draw();
+
+	this.autorun(function(){
+		var data = Router.current().data();
+		computation(data);
+	});
+
+
 };
 
 Template.Transactions.helpers({

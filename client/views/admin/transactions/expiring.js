@@ -28,5 +28,16 @@ Template.Expiring.helpers({
     },
     phone_number: function (parent) {
         return parent.customer.phone_number;
-    },
+    }
 });
+
+Template.Expiring.rendered = function () {
+    $('.datatable').dataTable( {
+        "columnDefs": [
+            { className: "details-control", "targets": [ 0 ] }
+        ]
+    });
+
+    //order by the date field
+    $('#mainTable').dataTable().api().order(1, 'asc').draw();
+};

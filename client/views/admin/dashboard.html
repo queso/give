@@ -1,74 +1,51 @@
 <template name="Dashboard">
-	<div class="row">	
-		<div class="col-lg-12">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h2><i class="fa fa-asterisk"></i><span class="break"></span></h2>
+	<div class="row">
+		<div class="col col-lg-2"></div>
+			<div class="col-lg-8">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h2><i class="fa fa-asterisk"></i><span class="break">Reports</span></h2>
+					</div>
+					<div class="panel-body">
+						<div class="col-sm-2">
+							<a class="quick-button" href="/give/transactions">
+								<i class="fa fa-gift"></i>
+								<p>Gifts</p>
+							</a>
+						</div>
+						<div class="col-sm-2">
+							<a class="quick-button" href="/give/report{{report_query}}">
+								<i class="fa fa-repeat"></i>
+								<p>Recurring gifts</p>
+							</a>
+						</div>
+						<div class="col-sm-2">
+							<a class="quick-button" href="/give/expiring">
+								<i class="fa fa-cc-visa"></i><i class="fa fa-cc-mastercard" ></i>
+								<p>Expiring Cards</p>
+							</a>
+						</div>
+                        <div class="col-sm-2">
+                            <a class="quick-button">
+							<span class="fa-stack fa-lg">
+							  <i class="fa fa-paperclip fa-stack-1x"></i>
+							  <i class="fa fa-ban fa-stack-2x text-danger"></i>
+							</span>
+                                <p>Accounting</p>
+                            </a>
+                        </div>
+                        <div class="col-sm-2">
+                            <a class="quick-button">
+							<span class="fa-stack fa-lg">
+							  <i class="fa fa-calendar fa-stack-1x"></i>
+							  <i class="fa fa-ban fa-stack-2x text-danger"></i>
+							</span>
+                                <p>Calendar</p>
+                            </a>
+                        </div>
+						<div class="clearfix"></div>
+					</div>
 				</div>
-				<div class="panel-body">
-					<div class="col-sm-2">
-						<a class="quick-button" href="/give/transactions">
-							<i class="fa fa-gift"></i>
-							<p>Gifts</p>
-						</a>
-					</div>
-					<div class="col-sm-2">
-						<a class="quick-button" href="/give/report{{report_query}}">
-							<i class="fa fa-paper-plane"></i>
-							<p>Reports</p>
-						</a>
-					</div>
-					<div class="col-sm-2">
-						<a class="quick-button">
-							<i class="fa fa-line-chart"></i>
-							<p>Charts</p>
-						</a>
-					</div>
-					<div class="col-sm-2">
-						<a class="quick-button">
-							<i class="fa fa-calendar"></i>
-							<p>Calendar</p>
-						</a>
-					</div>
-					<div class="clearfix"></div>
-				</div>	
-			</div>	
-		</div><!--/col-->
-	</div><!--/row-->
-	<div class="row">	
-		<div class="col-lg-12">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h2><i class="fa fa-asterisk"></i><span class="break"></span>Reports</h2>
-				</div>
-				<div class="panel-body">
-					<div class="col-sm-2">
-						<a class="quick-button" href="/give/transactions">
-							<i class="fa fa-repeat"></i>
-							<p>Recurring</p>
-						</a>
-					</div>
-					<div class="col-sm-2">
-						<a class="quick-button" href="/give/reports">
-							<i class="fa fa-bolt"></i>
-							<p>One-time</p>
-						</a>
-					</div>
-					<div class="col-sm-2">
-						<a class="quick-button">
-							<i class="fa fa-paperclip"></i>
-							<p>Accounting</p>
-						</a>
-					</div>
-					<div class="col-sm-2">
-						<a class="quick-button">
-							<i class="fa fa-calendar"></i>
-							<p>Calendar</p>
-						</a>
-					</div>
-					<div class="clearfix"></div>
-				</div>	
-			</div>	
-		</div><!--/col-->
+			</div><!--/col-lg8-->
 	</div><!--/row-->
 </template>

@@ -1,9 +1,3 @@
-/*
- * Add query methods like this:
- *  AllErrors.findPublic = function () {
- *    return AllErrors.find({is_public: true});
- *  }
- */
 
 AllErrors.allow({
   insert: function (userId, doc) {

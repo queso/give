@@ -46,4 +46,13 @@ Template.Report.rendered = function () {
 			Router.go('/give/report?startDate=' + start.format('YYYY-MM-DD') + '&endDate=' + end.format('YYYY-MM-DD') );
 		}
 	);
+
+	$('.datatable').dataTable( {
+		"columnDefs": [
+			{ className: "details-control", "targets": [ 0 ] }
+		]
+	});
+
+	//order by the date field
+	$('#mainTable').dataTable().api().order(2, 'desc').draw();
 };
