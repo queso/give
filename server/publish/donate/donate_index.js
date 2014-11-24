@@ -10,12 +10,21 @@ Meteor.publish('donate', function (input) {
 		 viewable: 0,
 		 card_holds: 0,
 		 created_at: 0,
+		 URL: 0,
 		 'bank_account.fingerprint': 0,
 		 'bank_account.href': 0,
 		 'bank_account.id': 0,
 		 'bank_account.routing_number': 0,
 		 'bank_account.can_credit': 0,
-		 'bank_account.can_debit': 0
+		 'bank_account.can_debit': 0,
+		 'card.can_debit': 0,
+		 'card.cvv_result': 0,
+		 'card.bank_name': 0,
+		 'card.expires': 0,
+		 'card.id': 0,
+		 'card.href': 0,
+		 'card.fingerprint': 0,
+		 'card.type': 0
 	 }});
 });
 

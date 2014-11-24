@@ -1,6 +1,25 @@
-/*****************************************************************************/
 /* DonationForm: Event Handlers and Helpers */
 /*****************************************************************************/
+
+var confirmOnPageExit = function (e)
+{
+    // If we haven't been passed the event get the window.event
+    e = e || window.event;
+
+    var message = 'Looks like you have information in the form. Just wanted to make sure you really do want to leave this page.';
+
+    // For IE6-8 and Firefox prior to version 4
+    if (e)
+    {
+        e.returnValue = message;
+    }
+
+    // For Chrome, Safari, IE8+ and Opera 12+
+    return message;
+};
+
+
+
 // this function is used to update the displayed total
 // since we can take payment with card fees added in this is needed to update the
 // amount that is shown to the user and passed as total_amount through the form
@@ -390,6 +409,11 @@ Template.DonationForm.helpers({
 /* DonationForm: Lifecycle Hooks */
 /*****************************************************************************/
 Template.DonationForm.created = function() {};
+Template.DonationForm.destroyed = function() {
+    // Turn it off - remove the function entirely
+    window.onbeforeunload = null;
+
+};
 Template.DonationForm.rendered = function() {
     // Setup parsley form validation
     $('#donation_form').parsley();
@@ -425,6 +449,17 @@ Template.DonationForm.rendered = function() {
             backdrop: 'static'
         });
     }
+
+    // Turn it on - assign the function that returns the string
+    window.onbeforeunload = confirmOnPageExit;
+
+
+    /*var flag = true; // set this var according to your use.
+    $(window).on('beforeunload', function(){
+        if(flag) {
+            return "It looks like you have input you haven't submitted."
+        }
+    });*/
 };
 Template.checkPaymentInformation.helpers({
     attributes_Input_AccountNumber: function() {
