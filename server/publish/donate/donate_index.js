@@ -3,7 +3,20 @@
 /*****************************************************************************/
 
 Meteor.publish('donate', function (input) {
-	 return Donate.find({_id: input});
+	 return Donate.find({_id: input}, {fields: {
+		 credit: 0,
+		 order: 0,
+		 sessionId: 0,
+		 viewable: 0,
+		 card_holds: 0,
+		 created_at: 0,
+		 'bank_account.fingerprint': 0,
+		 'bank_account.href': 0,
+		 'bank_account.id': 0,
+		 'bank_account.routing_number': 0,
+		 'bank_account.can_credit': 0,
+		 'bank_account.can_debit': 0
+	 }});
 });
 
 Meteor.publish('donate_list', function () {

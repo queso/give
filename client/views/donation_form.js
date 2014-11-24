@@ -225,7 +225,7 @@ Template.DonationForm.events({
         if (form.paymentInformation.donateWith === "Card") {
             form.paymentInformation.type = "Card";
             var payload = {
-                name: $('#fname').val() + ' ' + $('lname').val(),
+                name: $('#fname').val() + ' ' + $('#lname').val(),
                 number: $('[name=card_number]').val(),
                 expiration_month: $('[name=expiry_month]').val(),
                 expiration_year: $('[name=expiry_year]').val(),
@@ -251,7 +251,7 @@ Template.DonationForm.events({
         } else {
             form.paymentInformation.type = "Check";
             var payload = {
-                name: $('#fname').val() + ' ' + $('lname').val(),
+                name: $('#fname').val() + ' ' + $('#lname').val(),
                 account_number: $('#account_number').val(),
                 routing_number: $('#routing_number').val(),
                 account_type: $('#account_type').val()
