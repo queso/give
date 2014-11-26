@@ -1,3 +1,7 @@
+Template.Thanks.rendered = function() {
+    // Turn it off - remove the function entirely
+    window.onbeforeunload = null;
+};
 Template.Thanks.helpers({
 	displayReceipt: function () {
         var debitStatus = this.debit.status;
@@ -34,6 +38,10 @@ Template.Thanks.helpers({
   }
 });
 
+Template.Gift.rendered = function() {
+    // Turn it off - remove the function entirely
+    window.onbeforeunload = null;
+};
 Template.Gift.helpers({
   displayReceipt: function () {
     var transaction_guid = Session.get('transaction_guid');

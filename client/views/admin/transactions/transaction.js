@@ -6,6 +6,9 @@ Template.Transaction.helpers({
 			return this.customer.fname + " " + this.customer.lname;
 		}
 	},
+	designation: function() {
+		return this.debit.donateTo;
+	},
 	amount: function () {
 		if(this.isRecurring && this.subscriptions){
 			return this.subscriptions[0].amount / 100;

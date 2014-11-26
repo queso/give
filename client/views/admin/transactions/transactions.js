@@ -26,12 +26,10 @@ Template.Transactions.rendered = function () {
 	//order by the date field
 	$('#mainTable').dataTable().api().order(2, 'desc').draw();
 
-	this.autorun(function(){
+/*	this.autorun(function(){
 		var data = Router.current().data();
 		computation(data);
-	});
-
-
+	});*/
 };
 
 Template.Transactions.helpers({
