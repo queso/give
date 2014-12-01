@@ -308,15 +308,22 @@ Template.DonationForm.events({
         }, 20);
         var selectedValue = $("[name=donateWith]").val();
         Session.set("paymentMethod", selectedValue);
-        /*
-         updateTotal(selectedValue);*/
     },
     'change #donateTo': function() {
         if($('#donateTo').val() !== 'WriteIn') {
             $('#giftDesignationText').hide();
+        } else {
+            Session.set('showWriteIn', 'yes');
+            Session.set('params.donateTo', 'WriteIn');
+            //setup modal for entering give toward information
+            $('#modal_for_write_in').modal({
+                show: true,
+                backdrop: 'static'
+            }, function(e) {
+            });
         }
     },
-        //keypress input detection for autofilling form with test data
+    //keypress input detection for autofilling form with test data
     'keypress input': function(e) {
         if (e.which === 17) { //17 is ctrl + q
             fillForm();
@@ -428,7 +435,6 @@ Template.DonationForm.rendered = function() {
         menuStyle: 'dropdown-inverse'
     });
     //setup modal for entering give toward information
-
     if (Session.equals('params.donateTo', 'WriteIn') && !(Session.equals('showWriteIn', 'no'))) {
         $('#modal_for_write_in').modal({
             show: true,
