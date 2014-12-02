@@ -11,6 +11,7 @@ Meteor.publish('donate', function (input) {
 		 card_holds: 0,
 		 created_at: 0,
 		 URL: 0,
+		 'billy_customer': 0,
 		 'bank_account.fingerprint': 0,
 		 'bank_account.href': 0,
 		 'bank_account.id': 0,
@@ -24,7 +25,19 @@ Meteor.publish('donate', function (input) {
 		 'card.id': 0,
 		 'card.href': 0,
 		 'card.fingerprint': 0,
-		 'card.type': 0
+		 'card.type': 0,
+		 'customer.id': 0,
+		 'customer.type': 0,
+		 invoices: 0,
+		 subscriptions: 0,
+		 'transactions.invoice_guid': 0,
+		 'transactions.subscription_guid': 0,
+		 'transactions.transaction_type': 0,
+		 'transactions.funding_instrument_url': 0,
+		 'transactions.email_sent': 0,
+		 'transactions.appears_on_statement_as': 0,
+		 'transactions.processor_url': 0,
+		 'transactions.credit': 0
 	 }});
 });
 

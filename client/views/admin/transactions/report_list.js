@@ -25,5 +25,14 @@ Template.Report_list.helpers({
     },
     root_url: function () {
         return Meteor.settings.public.root + '/subscription';
+    },
+    status: function (parent) {
+        if(parent.subscriptions){
+            if(parent.subscriptions[0].canceled){
+                return "<span id='status' class='label label-default'>Canceled</span>";
+            }else if(!parent.subscriptions[0].canceled){
+                return "<span id='status' class='label label-success'>Active</span>";
+            }
+        }
     }
 });
