@@ -266,7 +266,7 @@ _.extend(Utils,{
 	                "content": debit.donateTo
 	              }, {
 	                "name": "DonateWith",
-	                "content": debit.donateWith === 'Card' ? payment_type.brand + ', ending in ' + payment_type.number.slice(-4) : payment_type.bank_name + ', ending in ' + payment_type.account_number.slice(-4)
+	                "content": debit.donateWith === 'Card' ? payment_type.brand ? payment_type.brand + ', ending in ' + payment_type.number.slice(-4) : 'Card ending in ' + payment_type.number.slice(-4) : payment_type.bank_name + ', ending in ' + payment_type.account_number.slice(-4)
 					}, {
 	                "name": "GiftAmount",
 	                "content": (debit.amount / 100).toFixed(2)
