@@ -390,62 +390,79 @@ _.extend(Utils,{
 	              "name": "DEV",
 	              "content": Meteor.settings.dev
 	            },
-	             {
+	            {
 	                "name": "ReceiptOrTransNumber",
 	                "content": transaction_guid
 	            },
-	              {
-	                "name": "DonatedTo",
-	                "content": debit.donateTo
-	              }, {
-	                "name": "DonateWith",
-	                "content": debit.donateWith === 'Card' ? payment_type.brand + ', ending in ' + payment_type.number.slice(-4) : payment_type.bank_name + ', ending in ' + payment_type.account_number.slice(-4)  //debit.donateWith
-	              }, {
+				{
+					"name": "DonatedTo",
+					"content": debit.donateTo
+				},
+				{
+					"name": "DonateWith",
+					"content": debit.donateWith === 'Card' ? payment_type.brand ? payment_type.brand + ', ending in ' + payment_type.number.slice(-4) : 'Card ending in ' + payment_type.number.slice(-4) : payment_type.bank_name + ', ending in ' + payment_type.account_number.slice(-4)
+				},
+				{
 	                "name": "GiftAmount",
 	                "content": (debit.amount /100).toFixed(2)
-	              }, {
+				},
+				{
 	                "name": "GiftAmountFees",
 	                "content": (fees / 100).toFixed(2)
-	              }, {
+	            },
+				{
 	                "name": "TotalGiftAmount",
 	                "content": (debit.total_amount / 100).toFixed(2)
-	              }, {
+	            },
+				{
 	                "name": "FailureReason",
 	                "content": error.failure_reason
-	               },{
+	             },
+				{
 	                "name": "FailureReasonCode",
 	                "content": error.failure_reason_code
-	              },{
+	            },
+				{
 	                "name": "FULLNAME",
 	                "content": fullName
-	            }, {
+	            },
+				{
 	                "name": "ORG",
 	                "content": customer.org
-	            },{
+	            },
+				{
 	                "name": "ADDRESS_LINE1",
 	                "content": customer.address_line1
-	            }, {
+	            },
+				{
 	                "name": "ADDRESS_LINE2",
 	                "content": customer.address_line2
-	            }, {
+	            },
+				{
 	                "name": "LOCALITY",
 	                "content": customer.city
-	            }, {
+	            },
+				{
 	                "name": "REGION",
 	                "content": customer.region
-	            }, {
+	            },
+				{
 	                "name": "POSTAL_CODE",
 	                "content": customer.postal_code
-	            }, {
+	            },
+				{
 	                "name": "PHONE",
 	                "content": customer.phone_number
-	            }, {
+	            },
+				{
 	                "name": "ReceiptNumber",
 	                "content": id
-	            }, {
+	            },
+				{
 	                "name": "Path",
 	                "content": 'gift'
-	            }, {
+	            },
+				{
 	                "name": "TransactionGUID",
 	                "content": transaction_guid
 	            }
