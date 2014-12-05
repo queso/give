@@ -157,7 +157,7 @@ _.extend(Utils,{
                 return returnToCalled;
                 break;
             case 'DRCS':
-                returnToCalled = 'DR Community Sponsorship';
+                returnToCalled = 'Santiago, DR - Community Sponsorship';
                 return returnToCalled;
                 break;
             case 'DRInfrastructure':
@@ -181,7 +181,7 @@ _.extend(Utils,{
                 return returnToCalled;
                 break;
             case 'PhilippinesCS':
-                returnToCalled = 'Philippines Community Sponsorship';
+                returnToCalled = 'Tanza, Philippines - Community Sponsorship';
                 return returnToCalled;
                 break;
             case 'PhilippinesInfrastructure':
