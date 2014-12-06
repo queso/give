@@ -25,22 +25,17 @@ function logIt() {
 	logger.info("Started " + arguments.callee.caller.name);
 }
 
-function createPaymentMethod(data) {
-	try {
+function createPaymentMethod(donateWith, href, processor_uri) {
+	/*try {*/
 		logIt();
 
-		logger.info("Setup variables for data from form inputs inside the billy createPaymentMethod method.");
-		var customerInfo = data.customer;
-		var debitType = data.paymentInformation.donateWith;
-		logger.info("ID: " + data._id);
-		logger.info("In create Payment Method before if: " + debitType);
+		logger.info("In create Payment Method before if: " + donateWith);
 
-	var processor_uri = Donate.findOne(data._id).billy_customer.processor_uri;
-	if (debitType === "Card") {
+	if (donateWith === "Card") {
 		logger.info("Stepped into createPaymentMethod card if statement");
 
 		//Get card URL
-		var card = Utils.get_card(data._id, data.paymentInformation.href);
+		var card = Utils.get_card(href);
 
 		logger.info("Finished adding card into the collection.");
 		logger.info("Started Associate Function.");
@@ -53,14 +48,14 @@ function createPaymentMethod(data) {
         {
             logger.info("In check portion of create payment Method");
             //Create bank account
-            var check = Utils.get_check(data._id, data.paymentInformation.href);
+            var check = Utils.get_check(href);
 
 			logger.info("Finished adding bank_account into the collection.");
 			logger.info("Started Associate Function.");
             associate = Utils.create_association(data, check.href, processor_uri);
 
         }
-    }catch (e) {
+    /*}catch (e) {
         if(e.category_code) {
             logger.error("Category_code area: e.details " + e.details);
             throw new Meteor.Error(500, e.category_code, e.description);
@@ -69,7 +64,7 @@ function createPaymentMethod(data) {
             throw new Meteor.Error(500, e.reason, e.details);
         }
 		//throwTheError(e);
-	}
+	}*/
 }
 
 function createBillyCustomer(customerID) {
@@ -180,7 +175,10 @@ Meteor.methods({
     recurringDonation: function(data) {
 		logger.info("Started billy method calls.");
 		logIt();
-		try {
+		/*try {*/
+
+			//Check the form to make sure nothing malicious is being submitted to the server
+	        Utils.checkFormFields(data);
 
 			//Convert donation to more readable format
             var donateTo = Utils.getDonateTo(data.paymentInformation.donateTo);
@@ -189,67 +187,59 @@ Meteor.methods({
                 donateTo = data.paymentInformation.writeIn;
             }
 
-			//Check the form to make sure nothing malicious is being submitted to the server
-	        Utils.checkFormFields(data);
-
-			// Moved the below from client side to here.  
-	      	data._id = Donate.insert({created_at: data.paymentInformation.created_at});
-
-			Donate.update(data._id, {
-				$set: {
-					sessionId: data.sessionId,
-					URL: data.URL,
-					'customer': data.customer,
-					'debit.donateTo': donateTo,
-					'debit.donateWith': data.paymentInformation.donateWith,
-					'debit.type': data.paymentInformation.type,
-					'debit.total_amount': data.paymentInformation.total_amount,
-					'debit.amount': data.paymentInformation.amount,
-					'debit.fees': data.paymentInformation.fees,
-					'debit.coveredTheFees': data.paymentInformation.coverTheFees,
-	                'debit.status': 'pending',
-                    'viewable': true
-				}
+			data._id = Donations.insert({
+				created_at: data.paymentInformation.created_at,
+				sessionId: data.sessionId,
+				URL: data.URL,
+				'donateTo': donateTo,
+				'donateWith': data.paymentInformation.donateWith,
+				'type': data.paymentInformation.type,
+				'total_amount': data.paymentInformation.total_amount,
+				'amount': data.paymentInformation.amount,
+				'fees': data.paymentInformation.fees,
+				'coveredTheFees': data.paymentInformation.coverTheFees
 			});
-			logger.info("ID: " + data._id);
+
+			logger.info("Donation ID: " + data._id);
 
 			balanced.configure(Meteor.settings.balanced_api_key);
-			var customerInfo = data.customer;
 			var customerData = '';
 		
 			customerData = Utils.extractFromPromise(balanced.marketplace.customers.create({
-				'name': customerInfo.fname + " " + customerInfo.lname,
+				'name': data.customer.fname + " " + data.customer.lname,
 				"address": {
-					"city": customerInfo.city,
-					"state": customerInfo.region,
-					"line1": customerInfo.address_line1,
-					"line2": customerInfo.address_line2,
-					"postal_code": customerInfo.postal_code,
+					"city": data.customer.city,
+					"state": data.customer.region,
+					"line1": data.customer.address_line1,
+					"line2": data.customer.address_line2,
+					"postal_code": data.customer.postal_code
 				},
-				'email': customerInfo.email_address,
-				//need to add if statement for any fields that might be blank
-				'phone': customerInfo.phone_number
+				'email': data.customer.email_address,
+				'phone': data.customer.phone_number
 			}));
-			var customerResponse = Donate.update(data._id, {
-				$set: {
-					'customer.type': customerData._type,
-					'customer.id': customerData.id
-				}
-			});
+
+			data.customer.id = customerData.id;
+			data.customer._type = customerData._type;
+
+			var customer_id = Customers.insert(data.customer);
+			logger.info("Customer ID: " + customer_id);
+
+
 			var billyCustomer = {};
 			billyCustomer = createBillyCustomer(customerData.id);
-			Donate.update(data._id, {
+			Customers.update(customer_id, {
 				$set: {
-					'billy_customer': billyCustomer.data
+					'billy.created_at': billyCustomer.data.created_at,
+					'billy.customer_guid': billyCustomer.data.guid,
+					'billy.deleted': billyCustomer.data.deleted,
+					'billy.company_guid': billyCustomer.data.company_guid,
+					'billy.processor_uri': billyCustomer.data.processor_uri,
+					'billy.updated_at': billyCustomer.data.updated_at
 				}
 			});
-			Donate.update(data._id, {
-				$set: {
-					'isRecurring': true
-				}
-			});
+
 			var billyPayment = {};
-			billyPayment = createPaymentMethod(data);
+			billyPayment = createPaymentMethod(data.paymentInformation.donateWith, data.paymentInformation.href, billyCustomer.data.processor_uri);
 			var billySubscribeCustomer = '';
 			billySubscribeCustomer = subscribeToBillyPlan(data._id);
 			Donate.update(data._id, {
@@ -302,11 +292,11 @@ Meteor.methods({
 			return return_this;
 
 
-		} catch (e) {
+		/*} catch (e) {
 			logger.info(e);
 			logger.info(e.error_message);
 			logger.info(e.reason);
 			throw new Meteor.Error(500, e.reason, e.details);
-		}
+		}*/
 	}
 });

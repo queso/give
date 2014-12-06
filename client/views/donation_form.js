@@ -220,7 +220,6 @@ Template.DonationForm.events({
             "URL": document.URL,
             sessionId: Meteor.default_connection._lastSessionId
         };
-        //
         if (form.paymentInformation.total_amount !== form.paymentInformation.amount) {
             form.paymentInformation.fees = (form.paymentInformation.total_amount - form.paymentInformation.amount);
         }

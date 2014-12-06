@@ -2,7 +2,7 @@ _.extend(Utils, {
     create_order: function (id, customerHREF) {
         logger.info("Inside create_order.");
         var order;
-        order = Utils.extractFromPromise(balanced.get(customerHREF).orders.create({"Description": "Order #" + id}));
+        order = Utils.extractFromPromise(balanced.get(customerHREF).orders.create({"Description": "Order #" + id})); //TODO: Need to adjust this to be more specific since I might have many orders from one id
 
         //add order response from Balanced to the collection
         var orderResponse = Donate.update(id, {$set: {

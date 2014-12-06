@@ -1,13 +1,55 @@
+//Includes address, phone, email, sources
 Customers = new Meteor.Collection('customers');
-
-//Setup indexes for faster collection
-/*
 if (Meteor.isServer) {
-    Sources._ensureIndex({'id': 1}, {background: true});
-    Sources._ensureIndex({'customer_id': 1}, {background: true});
-    Sources._ensureIndex({'invoices.id': 1}, {background: true});
-    Sources._ensureIndex({'orders.id': 1}, {background: true});
-    Sources._ensureIndex({'debits.id': 1}, {background: true});
-    Sources._ensureIndex({'transactions.id': 1}, {background: true});
-    Sources._ensureIndex({'subscriptions.id': 1}, {background: true});
-}*/
+    Customers.deny({
+        insert: function (userId, doc) {
+            if(userId === Meteor.settings.admin_user){
+                return false;
+            } else{
+                return true;
+            }
+        },
+
+        update: function (userId, doc, fieldNames, modifier) {
+            if(userId === Meteor.settings.admin_user){
+                return false;
+            } else{
+                return true;
+            }
+        },
+
+        remove: function (userId, doc) {
+            if(userId === Meteor.settings.admin_user){
+                return false;
+            } else{
+                return true;
+            }
+        }
+    });
+
+    Customers.allow({
+        insert: function (userId, doc) {
+            if(userId === Meteor.settings.admin_user){
+                return true;
+            } else{
+                return false;
+            }
+        },
+
+        update: function (userId, doc, fieldNames, modifier) {
+            if(userId === Meteor.settings.admin_user){
+                return true;
+            } else{
+                return false;
+            }
+        },
+
+        remove: function (userId, doc) {
+            if(userId === Meteor.settings.admin_user){
+                return true;
+            } else{
+                return false;
+            }
+        }
+    });
+}
