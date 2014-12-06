@@ -5,10 +5,10 @@ _.extend(Utils,{
         card = Utils.extractFromPromise(balanced.get(cardHref));
 
         //add card create response from Balanced to the database
-        var cardResponse = Donate.update(id, {
+        var cardResponse = Source.update(id, {
             $push: {
                 'card': {
-                    'fingerprint': card.fingerprint,
+                    'fingerprint':      card.fingerprint,
                     'id':               card.id,
                     'type':             card.type,
                     'href':             card.href,
