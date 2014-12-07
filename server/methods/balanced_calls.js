@@ -1,11 +1,11 @@
 _.extend(Utils,{
-    get_card: function (cardHref) {
+    get_card: function (customer_id, cardHref) {
         console.log("Inside card create.");
         var card;
         card = Utils.extractFromPromise(balanced.get(cardHref));
 
-        //add card create response from Balanced to the database
-        var card_insert = Sources.insert({
+        var insert_card = {};
+        insert_card = {
             'fingerprint':      card.fingerprint,
             'id':               card.id,
             'type':             card.type,
@@ -20,14 +20,22 @@ _.extend(Utils,{
             'created_at':       card.created_at,
             'can_debit':        card.can_debit,
             'customer_id':      card.links.customer
+        };
+        //add card create response from Balanced to the collection
+        Customers.update(customer_id, {
+            $push: {
+                card: insert_card
+            }
         });
         return card;
     },
-    get_check: function (checkHref) {
+    get_check: function (customer_id, checkHref) {
         logger.info("Inside check create.");
         var check;
         check = Utils.extractFromPromise(balanced.get(checkHref));
-        var check_insert = Sources.insert({
+
+        var insert_check = {};
+        insert_check = {
             'fingerprint':      check.fingerprint,
             'id':               check.id,
             'type':             check.account_type,
@@ -41,30 +49,36 @@ _.extend(Utils,{
             'can_debit':        check.can_debit,
             'can_credit':       check.can_credit,
             'customer_id':      check.links.customer
-        });
+        };
 
+        //add check create response from Balanced to the collection
+        Customers.update(customer_id, {
+            $push: {
+                check: insert_check
+            }
+        });
         return check;
     },
-    create_association: function (data, paymentHref, customerHref) {
+    create_association: function (donation_id, paymentHref, customerHref) {
             try {
                 console.log("Inside create_association function");
                     associate = Utils.extractFromPromise(balanced.get(paymentHref).associate_to_customer(customerHref));
                     //add debit response from Balanced to the database
-                    Donate.update(data._id, {
+                    Donations.update(donation_id, {
                         $set: {
-                            'debit.type': associate.type
+                            'type': associate.type
                         }
                     });
                     return associate;
             } catch(e) {
-                console.log("Got to catch error area of create_associate. ID: " + data._id + " Category Code: " + e.category_code + ' Description: ' + e.description);
-                Donate.update(data._id, {
+                console.log("Got to catch error area of create_associate. Donation_id: " + donation_id + " Category Code: " + e.category_code + ' Description: ' + e.description);
+                Donations.update(donation_id, {
                     $set: {
                         'failed.category_code': e.category_code,
                         'failed.description': e.description,
                         'failed.in': 'create_association',
                         'failed.eventID': e.request_id,
-                        'debit.status': 'failed'
+                        'status': 'failed'
                     }
                 });
                 throw new Meteor.Error(e.category_code, e.description);

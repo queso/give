@@ -13,7 +13,7 @@ function failTheRecord(data) {
   logger.error(JSON.stringify(data.e, null, 4));
 
       // Update this record to reflect failed status. 
-      Donate.update(data.id, {
+      Donations.update(data.id, {
         $set: {
           failed: data.e
         }
@@ -25,7 +25,7 @@ function logIt() {
 	logger.info("Started " + arguments.callee.caller.name);
 }
 
-function createPaymentMethod(donateWith, href, processor_uri) {
+function createPaymentMethod(donation_id, customer_id, donateWith, href, processor_uri) {
 	/*try {*/
 		logIt();
 
@@ -35,12 +35,12 @@ function createPaymentMethod(donateWith, href, processor_uri) {
 		logger.info("Stepped into createPaymentMethod card if statement");
 
 		//Get card URL
-		var card = Utils.get_card(href);
+		var card = Utils.get_card(customer_id, href);
 
 		logger.info("Finished adding card into the collection.");
 		logger.info("Started Associate Function.");
 
-		var associate = Utils.create_association(data, card.href, processor_uri);
+		var associate = Utils.create_association(donation_id, card.href, processor_uri);
 
 	}
         //for running ACH
@@ -48,11 +48,11 @@ function createPaymentMethod(donateWith, href, processor_uri) {
         {
             logger.info("In check portion of create payment Method");
             //Create bank account
-            var check = Utils.get_check(href);
+            var check = Utils.get_check(customer_id, href);
 
 			logger.info("Finished adding bank_account into the collection.");
 			logger.info("Started Associate Function.");
-            associate = Utils.create_association(data, check.href, processor_uri);
+            associate = Utils.create_association(donation_id, check.href, processor_uri);
 
         }
     /*}catch (e) {
@@ -74,7 +74,6 @@ function createBillyCustomer(customerID) {
 		var resultSet = '';
 
 		resultSet = HTTP.post("https://billy.balancedpayments.com/v1/customers", {
-			//customer URI below is missing the last character, 'f' so that I can test errors
 			params: {
 				"processor_uri": "/customers/" + customerID
 			},
@@ -90,27 +89,27 @@ function createBillyCustomer(customerID) {
 	}
 }
 
-function subscribeToBillyPlan(id) {
-	try {
+function subscribeToBillyPlan(donation_id, customer_id, paymentType, funding_instrument_uri) {
+	/*try {*/
 		logIt();
-		var paymentType = Donate.findOne(id).debit.type;
+
 		if (paymentType === "credit" || paymentType === "debit") {
 			logger.info("Payment Type: " + paymentType);
-			var funding_instrument_uri = Donate.findOne(id).card[0].href;
 		} else {
 			logger.info("Payment Type: " + paymentType);
-			var funding_instrument_uri = Donate.findOne(id).bank_account[0].href;
 		}
-		logger.info("Amount: " + Math.ceil(Donate.findOne(id).debit.total_amount));
-		var billyAmount = Math.ceil(Donate.findOne(id).debit.total_amount);
+		var total_amount = Donations.findOne(donation_id).total_amount;
+		var customer_guid = Customers.findOne(customer_id).billy.customer_guid;
+		logger.info("Donations ID: " + donation_id + " customer_guid: " + customer_guid);
+
 		var resultSet = '';
 		resultSet = HTTP.post("https://billy.balancedpayments.com/v1/subscriptions", {
 			params: {
-				"customer_guid": Donate.findOne(id).billy_customer.guid,
+				"customer_guid": customer_guid,
 				"plan_guid": Meteor.settings.billy_monthly_GUID,
 				"funding_instrument_uri": "/" + Meteor.settings.balanced_uri + funding_instrument_uri,
 				"appears_on_statement_as": "Trash Mountain",
-				"amount": billyAmount
+				"amount": Math.ceil(total_amount)
 			},
 			auth: Meteor.settings.billy_key + ':'
 		});
@@ -126,7 +125,7 @@ function subscribeToBillyPlan(id) {
 
 			Meteor.error(resultSet.statusCode);
 		}
-	} catch (e) {
+	/*} catch (e) {
 		logger.error(e);
 		e._id = AllErrors.insert(e.response);
 		var error = {};
@@ -134,7 +133,7 @@ function subscribeToBillyPlan(id) {
         error.id = id;
         failTheRecord(error);
 		throw new Meteor.Error(error, e._id);
-	}
+	}*/
 }
 
 function getInvoice(subGUID) {
@@ -187,21 +186,6 @@ Meteor.methods({
                 donateTo = data.paymentInformation.writeIn;
             }
 
-			data._id = Donations.insert({
-				created_at: data.paymentInformation.created_at,
-				sessionId: data.sessionId,
-				URL: data.URL,
-				'donateTo': donateTo,
-				'donateWith': data.paymentInformation.donateWith,
-				'type': data.paymentInformation.type,
-				'total_amount': data.paymentInformation.total_amount,
-				'amount': data.paymentInformation.amount,
-				'fees': data.paymentInformation.fees,
-				'coveredTheFees': data.paymentInformation.coverTheFees
-			});
-
-			logger.info("Donation ID: " + data._id);
-
 			balanced.configure(Meteor.settings.balanced_api_key);
 			var customerData = '';
 		
@@ -221,50 +205,53 @@ Meteor.methods({
 			data.customer.id = customerData.id;
 			data.customer._type = customerData._type;
 
-			var customer_id = Customers.insert(data.customer);
-			logger.info("Customer ID: " + customer_id);
-
-
 			var billyCustomer = {};
 			billyCustomer = createBillyCustomer(customerData.id);
-			Customers.update(customer_id, {
-				$set: {
-					'billy.created_at': billyCustomer.data.created_at,
-					'billy.customer_guid': billyCustomer.data.guid,
-					'billy.deleted': billyCustomer.data.deleted,
-					'billy.company_guid': billyCustomer.data.company_guid,
-					'billy.processor_uri': billyCustomer.data.processor_uri,
-					'billy.updated_at': billyCustomer.data.updated_at
-				}
+
+			var insertThis = {};
+			insertThis = data.customer;
+			insertThis.billy = {
+				'created_at': billyCustomer.data.created_at,
+				'customer_guid': billyCustomer.data.guid,
+				'deleted': billyCustomer.data.deleted,
+				'company_guid': billyCustomer.data.company_guid,
+				'processor_uri': billyCustomer.data.processor_uri,
+				'updated_at': billyCustomer.data.updated_at
+			};
+			var customer_id = Customers.insert(insertThis);
+
+			data._id = Donations.insert({
+				created_at: data.paymentInformation.created_at,
+				sessionId: data.sessionId,
+				URL: data.URL,
+				'donateTo': donateTo,
+				'donateWith': data.paymentInformation.donateWith,
+				'type': data.paymentInformation.type,
+				'total_amount': data.paymentInformation.total_amount,
+				'amount': data.paymentInformation.amount,
+				'fees': data.paymentInformation.fees,
+				'coveredTheFees': data.paymentInformation.coverTheFees,
+				'customer_id': customer_id,
+				'status': 'pending'
 			});
 
 			var billyPayment = {};
-			billyPayment = createPaymentMethod(data.paymentInformation.donateWith, data.paymentInformation.href, billyCustomer.data.processor_uri);
+			billyPayment = createPaymentMethod(data._id, customer_id, data.paymentInformation.donateWith, data.paymentInformation.href, billyCustomer.data.processor_uri);
 			var billySubscribeCustomer = '';
-			billySubscribeCustomer = subscribeToBillyPlan(data._id);
-			Donate.update(data._id, {
+			billySubscribeCustomer = subscribeToBillyPlan(data._id, customer_id, data.paymentInformation.type, data.paymentInformation.href);
+			billySubscribeCustomer.data.balanced_customer_id = customerData.id;
+			Donations.update(data._id, {
 				$push: {
 					'subscriptions': billySubscribeCustomer.data
 				}
 			});
-			//Copy debit information into the subscription
-			var debitInformation = Donate.findOne(data._id).debit;
-			debitInformation.subscription_guid = billySubscribeCustomer.data.guid;
-
-			Donate.update({'subscriptions.guid': billySubscribeCustomer.data.guid},
-				{
-				$set: {
-					'subscriptions.$.debitInformation': debitInformation
-				}
-			});
-			
 
 			//Get the whole invoice
 			var billyInvoice = {};
 			billyInvoice = getInvoice(billySubscribeCustomer.data.guid);
 			billyInvoice.data.items[0].subscription_guid = billySubscribeCustomer.data.guid;
 			//push this invoice into the document
-	        Donate.update({_id: data._id}, {
+			Donations.update(data._id, {
 				$push: {
 					'invoices': billyInvoice.data.items[0]
 				}
@@ -277,12 +264,16 @@ Meteor.methods({
 			billyTransaction = getTransaction(billyInvoice.data.items[0].guid);
 
 			//update the collection with this transaction
-            billyTransaction.data.items[0].email_sent = {};
-			billyTransaction.data.items[0].subscription_guid = billySubscribeCustomer.data.guid;
-			billyTransaction.data.items[0].credit = {sent: false};
+
+            var transaction_email = {};
+			transaction_email.transaction_guid = billyTransaction.data.items[0].guid;
+			transaction_email.credit = {sent: false};
+
             var transaction_guid = billyTransaction.data.items[0].guid;
 
-            Donate.update({_id: data._id}, {
+			Emails.insert(transaction_email);
+
+            Donations.update(data._id, {
             	$push: {
             		'transactions': billyTransaction.data.items[0]
             	}

@@ -1,7 +1,7 @@
-//Record donations, including amount, frequency, designation, source and day or days of month for recurring gifts
-Donations = new Meteor.Collection('donations');
+//Includes relevant guid or id, time_sent, sent?, template_name, sent_to
+Emails = new Meteor.Collection('emails');
 if (Meteor.isServer) {
-    Donations.deny({
+    Emails.deny({
         insert: function (userId, doc) {
             if(userId === Meteor.settings.admin_user){
                 return false;
@@ -27,7 +27,7 @@ if (Meteor.isServer) {
         }
     });
 
-    Donations.allow({
+    Emails.allow({
         insert: function (userId, doc) {
             if(userId === Meteor.settings.admin_user){
                 return true;
