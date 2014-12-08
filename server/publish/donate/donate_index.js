@@ -28,6 +28,41 @@ Meteor.publish('donate', function (input) {
 	 }});
 });
 
+Meteor.publish('single_gift_receipt_donations', function (input) {
+	return Donations.find({_id: input}, {fields: {
+		sessionId: 0,
+		viewable: 0,
+		created_at: 0,
+		URL: 0
+	}});
+});
+
+Meteor.publish('single_gift_receipt_customers', function (input) {
+	return Customers.find({_id: input}, {fields: {
+		'bank_account.fingerprint': 0,
+		'bank_account.href': 0,
+		'bank_account.id': 0,
+		'bank_account.routing_number': 0,
+		'bank_account.can_credit': 0,
+		'bank_account.can_debit': 0,
+		'card.can_debit': 0,
+		'card.cvv_result': 0,
+		'card.bank_name': 0,
+		'card.expires': 0,
+		'card.id': 0,
+		'card.href': 0,
+		'card.fingerprint': 0,
+		'card.type': 0
+	}});
+});
+
+Meteor.publish('single_gift_receipt_debits', function (input) {
+	return Debits.find({_id: input}, {fields: {
+		'status': 1
+	}});
+});
+
+
 Meteor.publish('donate_list', function () {
 	//check to see that the user is the admin user
 	 if(this.userId === Meteor.settings.admin_user){

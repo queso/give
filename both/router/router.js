@@ -34,26 +34,25 @@ Router.route(':root', function () {
     name: 'donation.form'
 });
 
-Router.route(':root/thanks/:_id', function () {
-    var root = Meteor.settings.public.root;
-    var params = this.params;
-
-    this.subscribe('donate', params._id).wait();
-
-    if (this.ready()) {
+Router.route(':root/thanks', {
+    name: 'donation.thanks',
+    waitOn: function () {
+        return  [
+            Meteor.subscribe('single_gift_receipt_donations', this.params.query.don),
+            Meteor.subscribe('single_gift_receipt_customers', this.params.query.c),
+            Meteor.subscribe('single_gift_receipt_debits', this.params.query.deb)
+        ];
+    },
+    data: function () {
+        var root = Meteor.settings.public.root;
+    },
+    action: function () {
         this.render('Thanks', {
             data: function () {
-                Session.set('print', params.query.print);
-                return Donate.findOne(params._id);
+                Session.set('print', this.params.query.print);
             }
         });
-        this.next();
-    }else {
-        this.render('Loading');
-        this.next();
     }
-    }, {
-    name: 'donation.thanks'
 });
 
 Router.route(':root/gift/:_id', function () {

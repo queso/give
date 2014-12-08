@@ -19,17 +19,25 @@
 
             <dl class="invoice-meta">
                 <dt class="invoice-number">Donation #</dt>
-                <dd>{{#if billy}}
-                        {{transaction_guid}}
-                    {{else}}
-                        {{receiptNumber}}
-                    {{/if}}</dd>
+                <dd>
+                    {{#with donation}}
+                        {{#if billy}}
+                            {{transaction_guid}}
+                        {{else}}
+                            {{receiptNumber}}
+                        {{/if}}
+                    {{/with}}
+                </dd>
                 <dt class="invoice-date">Donation Date</dt>
-                <dd>{{#if billy}}
-                        {{transaction_date}}
-                    {{else}}
-                        {{date}}
-                    {{/if}}</dd>
+                <dd>
+                    {{#with donation}}
+                        {{#if billy}}
+                            {{transaction_date}}
+                        {{else}}
+                            {{date}}
+                        {{/if}}
+                    {{/with}}
+                </dd>
             </dl>
         </header>
         <!-- e: invoice header -->
@@ -37,7 +45,7 @@
         <section id="parties">
             <div class="invoice-to">
                 <h2>Donation To:</h2>
-                <div id="hcard-{{fname}}-{{lname}}" class="vcard">
+                <div id="hcard-}{{#with customer}}{{fname}}-{{lname}}{{/with}}" class="vcard">
                     <a class="url fn" href="https://trashmountain.com">Trash Mountain Project</a>
                     <a class="email" href="mailto:info@trashmountain.com">Info@trashmountain.com</a>
 

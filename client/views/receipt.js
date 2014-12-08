@@ -9,8 +9,17 @@ Template.Receipt.events({
 });
 
 Template.Receipt.helpers({
+    donation: function () {
+        return Donations.findOne();
+    },
+    customer: function () {
+        return Customers.findOne();
+    },
+    debit: function () {
+        return Debits.findOne();
+    },
     billy: function () {
-      return (this.isRecurring);
+      return (this.subscriptions);
     },
    receiptNumber: function () {
    		return this._id;
@@ -28,48 +37,48 @@ Template.Receipt.helpers({
       return moment(transaction.updated_at).format('MM/DD/YYYY');
    },
    org: function () {
-    if (this.customer.org){
-      return this.customer.org + "<br>"
+    if (this.org){
+      return this.org + "<br>"
     }
    },
    fname: function () {
-   		return this.customer.fname;
+   		return this.fname;
    },
    lname: function () {
-   		return this.customer.lname;
+   		return this.lname;
    },
    address_line1: function () {
-   		return this.customer.address_line1;
+   		return this.address_line1;
    },
    address_line2: function () {
-   	if(this.customer.address_line2) {
-   		return "<br>" + this.customer.address_line2;
+   	if(this.address_line2) {
+   		return "<br>" + this.address_line2;
    	} else {
    		return false;
    	}
    },
    city: function () {
-   		return this.customer.city;
+   		return this.city;
    },
    region: function () {
-   		return this.customer.region;
+   		return this.region;
    },
    postal_code: function () {
-   		return this.customer.postal_code;
+   		return this.postal_code;
    },
    country: function () {
-   		if(this.customer.country === 'US') {
+   		if(this.country === 'US') {
    			return;
    		}else {
-   			return this.customer.country;
+   			return this.country;
    		}
    },
    email_address: function () {
-   		return this.customer.email_address;
+   		return this.email_address;
    },
    phone_number: function () {
-      if(this.customer.phone_number !== '') {
-         return this.customer.phone_number;
+      if(this.phone_number !== '') {
+         return this.phone_number;
       } else {
          return false;
       }   		

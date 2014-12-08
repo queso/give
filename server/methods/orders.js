@@ -4,34 +4,36 @@ _.extend(Utils, {
         var order;
         order = Utils.extractFromPromise(balanced.get(customerHREF).orders.create({"Description": "Order #" + id})); //TODO: Need to adjust this to be more specific since I might have many orders from one id
 
+        order.description = "Order #" + id;
         //add order response from Balanced to the collection
-        var orderResponse = Donate.update(id, {$set: {
-            'order.description': "Order #" + id
+        var orderResponse = Donations.update(id, {$set: {
+            'order': order
         }});
         logger.info("Finished balanced order create");
         return order;
     },
-    debit_order: function (data, order, paymentHref) {
+    debit_order: function (total, donations_id, customer_id, order, paymentHref) {
         logger.info("Inside debit_order.");
         var debit;
-        //Need to make sure that the number is a whole number, not a decimal
-        var total = data.paymentInformation.total_amount;
         var paymentObject = balanced.get(paymentHref);
+        //TODO: run tests against the amount value to make sure it is always correct
         debit = Utils.extractFromPromise(balanced.get(order).debit_from(paymentObject, ({ "amount": total,
             "appears_on_statement_as": "Trash Mountain"})));
 
         //add debit response from Balanced to the database
-        var debitReponse = Donate.update(data._id, {$set: {
-            'debit.type': debit.type,
-            'debit.customer': debit.links.customer,
-            'debit.total_amount': debit.amount,
-            'debit.id': debit.id,
-            'debit.status': debit.status,
-            'card_holds.id': debit.links.card_hold,
-            'order.id': debit.links.order,
-            'credit.sent': false
-        }});
-        logger.info("Finished balanced order debit");
+        var debit_id = Debits.insert({
+            'debit_id': debit.id,
+            'status': debit.status,
+            'customer_id': debit.links.customer,
+            'total_amount': debit.amount,
+            'type': debit.type,
+            'order_id': debit.links.order,
+            'credit_sent': false,
+            'donations_id': donations_id
+        });
+
+        debit._id = debit_id;
+        logger.info("Finished balanced order debit. Debits ID: " + debit_id);
         return debit;
     },
     credit_order: function(debitID) {
