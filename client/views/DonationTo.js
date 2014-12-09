@@ -27,4 +27,7 @@ Template.DonationTo.rendered = function () {
 	if(Session.get('params.recurring') === true) {
 		$('#recurring').prop('checked', true);
 	}
+	if(Session.get('params.recurring')) {
+		$("#is_recurring").val(Session.get('params.recurring'));
+	}
 };
