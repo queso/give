@@ -29,12 +29,12 @@ Template.Receipt.helpers({
     return transaction_guid;
    },
    date: function () {
-   		return moment(this.debit.created_at).format('MM/DD/YYYY');
+   		return moment(this.created_at).format('MM/DD/YYYY');
    },
    transaction_date: function () {
     var transaction_guid = Session.get('transaction_guid');
     var transaction = _.findWhere(this.transactions, { guid: transaction_guid });    
-      return moment(transaction.updated_at).format('MM/DD/YYYY');
+      return moment(transaction.created_at).format('MM/DD/YYYY');
    },
    org: function () {
     if (this.org){
@@ -84,7 +84,7 @@ Template.Receipt.helpers({
       }   		
    },
    donateTo: function () {
-   		return this.debit.donateTo;
+   		return this.donateTo;
    },
    donateWith: function () {
       var payment_device;
@@ -105,32 +105,32 @@ Template.Receipt.helpers({
       }   		
    },
    amount: function () {
-          if(this.debit.amount){
-          return (this.debit.amount / 100).toFixed(2);
+          if(this.amount){
+          return (this.amount / 100).toFixed(2);
           }else {
             return '';   
           }
          
    },
    total_amount: function () {
-      if(this.debit.total_amount){
-        return (this.debit.total_amount / 100).toFixed(2);
+      if(this.total_amount){
+        return (this.total_amount / 100).toFixed(2);
       }else {
        return '';   
       }
    },
     fees: function () {
-        if(this.debit.fees && this.debit.total_amount){
+        if(this.fees && this.total_amount){
             return '\
             <tr>\
                 <th>Covered fees:</th>\
                 <td></td>\
-                <td>$' + (this.debit.fees / 100).toFixed(2) + '</td>\
+                <td>$' + (this.fees / 100).toFixed(2) + '</td>\
             </tr>\
             <tr>\
                 <th>Total:</th>\
                 <td></td>\
-                <td>$' + (this.debit.total_amount / 100).toFixed(2) + '</td>\
+                <td>$' + (this.total_amount / 100).toFixed(2) + '</td>\
             </tr>';
         } else {
         return "";

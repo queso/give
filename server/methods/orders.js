@@ -1,15 +1,15 @@
 _.extend(Utils, {
     create_order: function (id, customerHREF) {
         logger.info("Inside create_order.");
-        var order;
-        order = Utils.extractFromPromise(balanced.get(customerHREF).orders.create({"Description": "Order #" + id})); //TODO: Need to adjust this to be more specific since I might have many orders from one id
+        var order = Utils.extractFromPromise(balanced.get(customerHREF).orders.create({"Description": "Order #" + id})); //TODO: Need to adjust this to be more specific since I might have many orders from one id
 
-        order.description = "Order #" + id;
         //add order response from Balanced to the collection
         var orderResponse = Donations.update(id, {$set: {
-            'order': order.orders[0]
+            'order.id': order.id,
+            'order.href': order.href
         }});
         logger.info("Finished balanced order create");
+
         return order;
     },
     debit_order: function (total, donations_id, customer_id, order, paymentHref) {
@@ -20,17 +20,19 @@ _.extend(Utils, {
         debit = Utils.extractFromPromise(balanced.get(order).debit_from(paymentObject, ({ "amount": total,
             "appears_on_statement_as": "Trash Mountain"})));
 
+        console.log(debit._api.cache[debit.href]);
+        var debit_insert = {};
+        debit_insert.donations_id = donations_id;
+        debit_insert.customer_id = customer_id;
         //add debit response from Balanced to the database
-        var debit_id = Debits.insert({
-            'debit_id': debit.id,
-            'status': debit.status,
-            'customer_id': debit.links.customer,
-            'total_amount': debit.amount,
-            'type': debit.type,
-            'order_id': debit.links.order,
-            'credit_sent': false,
-            'donations_id': donations_id
-        });
+        var debit_id = Debits.insert(debit_insert);
+            /*'debit_id': debit.id,
+             'status': debit.status,
+             'customer_id': debit.links.customer,
+             'total_amount': debit.amount,
+             'type': debit.type,
+             'order_id': debit.links.order,
+             'credit_sent': false,*/
 
         debit._id = debit_id;
         logger.info("Finished balanced order debit. Debits ID: " + debit_id);
