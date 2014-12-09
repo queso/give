@@ -132,7 +132,7 @@ function handleCalls(payment, form) {
         Meteor.call("singleDonation", form, function (error, result) {
             if (result) {
                 $('#loading1').modal('hide');
-                Router.go('/give/thanks/' + result[0] + "/" + result[1] + "/" + result[2]);
+                Router.go('/give/thanks?c=' + result.c + "&don=" + result.don + "&deb=" + result.deb);
             } else {
                 //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
                 updateTotal();

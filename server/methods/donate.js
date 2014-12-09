@@ -74,7 +74,7 @@ Meteor.methods({
                 var debitOrder = Utils.debit_order(data.paymentInformation.total_amount, data._id, customerData._id, orders.href, check.href);
 
             }
-            return [customerData._id, data._id, debitOrder._id];
+            return {c: customerData._id, don: data._id, deb: debitOrder._id};
 
         } catch (e) {
          logger.error("Got to catch error area of processPayment function." + e + " " + e.reason);

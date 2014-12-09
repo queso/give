@@ -1,7 +1,7 @@
 _.extend(Utils, {
     create_customer: function (customerInfo, billy) {
         console.log("Inside create_customer.");
-        customerData = Utils.extractFromPromise(balanced.marketplace.customers.create({
+        var customerData = Utils.extractFromPromise(balanced.marketplace.customers.create({
             'name': customerInfo.fname + " " + customerInfo.lname,
             "address": {
                 "city": customerInfo.city,
@@ -33,6 +33,9 @@ _.extend(Utils, {
         } else {
             //add customer create response from Balanced to the collection
             customerData._id = Customers.insert(customerData);
+            console.dir("customer ID: " + customerData.id);
+            console.dir(customerData);
+
             return customerData;
         }
     },
