@@ -13,13 +13,13 @@ _.extend(Utils, {
             'email': customerInfo.email_address,
             'phone': customerInfo.phone_number
         }));
+        var insertThis = {};
+        insertThis = customerInfo;
 
         if(billy) {
             var billyCustomer = {};
             billyCustomer = Billy.createBillyCustomer(customerData.id);
 
-            var insertThis = {};
-            insertThis = customerInfo;
             insertThis.billy = {
                 'created_at': billyCustomer.created_at,
                 'customer_guid': billyCustomer.guid,
@@ -28,16 +28,13 @@ _.extend(Utils, {
                 'processor_uri': billyCustomer.processor_uri,
                 'updated_at': billyCustomer.updated_at
             };
-            insertThis._id = Customers.insert(insertThis);
-            return insertThis;
-        } else {
-            //add customer create response from Balanced to the collection
-            customerData._id = Customers.insert(customerData);
-            console.dir("customer ID: " + customerData.id);
-            console.dir(customerData);
-
-            return customerData;
         }
+        insertThis.type = customerData._type;
+        insertThis.id = customerData.id;
+        insertThis.href = customerData._href;
+        insertThis._id = Customers.insert(insertThis);
+        logger.info("Customer _id: " + insertThis._id);
+        return insertThis;
     },
     get_card: function (customer_id, cardHref) {
         console.log("Inside get_card.");

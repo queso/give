@@ -7,7 +7,7 @@ _.extend(Utils, {
         order.description = "Order #" + id;
         //add order response from Balanced to the collection
         var orderResponse = Donations.update(id, {$set: {
-            'order': order
+            'order': order.orders[0]
         }});
         logger.info("Finished balanced order create");
         return order;
