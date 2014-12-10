@@ -20,7 +20,7 @@ Billy = {
 			throw new Meteor.Error(error, e._id);
 		}
 	},
-	createPaymentMethod: function(donation_id, customer_id, donateWith, href, processor_uri) {
+	createPaymentMethod: function(customer_id, donateWith, href, processor_uri) {
 		/*try {*/
 		logger.info("Started createPaymentMethod");
 
@@ -35,7 +35,7 @@ Billy = {
 			logger.info("Finished adding card into the collection.");
 			logger.info("Started Associate Function.");
 
-			var associate = Utils.create_association(donation_id, card.href, processor_uri);
+			var associate = Utils.create_association(customer_id, card.href, processor_uri);
 
 		}
 		//for running ACH
@@ -47,7 +47,7 @@ Billy = {
 
 			logger.info("Finished adding bank_account into the collection.");
 			logger.info("Started Associate Function.");
-			associate = Utils.create_association(donation_id, check.href, processor_uri);
+			associate = Utils.create_association(customer_id, check.href, processor_uri);
 
 		}
 		/*}catch (e) {
@@ -209,9 +209,7 @@ Meteor.methods({
 			});
 
 			var billyPayment = {};
-			billyPayment = Billy.createPaymentMethod(
-				data._id, data.customer._id, data.paymentInformation.donateWith, data.paymentInformation.href, data.customer.billy.processor_uri
-			);
+			billyPayment = Billy.createPaymentMethod(data.customer._id, data.paymentInformation.donateWith, data.paymentInformation.href, data.customer.billy.processor_uri);
 			var billySubscribeCustomer = '';
 			billySubscribeCustomer = Billy.subscribeToBillyPlan(data._id, data.customer._id, data.paymentInformation.type, data.paymentInformation.href);
 			Donations.update(data._id, {

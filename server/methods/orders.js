@@ -2,12 +2,14 @@ _.extend(Utils, {
     create_order: function (id, customerHREF) {
         logger.info("Inside create_order.");
         var order = Utils.extractFromPromise(balanced.get(customerHREF).orders.create({"Description": "Order #" + id})); //TODO: Need to adjust this to be more specific since I might have many orders from one id
+        console.log(order._api.cache[order.href]);
 
         //add order response from Balanced to the collection
-        var orderResponse = Donations.update(id, {$set: {
-            'order.id': order.id,
-            'order.href': order.href
-        }});
+        var orderResponse = Donations.update(id, {
+            $set: {
+                'order': order._api.cache[order.href]
+            }
+        });
         logger.info("Finished balanced order create");
 
         return order;
@@ -21,18 +23,11 @@ _.extend(Utils, {
             "appears_on_statement_as": "Trash Mountain"})));
 
         console.log(debit._api.cache[debit.href]);
-        var debit_insert = {};
+        var debit_insert = debit._api.cache[debit.href];
         debit_insert.donations_id = donations_id;
         debit_insert.customer_id = customer_id;
         //add debit response from Balanced to the database
         var debit_id = Debits.insert(debit_insert);
-            /*'debit_id': debit.id,
-             'status': debit.status,
-             'customer_id': debit.links.customer,
-             'total_amount': debit.amount,
-             'type': debit.type,
-             'order_id': debit.links.order,
-             'credit_sent': false,*/
 
         debit._id = debit_id;
         logger.info("Finished balanced order debit. Debits ID: " + debit_id);
@@ -58,6 +53,7 @@ _.extend(Utils, {
 
                     var credit = Utils.extractFromPromise(balanced.get(orderHref).credit_to(bank_account, {"amount": amount,
                         "appears_on_statement_as": name}));
+                    console.log(credit._api.cache[credit.href]);
                     Donate.update({'debit.id': debitID}, {$set: {'credit.id': credit.id,
                         'credit.amount': credit.amount,
                         'credit.sent': true}});

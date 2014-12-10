@@ -1,7 +1,8 @@
 _.extend(Utils, {
     create_customer: function (customerInfo, billy) {
         console.log("Inside create_customer.");
-        var customerData = Utils.extractFromPromise(balanced.marketplace.customers.create({
+        var customerData = {};
+        customerData= Utils.extractFromPromise(balanced.marketplace.customers.create({
             'name': customerInfo.fname + " " + customerInfo.lname,
             "address": {
                 "city": customerInfo.city,
@@ -14,7 +15,7 @@ _.extend(Utils, {
             'phone': customerInfo.phone_number
         }));
         var insertThis = {};
-        insertThis = customerInfo;
+        insertThis = customerData._api.cache[customerData.href];
 
         if(billy) {
             var billyCustomer = {};
@@ -29,9 +30,6 @@ _.extend(Utils, {
                 'updated_at': billyCustomer.updated_at
             };
         }
-        insertThis.type = customerData._type;
-        insertThis.id = customerData.id;
-        insertThis.href = customerData._href;
         insertThis._id = Customers.insert(insertThis);
         logger.info("Customer _id: " + insertThis._id);
         return insertThis;
@@ -41,29 +39,7 @@ _.extend(Utils, {
         var card;
         card = Utils.extractFromPromise(balanced.get(cardHref));
 
-        var insert_card = {};
-        insert_card = {
-            'fingerprint': card.fingerprint,
-            'id': card.id,
-            'type': card.type,
-            'href': card.href,
-            'cvv_result': card.cvv_result,
-            'number': card.number,
-            'expiration_month': card.expiration_month,
-            'expiration_year': card.expiration_year,
-            'expires': new Date(card.expiration_year + '-' + card.expiration_month),
-            'bank_name': card.bank_name,
-            'brand': card.brand,
-            'created_at': card.created_at,
-            'can_debit': card.can_debit,
-            'customer_id': card.links.customer
-        };
-        //add card create response from Balanced to the collection
-        Customers.update(customer_id, {
-            $push: {
-                card: insert_card
-            }
-        });
+        var insert_card = card._api.cache[card.href];
         return card;
     },
     get_check: function (customer_id, checkHref) {
@@ -71,41 +47,30 @@ _.extend(Utils, {
         var check;
         check = Utils.extractFromPromise(balanced.get(checkHref));
 
-        var insert_check = {};
-        insert_check = {
-            'fingerprint': check.fingerprint,
-            'id': check.id,
-            'type': check.account_type,
-            'href': check.href,
-            'account_number': check.account_number,
-            'routing_number': check.routing_number,
-            'bank_name': check.bank_name,
-            'account_type': check.account_type,
-            'name': check.name,
-            'created_at': check.created_at,
-            'can_debit': check.can_debit,
-            'can_credit': check.can_credit,
-            'customer_id': check.links.customer
-        };
-
-        //add check create response from Balanced to the collection
-        Customers.update(customer_id, {
-            $push: {
-                check: insert_check
-            }
-        });
+        var insert_check = check._api.cache[check.href];
         return check;
     },
-    create_association: function (donation_id, paymentHref, customerHref) {
+    create_association: function (customer_id, paymentHref, customerHref) {
         try {
             console.log("Inside create_association function");
             associate = Utils.extractFromPromise(balanced.get(paymentHref).associate_to_customer(customerHref));
             //add debit response from Balanced to the database
-            Donations.update(donation_id, {
-                $set: {
-                    'type': associate.type
-                }
-            });
+            var insert_this = associate._api.cache[associate.href];
+            //add card create response from Balanced to the collection
+            if(associate._type === 'bank_account'){
+                Customers.update(customer_id, {
+                    $push: {
+                        bank_accounts: insert_this
+                    }
+                });
+            } else {
+                Customers.update(customer_id, {
+                    $push: {
+                        cards: insert_this
+                    }
+                });
+             }
+
             return associate;
         } catch (e) {
             console.log("Got to catch error area of create_associate. Donation_id: " + donation_id + " Category Code: " + e.category_code + ' Description: ' + e.description);

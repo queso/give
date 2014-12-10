@@ -51,7 +51,7 @@ Meteor.methods({
                 var orders = Utils.create_order(data._id, customerData.href);
 
                 //Associate the card with the balanced customer
-                var associate = Utils.create_association(data._id, card.href, customerData.href);
+                var associate = Utils.create_association(customerData._id, card.href, customerData.href);
 
                 //Debit the order
                 var debitOrder = Utils.debit_order(data.paymentInformation.total_amount, data._id, customerData._id, orders.href, card.href);
@@ -62,13 +62,13 @@ Meteor.methods({
                 console.log(data.paymentInformation.href);
 
                 //Get the check data from balanced and store it
-                var check = Utils.get_card(customerData._id, data.paymentInformation.href);
+                var check = Utils.get_check(customerData._id, data.paymentInformation.href);
 
                 //Create a new order
                 var orders = Utils.create_order(data._id, customerData.href);
 
                 //Associate the card with the balanced customer
-                var associate = Utils.create_association(data._id, check.href, customerData.href);
+                var associate = Utils.create_association(customerData._id, check.href, customerData.href);
 
                 //Debit the order
                 var debitOrder = Utils.debit_order(data.paymentInformation.total_amount, data._id, customerData._id, orders.href, check.href);
