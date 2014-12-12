@@ -159,8 +159,6 @@ function getTransaction(invoiceID) {
 	try {
 		logger.info("Started getTransaction");
 		var resultSet = '';
-
-		logger.info("inside getTransaction");
 		resultSet = HTTP.get("https://billy.balancedpayments.com/v1/invoices/" + invoiceID + "/transactions", {
 			auth: Meteor.settings.billy_key + ':'
 		});
@@ -228,12 +226,14 @@ Meteor.methods({
 					'invoices': billyInvoice.data.items[0]
 				}
 			});
+			logger.info(billyInvoice.data.items[0]);
 			logger.info("Inserted invoice into appropriate subscription.");
 
 
 			//Get the whole Transaction
 			var billyTransaction = {};
 			billyTransaction = getTransaction(billyInvoice.data.items[0].guid);
+			logger.info(billyTransaction.data.items[0]);
 
 			//update the collection with this transaction
 
@@ -241,17 +241,29 @@ Meteor.methods({
 			transaction_email.transaction_guid = billyTransaction.data.items[0].guid;
 			transaction_email.credit = {sent: false};
 
-            var transaction_guid = billyTransaction.data.items[0].guid;
+            var insertTransaction = billyTransaction.data.items[0];
+			insertTransaction.debit_id = billyTransaction.data.items[0].processor_uri.replace('/debits/', '');
 
 			Emails.insert(transaction_email);
 
             Donations.update(data._id, {
             	$push: {
-            		'transactions': billyTransaction.data.items[0]
+            		'transactions': insertTransaction
             	}
             });
 
-			var return_this = {_id: data._id, transaction_guid: transaction_guid};
+			//Construct the object to insert into the debits collection
+			var insert_debit = Utils.get_debit(billyTransaction.data.items[0].processor_uri);
+			console.log(data.customer._id);
+			insert_debit.customer_id = data.customer._id;
+			insert_debit.donation_id = data._id;
+			insert_debit.transaction_guid = insert_debit.meta['billy.transaction_guid'];
+			delete insert_debit.meta;
+
+			//Insert object into debits collection and get the _id
+			var debit_id = Debits.insert(insert_debit);
+
+			var return_this = {c: data.customer._id, don: data._id, deb: debit_id};
 			return return_this;
 
 

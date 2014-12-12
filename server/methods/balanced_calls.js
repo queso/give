@@ -12,7 +12,8 @@ _.extend(Utils, {
                 "postal_code": customerInfo.postal_code,
             },
             'email': customerInfo.email_address,
-            'phone': customerInfo.phone_number
+            'phone': customerInfo.phone_number,
+            'business_name': customerInfo.org
         }));
         var insertThis = {};
         insertThis = customerData._api.cache[customerData.href];
@@ -51,7 +52,7 @@ _.extend(Utils, {
         return check;
     },
     create_association: function (customer_id, paymentHref, customerHref) {
-        try {
+        /*try {*/
             console.log("Inside create_association function");
             associate = Utils.extractFromPromise(balanced.get(paymentHref).associate_to_customer(customerHref));
             //add debit response from Balanced to the database
@@ -72,7 +73,7 @@ _.extend(Utils, {
              }
 
             return associate;
-        } catch (e) {
+        /*} catch (e) {
             console.log("Got to catch error area of create_associate. Donation_id: " + donation_id + " Category Code: " + e.category_code + ' Description: ' + e.description);
             Donations.update(donation_id, {
                 $set: {
@@ -84,8 +85,17 @@ _.extend(Utils, {
                 }
             });
             throw new Meteor.Error(e.category_code, e.description);
-        }
+        }*/
     },
+    get_debit: function (debitHref) {
+        console.log("Inside get_debit.");
+
+        var debit = Utils.extractFromPromise(balanced.get(debitHref));
+        console.log(debit._api.cache[debit.href]);
+        var insert_debit = debit._api.cache[debit.href];
+        return insert_debit;
+    },
+
 
     getDonateTo: function (donateTo) {
         var returnToCalled;

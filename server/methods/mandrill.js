@@ -7,7 +7,6 @@ function get_billy_info (transaction_guid) {
 }
 
 _.extend(Utils,{
-	//Need to fix this after finding out what it should actually show here
 	large_gift_email: function (billy, debit_or_trans_id, amount){
 	    try {
 	      logger.info("Started large_gift_email with ID: " + debit_or_trans_id);
@@ -39,47 +38,40 @@ _.extend(Utils,{
 	          {}
 	        ],
 	        "message": {
-	        	"to": [
-	        	    {
-	                "email": "large_gift@trashmountain.com"
-	            	}
-			    ],
+	        	"to": [{"email": "large_gift@trashmountain.com"}],
 	          	"merge_vars": [
 					{
-					"rcpt": 'large_gift@trashmountain.com',
-					"vars": [
-						{
-						"name": "CreatedAt",
-						"content": the_info.created_at
-						}, {
-						"name": "DEV",
-						"content": Meteor.settings.dev
-						}, {
-						"name": "DonatedTo",
-						"content": the_info.mongo_doc.debit.donateTo
-						}, {
-						"name": "DonateWith", //eventually send the card brand and the last four instead of just this
-						"content": the_info.mongo_doc.debit.donateWith
-						}, {
-						"name": "TotalGiftAmount",
-						"content": (the_info.mongo_doc.debit.total_amount / 100).toFixed(2)
-						}, {
-						"name": "FULLNAME",
-						"content": fullName
-						}, {
-						"name": "ReceiptNumber",
-						"content": the_info.mongo_doc._id
-						}, {
-						"name": "Path",
-						"content": path
-						}, {
-						"name": "TransactionGUID",
-						"content": transaction_guid
-						}
-		            ]
-	          	}
-	        ]	        
-	      }
+						"rcpt": 'large_gift@trashmountain.com',
+						"vars": [
+							{
+							"name": "CreatedAt",
+							"content": the_info.created_at
+							}, {
+							"name": "DEV",
+							"content": Meteor.settings.dev
+							}, {
+							"name": "DonatedTo",
+							"content": the_info.mongo_doc.debit.donateTo
+							}, {
+							"name": "TotalGiftAmount",
+							"content": (the_info.mongo_doc.debit.total_amount / 100).toFixed(2)
+							}, {
+							"name": "FULLNAME",
+							"content": fullName
+							}, {
+							"name": "ReceiptNumber",
+							"content": the_info.mongo_doc._id
+							}, {
+							"name": "Path",
+							"content": path
+							}, {
+							"name": "TransactionGUID",
+							"content": transaction_guid
+							}
+						]
+	          		}
+	        	]
+	      	}
 	      });
 	    } //End try
 	    catch (e) {
@@ -88,38 +80,36 @@ _.extend(Utils,{
 	      throw new Meteor.error(e);
 	    }
 	},
-	send_initial_email: function (id, billy, transaction_guid) {
-	    try {
-	      logger.info("Started send_initial_email with ID: " + id + " --------------------------");
-	      var error = {};
-	      var lookup_record = Donate.findOne({_id: id});
-	      if(!billy){
-	      	logger.info("Record id = " + lookup_record._id);
-	      	var created_at = moment(Date.parse(lookup_record.created_at)).format('MM/DD/YYYY');
-	      }else {
-	      	logger.info("Record id = " + lookup_record._id);
-	      	var lookup_record = Donate.findOne({'transactions.guid': transaction_guid});
-	      	var lookup_transaction = Donate.findOne({'transactions.guid': transaction_guid}, {'transactions.guid': 1});
-	      	var transaction = _.findWhere(lookup_transaction.transactions, { guid: transaction_guid });
-	      	var created_at = moment(Date.parse(transaction.created_at)).format('MM/DD/YYYY');
-		}
+	send_donation_email: function (billy, id, trans_guid, amount, status) {
+		try {
+			logger.info("Started send_receipt_email with ID: " + id);
 
-	      var debit = lookup_record.debit;
-	      var customer = lookup_record.customer;
-	      var fees = debit.fees;
-	      if(customer.org){
-	        var fullName = customer.org + "<br>" + customer.fname + " " + customer.lname;
-	      }else{
-	        var fullName = customer.fname + " " + customer.lname;
-	      } 
-	      logger.info("Cover the fees = " + debit.coveredTheFees);
-	      logger.info("debit.status: " + debit.status);
-	      var slug;
-	      if (debit.status === "failed") {
-	        return '';
-	        } else {
-	        slug = "donation-initial-email";
-	      }
+			var debit_cursor = Debits.findOne({id: id});
+			var customer_cursor = Customers.findOne({_id: debit_cursor.customer_id});
+			var donation_cursor = Donations.findOne({_id: debit_cursor.donation_id});
+			var donateWithType  = donation_cursor.type;
+
+			//Get the donation with description for either the card or the bank account
+			var donateWith = Evts.get_donate_with(customer_cursor, debit_cursor.links.source)
+
+			var created_at = moment(Date.parse(debit_cursor.created_at)).format('MM/DD/YYYY');
+			var fees = donation_cursor.fees ? (donation_cursor.fees / 100).toFixed(2) : null;
+
+			if(customer_cursor.business_name){
+				var fullName = customer_cursor.business_name + "<br>" + customer_cursor.name;
+			}else{
+				var fullName = customer_cursor.name;
+			}
+
+			var slug;
+			if (status === "failed") {
+				slug = 'fall-2014-donation-failed';
+			} else if(status === 'created'){
+				slug = "donation-initial-email";
+			} else if (status === 'succeeded'){
+				slug = "fall-2014-donation-receipt-multi-collection";
+			}
+
 	      logger.info("Sending with template name: " + slug);
 	      Meteor.Mandrill.sendTemplate({
 	        "key": Meteor.settings.mandrillKey,
@@ -129,129 +119,12 @@ _.extend(Utils,{
 	        ],
 	        "message": {
 	          "to": [
-	            {"email": customer.email_address}
-	          ],
-	          "merge_vars": [
-	          {
-	            "rcpt": customer.email_address,
-	            "vars": [
-	            {
-	              "name": "CreatedAt",
-	              "content": created_at
-	            },
-	            {
-	              "name": "DEV",
-	              "content": Meteor.settings.dev
-	            },
-	              {
-	                "name": "DonatedTo",
-	                "content": debit.donateTo
-	              }, {
-	                "name": "DonateWith", //eventually send the card brand and the last four instead of just this
-	                "content": debit.donateWith
-	              }, {
-	                "name": "GiftAmount",
-	                "content": (debit.amount / 100).toFixed(2)
-	              }, {
-	                "name": "GiftAmountFees",
-	                "content": (fees / 100).toFixed(2)
-	              }, {
-	                "name": "TotalGiftAmount",
-	                "content": (debit.total_amount / 100).toFixed(2)
-	              }, {
-	                "name": "FailureReason",
-	                "content": error.failure_reason
-	               },{
-	                "name": "FailureReasonCode",
-	                "content": error.failure_reason_code
-	              },{
-	                "name": "FULLNAME",
-	                "content": fullName
-	            },{
-	                "name": "ORG",
-	                "content": customer.org
-	            },{
-	                "name": "ADDRESS_LINE1",
-	                "content": customer.address_line1
-	            }, {
-	                "name": "ADDRESS_LINE2",
-	                "content": customer.address_line2
-	            }, {
-	                "name": "LOCALITY",
-	                "content": customer.city
-	            }, {
-	                "name": "REGION",
-	                "content": customer.region
-	            }, {
-	                "name": "POSTAL_CODE",
-	                "content": customer.postal_code
-	            }, {
-	                "name": "PHONE",
-	                "content": customer.phone_number
-	            }, {
-	                "name": "ReceiptNumber",
-	                "content": id
-	            }, {
-	                "name": "Path",
-	                "content": 'thanks'
-	            }, {
-	                "name": "ReceiptOrTransNumber",
-	                "content": id
-	            }
-	            ]
-	          }
-	        ]
-	      }
-	      });
-	    } //End try
-	    catch (e) {
-	      logger.error('Mandril sendEmailOutAPI Method error message: ' + e.message);
-	      logger.error('Mandril sendEmailOutAPI Method error: ' + e);
-	      throw new Meteor.error(e);
-	    }
-	},
-    send_one_time_email: function (id) {
-	    try {
-	      logger.info("Started send_one_time_email with ID: " + id + " --------------------------");
-	      var error = {};
-	      var lookup_record = Donate.findOne({_id: id});
-			var payment_type = lookup_record.card ? lookup_record.card[0] : lookup_record.bank_account[0];
-	      var created_at = moment(Date.parse(lookup_record.created_at)).format('MM/DD/YYYY');
-	      var debit = lookup_record.debit;
-	      var customer = lookup_record.customer;
-	      var fees = debit.fees;
-	      var transaction_guid = '';
-	      if(customer.org){
-	        var fullName = customer.org + "<br>" + customer.fname + " " + customer.lname;
-	      }else{
-	        var fullName = customer.fname + " " + customer.lname;
-	      }
-	      logger.info("Cover the fees = " + debit.coveredTheFees);
-	      logger.info("debit.status: " + debit.status);
-	      var slug;
-	      if (debit.status === "failed") {
-	        error = lookup_record.failed;
-	        slug = "failedpayment";
-	        } else if (debit.coveredTheFees){
-	        slug = "fall-2014-donation-electronic-receipt-with-fees";
-	      } else {
-	        slug = "fall-2014-donation-electronic-receipt";
-	      }
-	      logger.info("Sending with template name: " + slug);
-	      Meteor.Mandrill.sendTemplate({
-	        "key": Meteor.settings.mandrillKey,
-	        "template_name": slug,
-	        "template_content": [
-	          {}
-	        ],
-	        "message": {
-	          "to": [
-	              {"email": customer.email_address}
+	              {"email": customer_cursor.email}
 	          ],
 	          "bcc_address": "support@trashmountain.com",
 	          "merge_vars": [
 	          {
-	            "rcpt": customer.email_address,
+	            "rcpt": customer_cursor.email,
 	            "vars": [
 	            {
 	              "name": "CreatedAt",
@@ -263,209 +136,71 @@ _.extend(Utils,{
 	            },
 	              {
 	                "name": "DonatedTo",
-	                "content": debit.donateTo
+	                "content": donation_cursor.donateTo
 	              }, {
-	                "name": "DonateWith",
-	                "content": debit.donateWith === 'Card' ? payment_type.brand ? payment_type.brand + ', ending in ' + payment_type.number.slice(-4) : 'Card ending in ' + payment_type.number.slice(-4) : payment_type.bank_name + ', ending in ' + payment_type.account_number.slice(-4)
+						"name": "DonateWith",
+						"content": donateWith
 					}, {
 	                "name": "GiftAmount",
-	                "content": (debit.amount / 100).toFixed(2)
+	                "content": (donation_cursor.amount / 100).toFixed(2)
 	              }, {
 	                "name": "GiftAmountFees",
-	                "content": (fees / 100).toFixed(2)
+	                "content": fees
 	              }, {
 	                "name": "TotalGiftAmount",
-	                "content": (debit.total_amount / 100).toFixed(2)
+	                "content": (donation_cursor.total_amount / 100).toFixed(2)
 	              }, {
 	                "name": "FailureReason",
-	                "content": error.failure_reason
+	                "content": debit_cursor.failure_reason
 	               },{
 	                "name": "FailureReasonCode",
-	                "content": error.failure_reason_code
+	                "content": debit_cursor.failure_reason_code
 	              },{
-	                "name": "FULLNAME",
-	                "content": fullName
-	            }, {
+					"name": "NAME",
+					"content": customer_cursor.name
+				},{
+					"name": "FULLNAME",
+					"content": fullName
+				}, {
 	                "name": "ORG",
-	                "content": customer.org
+	                "content": customer_cursor.business_name
 	            }, {
 	                "name": "ADDRESS_LINE1",
-	                "content": customer.address_line1
+	                "content": customer_cursor.address.line1
 	            }, {
 	                "name": "ADDRESS_LINE2",
-	                "content": customer.address_line2
+	                "content": customer_cursor.address.line2
 	            }, {
 	                "name": "LOCALITY",
-	                "content": customer.city
+	                "content": customer_cursor.address.city
 	            }, {
 	                "name": "REGION",
-	                "content": customer.region
+	                "content": customer_cursor.address.state
 	            }, {
 	                "name": "POSTAL_CODE",
-	                "content": customer.postal_code
+	                "content": customer_cursor.address.postal_code
 	            }, {
 	                "name": "PHONE",
-	                "content": customer.phone_number
+	                "content": customer_cursor.phone
 	            }, {
-	                "name": "ReceiptNumber",
-	                "content": id
+	                "name": "c",
+	                "content": customer_cursor._id
 	            }, {
-	                "name": "Path",
-	                "content": 'thanks'
-	            }, {
-	                "name": "ReceiptOrTransNumber",
+					"name": "don",
+					"content": donation_cursor._id
+				}, {
+					"name": "deb",
+					"content": debit_cursor._id
+				}, {
+	                "name": "DEBITID",
 	                "content": id
 	            }, {
 	                "name": "TransactionGUID",
-	                "content": transaction_guid
-	            }
-	            ]
-	          }
-	        ]
-	      }
-	      });
-	    } //End try
-	    catch (e) {
-	      logger.error('Mandril sendEmailOutAPI Method error message: ' + e.message);
-	      logger.error('Mandril sendEmailOutAPI Method error: ' + e);
-	      throw new Meteor.error(e);
-	    }
-	},
-    send_billy_email: function (id, transaction_guid, status) {
-	    try {
-	      logger.info("Started send_billy_email with ID: " + id + " --------------------------");
-	      logger.info("Started send_billy_email with transaction_guid: " + transaction_guid + " --------------------------");
-	      logger.info("Started send_billy_email with status: " + status + " --------------------------");
-	      var error = {};
-	      
-	      var lookup_record = Donate.findOne({'transactions.guid': transaction_guid}, {'transactions.$': 1});
-			var payment_type = lookup_record.card ? lookup_record.card[0] : lookup_record.bank_account[0];
-          var transaction = _.findWhere(lookup_record.transactions, { guid: transaction_guid });
-	      var created_at = moment(Date.parse(transaction.created_at)).format('MM/DD/YYYY');
-
-	      var lookup_trans = get_billy_info(transaction_guid);
-	      var debit = lookup_record.debit;
-	      var customer = lookup_record.customer;
-	      var fees = (debit.fees);
-	      if(customer.org){
-	        var fullName = customer.org + "<br>" + customer.fname + " " + customer.lname;
-	      }else{
-	        var fullName = customer.fname + " " + customer.lname;
-	      }
-	      logger.info("Cover the fees = " + debit.coveredTheFees);
-	      logger.info("Transaction Status: " + transaction.status);
-
-	      var slug;
-	      //TODO: Fix this so that it looks into the transaciton sub-document, not just into the top level, or when it fails, put the transaction GUID into the failed record 
-	      //that is probably the way to go. 
-	      if (status === "failed") {
-	        error = Donate.findOne({_id: id}).failed;
-	        slug = "failedpayment";
-	        } else if (debit.coveredTheFees){
-	        slug = "fall-2014-donation-electronic-receipt-with-fees";
-	      } else {
-	        slug = "fall-2014-donation-electronic-receipt";
-	      }
-	      logger.info("Sending with template name: " + slug);
-	      Meteor.Mandrill.sendTemplate({
-	        "key": Meteor.settings.mandrillKey,
-	        "template_name": slug,
-	        "template_content": [
-	          {}
-	        ],
-	        "message": {
-	            "to": [
-	              {"email": customer.email_address}
-	            ],
-	          "bcc_address": "support@trashmountain.com",
-	          "merge_vars": [
-	          {
-	            "rcpt": customer.email_address,
-	            "vars": [
-	            {
-	              "name": "CreatedAt",
-	              "content": created_at
-	            },
-	            {
-	              "name": "DEV",
-	              "content": Meteor.settings.dev
-	            },
-	            {
-	                "name": "ReceiptOrTransNumber",
-	                "content": transaction_guid
-	            },
-				{
-					"name": "DonatedTo",
-					"content": debit.donateTo
-				},
-				{
-					"name": "DonateWith",
-					"content": debit.donateWith === 'Card' ? payment_type.brand ? payment_type.brand + ', ending in ' + payment_type.number.slice(-4) : 'Card ending in ' + payment_type.number.slice(-4) : payment_type.bank_name + ', ending in ' + payment_type.account_number.slice(-4)
-				},
-				{
-	                "name": "GiftAmount",
-	                "content": (debit.amount /100).toFixed(2)
-				},
-				{
-	                "name": "GiftAmountFees",
-	                "content": (fees / 100).toFixed(2)
-	            },
-				{
-	                "name": "TotalGiftAmount",
-	                "content": (debit.total_amount / 100).toFixed(2)
-	            },
-				{
-	                "name": "FailureReason",
-	                "content": error.failure_reason
-	             },
-				{
-	                "name": "FailureReasonCode",
-	                "content": error.failure_reason_code
-	            },
-				{
-	                "name": "FULLNAME",
-	                "content": fullName
-	            },
-				{
-	                "name": "ORG",
-	                "content": customer.org
-	            },
-				{
-	                "name": "ADDRESS_LINE1",
-	                "content": customer.address_line1
-	            },
-				{
-	                "name": "ADDRESS_LINE2",
-	                "content": customer.address_line2
-	            },
-				{
-	                "name": "LOCALITY",
-	                "content": customer.city
-	            },
-				{
-	                "name": "REGION",
-	                "content": customer.region
-	            },
-				{
-	                "name": "POSTAL_CODE",
-	                "content": customer.postal_code
-	            },
-				{
-	                "name": "PHONE",
-	                "content": customer.phone_number
-	            },
-				{
-	                "name": "ReceiptNumber",
-	                "content": id
-	            },
-				{
-	                "name": "Path",
-	                "content": 'gift'
-	            },
-				{
-	                "name": "TransactionGUID",
-	                "content": transaction_guid
-	            }
+	                "content": trans_guid
+	            },{
+					"name": "URL",
+					"content": donation_cursor.URL
+				}
 	            ]
 	          }
 	        ]

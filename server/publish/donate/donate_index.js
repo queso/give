@@ -2,63 +2,42 @@
 /* DonateIndex Publish Functions
 /*****************************************************************************/
 
-Meteor.publish('donate', function (input) {
-	 return Donate.find({_id: input}, {fields: {
-		 credit: 0,
-		 order: 0,
-		 sessionId: 0,
-		 viewable: 0,
-		 card_holds: 0,
-		 created_at: 0,
-		 URL: 0,
-		 'bank_account.fingerprint': 0,
-		 'bank_account.href': 0,
-		 'bank_account.id': 0,
-		 'bank_account.routing_number': 0,
-		 'bank_account.can_credit': 0,
-		 'bank_account.can_debit': 0,
-		 'card.can_debit': 0,
-		 'card.cvv_result': 0,
-		 'card.bank_name': 0,
-		 'card.expires': 0,
-		 'card.id': 0,
-		 'card.href': 0,
-		 'card.fingerprint': 0,
-		 'card.type': 0
-	 }});
-});
-
-Meteor.publish('single_gift_receipt_donations', function (input) {
+Meteor.publish('receipt_donations', function (input) {
 	return Donations.find({_id: input}, {fields: {
 		sessionId: 0,
 		viewable: 0,
 		created_at: 0,
-		URL: 0
+		URL: 0,
+		order: 0
 	}});
 });
 
-Meteor.publish('single_gift_receipt_customers', function (input) {
+Meteor.publish('receipt_customers', function (input) {
 	return Customers.find({_id: input}, {fields: {
-		'bank_account.fingerprint': 0,
-		'bank_account.href': 0,
-		'bank_account.id': 0,
-		'bank_account.routing_number': 0,
-		'bank_account.can_credit': 0,
-		'bank_account.can_debit': 0,
-		'card.can_debit': 0,
-		'card.cvv_result': 0,
-		'card.bank_name': 0,
-		'card.expires': 0,
-		'card.id': 0,
-		'card.href': 0,
-		'card.fingerprint': 0,
-		'card.type': 0
+		'links.source': 1,
+		'name': 1,
+		'address': 1,
+		'phone': 1,
+		'email': 1,
+		'id': 1,
+		'business_name': 1,
+		'cards.id': 1,
+		'cards.links.customer': 1,
+		'cards.number': 1,
+		'cards.brand': 1,
+		'bank_accounts.id': 1,
+		'bank_accounts.links.customer': 1,
+		'bank_accounts.account_number': 1,
+		'bank_accounts.bank_name': 1,
+		'bank_accounts.account_type': 1
 	}});
 });
 
-Meteor.publish('single_gift_receipt_debits', function (input) {
+Meteor.publish('receipt_debits', function (input) {
 	return Debits.find({_id: input}, {fields: {
-		'status': 1
+		'status': 1,
+		'links.source': 1,
+		'id': 1
 	}});
 });
 

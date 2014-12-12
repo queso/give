@@ -18,24 +18,16 @@
             </div>
 
             <dl class="invoice-meta">
-                <dt class="invoice-number">Donation #</dt>
+                <dt class="invoice-number">Donation ID:</dt>
                 <dd>
-                    {{#with donation}}
-                        {{#if billy}}
-                            {{transaction_guid}}
-                        {{else}}
-                            {{receiptNumber}}
-                        {{/if}}
+                    {{#with debit}}
+                        {{id}}
                     {{/with}}
                 </dd>
                 <dt class="invoice-date">Donation Date</dt>
                 <dd>
-                    {{#with donation}}
-                        {{#if billy}}
-                            {{transaction_date}}
-                        {{else}}
-                            {{date}}
-                        {{/if}}
+                    {{#with debit}}
+                        {{date}}
                     {{/with}}
                 </dd>
             </dl>
@@ -63,19 +55,19 @@
             {{#with customer}}
                 <div class="invoice-from">
                     <h2>Donation From:</h2>
-                    <div id="hcard-{{fname}}-{{lname}}" class="vcard">
-                        <a class="fn">{{{org}}} {{fname}} {{lname}}</a><br>
-                        <a class="email">{{email_address}}</a>
+                    <div id="hcard-{{name}}" class="vcard">
+                        <a class="fn">{{{business_name}}} {{name}}</a><br>
+                        <a class="email">{{email}}</a>
 
                         <div class="adr">
-                            <div class="street-address">{{address_line1}}
-                                {{{address_line2}}}</div>
+                            <div class="street-address">{{line1}}
+                                {{{line2}}}</div>
                             <span class="locality">{{city}}</span>
-                            <span class="region">{{region}}</span>
+                            <span class="region">{{state}}</span>
                             <span class="postal-code">{{postal_code}}</span>
                         </div>
 
-                        <div class="tel">{{{phone_number}}}</div>
+                        <div class="tel">{{{phone}}}</div>
 
                     </div><!-- e: vcard -->
                 </div><!-- e invoice-from -->
@@ -97,7 +89,11 @@
                             <tbody>
                             <tr>
                                 <th>{{#with donation}}{{donateTo}}{{/with}}</th>
-                                <td class="donateWith text-left">{{#with customer}}{{donateWith}}{{/with}}</td>
+                                <td class="donateWith text-left">
+                                    {{#with customer}}
+                                        {{donateWith}}
+                                    {{/with}}
+                                </td>
                                 <td>${{#with donation}}{{amount}}{{/with}}</td>
                             </tr>
                             {{#with donation}}{{{fees}}}{{/with}}

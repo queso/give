@@ -38,9 +38,9 @@ Router.route(':root/thanks', {
     name: 'donation.thanks',
     waitOn: function () {
         return  [
-            Meteor.subscribe('single_gift_receipt_donations', this.params.query.don),
-            Meteor.subscribe('single_gift_receipt_customers', this.params.query.c),
-            Meteor.subscribe('single_gift_receipt_debits', this.params.query.deb)
+            Meteor.subscribe('receipt_donations', this.params.query.don),
+            Meteor.subscribe('receipt_customers', this.params.query.c),
+            Meteor.subscribe('receipt_debits', this.params.query.deb)
         ];
     },
     data: function () {
@@ -53,29 +53,6 @@ Router.route(':root/thanks', {
             }
         });
     }
-});
-
-Router.route(':root/gift/:_id', function () {
-    var root = Meteor.settings.public.root;
-    var params = this.params;
-
-    this.subscribe('donate', params._id).wait();
-
-    if (this.ready()) {
-        this.render('Gift', {
-            data: function () {
-                Session.set('print', params.query.print);
-                Session.set('transaction_guid', params.query.transaction_guid);
-                return Donate.findOne(params._id);
-            }
-        });
-        this.next();
-    }else {
-        this.render('Loading');
-        this.next();
-    }
-    }, {
-    name: 'donation.gift'
 });
 
 Router.route(':root/dashboard', function () {
