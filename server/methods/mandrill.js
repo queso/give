@@ -19,30 +19,33 @@ _.extend(Utils,{
 			}else{
 				var fullName = customer_cursor.name;
 			}
-
+			var email_cursor = Emails.findOne({balanced_debit_id: id});
 			var slug;
 			var bcc_address = 'support@trashmountain.com';
 			var email_address = customer_cursor.email;
 			if (status === "failed") {
 				slug = 'fall-2014-donation-failed';
 			} else if(status === 'created'){
-				if(Emails.findOne({balanced_debit_id: id}).created.sent) {
+				if(email_cursor && email_cursor.created && email_cursor.created.sent) {
 					console.log("A 'created' email has already been sent for this debit, exiting email send function.");
 					return;
 				}
+				Evts.update_email_collection(id, 'created');
 				slug = "donation-initial-email";
 				bcc_address = null;
 			} else if (status === 'succeeded'){
-				if(Emails.findOne({balanced_debit_id: id}).succeeded.sent) {
+				if(email_cursor && email_cursor.succeeded && email_cursor.succeeded.sent) {
 					console.log("A 'succeeded' email has already been sent for this debit, exiting email send function.");
 					return;
 				}
+				Evts.update_email_collection(id, 'succeeded');
 				slug = "fall-2014-donation-receipt-multi-collection";
 			} else if (status === 'large_gift') {
-				if(Emails.findOne({balanced_debit_id: id}).large_gift.sent) {
+				if(email_cursor && email_cursor.large_gift && email_cursor.large_gift.sent) {
 					console.log("A 'large_gift' email has already been sent for this debit, exiting email send function.");
 					return;
 				}
+				Evts.update_email_collection(id, 'large_gift');
 				bcc_address = null;
 				email_address = 'large_gift@trashmountain.com';
 				slug = "large-gift-notice-multi-collection";
@@ -50,7 +53,6 @@ _.extend(Utils,{
 
 	      logger.info("Sending with template name: " + slug);
 	      Meteor.Mandrill.sendTemplate({
-	        "key": Meteor.settings.mandrillKey,
 	        "template_name": slug,
 	        "template_content": [
 	          {}

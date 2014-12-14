@@ -4,7 +4,7 @@
 Meteor.methods({
     singleDonation: function (data) {
         logger.info("Started singleDonation");
-        try {
+        /*try {*/
             //Check the form to make sure nothing malicious is being submitted to the server
             Utils.checkFormFields(data);
 
@@ -70,9 +70,10 @@ Meteor.methods({
                 var debitOrder = Utils.debit_order(data.paymentInformation.total_amount, data._id, customerData._id, orders.href, check.href);
 
             }
+            var createUser = Utils.create_user(Customers.findOne(customerData._id).email);
             return {c: customerData._id, don: data._id, deb: debitOrder._id};
 
-        } catch (e) {
+        /*} catch (e) {
          logger.error("Got to catch error area of processPayment function." + e + " " + e.reason);
          logger.error("e.category_code = " + e.category_code + " e.descriptoin = " + e.description);
          if(e.category_code) {
@@ -94,6 +95,6 @@ Meteor.methods({
          }else {
              throw new Meteor.Error(500, e.reason, e.details);
          }
-         }
+         }*/
     }
 });

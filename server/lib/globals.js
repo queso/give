@@ -76,5 +76,15 @@ Utils = {
         URL: String, 
         sessionId: String
       });
+    },
+    create_user: function (email) {
+        if(!Meteor.users.findOne({'emails.address': email})){
+            var userId = Accounts.createUser({email: email});
+            Accounts.sendEnrollmentEmail(userId);
+        } else {
+            console.log("User already exists.");
+            //TODO: add this Debit to the User's debits array
+        }
+
     }
 };

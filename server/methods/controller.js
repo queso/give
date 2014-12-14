@@ -22,7 +22,6 @@ _.extend(Evts,{
 	},
 	debit_created: function(id, billy, trans_guid, status, amount, body){
 		logger.info("Inside debit_created with debit ID: " + id);
-		Evts.update_email_collection(id, 'created');
 		Utils.send_donation_email(billy, id, trans_guid, amount, 'created');
 	},
 	debit_failed: function(id, billy, trans_guid, status, amount, body){
@@ -30,7 +29,7 @@ _.extend(Evts,{
 			//Utils.send_donation_email(billy, id, trans_guid, amount, 'failed');
 			// TODO: need to get this working, not sure how to test this though.
 		}
-		//Evts.update_email_collection(id, 'failed');
+		//Evts.update_email_collection(id, 'failed'); //also, this doesn't go here, need to send the update from within Mandrill
 		//Utils.failed_collection_update(billy, 'debits', id, null, body);
 		//TODO: need to figure out what needs to be done here (if anything)
 	},
@@ -39,10 +38,8 @@ _.extend(Evts,{
 
 		if(stored_amount === amount) {
 			if(amount >= 50000){
-				Evts.update_email_collection(id, 'large_gift');
 				Utils.send_donation_email(billy, id, trans_guid, amount, 'large_gift');
 			}
-			Evts.update_email_collection(id, 'succeeded');
 			Utils.send_donation_email(billy, id, trans_guid, amount, 'succeeded');
 			Utils.credit_order(billy, id);
 		} else{

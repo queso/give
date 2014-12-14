@@ -15,7 +15,7 @@ Router.onBeforeAction(function () {
         this.next();
     }
     }, {
-    except: ['donation.form', 'donation.thanks', 'donation.gift']
+    except: ['donation.form', 'donation.thanks', 'donation.gift', 'enrollAccount']
 });
 
 Router.route(':root', function () {
@@ -160,4 +160,17 @@ Router.route(':root/expiring', {
     data: function () {
         var root = Meteor.settings.public.root;
     }
+});
+
+Router.route(':root/user-profile', function () {
+    this.layout('UserLayout');
+    var root = Meteor.settings.public.root;
+
+    if (this.ready()) {
+        this.render('UserProfile');
+    }else {
+        this.render('Loading');
+    }
+}, {
+    name: 'user.profile'
 });
