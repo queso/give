@@ -38,9 +38,9 @@ _.extend(Evts,{
 		var stored_amount = Debits.findOne({id: id}).amount;
 
 		if(stored_amount === amount) {
-			if(amount > 50000){
+			if(amount >= 50000){
 				Evts.update_email_collection(id, 'large_gift');
-				Utils.large_gift_email(billy, id, amount);
+				Utils.send_donation_email(billy, id, trans_guid, amount, 'large_gift');
 			}
 			Evts.update_email_collection(id, 'succeeded');
 			Utils.send_donation_email(billy, id, trans_guid, amount, 'succeeded');
@@ -59,7 +59,7 @@ _.extend(Evts,{
 			return card.brand + ", ending in " + card.number.slice(-4);
 		} else if (source.slice(0,2) === 'BA'){
 			var bank_account = _.findWhere(customer_cursor.bank_accounts, {id: source});
-			return bank_account.bank_name +  ", ending in " + bank_account.number.slice(-4);
+			return bank_account.bank_name +  ", ending in " + bank_account.account_number.slice(-4);
 		}
 	},
 	update_email_collection: function (id, type) {

@@ -21,7 +21,7 @@ Billy = {
 		}
 	},
 	createPaymentMethod: function(customer_id, donateWith, href, processor_uri) {
-		/*try {*/
+		try {
 		logger.info("Started createPaymentMethod");
 
 		logger.info("In create Payment Method before if: " + donateWith);
@@ -50,7 +50,7 @@ Billy = {
 			associate = Utils.create_association(customer_id, check.href, processor_uri);
 
 		}
-		/*}catch (e) {
+		}catch (e) {
 		 if(e.category_code) {
 		 logger.error("Category_code area: e.details " + e.details);
 		 throw new Meteor.Error(500, e.category_code, e.description);
@@ -59,10 +59,10 @@ Billy = {
 		 throw new Meteor.Error(500, e.reason, e.details);
 		 }
 		 //throwTheError(e);
-		 }*/
+		 }
 	},
 	subscribeToBillyPlan: function(donation_id, customer_id, paymentType, funding_instrument_uri) {
-		/*try {*/
+		try {
 		logger.info("Started subscribeToBillyPlan");
 
 		if (paymentType === "credit" || paymentType === "debit") {
@@ -97,7 +97,7 @@ Billy = {
 
 			Meteor.error(resultSet.statusCode);
 		}
-		/*} catch (e) {
+		} catch (e) {
 		 logger.error(e);
 		 e._id = AllErrors.insert(e.response);
 		 var error = {};
@@ -105,7 +105,7 @@ Billy = {
 		 error.id = id;
 		 failTheRecord(error);
 		 throw new Meteor.Error(error, e._id);
-		 }*/
+		 }
 	}
 };
 

@@ -1,13 +1,9 @@
 /* Donate Methods */
 /*****************************************************************************/
 
-function logIt() {
-    logger.info("Started " + arguments.callee.caller.name);
-}
-
 Meteor.methods({
     singleDonation: function (data) {
-        logIt();
+        logger.info("Started singleDonation");
         try {
             //Check the form to make sure nothing malicious is being submitted to the server
             Utils.checkFormFields(data);
