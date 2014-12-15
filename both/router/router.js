@@ -15,7 +15,7 @@ Router.onBeforeAction(function () {
         this.next();
     }
     }, {
-    except: ['donation.form', 'donation.thanks', 'donation.gift', 'enrollAccount']
+    except: ['donation.form', 'donation.thanks', 'enrollAccount']
 });
 
 Router.route(':root', function () {
@@ -162,14 +162,22 @@ Router.route(':root/expiring', {
     }
 });
 
-Router.route(':root/user-profile', function () {
+Router.route(':root/user/:_id', function () {
     this.layout('UserLayout');
     var root = Meteor.settings.public.root;
 
+    this.subscribe('userDataPublish', this.params._id).wait();
+
     if (this.ready()) {
-        this.render('UserProfile');
-    }else {
+        this.render('UserProfile', {
+            data: function () {
+                return Meteor.users.find(this.params._id);
+            }
+        });
+        this.next();
+    } else {
         this.render('Loading');
+        this.next();
     }
 }, {
     name: 'user.profile'

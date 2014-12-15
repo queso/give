@@ -1,3 +1,77 @@
 <template name="UserProfile">
-    Test
+    <div class="UserCSS">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-offset-1 col-md-10 col-lg-offset-2 col-lg-8">
+                    <div class="well profile">
+                        <div class="col-sm-12">
+                            <br>
+                            <div class="col-xs-12 col-sm-8">
+                                <h2>{{#with user}}{{name}}{{/with}}</h2>
+                                <p><strong>Address: </strong> <br>
+                                    <span class="tags">1234 First St.</span> <br>
+                                    <span class="tags">Topeka, KS 66618</span>
+                                </p>
+                                <p><strong>Phone: </strong> <br>
+                                    <span class="tags">InsertHere</span> <br>
+                                </p>
+                                <p><strong>Email: </strong> <br>
+                                    {{#each email}}<span class="tags">{{address}}</span> <br>{{/each}}
+                                </p>
+                            </div>
+                            <div class="col-xs-12 col-sm-4 text-center">
+                                <figure>
+                                    <p>Your Giving Focus</p>
+                                    <img src="https://trashmountain.com/system/wp-content/uploads/2014/12/Honduras-01.svg" alt="" class="img-circle img-responsive">
+                                </figure>
+                            </div>
+                            <br>&nbsp;
+                            <br>&nbsp;
+                        </div>
+                        <div class="col-xs-12 divider text-center">
+                            <div class="col-xs-12 col-sm-4 emphasis">
+                                <h2><strong> $250 </strong></h2>
+                                <p><small>Given</small></p>
+                                <button class="btn btn-default btn-block"><span class="fa fa-plus-circle"></span> Give </button>
+                            </div>
+                            <div class="col-xs-12 col-sm-4 emphasis">
+                                <h2><strong>12</strong></h2>
+                                <p><small>Gifts</small></p>
+                                <button class="btn btn-default btn-block"><span class="fa fa-user"></span> View History </button>
+                            </div>
+                            <div class="col-xs-12 col-sm-4 emphasis">
+                                <h2><strong>5</strong></h2>
+                                <p><small>Categories</small></p>
+                                <!-- Single button -->
+                                <div class="btn-group dropup btn-block fixGroupButton">
+                                    <button type="button" class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        Edit Profile <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu text-left" role="menu">
+                                        <li><a href="#"><span class="fa fa-envelope pull-right"></span> Change My Email Address </a></li>
+                                        <li><a href="#"><span class="fa fa-list pull-right"></span> Edit My Address  </a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="#"><span class="fa fa-warning pull-right"></span>Change a Monthly Gift</a></li>
+                                    </ul>
+                                </div>
+                                <!--<div class="btn-group dropup btn-block btn-wide noRightPadding">
+                                    <button type="button" class="btn btn-primary"><span class="fa fa-gear"></span> Edit Profile </button>
+                                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu text-left" role="menu">
+                                        <li><a href="#"><span class="fa fa-envelope pull-right"></span> Change My Email Address </a></li>
+                                        <li><a href="#"><span class="fa fa-list pull-right"></span> Edit My Address  </a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="#"><span class="fa fa-warning pull-right"></span>Change a Monthly Gift</a></li>
+                                    </ul>
+                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>

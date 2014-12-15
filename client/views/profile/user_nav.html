@@ -1,31 +1,19 @@
 <template name="UserNav">
-    <nav class="navbar navbar-default navbar-static-top" role="navigation">
-        <div class="container">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-8">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-          <span class="navbar-brand">
-            Give Dashboard
-          </span>
-                </div>
-
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-8">
-                    <ul class="nav navbar-nav">
-                        <li class="{{isActiveRoute regex='admin.dashboard'}}"><a href="/give/dashboard">Dashboard</a></li>
-                        <li class="{{isActiveRoute regex='donation.form'}}"><a href="/give" >Give</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                      {{#if isNotActiveRoute regex='signIn'}}
-                          <button type="button" id="nav-signinout" class="btn btn-default navbar-btn">{{signInOut}}</button>
-                      {{/if}}
-                    </ul>
-                </div>
-            </div>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+                <span class="sr-only">Toggle navigation</span>
+            </button>
+            <a class="navbar-brand" href="#">Trash Mountain Project</a>
         </div>
-    </nav>
+        <div class="collapse navbar-collapse" id="navbar-collapse-01">
+            <ul class="nav navbar-nav">
+                <li class="{{isActiveRoute regex='give'}}"><a href="/give">Donation Form</a></li>
+                <li class="{{isActiveRoute regex='dashboard'}}"><a href="/give/dashboard">Dashboard</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {{> atNavButton}}
+            </ul>
+        </div>
+    </nav><!-- /navbar -->
 </template>

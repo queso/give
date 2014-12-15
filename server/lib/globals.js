@@ -77,14 +77,30 @@ Utils = {
         sessionId: String
       });
     },
-    create_user: function (email) {
-        if(!Meteor.users.findOne({'emails.address': email})){
-            var userId = Accounts.createUser({email: email});
-            Accounts.sendEnrollmentEmail(userId);
+    create_user: function (customer_id, donation_id, debit_id) {
+        var email_address = Customers.findOne(customer_id).email;
+        var user_id = Meteor.users.findOne({'emails.address': email_address});
+        if(!user_id){
+            var name = Customers.findOne(customer_id).name;
+            user_id = Accounts.createUser({email: email_address});
+            Accounts.sendEnrollmentEmail(user_id);
+            Meteor.users.update(user_id, {$set: {'profile.name': name}});
+            Utils.linkGiftToUser(customer_id, donation_id, debit_id, user_id, 'primary');
         } else {
             console.log("User already exists.");
             //TODO: add this Debit to the User's debits array
+            Utils.linkGiftToUser(customer_id, donation_id, debit_id, user_id, 'secondary');
         }
 
+
+    },
+    linkGiftToUser: function(customer_id, donation_id, debit_id, userId, record_type) {
+        var insertThis = {};
+        insertThis.customers = {};
+        insertThis.customers[record_type] = customer_id;
+        insertThis.donations =  donation_id;
+        insertThis.debits = debit_id;
+
+        Meteor.users.update(userId, {$push: insertThis});
     }
 };
