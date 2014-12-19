@@ -167,6 +167,9 @@ Router.route(':root/user/:_id', function () {
     var root = Meteor.settings.public.root;
 
     this.subscribe('userDataPublish', this.params._id).wait();
+    this.subscribe('userDebits').wait();
+    this.subscribe('userDonations').wait();
+    this.subscribe('userCustomers').wait();
 
     if (this.ready()) {
         this.render('UserProfile', {

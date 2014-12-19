@@ -264,6 +264,7 @@ Meteor.methods({
 			var debit_id = Debits.insert(insert_debit);
 
 			var return_this = {c: data.customer._id, don: data._id, deb: debit_id};
+			Utils.create_user(data.customer._id, data._id, debit_id);
 			return return_this;
 
 

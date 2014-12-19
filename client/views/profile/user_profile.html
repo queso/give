@@ -8,15 +8,17 @@
                             <br>
                             <div class="col-xs-12 col-sm-8">
                                 <h2>{{#with user}}{{name}}{{/with}}</h2>
-                                <p><strong>Address: </strong> <br>
-                                    <span class="tags">1234 First St.</span> <br>
-                                    <span class="tags">Topeka, KS 66618</span>
+                                {{{business_name}}}
+                                <p><strong>Address: </strong>  <i class="fa fa-pencil"></i><br>
+                                    <span class="tags">{{customer.address.line1}}</span> <br>
+                                    {{{address_line2}}}
+                                    <span class="tags">{{customer.address.city}}, {{customer.address.state}} {{customer.address.postal_code}}</span>
                                 </p>
-                                <p><strong>Phone: </strong> <br>
-                                    <span class="tags">InsertHere</span> <br>
+                                <p><strong>Phone:  </strong> <i class="fa fa-pencil"></i><br>
+                                    <span class="tags">{{customer.phone}}</span> <br>
                                 </p>
-                                <p><strong>Email: </strong> <br>
-                                    {{#each email}}<span class="tags">{{address}}</span> <br>{{/each}}
+                                <p><strong>Email:  </strong> <br>
+                                    {{#with email}}<span class="tags">{{email}}</span> <br>{{/with}}
                                 </p>
                             </div>
                             <div class="col-xs-12 col-sm-4 text-center">
@@ -30,22 +32,22 @@
                         </div>
                         <div class="col-xs-12 divider text-center">
                             <div class="col-xs-12 col-sm-4 emphasis">
-                                <h2><strong> $250 </strong></h2>
+                                <h2><strong> ${{given.total}} </strong></h2>
                                 <p><small>Given</small></p>
                                 <button class="btn btn-default btn-block"><span class="fa fa-plus-circle"></span> Give </button>
                             </div>
                             <div class="col-xs-12 col-sm-4 emphasis">
-                                <h2><strong>12</strong></h2>
+                                <h2><strong>{{given.count}}</strong></h2>
                                 <p><small>Gifts</small></p>
-                                <button class="btn btn-default btn-block"><span class="fa fa-user"></span> View History </button>
+                                <button class="btn btn-default btn-block" id="viewHistory"><span class="fa fa-history"></span> View History </button>
                             </div>
                             <div class="col-xs-12 col-sm-4 emphasis">
-                                <h2><strong>5</strong></h2>
+                                <h2><strong>{{categories}}</strong></h2>
                                 <p><small>Categories</small></p>
                                 <!-- Single button -->
                                 <div class="btn-group dropup btn-block fixGroupButton">
                                     <button type="button" class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        Edit Profile <span class="caret"></span>
+                                        <span class="fa fa-user"></span> Edit Profile <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu text-left" role="menu">
                                         <li><a href="#"><span class="fa fa-envelope pull-right"></span> Change My Email Address </a></li>
@@ -58,27 +60,26 @@
                         </div>
                     </div>
                 </div>
+                {{#if showHistory}}
                 <div class="col-md-8 col-lg-6">
-                    <h5>Your giving this year</h5>
+                    <h5>Your giving</h5>
                     <table class="table table-striped">
                         <tbody><tr>
                             <th>To</th>
                             <th>Date</th>
                             <th>Amount</th>
                         </tr>
+                        {{#each donation}}
                         <tr>
-                            <td>Honduras</td>
-                            <td>1 Dec 2014</td>
-                            <td>$9.20</td>
+                            <td>{{donateTo}}</td>
+                            <td>{{created_at}}</td>
+                            <td>${{total_amount}}</td>
                         </tr>
-                        <tr>
-                            <td>BaseCamp</td>
-                            <td>1 Nov 2014</td>
-                            <td>$9.20</td>
-                        </tr>
+                        {{/each}}
                         </tbody>
                     </table>
                 </div>
+                {{/if}}
             </div>
         </div>
     </div>

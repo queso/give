@@ -83,3 +83,38 @@ Meteor.publish("userDataPublish", function () {
 		this.ready();
 	}
 });
+
+Meteor.publish("userDonations", function () {
+	var donations = Meteor.users.findOne({_id: this.userId}).donations;
+
+	if (this.userId) {
+		return Donations.find({'_id': { $in: donations}});
+	} else {
+		this.ready();
+	}
+});
+
+Meteor.publish("userDebits", function () {
+	var debits = Meteor.users.findOne({_id: this.userId}).debits;
+
+	if (this.userId) {
+		return Debits.find({'_id': { $in: debits}});
+	} else {
+		this.ready();
+	}
+});
+
+Meteor.publish("userCustomers", function () {
+	var customers = Meteor.users.findOne({_id: this.userId}).customers;
+	var lookup = {};
+	for (var i = 0, len = customers.length; i < len; i++) {
+		if('primary' in customers[i]) {
+			lookup = customers[i].primary}
+	}
+
+	if (this.userId) {
+		return Customers.find({_id: lookup});
+	} else {
+		this.ready();
+	}
+});
