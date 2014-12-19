@@ -11,7 +11,8 @@ if (Meteor.isServer) {
         },
 
         update: function (userId, doc, fieldNames, modifier) {
-            if(userId === Meteor.settings.admin_user){
+            console.dir(doc);
+            if(userId === Meteor.settings.admin_user || Meteor.users.findOne(userId, doc)){
                 return false;
             } else{
                 return true;
@@ -37,7 +38,7 @@ if (Meteor.isServer) {
         },
 
         update: function (userId, doc, fieldNames, modifier) {
-            if(userId === Meteor.settings.admin_user){
+            if(userId === Meteor.settings.admin_user || Meteor.users.findOne(userId, doc)){
                 return true;
             } else{
                 return false;

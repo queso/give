@@ -84,20 +84,16 @@ Utils = {
             var name = Customers.findOne(customer_id).name;
             user_id = Accounts.createUser({email: email_address});
             Accounts.sendEnrollmentEmail(user_id);
-            Meteor.users.update(user_id, {$set: {'profile.name': name}});
-            Utils.linkGiftToUser(customer_id, donation_id, debit_id, user_id, 'primary');
+            Meteor.users.update(user_id, {$set: {'profile.name': name, 'primary_customer_id': customer_id}});
         } else {
             console.log("User already exists.");
-            //TODO: add this Debit to the User's debits array
-            Utils.linkGiftToUser(customer_id, donation_id, debit_id, user_id, 'secondary');
         }
-
-
+        Utils.linkGiftToUser(customer_id, donation_id, debit_id, user_id);
     },
-    linkGiftToUser: function(customer_id, donation_id, debit_id, userId, record_type) {
+    linkGiftToUser: function(customer_id, donation_id, debit_id, userId) {
         var insertThis = {};
         insertThis.customers = {};
-        insertThis.customers[record_type] = customer_id;
+        insertThis.customers = customer_id;
         insertThis.donations =  donation_id;
         insertThis.debits = debit_id;
 

@@ -66,6 +66,12 @@
 .UserCSS .noRightPadding {
   padding-right: 0;
 }
+.UserCSS .negativeMarginLeft {
+  margin-left: -8px;
+}
 .UserCSS .fixGroupButton > .btn:first-child {
   margin-left: 0;
+}
+.UserCSS .fa-pencil {
+  cursor: pointer;
 }

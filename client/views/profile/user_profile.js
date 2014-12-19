@@ -61,9 +61,38 @@ Template.UserProfile.helpers({
 Template.UserProfile.events({
     'click #viewHistory': function() {
         Session.set("showHistory", true);
+    },
+    'click .edit_address': function () {
+        //setup modal for entering give toward information
+        $('#modal_for_address_change').modal({
+            show: true,
+            backdrop: 'static'
+        });
+    },
+    'submit form': function (evt, tmpl) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        var updateThis = {$set: {
+            'address.line1':          $('#line1').val(),
+            'address.line2':          $('#line2').val(),
+            'address.city':           $('#city').val(),
+            'address.state':          $('#state').val(),
+            'address.postal_code':    $('#postal_code').val(),
+            phone:          $('#phone').val()
+        }};
+        console.log("worked");
+
+        var updateCustomer = Customers.update(Customers.findOne()._id, updateThis);
+        if(updateCustomer === 1) {
+            $('#modal_for_address_change').modal('hide')
+        }
+
     }
 });
 
 Template.UserProfile.rendered = function(){
    Session.set("showHistory", false);
+
+    // Setup parsley form validation
+    $('#userAddressForm').parsley();
 };

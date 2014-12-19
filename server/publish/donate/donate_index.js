@@ -105,15 +105,10 @@ Meteor.publish("userDebits", function () {
 });
 
 Meteor.publish("userCustomers", function () {
-	var customers = Meteor.users.findOne({_id: this.userId}).customers;
-	var lookup = {};
-	for (var i = 0, len = customers.length; i < len; i++) {
-		if('primary' in customers[i]) {
-			lookup = customers[i].primary}
-	}
-
+	var customers = Meteor.users.findOne({_id: this.userId}).primary_customer_id;
+	console.log(customers);
 	if (this.userId) {
-		return Customers.find({_id: lookup});
+		return Customers.find(customers);
 	} else {
 		this.ready();
 	}
