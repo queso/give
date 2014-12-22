@@ -136,8 +136,8 @@ _.extend(Utils,{
                 returnToCalled = 'John Kazaklis';
                 return returnToCalled;
                 break;
-            case 'ChirsMammoliti':
-                returnToCalled = 'Chirs Mammoliti';
+            case 'ChrisMammoliti':
+                returnToCalled = 'Chris Mammoliti';
                 return returnToCalled;
                 break;
             case 'ShelleySetchell':
