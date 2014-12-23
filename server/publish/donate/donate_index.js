@@ -3,6 +3,8 @@
 /*****************************************************************************/
 
 Meteor.publish('receipt_donations', function (input) {
+	//Check the input that came from the client
+	check(input, String);
 	return Donations.find({_id: input}, {fields: {
 		sessionId: 0,
 		viewable: 0,
@@ -13,6 +15,8 @@ Meteor.publish('receipt_donations', function (input) {
 });
 
 Meteor.publish('receipt_customers', function (input) {
+	//Check the input that came from the client
+	check(input, String);
 	return Customers.find({_id: input}, {fields: {
 		'links.source': 1,
 		'name': 1,
@@ -34,6 +38,9 @@ Meteor.publish('receipt_customers', function (input) {
 });
 
 Meteor.publish('receipt_debits', function (input) {
+	//Check the input that came from the client
+	check(input, String);
+
 	return Debits.find({_id: input}, {fields: {
 		'status': 1,
 		'links.source': 1,
@@ -52,6 +59,10 @@ Meteor.publish('donate_list', function () {
 });
 
 Meteor.publish('give_report', function (start_date, finish_date) {
+	//Check the input that came from the client
+	check(start_date, String);
+	check(finish_date, String);
+
 	//check to see that the user is the admin user
 	if(this.userId === Meteor.settings.admin_user){
 		start_date = moment(Date.parse(start_date)).format('YYYY-MM-DD').slice(0,10);
@@ -96,7 +107,6 @@ Meteor.publish("userDonations", function () {
 
 Meteor.publish("userDebits", function () {
 	var debits = Meteor.users.findOne({_id: this.userId}).debits;
-
 	if (this.userId) {
 		return Debits.find({'_id': { $in: debits}});
 	} else {

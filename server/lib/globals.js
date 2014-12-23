@@ -77,6 +77,12 @@ Utils = {
         sessionId: String
       });
     },
+    checkLoginForm: function(form){
+      check(form, {
+          username: String,
+          password: String
+      });
+    },
     create_user: function (customer_id, donation_id, debit_id) {
         var email_address = Customers.findOne(customer_id).email;
         var user_id = Meteor.users.findOne({'emails.address': email_address});
