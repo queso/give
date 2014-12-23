@@ -1,0 +1,139 @@
+<template name="UserProfile">
+    <div class="UserCSS">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-lg-6">
+                    <div class="well profile">
+                        <div class="col-sm-12">
+                            <br>
+                            <div class="col-xs-12 col-sm-8">
+                                <h2>{{#with user}}{{name}}{{/with}}</h2>
+                                {{{business_name}}}
+                                <p><strong>Address: </strong>  <i class="fa fa-pencil edit_address"></i><br>
+                                    <span class="tags">{{customer.address.line1}}</span> <br>
+                                    {{{address_line2}}}
+                                    <span class="tags">{{customer.address.city}}, {{customer.address.state}} {{customer.address.postal_code}}</span>
+                                </p>
+                                <p><strong>Phone:  </strong> <i class="fa fa-pencil edit_address"></i><br>
+                                    <span class="tags">{{customer.phone}}</span> <br>
+                                </p>
+                                <p><strong>Email:  </strong> <br>
+                                    {{#with email}}<span class="tags">{{email}}</span> <br>{{/with}}
+                                </p>
+                            </div>
+                            <div class="col-xs-12 col-sm-4 text-center">
+                                <figure>
+                                    <p>Your Giving Focus</p>
+                                    <img src="https://trashmountain.com/system/wp-content/uploads/2014/12/Honduras-01.svg" alt="" class="img-circle img-responsive">
+                                </figure>
+                            </div>
+                            <br>&nbsp;
+                            <br>&nbsp;
+                        </div>
+                        <div class="col-xs-12 divider text-center">
+                            <div class="col-xs-12 col-sm-4 emphasis">
+                                <h3 class="negativeMarginLeft"><strong>${{given.total}}</strong></h3>
+                                <p><small>Given</small></p>
+                                <a href="/give" class="btn btn-default btn-block" role="button"><span class="fa fa-plus-circle"></span> Give </a>
+                            </div>
+                            <div class="col-xs-12 col-sm-4 emphasis">
+                                <h3><strong>{{given.count}}</strong></h3>
+                                <p><small>Gifts</small></p>
+                                <button class="btn btn-default btn-block" id="viewHistory"><span class="fa fa-history"></span> View History </button>
+                            </div>
+                            <div class="col-xs-12 col-sm-4 emphasis">
+                                <h3><strong>{{categories}}</strong></h3>
+                                <p><small>Categories</small></p>
+                                <!-- Single button -->
+                                <div class="btn-group dropup btn-block fixGroupButton">
+                                    <button type="button" class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        Edit Profile <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu text-left" role="menu">
+                                        <li class="disabled"><a href="#"><span class="fa fa-envelope pull-right"></span> Change My Email Address  </a></li>
+                                        <li class="edit_address"><a href="#"><span class="fa fa-list pull-right"></span> Edit My Address  </a></li>
+                                        <li class="divider"></li>
+                                        <li class="disabled"><a href="#"><!--<span class="fa fa-warning pull-right" ></span>-->Change Recurring Gift  </a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{#if showHistory}}
+                <div class="col-md-8 col-lg-6">
+                    <h5>Your giving</h5>
+                    <table class="table table-striped">
+                        <tbody><tr>
+                            <th>To</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                        </tr>
+                        {{#each donation}}
+                        <tr>
+                            <td>{{donateTo}}</td>
+                            <td>{{created_at}}</td>
+                            <td>${{total_amount}}</td>
+                        </tr>
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+                {{/if}}
+            </div>
+        </div>
+        <div id="modal_for_address_change" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Edit Your Address</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" role="form" id="userAddressForm">
+                            <div class="form-group">
+                                <label class="control-label col-sm-3" for="email">Address Line 1:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="line1" placeholder="Address" value="{{customer.address.line1}}" required data-parsley-error-message="Please enter an address">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3" for="email">Address Line 2:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="line2" placeholder="Address Line 2" value="{{customer.address.line2}}" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-1" for="email">City</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" id="city" placeholder="City" value="{{customer.address.city}}" required data-parsley-error-message="Please enter a city">
+                                </div>
+                                <label class="control-label col-sm-1" for="email">State</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" id="state" placeholder="State" value="{{customer.address.state}}" required data-parsley-error-message="Please enter a state">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-1" for="pwd">Zip</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" id="zip" placeholder="Postal Code" value="{{customer.address.postal_code}}" required data-parsley-error-message="Please enter a postal code">
+                                </div>
+                                <label class="control-label col-sm-1" for="email">Phone</label>
+                                <div class="col-sm-5">
+                                    <input type="tel" class="form-control" id="phone" placeholder="Phone" value="{{customer.phone}}" required data-parsley-error-message="Please enter a phone number"
+                                           oninvalid="setCustomValidity('Please enter only numbers')"
+                                           onchange="try{setCustomValidity('')}catch(e){}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-8 col-sm-4">
+                                    <button type="submit" class="btn btn-default">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    </div>
+</template>

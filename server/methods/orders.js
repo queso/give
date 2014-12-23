@@ -1,37 +1,36 @@
 _.extend(Utils, {
     create_order: function (id, customerHREF) {
         logger.info("Inside create_order.");
-        var order;
-        order = Utils.extractFromPromise(balanced.get(customerHREF).orders.create({"Description": "Order #" + id}));
+        var order = Utils.extractFromPromise(balanced.get(customerHREF).orders.create({"Description": "Order #" + id})); //TODO: Need to adjust this to be more specific since I might have many orders from one id
+        console.log(order._api.cache[order.href]);
 
         //add order response from Balanced to the collection
-        var orderResponse = Donate.update(id, {$set: {
-            'order.description': "Order #" + id
-        }});
+        var orderResponse = Donations.update(id, {
+            $set: {
+                'order': order._api.cache[order.href]
+            }
+        });
         logger.info("Finished balanced order create");
+
         return order;
     },
-    debit_order: function (data, order, paymentHref) {
+    debit_order: function (total, donation_id, customer_id, order, paymentHref) {
         logger.info("Inside debit_order.");
         var debit;
-        //Need to make sure that the number is a whole number, not a decimal
-        var total = data.paymentInformation.total_amount;
         var paymentObject = balanced.get(paymentHref);
+        //TODO: run tests against the amount value to make sure it is always correct
         debit = Utils.extractFromPromise(balanced.get(order).debit_from(paymentObject, ({ "amount": total,
             "appears_on_statement_as": "Trash Mountain"})));
 
+        console.log(debit._api.cache[debit.href]);
+        var debit_insert = debit._api.cache[debit.href];
+        debit_insert.donation_id = donation_id;
+        debit_insert.customer_id = customer_id;
         //add debit response from Balanced to the database
-        var debitReponse = Donate.update(data._id, {$set: {
-            'debit.type': debit.type,
-            'debit.customer': debit.links.customer,
-            'debit.total_amount': debit.amount,
-            'debit.id': debit.id,
-            'debit.status': debit.status,
-            'card_holds.id': debit.links.card_hold,
-            'order.id': debit.links.order,
-            'credit.sent': false
-        }});
-        logger.info("Finished balanced order debit");
+        var debit_id = Debits.insert(debit_insert);
+
+        debit._id = debit_id;
+        logger.info("Finished balanced order debit. Debits ID: " + debit_id);
         return debit;
     },
     credit_order: function(debitID) {
@@ -54,42 +53,13 @@ _.extend(Utils, {
 
                     var credit = Utils.extractFromPromise(balanced.get(orderHref).credit_to(bank_account, {"amount": amount,
                         "appears_on_statement_as": name}));
+                    console.log(credit._api.cache[credit.href]);
                     Donate.update({'debit.id': debitID}, {$set: {'credit.id': credit.id,
                         'credit.amount': credit.amount,
                         'credit.sent': true}});
                     return credit;
                 }
             }
-        }
-    },
-    credit_billy_order: function(id, transaction_guid) {
-        //initialize the balanced function with our API key.
-        logger.info("Inside credit_billy_order.");
-        balanced.configure(Meteor.settings.balanced_api_key);
-        logger.info("Transaction GUID: " + transaction_guid);
-        logger.info("ID: " + id);
-        
-        if(Donate.findOne({_id: id})) {
-            var name = Donate.findOne({_id: id}).customer.fname + " " + Donate.findOne({_id: id}).customer.lname;
-
-            var amount = Donate.findOne({_id: id}).debit.total_amount;
-            logger.info("Amount: " + amount);
-            name = name.substring(0, 13);
-            var lookup_transaction = Donate.findOne({'transactions.guid': transaction_guid}, {'transactions.$': 1});
-            var transaction = _.findWhere(lookup_transaction.transactions, {guid: transaction_guid});
-            
-            if(transaction && !transaction.credit.sent){    
-                logger.info("Credit status was false or not set, starting to send out a credit.");
-                //Donate.update({'transactions.guid': transaction_guid}, {$set: {'trasnactions.$.credit.sent': true}});
-
-                var credit = Utils.extractFromPromise(balanced.get(Meteor.settings.bank_account_uri).credit({"appears_on_statement_as": name, "amount": amount}));
-
-                var insert_credit_info = Donate.update({'transactions.guid': transaction_guid}, {$set: {'transactions.$.credit.sent': true, 'transactions.$.credit.amount': credit.amount, 'transactions.$.credit.id': credit.id}});                
-            }else{
-                logger.info("No need to run the credit again, this transaction has already had it's balance credited.");
-                return '';
-            }
-            return credit;
         }
     }
 });

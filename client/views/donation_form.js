@@ -132,7 +132,7 @@ function handleCalls(payment, form) {
         Meteor.call("singleDonation", form, function (error, result) {
             if (result) {
                 $('#loading1').modal('hide');
-                Router.go('/give/thanks/' + result);
+                Router.go('/give/thanks?c=' + result.c + "&don=" + result.don + "&deb=" + result.deb);
             } else {
                 //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
                 updateTotal();
@@ -146,7 +146,7 @@ function handleCalls(payment, form) {
         Meteor.call('recurringDonation', form, function (error, result) {
             if (result) {
                 $('#loading1').modal('hide');
-                Router.go('/give/gift/' + result._id + '/?transaction_guid=' + result.transaction_guid);
+                Router.go('/give/thanks?c=' + result.c + "&don=" + result.don + "&deb=" + result.deb);
             } else {
                 //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
                 updateTotal();
@@ -220,7 +220,6 @@ Template.DonationForm.events({
             "URL": document.URL,
             sessionId: Meteor.default_connection._lastSessionId
         };
-        //
         if (form.paymentInformation.total_amount !== form.paymentInformation.amount) {
             form.paymentInformation.fees = (form.paymentInformation.total_amount - form.paymentInformation.amount);
         }

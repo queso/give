@@ -15,7 +15,7 @@ Router.onBeforeAction(function () {
         this.next();
     }
     }, {
-    except: ['donation.form', 'donation.thanks', 'donation.gift']
+    except: ['donation.form', 'donation.thanks', 'enrollAccount']
 });
 
 Router.route(':root', function () {
@@ -34,49 +34,25 @@ Router.route(':root', function () {
     name: 'donation.form'
 });
 
-Router.route(':root/thanks/:_id', function () {
-    var root = Meteor.settings.public.root;
-    var params = this.params;
-
-    this.subscribe('donate', params._id).wait();
-
-    if (this.ready()) {
+Router.route(':root/thanks', {
+    name: 'donation.thanks',
+    waitOn: function () {
+        return  [
+            Meteor.subscribe('receipt_donations', this.params.query.don),
+            Meteor.subscribe('receipt_customers', this.params.query.c),
+            Meteor.subscribe('receipt_debits', this.params.query.deb)
+        ];
+    },
+    data: function () {
+        var root = Meteor.settings.public.root;
+    },
+    action: function () {
         this.render('Thanks', {
             data: function () {
-                Session.set('print', params.query.print);
-                return Donate.findOne(params._id);
+                Session.set('print', this.params.query.print);
             }
         });
-        this.next();
-    }else {
-        this.render('Loading');
-        this.next();
     }
-    }, {
-    name: 'donation.thanks'
-});
-
-Router.route(':root/gift/:_id', function () {
-    var root = Meteor.settings.public.root;
-    var params = this.params;
-
-    this.subscribe('donate', params._id).wait();
-
-    if (this.ready()) {
-        this.render('Gift', {
-            data: function () {
-                Session.set('print', params.query.print);
-                Session.set('transaction_guid', params.query.transaction_guid);
-                return Donate.findOne(params._id);
-            }
-        });
-        this.next();
-    }else {
-        this.render('Loading');
-        this.next();
-    }
-    }, {
-    name: 'donation.gift'
 });
 
 Router.route(':root/dashboard', function () {
@@ -184,4 +160,24 @@ Router.route(':root/expiring', {
     data: function () {
         var root = Meteor.settings.public.root;
     }
+});
+
+Router.route(':root/user', function () {
+    this.layout('UserLayout');
+    var root = Meteor.settings.public.root;
+
+    this.subscribe('userDataPublish').wait();
+    this.subscribe('userDebits').wait();
+    this.subscribe('userDonations').wait();
+    this.subscribe('userCustomers').wait();
+
+    if (this.ready()) {
+        this.render('UserProfile');
+        this.next();
+    } else {
+        this.render('Loading');
+        this.next();
+    }
+}, {
+    name: 'user.profile'
 });

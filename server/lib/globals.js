@@ -76,5 +76,33 @@ Utils = {
         URL: String, 
         sessionId: String
       });
+    },
+    checkLoginForm: function(form){
+      check(form, {
+          username: String,
+          password: String
+      });
+    },
+    create_user: function (customer_id, donation_id, debit_id) {
+        var email_address = Customers.findOne(customer_id).email;
+        var user_id = Meteor.users.findOne({'emails.address': email_address});
+        if(!user_id){
+            var name = Customers.findOne(customer_id).name;
+            user_id = Accounts.createUser({email: email_address});
+            Accounts.sendEnrollmentEmail(user_id);
+            Meteor.users.update(user_id, {$set: {'profile.name': name, 'primary_customer_id': customer_id}});
+        } else {
+            console.log("User already exists.");
+        }
+        Utils.linkGiftToUser(customer_id, donation_id, debit_id, user_id);
+    },
+    linkGiftToUser: function(customer_id, donation_id, debit_id, userId) {
+        var insertThis = {};
+        insertThis.customers = {};
+        insertThis.customers = customer_id;
+        insertThis.donations =  donation_id;
+        insertThis.debits = debit_id;
+
+        Meteor.users.update(userId, {$push: insertThis});
     }
 };

@@ -9,119 +9,103 @@ Template.Receipt.events({
 });
 
 Template.Receipt.helpers({
-    billy: function () {
-      return (this.isRecurring);
+    donation: function () {
+        return Donations.findOne();
     },
-   receiptNumber: function () {
-   		return this._id;
-   },
-   transaction_guid: function () {
-    var transaction_guid = Session.get('transaction_guid');
-    return transaction_guid;
-   },
+    customer: function () {
+        return Customers.findOne();
+    },
+    debit: function () {
+        return Debits.findOne();
+    },
    date: function () {
-   		return moment(this.debit.created_at).format('MM/DD/YYYY');
+   		return moment(this.created_at).format('MM/DD/YYYY');
    },
-   transaction_date: function () {
-    var transaction_guid = Session.get('transaction_guid');
-    var transaction = _.findWhere(this.transactions, { guid: transaction_guid });    
-      return moment(transaction.updated_at).format('MM/DD/YYYY');
+    business_name: function () {
+        if (this.business_name){
+          return this.business_name + "<br>"
+        }
    },
-   org: function () {
-    if (this.customer.org){
-      return this.customer.org + "<br>"
-    }
+   name: function () {
+   		return this.name;
    },
-   fname: function () {
-   		return this.customer.fname;
+   line1: function () {
+   		return this.address.line1;
    },
-   lname: function () {
-   		return this.customer.lname;
-   },
-   address_line1: function () {
-   		return this.customer.address_line1;
-   },
-   address_line2: function () {
-   	if(this.customer.address_line2) {
-   		return "<br>" + this.customer.address_line2;
+   line2: function () {
+   	if(this.address.line2) {
+   		return "<br>" + this.address.line2;
    	} else {
    		return false;
    	}
    },
    city: function () {
-   		return this.customer.city;
+   		return this.address.city;
    },
-   region: function () {
-   		return this.customer.region;
+   state: function () {
+   		return this.address.state;
    },
    postal_code: function () {
-   		return this.customer.postal_code;
+   		return this.address.postal_code;
    },
-   country: function () {
-   		if(this.customer.country === 'US') {
+    country_code: function () {
+   		if(this.address.country_code === 'US' || this.address.country_code === null) {
    			return;
    		}else {
-   			return this.customer.country;
+   			return this.address.country_code;
    		}
    },
-   email_address: function () {
-   		return this.customer.email_address;
+   email: function () {
+   		return this.email;
    },
-   phone_number: function () {
-      if(this.customer.phone_number !== '') {
-         return this.customer.phone_number;
+   phone: function () {
+      if(this.phone !== '') {
+         return this.phone;
       } else {
          return false;
       }   		
    },
    donateTo: function () {
-   		return this.debit.donateTo;
+   		return this.donateTo;
    },
-   donateWith: function () {
-      var payment_device;
-      if(this.card){
-          if(this.card[0].number && this.card[0].brand) {
-              payment_device = this.card[0].number;
-              return this.card[0].brand + ", ending in " + payment_device.slice(-4);
-          } else {
-              return 'Card';
-          }
-      } else {
-          if(this.bank_account && this.bank_account[0].account_number && this.bank_account[0].bank_name) {
-              payment_device = this.bank_account[0].account_number;
-              return  this.bank_account[0].bank_name +  ", ending in " + payment_device.slice(-4);
-          } else {
-              return 'Check';
-          }
-      }   		
+    donateWith: function () {
+        var source = Debits.findOne().links.source;
+        if(source.slice(0,2) === 'CC'){
+            var card = _.findWhere(this.cards, {id: source});
+                return card.brand + ", ending in " + card.number.slice(-4);
+        } else if (source.slice(0,2) === 'BA'){
+            var bank_account = _.findWhere(this.bank_accounts, {id: source});
+            console.log(bank_account);
+            return  bank_account.bank_name +  ", ending in " + bank_account.account_number.slice(-4);
+        }
    },
    amount: function () {
-          if(this.debit.amount){
-          return (this.debit.amount / 100).toFixed(2);
+          if(this.amount){
+          return (this.amount / 100).toFixed(2);
           }else {
             return '';   
           }
          
    },
    total_amount: function () {
-      if(this.debit.total_amount){
-        return (this.debit.total_amount / 100).toFixed(2);
+      if(this.total_amount){
+        return (this.total_amount / 100).toFixed(2);
       }else {
        return '';   
       }
    },
     fees: function () {
-        if(this.debit.fees && this.debit.total_amount){
+        if(this.fees && this.total_amount){
             return '\
             <tr>\
                 <th>Covered fees:</th>\
                 <td></td>\
-                <td>$' + (this.debit.fees / 100).toFixed(2) + '</td>\
+                <td>$' + (this.fees / 100).toFixed(2) + '</td>\
             </tr>\
             <tr>\
                 <th>Total:</th>\
                 <td></td>\
-                <td>$' + (this.debit.total_amount / 100).toFixed(2) + '</td>\
+                <td>$' + (this.total_amount / 100).toFixed(2) + '</td>\
             </tr>';
         } else {
         return "";

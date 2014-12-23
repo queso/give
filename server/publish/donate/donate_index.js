@@ -2,31 +2,52 @@
 /* DonateIndex Publish Functions
 /*****************************************************************************/
 
-Meteor.publish('donate', function (input) {
-	 return Donate.find({_id: input}, {fields: {
-		 credit: 0,
-		 order: 0,
-		 sessionId: 0,
-		 viewable: 0,
-		 card_holds: 0,
-		 created_at: 0,
-		 URL: 0,
-		 'bank_account.fingerprint': 0,
-		 'bank_account.href': 0,
-		 'bank_account.id': 0,
-		 'bank_account.routing_number': 0,
-		 'bank_account.can_credit': 0,
-		 'bank_account.can_debit': 0,
-		 'card.can_debit': 0,
-		 'card.cvv_result': 0,
-		 'card.bank_name': 0,
-		 'card.expires': 0,
-		 'card.id': 0,
-		 'card.href': 0,
-		 'card.fingerprint': 0,
-		 'card.type': 0
-	 }});
+Meteor.publish('receipt_donations', function (input) {
+	//Check the input that came from the client
+	check(input, String);
+	return Donations.find({_id: input}, {fields: {
+		sessionId: 0,
+		viewable: 0,
+		created_at: 0,
+		URL: 0,
+		order: 0
+	}});
 });
+
+Meteor.publish('receipt_customers', function (input) {
+	//Check the input that came from the client
+	check(input, String);
+	return Customers.find({_id: input}, {fields: {
+		'links.source': 1,
+		'name': 1,
+		'address': 1,
+		'phone': 1,
+		'email': 1,
+		'id': 1,
+		'business_name': 1,
+		'cards.id': 1,
+		'cards.links.customer': 1,
+		'cards.number': 1,
+		'cards.brand': 1,
+		'bank_accounts.id': 1,
+		'bank_accounts.links.customer': 1,
+		'bank_accounts.account_number': 1,
+		'bank_accounts.bank_name': 1,
+		'bank_accounts.account_type': 1
+	}});
+});
+
+Meteor.publish('receipt_debits', function (input) {
+	//Check the input that came from the client
+	check(input, String);
+
+	return Debits.find({_id: input}, {fields: {
+		'status': 1,
+		'links.source': 1,
+		'id': 1
+	}});
+});
+
 
 Meteor.publish('donate_list', function () {
 	//check to see that the user is the admin user
@@ -38,6 +59,10 @@ Meteor.publish('donate_list', function () {
 });
 
 Meteor.publish('give_report', function (start_date, finish_date) {
+	//Check the input that came from the client
+	check(start_date, String);
+	check(finish_date, String);
+
 	//check to see that the user is the admin user
 	if(this.userId === Meteor.settings.admin_user){
 		start_date = moment(Date.parse(start_date)).format('YYYY-MM-DD').slice(0,10);
@@ -59,5 +84,42 @@ Meteor.publish('card_expiring', function () {
 		return Donate.find( { $and : [ {'card.expires' : {$lte : future_date }}, { isRecurring: true}] }, { card : true } );
 	}else{
 		return '';
+	}
+});
+
+Meteor.publish("userDataPublish", function () {
+	if (this.userId) {
+		return Meteor.users.find({_id: this.userId});
+	} else {
+		this.ready();
+	}
+});
+
+Meteor.publish("userDonations", function () {
+	var donations = Meteor.users.findOne({_id: this.userId}).donations;
+
+	if (this.userId) {
+		return Donations.find({'_id': { $in: donations}});
+	} else {
+		this.ready();
+	}
+});
+
+Meteor.publish("userDebits", function () {
+	var debits = Meteor.users.findOne({_id: this.userId}).debits;
+	if (this.userId) {
+		return Debits.find({'_id': { $in: debits}});
+	} else {
+		this.ready();
+	}
+});
+
+Meteor.publish("userCustomers", function () {
+	var customers = Meteor.users.findOne({_id: this.userId}).primary_customer_id;
+	console.log(customers);
+	if (this.userId) {
+		return Customers.find(customers);
+	} else {
+		this.ready();
 	}
 });

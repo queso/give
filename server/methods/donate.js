@@ -1,91 +1,79 @@
 /* Donate Methods */
 /*****************************************************************************/
 
-function logIt() {
-    logger.info("Started " + arguments.callee.caller.name);
-}
-
 Meteor.methods({
     singleDonation: function (data) {
-        logIt();
-        try {
+        logger.info("Started singleDonation");
+        /*try {*/
+            //Check the form to make sure nothing malicious is being submitted to the server
+            Utils.checkFormFields(data);
 
             //Convert donation to more readable format
             var donateTo = Utils.getDonateTo(data.paymentInformation.donateTo);
+
             if(donateTo === 'Write In') {
                 donateTo = data.paymentInformation.writeIn;
             }
 
-            //Check the form to make sure nothing malicious is being submitted to the server
-            Utils.checkFormFields(data);
+            //initialize the balanced function with our API key.
+            balanced.configure(Meteor.settings.balanced_api_key);
 
-            //Create the document in the collection and insert the payment date
-            data._id = Donate.insert({created_at: data.paymentInformation.created_at});
+            var customerData = Utils.create_customer(data.customer, false);
 
-            Donate.update(data._id, {
-                $set: {
-                    sessionId: data.sessionId,
-                    URL: data.URL,
-                    'customer': data.customer,
-                    'debit.donateTo': donateTo,
-                    'debit.donateWith': data.paymentInformation.donateWith,
-                    'debit.email_sent.initial_sent': false,
-                    'debit.email_sent.succeeded_sent': false,
-                    'debit.type': data.paymentInformation.donateWith,
-                    'debit.total_amount': data.paymentInformation.total_amount,
-                    'debit.amount': data.paymentInformation.amount,
-                    'debit.fees': data.paymentInformation.fees,
-                    'debit.coveredTheFees': data.paymentInformation.coverTheFees,
-                    'debit.status': 'pending',
-                    'viewable': true
-                }
+            data._id = Donations.insert({
+                created_at: data.paymentInformation.created_at,
+                sessionId: data.sessionId,
+                URL: data.URL,
+                'donateTo': donateTo,
+                'donateWith': data.paymentInformation.donateWith,
+                'type': data.paymentInformation.type,
+                'total_amount': data.paymentInformation.total_amount,
+                'amount': data.paymentInformation.amount,
+                'fees': data.paymentInformation.fees,
+                'coveredTheFees': data.paymentInformation.coverTheFees,
+                'customer_id': data.customer._id,
+                'status': 'pending'
             });
             logger.info("ID: " + data._id);
 
-            // ^^^^^^^^^^^^^^^ Moved the above from the client side to here.
-            //initialize the balanced function with our API key.
-            balanced.configure(Meteor.settings.balanced_api_key);
-            var customerInfo = data.customer;
-            var paymentInfo = data.paymentInformation;
-            var customerData = Utils.create_customer(customerInfo, data._id);
+            //Runs if the form used was the credit card form, which sets type as part of the array which is passed to this server side function
 
-            //Runs if the form used was the credit card form, which sets type as part of the array which is passed to this server
-            // side function
-
-            if (paymentInfo.donateWith === "Card") {
+            if (data.paymentInformation.donateWith === "Card") {
                 
                 //Get the card data from balanced and store it
-                var card = Utils.get_card(data._id, paymentInfo.href);
+                var card = Utils.get_card(customerData._id, data.paymentInformation.href);
 
-                //Order function
+                //Create a new order
                 var orders = Utils.create_order(data._id, customerData.href);
 
-                //Connect card with customer
-                var associate = Utils.create_association(data, card.href, customerData.href);
+                //Associate the card with the balanced customer
+                var associate = Utils.create_association(customerData._id, card.href, customerData.href);
 
                 //Debit the order
-                var debitOrder = Utils.debit_order(data, orders.href, card.href);
+                var debitOrder = Utils.debit_order(data.paymentInformation.total_amount, data._id, customerData._id, orders.href, card.href);
 
             }
             //for running ACH
             else {
-                console.log(paymentInfo.href);
-                //Get the bank account data from balanced and store it
-                var check = Utils.get_check(data._id, paymentInfo.href);
+                console.log(data.paymentInformation.href);
 
-                //Order function
+                //Get the check data from balanced and store it
+                var check = Utils.get_check(customerData._id, data.paymentInformation.href);
+
+                //Create a new order
                 var orders = Utils.create_order(data._id, customerData.href);
 
-                //Connect bank account with customer
-                var associate = Utils.create_association(data, check.href, customerData.href);
+                //Associate the card with the balanced customer
+                var associate = Utils.create_association(customerData._id, check.href, customerData.href);
 
                 //Debit the order
-                var debitOrder = Utils.debit_order(data, orders.href, check.href);
+                var debitOrder = Utils.debit_order(data.paymentInformation.total_amount, data._id, customerData._id, orders.href, check.href);
 
             }
-            return data._id;
+            Utils.create_user(customerData._id, data._id, debitOrder._id);
+            return {c: customerData._id, don: data._id, deb: debitOrder._id};
 
-        } catch (e) {
+        /*} catch (e) {
          logger.error("Got to catch error area of processPayment function." + e + " " + e.reason);
          logger.error("e.category_code = " + e.category_code + " e.descriptoin = " + e.description);
          if(e.category_code) {
@@ -94,7 +82,7 @@ Meteor.methods({
             if(e.category_code === 'invalid-routing-number'){
                 debitSubmitted = false;
             } 
-            Donate.update(data._id, {
+            Donations.update(data._id, {
                 $set: {
                     'failed.category_code': e.category_code,
                     'failed.description': e.description,
@@ -107,6 +95,6 @@ Meteor.methods({
          }else {
              throw new Meteor.Error(500, e.reason, e.details);
          }
-         }
+         }*/
     }
 });

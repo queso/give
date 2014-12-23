@@ -27,26 +27,3 @@
 	 	{{/if}}
     </div>
 </template>
-<template name="Gift">
-	<div class="row text-center hidden-print">
-        <div class="blackBackground"><a href="https://trashmountain.com" target="_blank"><img class="logoImage" src="https://trashmountain.com/system/wp-content/uploads/2012/07/bw_logo.png">	</a>
-        </div>
-    </div>
-	<div class="container hidden-print">
-	    <div class="row vertical-center-row">
-	        <div class="col-lg-10 col-lg-offset-1 alignReceipt">
-    			{{#if successOrPendingPayment}}
-		 			{{{successOrPendingTrans}}}
-		 		{{else}}
-                    {{{failedTrans}}}
-		 		{{/if}}
-	        </div>
-	    </div>
-	</div>
-	<div class="Receipt">
-        {{#if displayReceipt}}
-        	{{> Receipt}}
-	    {{else}}
-	 	{{/if}}
-    </div>
-</template>

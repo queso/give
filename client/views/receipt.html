@@ -18,18 +18,18 @@
             </div>
 
             <dl class="invoice-meta">
-                <dt class="invoice-number">Donation #</dt>
-                <dd>{{#if billy}}
-                        {{transaction_guid}}
-                    {{else}}
-                        {{receiptNumber}}
-                    {{/if}}</dd>
+                <dt class="invoice-number">Donation ID:</dt>
+                <dd>
+                    {{#with debit}}
+                        {{id}}
+                    {{/with}}
+                </dd>
                 <dt class="invoice-date">Donation Date</dt>
-                <dd>{{#if billy}}
-                        {{transaction_date}}
-                    {{else}}
+                <dd>
+                    {{#with debit}}
                         {{date}}
-                    {{/if}}</dd>
+                    {{/with}}
+                </dd>
             </dl>
         </header>
         <!-- e: invoice header -->
@@ -37,7 +37,7 @@
         <section id="parties">
             <div class="invoice-to">
                 <h2>Donation To:</h2>
-                <div id="hcard-{{fname}}-{{lname}}" class="vcard">
+                <div id="hcard-Trash-Mountain-Project" class="vcard">
                     <a class="url fn" href="https://trashmountain.com">Trash Mountain Project</a>
                     <a class="email" href="mailto:info@trashmountain.com">Info@trashmountain.com</a>
 
@@ -52,61 +52,68 @@
                 </div><!-- e: vcard -->
             </div><!-- e invoice-to -->
             <div class="invoice-from"></div>
+            {{#with customer}}
+                <div class="invoice-from">
+                    <h2>Donation From:</h2>
+                    <div id="hcard-{{name}}" class="vcard">
+                        <a class="fn">{{{business_name}}} {{name}}</a><br>
+                        <a class="email">{{email}}</a>
 
-            <div class="invoice-from">
-                <h2>Donation From:</h2>
-                <div id="hcard-{{fname}}-{{lname}}" class="vcard">
-                    <a class="fn">{{{org}}} {{fname}} {{lname}}</a><br>
-                    <a class="email">{{email_address}}</a>
+                        <div class="adr">
+                            <div class="street-address">{{line1}}
+                                {{{line2}}}</div>
+                            <span class="locality">{{city}}</span>
+                            <span class="region">{{state}}</span>
+                            <span class="postal-code">{{postal_code}}</span>
+                        </div>
 
-                    <div class="adr">
-                        <div class="street-address">{{address_line1}}
-                            {{{address_line2}}}</div>
-                        <span class="locality">{{city}}</span>
-                        <span class="region">{{region}}</span>
-                        <span class="postal-code">{{postal_code}}</span>
-                    </div>
+                        <div class="tel">{{{phone}}}</div>
 
-                    <div class="tel">{{{phone_number}}}</div>
-                </div><!-- e: vcard -->
-            </div><!-- e invoice-from -->
+                    </div><!-- e: vcard -->
+                </div><!-- e invoice-from -->
+            {{/with}}
         </section><!-- e: invoice partis -->
 
-        <section class="invoice-financials">
 
-            <div class="invoice-items">
-                <table>
-                    <caption>Your Donation:</caption>
-                    <thead>
-                    <tr>
-                        <th>Designation</th>
-                        <th>Payment type</th>
-                        <th>Amount</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <th>{{donateTo}}</th>
-                        <td class="donateWith text-left">{{donateWith}}</td>
-                        <td>${{amount}}</td>
-                    </tr>
-                    {{{fees}}}
-                    </tbody>
-                </table>
-            </div><!-- e: invoice totals -->
+            <section class="invoice-financials">
+                    <div class="invoice-items">
+                        <table>
+                            <caption>Your Donation:</caption>
+                            <thead>
+                            <tr>
+                                <th>Designation</th>
+                                <th>Payment type</th>
+                                <th>Amount</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th>{{#with donation}}{{donateTo}}{{/with}}</th>
+                                <td class="donateWith text-left">
+                                    {{#with customer}}
+                                        {{donateWith}}
+                                    {{/with}}
+                                </td>
+                                <td>${{#with donation}}{{amount}}{{/with}}</td>
+                            </tr>
+                            {{#with donation}}{{{fees}}}{{/with}}
+                            </tbody>
+                        </table>
+                    </div><!-- e: invoice totals -->
 
-            <div class="invoice-notes">
-                <h6>For Your Tax Purposes:</h6>
-                <p>Thank you for your donation of ${{total_amount}} to Trash Mountain Project, Inc. We know that our efforts are only possible because of the contributions we receive from generous donors like you, and we thank you again for believing in and supporting our mission.</p>
-                <p>The estimated value of any goods or services provided in return for your donation is $0.
-                Please keep this written acknowledgment of your donation for your tax records.</p>
-                <h6 class="hidden-print">Matching Gifts.</h6>
-                <p class="hidden-print">Did you know that you may be able to double or triple your impact through your workplace?
-                    To see if your company matches donations visit <a id="matchLink" href="#" target="_blank">
-                    trashmountain.com/match</a></p>
-            </div><!-- e: invoice-notes -->
+                <div class="invoice-notes">
+                    <h6>For Your Tax Purposes:</h6>
+                    <p>Thank you for your donation of ${{#with donation}}{{total_amount}}{{/with}} to Trash Mountain Project, Inc. We know that our efforts are only possible because of the contributions we receive from generous donors like you, and we thank you again for believing in and supporting our mission.</p>
+                    <p>The estimated value of any goods or services provided in return for your donation is $0.
+                    Please keep this written acknowledgment of your donation for your tax records.</p>
+                    <h6 class="hidden-print">Matching Gifts.</h6>
+                    <p class="hidden-print">Did you know that you may be able to double or triple your impact through your workplace?
+                        To see if your company matches donations visit <a id="matchLink" href="#" target="_blank">
+                        trashmountain.com/match</a></p>
 
-        </section><!-- e: invoice financials -->
+                </div><!-- e: invoice-notes -->
+
+            </section><!-- e: invoice financials -->
 
         <footer id="footer">
             <p>

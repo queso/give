@@ -1,58 +1,55 @@
-Donate = new Meteor.Collection('donate');
+//Includes address, phone, email, sources
+Customers = new Meteor.Collection('customers');
 if (Meteor.isServer) {
-    Donate._ensureIndex({'transactions.guid': 1}, {background: true});
-    Donate._ensureIndex({'subscriptions.guid': 1}, {background: true});
-    Donate._ensureIndex({'invoices.guid': 1}, {background: true});
-    Donate._ensureIndex({'customer.id': 1}, {background: true});
-
-    Donate.allow({
+    Customers.deny({
         insert: function (userId, doc) {
             if(userId === Meteor.settings.admin_user){
-                return true;
-            } else{
                 return false;
+            } else{
+                return true;
             }
         },
 
         update: function (userId, doc, fieldNames, modifier) {
-            if(userId === Meteor.settings.admin_user){
-                return true;
-            } else{
+            console.dir(doc);
+            if(userId === Meteor.settings.admin_user || Meteor.users.findOne(userId, doc)){
                 return false;
+            } else{
+                return true;
             }
         },
 
         remove: function (userId, doc) {
             if(userId === Meteor.settings.admin_user){
-                return true;
-            } else{
                 return false;
+            } else{
+                return true;
             }
         }
     });
 
-    Donate.deny({
+    Customers.allow({
         insert: function (userId, doc) {
             if(userId === Meteor.settings.admin_user){
-                return false;
-            } else{
                 return true;
+            } else{
+                return false;
             }
         },
 
         update: function (userId, doc, fieldNames, modifier) {
-            if(userId === Meteor.settings.admin_user){
-                return false;
-            } else{
+            if(userId === Meteor.settings.admin_user || Meteor.users.findOne(userId, doc)){
                 return true;
+            } else{
+                return false;
             }
         },
 
         remove: function (userId, doc) {
             if(userId === Meteor.settings.admin_user){
-                return false;
-            } else{
                 return true;
+            } else{
+                return false;
             }
         }
     });

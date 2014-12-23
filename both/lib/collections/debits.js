@@ -1,58 +1,53 @@
-Donate = new Meteor.Collection('donate');
+Debits = new Meteor.Collection('debits');
 if (Meteor.isServer) {
-    Donate._ensureIndex({'transactions.guid': 1}, {background: true});
-    Donate._ensureIndex({'subscriptions.guid': 1}, {background: true});
-    Donate._ensureIndex({'invoices.guid': 1}, {background: true});
-    Donate._ensureIndex({'customer.id': 1}, {background: true});
-
-    Donate.allow({
+    Debits.deny({
         insert: function (userId, doc) {
             if(userId === Meteor.settings.admin_user){
-                return true;
-            } else{
                 return false;
+            } else{
+                return true;
             }
         },
 
         update: function (userId, doc, fieldNames, modifier) {
             if(userId === Meteor.settings.admin_user){
-                return true;
-            } else{
                 return false;
+            } else{
+                return true;
             }
         },
 
         remove: function (userId, doc) {
             if(userId === Meteor.settings.admin_user){
-                return true;
-            } else{
                 return false;
+            } else{
+                return true;
             }
         }
     });
 
-    Donate.deny({
+    Debits.allow({
         insert: function (userId, doc) {
             if(userId === Meteor.settings.admin_user){
-                return false;
-            } else{
                 return true;
+            } else{
+                return false;
             }
         },
 
         update: function (userId, doc, fieldNames, modifier) {
             if(userId === Meteor.settings.admin_user){
-                return false;
-            } else{
                 return true;
+            } else{
+                return false;
             }
         },
 
         remove: function (userId, doc) {
             if(userId === Meteor.settings.admin_user){
-                return false;
-            } else{
                 return true;
+            } else{
+                return false;
             }
         }
     });
