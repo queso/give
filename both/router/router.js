@@ -162,21 +162,17 @@ Router.route(':root/expiring', {
     }
 });
 
-Router.route(':root/user/:_id', function () {
+Router.route(':root/user', function () {
     this.layout('UserLayout');
     var root = Meteor.settings.public.root;
 
-    this.subscribe('userDataPublish', this.params._id).wait();
+    this.subscribe('userDataPublish').wait();
     this.subscribe('userDebits').wait();
     this.subscribe('userDonations').wait();
     this.subscribe('userCustomers').wait();
 
     if (this.ready()) {
-        this.render('UserProfile', {
-            data: function () {
-                return Meteor.users.find(this.params._id);
-            }
-        });
+        this.render('UserProfile');
         this.next();
     } else {
         this.render('Loading');

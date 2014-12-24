@@ -132,12 +132,6 @@ function failTheRecord(data) {
       return;
 }
 
-
-
-
-
-
-
 function getInvoice(subGUID) {
 	try {
 		logger.info("Started getInvoice");
