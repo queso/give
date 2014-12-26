@@ -106,6 +106,14 @@ _.extend(Utils, {
                 returnToCalled = 'Joshua Bechard';
                 return returnToCalled;
                 break;
+            case 'JamesHishmeh':
+                returnToCalled = 'James Hishmeh';
+                return returnToCalled;
+                break;
+            case 'WillieBrooks':
+                returnToCalled = 'Willie Brooks';
+                return returnToCalled;
+                break;
             case 'WhereMostNeeded':
                 returnToCalled = 'Where Most Needed';
                 return returnToCalled;
