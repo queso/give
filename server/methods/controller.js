@@ -22,6 +22,8 @@ _.extend(Evts,{
 	},
 	debit_created: function(id, billy, trans_guid, status, amount, body){
 		logger.info("Inside debit_created with debit ID: " + id);
+		logger.info("Checking to see if this debit ID exists in the collection");
+		var check_id = Evts.check_for_debit(id, 'debit_created', body);
 		Utils.send_donation_email(billy, id, trans_guid, amount, 'created');
 	},
 	debit_failed: function(id, billy, trans_guid, status, amount, body){
@@ -91,6 +93,13 @@ _.extend(Evts,{
 				}
 			);
 		}
+	},
+	check_for_debit: function (id, type, body) {
+		if (Debits.findOne({id: id})) {
+			return 1;
+		} else {
+			var insert_body = Debits.insert(body.events[0].entity.debits[0]);
+			return insert_body;
+		}
 	}
-	
 });
