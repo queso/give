@@ -148,6 +148,14 @@ _.extend(Utils,{
                 returnToCalled = 'Isaac Tarwater';
                 return returnToCalled;
                 break;
+            case 'WillieBrooks':
+                returnToCalled = 'Willie Brooks';
+                return returnToCalled;
+                break;
+            case 'JamesHishmeh':
+                returnToCalled = 'James Hishmeh';
+                return returnToCalled;
+                break;
             case 'UrgentOperationalNeeds':
                 returnToCalled = 'Urgent Operational Needs';
                 return returnToCalled;
