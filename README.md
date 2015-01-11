@@ -22,11 +22,11 @@ This is a live giving page, which is being used by Trash Mountain Project.
 
 These are the integrations built into Give already
 
-Payment Processing, incluing recurring gifts - Balanced Payments
+Payment Processing, including recurring gifts - Balanced Payments
 
-Mandrill (MailChimp's transactional email service) - Transactional emails (used for receipting and failure notcies)
+Mandrill (MailChimp's transactional email service) - Transactional emails (used for receipting and failure notices)
 
-You will need an account with each of these providers in order to use Give. The accounts are free up to a point. Balanced Payments doens't charge you a monthly fee, only a fee per transaction (2.9% + .30 per transaction). In order to use the ACH serivce you do need to escrow some money since ACH doesn't have the protections for the processor that credit cards do. 
+You will need an account with each of these providers in order to use Give. The accounts are free up to a point. Balanced Payments doesn't charge you a monthly fee, only a fee per transaction (2.9% + .30 per transaction). In order to use the ACH service you do need to escrow some money since ACH doesn't have the protections for the processor that credit cards do.
 
 ## License
 
