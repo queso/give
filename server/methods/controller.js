@@ -8,7 +8,8 @@ _.extend(Evts,{
 			var id 			= 	body.events[0].entity.debits[0].id;
 			var amount 		=	body.events[0].entity.debits[0].amount;
 			var billy 		= 	body.events[0].entity.debits[0].meta['billy.transaction_guid'] !== undefined;
-			var trans_guid  =	body.events[0].entity.debits[0].meta['billy.transaction_guid'];
+			var trans_guid;
+			billy === true ? trans_guid = body.events[0].entity.debits[0].meta['billy.transaction_guid'] : trans_guid = undefined;
 			var select_type = 	body.events[0].type;
 			select_type 	=	Evts.select_type(select_type);
 

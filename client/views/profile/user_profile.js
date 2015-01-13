@@ -54,6 +54,22 @@ Template.UserProfile.helpers({
         if(Customers.findOne().business_name) {
             return '<h5>' + Customers.findOne().business_name + '</h5>';
         } else return;
+    },
+    giving_focus: function () {
+        var donations = Donations.find().fetch();
+        var orgs = {};
+
+        _.each(donations, function(donation) {
+            if (orgs[donation.donateTo] == null)
+                orgs[donation.donateTo] = 0;
+            orgs[donation.donateTo] += donation.amount;
+        });
+
+        var amount = _.max(_.values(orgs));
+        var donateTo = _.invert(orgs)[amount];
+        var count = _.where(donations, {donateTo: donateTo}).length;
+        var result = {donateTo: donateTo, amount: amount, count: count};
+        return result.donateTo === 'Honduras Urgent' ? '<img src="https://trashmountain.com/system/wp-content/uploads/2014/12/Honduras-01.svg" alt="" class="img-circle img-responsive">' : result.donateTo;
     }
 
 });
@@ -78,7 +94,7 @@ Template.UserProfile.events({
             'address.city':           $('#city').val(),
             'address.state':          $('#state').val(),
             'address.postal_code':    $('#postal_code').val(),
-            phone:          $('#phone').val()
+            phone:                    $('#phone').val()
         }};
         console.log("worked");
 

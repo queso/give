@@ -78,7 +78,7 @@ Billy = {
 		resultSet = HTTP.post("https://billy.balancedpayments.com/v1/subscriptions", {
 			params: {
 				"customer_guid": customer_guid,
-				"plan_guid": Meteor.settings.billy_monthly_GUID,
+				"plan_guid": Meteor.settings.billy_daily_GUID,
 				"funding_instrument_uri": "/" + Meteor.settings.balanced_uri + funding_instrument_uri,
 				"appears_on_statement_as": "Trash Mountain",
 				"amount": Math.ceil(total_amount) //TODO: run tests against this value to make sure it is always correct
