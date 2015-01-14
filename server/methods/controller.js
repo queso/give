@@ -45,7 +45,7 @@ _.extend(Evts,{
 		//TODO: need to figure out what needs to be done here (if anything)
 	},
 	debit_succeeded: function(id, billy, trans_guid, subscription_guid, invoice_guid, status, amount, body){
-		var stored_amount = Debits.findOne({id: id}).amount;
+		var stored_amount = Debits.findOne({_id: id}).amount;
 
 		if(stored_amount === amount) {
 			if(amount >= 50000){
@@ -107,7 +107,7 @@ _.extend(Evts,{
 		}
 	},
 	check_for_debit: function (id, type, body, billy, trans_guid, subscription_guid) {
-		if (Debits.findOne({id: id})) {
+		if (Debits.findOne({_id: id})) {
 			return 1;
 		} else if(billy){
 			var insert_debit;
@@ -117,10 +117,12 @@ _.extend(Evts,{
 			delete insert_debit.meta;
 
 			//Insert object into debits collection and get the _id
-			var debit_id = Debits.insert(insert_debit);
+			Debits.insert({_id: id}, insert_debit);
 
 		} else {
-			var insert_body = Debits.insert(body.events[0].entity.debits[0]);
+			//TODO: this should still insert the donation_id, my guess is that if we get here it is because there
+			//TODO: were multiple attempts to process the failed payment and eventually it went through.
+			var insert_body = Debits.insert({_id: id}, body.events[0].entity.debits[0]);
 			return insert_body;
 		}
 	},
