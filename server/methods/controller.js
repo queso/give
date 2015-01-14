@@ -4,47 +4,58 @@ _.extend(Evts,{
 		logger.info("Type is equal to: " + type);
 		if(type === "debits"){
 			logger.info("Inside one_time_controller and debits area");
-			var status 		=	body.events[0].entity[type][0].status;
-			var id 			= 	body.events[0].entity.debits[0].id;
-			var amount 		=	body.events[0].entity.debits[0].amount;
-			var billy 		= 	body.events[0].entity.debits[0].meta['billy.transaction_guid'] !== undefined;
+			var status 		=			body.events[0].entity[type][0].status;
+			var id 			= 			body.events[0].entity.debits[0].id;
+			var amount 		=			body.events[0].entity.debits[0].amount;
+			var billy 		= 			body.events[0].entity.debits[0].meta['billy.transaction_guid'] !== undefined;
+			var subscription_guid;
 			var trans_guid;
-			billy === true ? trans_guid = body.events[0].entity.debits[0].meta['billy.transaction_guid'] : trans_guid = undefined;
+			var invoice_guid;
+			if (billy === true) {
+				invoice_guid = 				Evts.get_invoice_guid(body.events[0].entity[type][0].description);
+				var subscription_info = 	Evts.getBillySubscriptionGUID(invoice_guid);
+				subscription_guid = 		subscription_info.subscription_guid;
+				trans_guid = 				body.events[0].entity.debits[0].meta['billy.transaction_guid'];
+			}
+
 			var select_type = 	body.events[0].type;
 			select_type 	=	Evts.select_type(select_type);
 
 			logger.info("Received an event of type: " + select_type);
 
 			//Send to the appropriate function based on the type received from Balanced
-			Evts[select_type](id, billy, trans_guid, status, amount, body);
+			Evts[select_type](id, billy, trans_guid, subscription_guid, invoice_guid, status, amount, body);
  		} else{
             logger.info("************* Received an event and didn't do anything with it.");
         }
 	},
-	debit_created: function(id, billy, trans_guid, status, amount, body){
+	debit_created: function(id, billy, trans_guid, subscription_guid, invoice_guid, status, amount, body){
 		logger.info("Inside debit_created with debit ID: " + id);
 		logger.info("Checking to see if this debit ID exists in the collection");
-		var check_id = Evts.check_for_debit(id, 'debit_created', body);
-		Utils.send_donation_email(billy, id, trans_guid, amount, 'created');
+		var check_id = Evts.check_for_debit(id, 'debit_created', body, billy, trans_guid, subscription_guid);
+		Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, 'created');
 	},
-	debit_failed: function(id, billy, trans_guid, status, amount, body){
+	debit_failed: function(id, billy, trans_guid, subscription_guid, invoice_guid, status, amount, body){
 		if(billy){
-			//Utils.send_donation_email(billy, id, trans_guid, amount, 'failed');
-			// TODO: need to get this working, not sure how to test this though.
+			//Utils.send_donation_email(billy, id, subscription_guid, amount, 'failed');
+			// TODO: need to get this working, not sure how to test this though. Also, it usually fails many times, so only send one email.
 		}
 		//Evts.update_email_collection(id, 'failed'); //also, this doesn't go here, need to send the update from within Mandrill
 		//Utils.failed_collection_update(billy, 'debits', id, null, body);
 		//TODO: need to figure out what needs to be done here (if anything)
 	},
-	debit_succeeded: function(id, billy, trans_guid, status, amount, body){
+	debit_succeeded: function(id, billy, trans_guid, subscription_guid, invoice_guid, status, amount, body){
 		var stored_amount = Debits.findOne({id: id}).amount;
 
 		if(stored_amount === amount) {
 			if(amount >= 50000){
-				Utils.send_donation_email(billy, id, trans_guid, amount, 'large_gift');
+				Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, 'large_gift');
 			}
-			Utils.send_donation_email(billy, id, trans_guid, amount, 'succeeded');
+			Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, 'succeeded');
 			Utils.credit_order(billy, id);
+			if(billy){
+				Evts.addTrans_Invoice(trans_guid, subscription_guid, invoice_guid);
+			}
 		} else{
 			logger.error("The amount from the received event and the amount of the debit do not match!");
 		}
@@ -95,12 +106,64 @@ _.extend(Evts,{
 			);
 		}
 	},
-	check_for_debit: function (id, type, body) {
+	check_for_debit: function (id, type, body, billy, trans_guid, subscription_guid) {
 		if (Debits.findOne({id: id})) {
 			return 1;
+		} else if(billy){
+			var insert_debit;
+			insert_debit.customer_id = 		body.events[0].entity.debits[0].links.customer;
+			insert_debit.donation_id = 		Donations.findOne({'subscriptions.guid': subscription_guid})._id;
+			insert_debit.transaction_guid = trans_guid
+			delete insert_debit.meta;
+
+			//Insert object into debits collection and get the _id
+			var debit_id = Debits.insert(insert_debit);
+
 		} else {
 			var insert_body = Debits.insert(body.events[0].entity.debits[0]);
 			return insert_body;
 		}
+	},
+	get_invoice_guid: function(description) {
+		logger.info("Started get_invoice_guid");
+		return (("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop());
+	},
+	getBillySubscriptionGUID: function(invoiceID){
+		logger.info("Inside getBillySubscriptionGUID");
+
+		var invoice = HTTP.get("https://billy.balancedpayments.com/v1/invoices/" + invoiceID, {
+			auth: Meteor.settings.billy_key + ':'
+		});
+
+		var subscription_guid = invoice.data.subscription_guid;
+		logger.info("Got the subscription_guid: " + subscription_guid);
+
+		return subscription_guid;
+	},
+	addTrans_Invoice: function(trans_guid, subscription_guid, invoice_guid){
+		var invoice = getInvoice(invoice_guid);
+		Donations.update({'subscriptions.guid': subscription_guid}, {
+			$push: {
+				'invoices': invoice
+			}
+		});
+		var transaction = getTrans(trans_guid);
+		Donations.update({'subscriptions.guid': subscription_guid}, {
+			$push: {
+				'transactions': transaction
+			}
+		});
+	},
+	getTrans: function(trans_guid){
+		var transaction = HTTP.get("https://billy.balancedpayments.com/v1/transactions/" + transaction_guid, {
+			auth: Meteor.settings.billy_key + ':'
+		}).data;
+		return transaction;
+	},
+	getInvoice: function(invoice_guid){
+		var invoice = HTTP.get("https://billy.balancedpayments.com/v1/invoices/" + invoice_guid, {
+			auth: Meteor.settings.billy_key + ':'
+		}).data;
+		return invoice;
 	}
 });

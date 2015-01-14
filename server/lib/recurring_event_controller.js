@@ -30,11 +30,6 @@ Evts = {
             logger.info("************* Received an event and didn't do anything with it.");
         }
 	},
-	get_invoice_guid: function(type, body) {
-		logger.info("Started get_invoice_guid");
-        var description = body.events[0].entity[type][0].description;
-        return (("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop());
-	},
 	get_transaction_guid: function(type, body) {
 		logger.info("Started get_transaction_guid");
         return (body.events[0].entity[type][0].meta['billy.transaction_guid']);

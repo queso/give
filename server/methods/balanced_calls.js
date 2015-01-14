@@ -31,7 +31,8 @@ _.extend(Utils, {
                 'updated_at': billyCustomer.updated_at
             };
         }
-        insertThis._id = Customers.insert(insertThis);
+        insertThis._id = Customers.insert({_id: customerData.id});
+        Customers.update({_id: customerData.id}, {$set: insertThis});
         logger.info("Customer _id: " + insertThis._id);
         return insertThis;
     },

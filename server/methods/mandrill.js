@@ -1,5 +1,5 @@
 _.extend(Utils,{
-	send_donation_email: function (billy, id, trans_guid, amount, status) {
+	send_donation_email: function (billy, id, trans_guid, subscription_guid, amount, status) {
 		try {
 			logger.info("Started send_donation_email with ID: " + id);
 

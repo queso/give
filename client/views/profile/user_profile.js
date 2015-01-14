@@ -12,7 +12,7 @@ Template.UserProfile.helpers({
         return Session.get("showHistory");
     },
     donation: function () {
-        return Donations.find();
+        return Donations.find({}, {sort: {created_at: 1}});
     },
     total_amount: function () {
         return this.total_amount / 100;
@@ -31,7 +31,7 @@ Template.UserProfile.helpers({
         return {total: total/100, count: count};
     },
     categories: function () {
-        var donations = Donations.find();
+        var donations = Donations.find({}, {sort: {donateTo: 1}});
         var categories = 1;
         var lastCategory = donations.fetch()[0].donateTo;
         donations.forEach(function (cursor) {
