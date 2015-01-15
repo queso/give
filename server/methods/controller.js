@@ -111,9 +111,13 @@ _.extend(Evts,{
 			return 1;
 		} else if(billy){
 			var insert_debit;
-			insert_debit.customer_id = 		body.events[0].entity.debits[0].links.customer;
+			console.log(body.events[0].entity.debits[0]);
+			if(!Donations.findOne({'subscriptions.guid': subscription_guid})){
+				Convert.start_conversion(id, type, body, billy, trans_guid, subscription_guid);
+			}
+
 			insert_debit.donation_id = 		Donations.findOne({'subscriptions.guid': subscription_guid})._id;
-			insert_debit.transaction_guid = trans_guid
+			insert_debit.transaction_guid = trans_guid;
 			delete insert_debit.meta;
 
 			//Insert object into debits collection and get the _id
