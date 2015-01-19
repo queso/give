@@ -90,8 +90,11 @@ _.extend(Utils, {
     },
     get_debit: function (debitHref) {
         console.log("Inside get_debit.");
+        console.log("DebitHref: " + 'https://api.balancedpayments.com' + debitHref);
 
+        //var debit = Utils.extractFromPromise(balanced.get(debitHref));
         var debit = Utils.extractFromPromise(balanced.get(debitHref));
+        //console.log(Object.getOwnPropertyNames(debit));
         console.log(debit._api.cache[debit.href]);
         var insert_debit = debit._api.cache[debit.href];
         return insert_debit;

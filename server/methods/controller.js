@@ -11,11 +11,11 @@ _.extend(Evts,{
 			var subscription_guid;
 			var trans_guid;
 			var invoice_guid;
-			if (billy === true) {
+			if (billy) {
 				invoice_guid = 				Evts.get_invoice_guid(body.events[0].entity[type][0].description);
-				var subscription_info = 	Evts.getBillySubscriptionGUID(invoice_guid);
-				subscription_guid = 		subscription_info.subscription_guid;
+				var subscription_guid = 	Evts.getBillySubscriptionGUID(invoice_guid);
 				trans_guid = 				body.events[0].entity.debits[0].meta['billy.transaction_guid'];
+				console.log("trans_guid: " + trans_guid);
 			}
 
 			var select_type = 	body.events[0].type;
@@ -24,7 +24,7 @@ _.extend(Evts,{
 			logger.info("Received an event of type: " + select_type);
 
 			//Send to the appropriate function based on the type received from Balanced
-			Evts[select_type](id, billy, trans_guid, subscription_guid, invoice_guid, status, amount, body);
+			var run_event = Evts[select_type](id, billy, trans_guid, subscription_guid, invoice_guid, status, amount, body);
  		} else{
             logger.info("************* Received an event and didn't do anything with it.");
         }
@@ -33,7 +33,7 @@ _.extend(Evts,{
 		logger.info("Inside debit_created with debit ID: " + id);
 		logger.info("Checking to see if this debit ID exists in the collection");
 		var check_for_existing_debit = Evts.check_for_debit(id, 'debit_created', body, billy, trans_guid, subscription_guid);
-		Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, 'created');
+		var send_email = Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, 'created');
 	},
 	debit_failed: function(id, billy, trans_guid, subscription_guid, invoice_guid, status, amount, body){
 		if(billy){
@@ -109,20 +109,22 @@ _.extend(Evts,{
 	check_for_debit: function (id, type, body, billy, trans_guid, subscription_guid) {
 		console.log("Inside of check_for_debit");
 		if (Debits.findOne({_id: id})) {
+			logger.info("Found this debit id in the Debits colleciton, proceeding normally with the debit_created operations");
 			return 1;
 		} else if(billy){
+			console.log("Subscription guid is " + subscription_guid);
 			var insert_debit;
 
-			if(!Donations.findOne({'subscriptions.guid': subscription_guid})){
-				Convert.start_conversion(id, type, body, billy, trans_guid, subscription_guid);
-			}else {
-
+			if(Donations.findOne({'subscriptions.guid': subscription_guid})){
+				logger.info("Found this donation subscription_guid in the Donations colleciton");
 				insert_debit.donation_id = Donations.findOne({'subscriptions.guid': subscription_guid})._id;
 				insert_debit.transaction_guid = trans_guid;
 				delete insert_debit.meta;
 
 				//Insert object into debits collection and get the _id
 				Debits.insert({_id: id}, insert_debit);
+			}else {
+				Convert.start_conversion(id, type, body, billy, trans_guid, subscription_guid);
 			}
 		} else {
 			//TODO: this should still insert the donation_id, my guess is that if we get here it is because there

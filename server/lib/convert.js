@@ -1,11 +1,11 @@
 Convert = {
-    start_conversion: function(id, type, body, billy, trans_guid, subscription_guid){
+    start_conversion: function(id, type, body, billy, transaction_guid, subscription_guid){
         console.log("Inside start_conversion.");
         //Tell the system to pause email sends for this id and this type of debit.
         Convert.pause_email(id, type);
 
         Convert.find_donate(subscription_guid, body.events[0].entity.debits[0].links.customer, id, transaction_guid);
-        
+
         //Do these last
         Convert.unpasue_email(id); //TODO: Do I need the type here?
     },
@@ -77,7 +77,7 @@ Convert = {
 
         //insert the donation into the collection
         var donations_id = Donations.insert(donateDoc);
-        Convert.insert_debit(donateDoc, donation_id, '/debits/' + debit_id, transaction_guid);
+        Convert.insert_debit(donateDoc, donations_id, '/debits/' + debit_id, transaction_guid);
         Convert.find_debits(donateDoc, donations_id);
     },
     pause_email: function(id, type){
