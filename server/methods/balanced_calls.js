@@ -96,7 +96,14 @@ _.extend(Utils, {
         var insert_debit = debit._api.cache[debit.href];
         return insert_debit;
     },
+    get_customer: function (customerHref) {
+        console.log("Inside get_customer.");
 
+        var customer_info = Utils.extractFromPromise(balanced.get(customerHref));
+        console.log(customer._api.cache[customer.href]);
+        var customer = customer._api.cache[customer.href];
+        return customer;
+    },
 
     getDonateTo: function (donateTo) {
         var returnToCalled;

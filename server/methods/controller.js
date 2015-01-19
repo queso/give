@@ -32,7 +32,7 @@ _.extend(Evts,{
 	debit_created: function(id, billy, trans_guid, subscription_guid, invoice_guid, status, amount, body){
 		logger.info("Inside debit_created with debit ID: " + id);
 		logger.info("Checking to see if this debit ID exists in the collection");
-		var check_id = Evts.check_for_debit(id, 'debit_created', body, billy, trans_guid, subscription_guid);
+		var check_for_existing_debit = Evts.check_for_debit(id, 'debit_created', body, billy, trans_guid, subscription_guid);
 		Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, 'created');
 	},
 	debit_failed: function(id, billy, trans_guid, subscription_guid, invoice_guid, status, amount, body){
@@ -107,22 +107,23 @@ _.extend(Evts,{
 		}
 	},
 	check_for_debit: function (id, type, body, billy, trans_guid, subscription_guid) {
+		console.log("Inside of check_for_debit");
 		if (Debits.findOne({_id: id})) {
 			return 1;
 		} else if(billy){
 			var insert_debit;
-			console.log(body.events[0].entity.debits[0]);
+
 			if(!Donations.findOne({'subscriptions.guid': subscription_guid})){
 				Convert.start_conversion(id, type, body, billy, trans_guid, subscription_guid);
+			}else {
+
+				insert_debit.donation_id = Donations.findOne({'subscriptions.guid': subscription_guid})._id;
+				insert_debit.transaction_guid = trans_guid;
+				delete insert_debit.meta;
+
+				//Insert object into debits collection and get the _id
+				Debits.insert({_id: id}, insert_debit);
 			}
-
-			insert_debit.donation_id = 		Donations.findOne({'subscriptions.guid': subscription_guid})._id;
-			insert_debit.transaction_guid = trans_guid;
-			delete insert_debit.meta;
-
-			//Insert object into debits collection and get the _id
-			Debits.insert({_id: id}, insert_debit);
-
 		} else {
 			//TODO: this should still insert the donation_id, my guess is that if we get here it is because there
 			//TODO: were multiple attempts to process the failed payment and eventually it went through.
