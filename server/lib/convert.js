@@ -11,10 +11,19 @@ Convert = {
     },
     find_donate: function (subscription_guid, customer_id, debit_id, transaction_guid) {
         console.log("Inside find_donate.");
+        var payment, type;
         var donateDoc = Donate.findOne({'subscriptions.guid': subscription_guid});
+        if(donateDoc.card){
+            payment = donateDoc.card;
+            type = 'card'
+        }else{
+            payment = donateDoc.card;
+            type = 'bank_account';
+        }
 
         Convert.insert_donation(donateDoc, customer_id, debit_id, transaction_guid);
-        Convert.insert_customer(donateDoc, customer_id);
+        Convert.insert_customer(donateDoc, payment, type, customer_id);
+
     },
     find_debits: function (donateDoc, donations_id) {
         console.log("Inside find_debits with donaations_id of " + donations_id);
@@ -31,54 +40,73 @@ Convert = {
         var debit = Utils.get_debit(debit_href);
         debit.donation_id = donation_id;
         debit.transaction_guid = transaction_guid;
-        Debits.insert({'debit.id': _id}, debit);
+        debit._id = debit.id;
+        delete debit.meta['billy.transaction_guid'];
+        console.log(debit.id);
+
+        // double check that the debit you are inserting isn't already stored in Debits. if it is just return to the calling function, else insert it.
+        if(Debits.findOne({_id: debit.id})){
+            console.log("Found that Debit, exiting insert");
+            return;
+        }else{
+            console.log("Didn't find that Debit, inserting");
+            Debits.insert(debit);
+        }
     },
-    insert_customer: function (donateDoc, customer_id) {
+    insert_customer: function (donateDoc, payment, type, customer_id) {
         console.log("Inside insert_customer.");
         // get the customer object from balanced
         var customer = Utils.get_customer('/customers/' + customer_id);
-
+        customer._id = customer.id;
 
         if (donateDoc.billy_customer) {
             customer.billy = donateDoc.billy_customer
         }
         else{}
-        if (donateDoc.cards) {
-            customer.cards = donateDoc.cards
+
+
+        if (type === 'card') {
+            customer.cards = payment;
+
+            // insert this customer into the customer's collection with the same id that balanced uses
+            Customers.insert(customer);
         }
-        else if(donateDoc.bank_account){
-            customer.bank_accounts = donateDoc.bank_account
+        else if(type === 'bank_account'){
+            customer.bank_accounts = payment;
+
+            // insert this customer into the customer's collection with the same id that balanced uses
+            Customers.insert(customer);
         }
 
-        // insert this customer into the customer's collection with the same id that balanced uses
-        Customers.insert({_id: customer_id}, customer);
 
     },
     insert_donation: function (donateDoc, customer_id, debit_id, transaction_guid) {
         console.log("Inside insert_donation.");
         //copy and delete the object properties needed to fit the change from the donate to the donations collection
-        delete donateDoc.card;
-        delete donateDoc.bank_account;
-        delete donateDoc.billy_customer;
-        delete donateDoc.viewable;
-        delete donateDoc.is_recurring;
-        delete donateDoc.customer;
-        donateDoc.customer_id = customer_id;
 
-        donateDoc.amount = donateDoc.debit.amount;
-        donateDoc.coverdTheFees = donateDoc.debit.coverdTheFees;
-        donateDoc.donateTo = donateDoc.debit.donateTo;
-        donateDoc.donateWith = donateDoc.debit.donateWith;
-        donateDoc.fees = donateDoc.debit.fees;
-        donateDoc.status = donateDoc.debit.status;
-        donateDoc.total_amount = donateDoc.debit.total_amount;
-        donateDoc.type = donateDoc.debit.type;
-        delete donateDoc.debit;
+        var copied_doc = donateDoc;
+        delete copied_doc.card;
+        delete copied_doc.bank_account;
+        delete copied_doc.billy_customer;
+        delete copied_doc.viewable;
+        delete copied_doc.is_recurring;
+        delete copied_doc.customer;
+        copied_doc.customer_id = customer_id;
+
+        copied_doc.amount = donateDoc.debit.amount;
+        copied_doc.coverdTheFees = donateDoc.debit.coverdTheFees;
+        copied_doc.donateTo = donateDoc.debit.donateTo;
+        copied_doc.donateWith = donateDoc.debit.donateWith;
+        copied_doc.fees = donateDoc.debit.fees;
+        copied_doc.status = donateDoc.debit.status;
+        copied_doc.total_amount = donateDoc.debit.total_amount;
+        copied_doc.type = donateDoc.debit.type;
+        delete copied_doc.debit;
 
         //insert the donation into the collection
-        var donations_id = Donations.insert(donateDoc);
-        Convert.insert_debit(donateDoc, donations_id, '/debits/' + debit_id, transaction_guid);
-        Convert.find_debits(donateDoc, donations_id);
+        var donations_id = Donations.insert(copied_doc);
+        Convert.insert_debit(copied_doc, donations_id, '/debits/' + debit_id, transaction_guid);
+        Convert.find_debits(copied_doc, donations_id);
     },
     pause_email: function(id, type){
         console.log("Inside pause_email.");

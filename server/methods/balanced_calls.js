@@ -90,7 +90,8 @@ _.extend(Utils, {
     },
     get_debit: function (debitHref) {
         console.log("Inside get_debit.");
-        console.log("DebitHref: " + 'https://api.balancedpayments.com' + debitHref);
+        console.log("Debit Href: " + debitHref);
+        balanced.configure(Meteor.settings.balanced_api_key);
 
         //var debit = Utils.extractFromPromise(balanced.get(debitHref));
         var debit = Utils.extractFromPromise(balanced.get(debitHref));
@@ -101,13 +102,14 @@ _.extend(Utils, {
     },
     get_customer: function (customerHref) {
         console.log("Inside get_customer.");
+        console.log("Customer Href: " + customerHref);
+        balanced.configure(Meteor.settings.balanced_api_key);
 
-        var customer_info = Utils.extractFromPromise(balanced.get(customerHref));
+        var customer = Utils.extractFromPromise(balanced.get(customerHref));
         console.log(customer._api.cache[customer.href]);
-        var customer = customer._api.cache[customer.href];
-        return customer;
+        var customer_info = customer._api.cache[customer.href];
+        return customer_info;
     },
-
     getDonateTo: function (donateTo) {
         var returnToCalled;
         switch (donateTo) {
