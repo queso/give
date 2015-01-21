@@ -12,12 +12,18 @@ Convert = {
     find_donate: function (subscription_guid, customer_id, debit_id, transaction_guid) {
         console.log("Inside find_donate.");
         var payment, type;
-        var donateDoc = Donate.findOne({'subscriptions.guid': subscription_guid});
+        if(Donate.findOne({'subscriptions.guid': subscription_guid})){
+            var donateDoc = Donate.findOne({'subscriptions.guid': subscription_guid});
+        }else{
+            logger.error("Didn't find this subscription in the old collection, exiting.");
+            return;
+        }
+
         if(donateDoc.card){
             payment = donateDoc.card;
-            type = 'card'
+            type = 'card';
         }else{
-            payment = donateDoc.card;
+            payment = donateDoc.bank_account;
             type = 'bank_account';
         }
 

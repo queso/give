@@ -3,7 +3,7 @@ _.extend(Evts,{
 		var type = Object.keys(body.events[0].entity)[0];
 		logger.info("Type is equal to: " + type);
 		if(type === "debits"){
-			logger.info("Inside one_time_controller and debits area");
+			logger.info("Inside controller and debits area");
 			var status 		=			body.events[0].entity[type][0].status;
 			var id 			= 			body.events[0].entity.debits[0].id;
 			var amount 		=			body.events[0].entity.debits[0].amount;
@@ -45,19 +45,37 @@ _.extend(Evts,{
 		//TODO: need to figure out what needs to be done here (if anything)
 	},
 	debit_succeeded: function(id, billy, trans_guid, subscription_guid, invoice_guid, status, amount, body){
-		var stored_amount = Debits.findOne({_id: id}).amount;
-
-		if(stored_amount === amount) {
-			if(amount >= 50000){
-				Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, 'large_gift');
-			}
-			Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, 'succeeded');
-			Utils.credit_order(billy, id);
-			if(billy){
-				Evts.addTrans_Invoice(trans_guid, subscription_guid, invoice_guid);
+		var stored_amount;
+		if(Debits.findOne(id)){
+			stored_amount = Debits.findOne(id).amount;
+			if(stored_amount === amount) {
+				if(amount >= 50000){
+					Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, 'large_gift');
+				}
+				Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, 'succeeded');
+				Utils.credit_order(billy, id);
+				if(billy){
+					Evts.addTrans_Invoice(trans_guid, subscription_guid, invoice_guid);
+				}
+			} else{
+				logger.error("The amount from the received event and the amount of the debit do not match!");
 			}
 		} else{
-			logger.error("The amount from the received event and the amount of the debit do not match!");
+			Meteor.setTimeout(function(){
+				stored_amount = Debits.findOne(id).amount;
+				if(stored_amount === amount) {
+					if(amount >= 50000){
+						Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, 'large_gift');
+					}
+					Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, 'succeeded');
+					Utils.credit_order(billy, id);
+					if(billy){
+						Evts.addTrans_Invoice(trans_guid, subscription_guid, invoice_guid);
+					}
+				} else{
+					logger.error("The amount from the received event and the amount of the debit do not match!");
+				}
+			}, 3000);
 		}
 	},
 	select_type: function(type) {
@@ -150,20 +168,20 @@ _.extend(Evts,{
 		return subscription_guid;
 	},
 	addTrans_Invoice: function(trans_guid, subscription_guid, invoice_guid){
-		var invoice = getInvoice(invoice_guid);
+		var invoice = Evts.getInvoice(invoice_guid);
 		Donations.update({'subscriptions.guid': subscription_guid}, {
 			$push: {
 				'invoices': invoice
 			}
 		});
-		var transaction = getTrans(trans_guid);
+		var transaction = Evts.getTrans(trans_guid);
 		Donations.update({'subscriptions.guid': subscription_guid}, {
 			$push: {
 				'transactions': transaction
 			}
 		});
 	},
-	getTrans: function(trans_guid){
+	getTrans: function(transaction_guid){
 		var transaction = HTTP.get("https://billy.balancedpayments.com/v1/transactions/" + transaction_guid, {
 			auth: Meteor.settings.billy_key + ':'
 		}).data;
