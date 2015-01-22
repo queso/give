@@ -2,6 +2,10 @@ _.extend(Utils,{
 	send_donation_email: function (billy, id, trans_guid, subscription_guid, amount, status) {
 		/*try {*/
 			logger.info("Started send_donation_email with ID: " + id);
+			if(!Donate.findOne({'subscriptions.guid': subscription_guid}) && !Donations.findOne({'subscriptions.guid': subscription_guid})){
+				logger.error("Exiting the send_donation_email function because the Donation doesn't exist in any collection");
+				return;
+			}
 
 			var debit_cursor = Debits.findOne({id: id});
 			var customer_cursor = Customers.findOne({_id: debit_cursor.links.customer});

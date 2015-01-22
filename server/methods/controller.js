@@ -63,6 +63,12 @@ _.extend(Evts,{
 		} else{
 			logger.info("Didn't find the Debit, starting the setTimeout to wait for the initial creation event to be processed.")
 			Meteor.setTimeout(function(){
+				if(!Debits.findOne({_id: id})){
+					logger.error("Still couldn't find the Debit, which seems to indicate that the debit.created event didn't create this Debit.");
+					logger.error("It might be that there was no subscription to be found, and so the Debit couldn't be created.");
+					logger.error("Check for this subscription in Billy: " + subscription_guid);
+					return;
+				}
 				stored_amount = Debits.findOne(id).amount;
 				if(stored_amount === amount) {
 					if(amount >= 50000){
@@ -76,7 +82,7 @@ _.extend(Evts,{
 				} else{
 					logger.error("The amount from the received event and the amount of the debit do not match!");
 				}
-			}, 10000);
+			}, 30000);
 		}
 	},
 	select_type: function(type) {
@@ -147,7 +153,10 @@ _.extend(Evts,{
 				Convert.start_conversion(id, type, body, billy, trans_guid, subscription_guid);
 			}
 		} else {
-			var insert_body = Debits.insert({_id: id}, body.events[0].entity.debits[0]);
+			var insert_this_debit = body.events[0].entity.debits[0];
+			insert_this_debit._id = id;
+			insert_this_debit.transaction_guid = trans_guid;
+			var insert_body = Debits.insert(insert_this_debit);
 			return insert_body;
 		}
 	},
