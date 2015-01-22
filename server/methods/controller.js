@@ -61,6 +61,7 @@ _.extend(Evts,{
 				logger.error("The amount from the received event and the amount of the debit do not match!");
 			}
 		} else{
+			logger.info("Didn't find the Debit, starting the setTimeout to wait for the initial creation event to be processed.")
 			Meteor.setTimeout(function(){
 				stored_amount = Debits.findOne(id).amount;
 				if(stored_amount === amount) {
@@ -75,7 +76,7 @@ _.extend(Evts,{
 				} else{
 					logger.error("The amount from the received event and the amount of the debit do not match!");
 				}
-			}, 3000);
+			}, 10000);
 		}
 	},
 	select_type: function(type) {
@@ -138,15 +139,14 @@ _.extend(Evts,{
 				insert_debit.donation_id = Donations.findOne({'subscriptions.guid': subscription_guid})._id;
 				insert_debit.transaction_guid = trans_guid;
 				delete insert_debit.meta;
+				insert_debit._id = id;
 
 				//Insert object into debits collection and get the _id
-				Debits.insert({_id: id}, insert_debit);
+				Debits.insert(insert_debit);
 			}else {
 				Convert.start_conversion(id, type, body, billy, trans_guid, subscription_guid);
 			}
 		} else {
-			//TODO: this should still insert the donation_id, my guess is that if we get here it is because there
-			//TODO: were multiple attempts to process the failed payment and eventually it went through.
 			var insert_body = Debits.insert({_id: id}, body.events[0].entity.debits[0]);
 			return insert_body;
 		}
@@ -168,6 +168,7 @@ _.extend(Evts,{
 		return subscription_guid;
 	},
 	addTrans_Invoice: function(trans_guid, subscription_guid, invoice_guid){
+		//TODO: check for existence first
 		var invoice = Evts.getInvoice(invoice_guid);
 		Donations.update({'subscriptions.guid': subscription_guid}, {
 			$push: {
