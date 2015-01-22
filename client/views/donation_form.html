@@ -25,10 +25,27 @@
                             </select>
                         </div>
                         <div class="fixSpacingBetweenInputsTop" name="is_recurring">
-                            <select name="is_recurring" id="is_recurring" class="form-control noBorder" >
-                                <option value="one_time" selected>One-Time</option>
+                            <select name="is_recurring" id="is_recurring" class="form-control noBorder" required>
+                                <option value="">Choose One</option>
+                                <option value="one-time">One-Time</option>
                                 <option value="monthly">Monthly</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="daily">Daily</option>
                             </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3" style="display: none;" id="calendarSection">
+                        <div class="form-group">
+                            <label>Donation {{start}}Date:</label>
+                            <div class="input-group">
+
+                                <span class="input-group-btn">
+                                    <button class="btn" type="button"><span class="fui-calendar"></span></button>
+                                </span>
+                                <input type="text" class="form-control" value="{{today}}" id="datepicker-01" />
+                            </div>
                         </div>
                     </div>
                 </div>

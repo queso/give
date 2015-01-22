@@ -271,11 +271,13 @@ Template.DonationForm.events({
             });
         }
     },
-    'click #is_recurring': function() {
-        if ($("#is_recurring").val() === 'monthly') {
+    'change #is_recurring': function() {
+        if ($("#is_recurring").val() !== 'one-time' && $("#is_recurring").val()) {
             Session.set('recurring', true);
+            $('#calendarSection').show();
         } else {
             Session.set('recurring', false);
+            $('#calendarSection').hide();
         }
     },
     'keyup, change #amount': function() {
@@ -399,6 +401,15 @@ Template.DonationForm.helpers({
     },
     writeInValue: function () {
         return Session.get('params.enteredWriteInValue');
+    },
+    today: function () {
+        return moment().format('D MMM, YYYY');
+    },
+    start: function () {
+        if(Session.equals('recurring', true)){
+            return 'Start ';
+        }
+        return;
     }
 });
 /*****************************************************************************/
@@ -441,6 +452,22 @@ Template.DonationForm.rendered = function() {
             backdrop: 'static'
         });
     }
+
+    var datepickerSelector = $('#datepicker-01');
+    datepickerSelector.datepicker({
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        dateFormat: 'd MM, yy',
+        minDate: 0,
+        maxDate: +60
+    }).prev('.input-group-btn').on('click', function (e) {
+        e && e.preventDefault();
+        datepickerSelector.focus();
+    });
+    $.extend($.datepicker, { _checkOffset: function (inst,offset,isFixed) { return offset; } });
+
+// Now let's align datepicker with the prepend button
+    datepickerSelector.datepicker('widget').css({ 'margin-left': -datepickerSelector.prev('.input-group-btn').find('.btn').outerWidth() + 3 });
 
 
 };
