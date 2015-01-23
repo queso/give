@@ -477,5 +477,57 @@ _.extend(Utils,{
 	      logger.error('Mandril sendEmailOutAPI Method error: ' + e);
 	      throw new Meteor.error(e);
 	    }
-	}
+	},
+    send_scheduled_email: function (id) {
+        /*try {*/
+        logger.info("Started send_donation_email with ID: " + id);
+
+        var donate_cursor = Donate.findOne({_id: id});
+        var started_at = donate_cursor.subscriptions[0].started_at;
+
+        started_at = moment(started_at).format("MMM DD, YYYY");
+        console.log(started_at);
+
+        var bcc_address = "support@trashmountain.com";
+        var email_address = donate_cursor.customer.email_address;
+        console.log(email_address);
+        slug = "scheduled-donation";
+
+        //Evts.update_email_collection(id, 'scheduled');
+
+        logger.info("Sending with template name: " + slug);
+        Meteor.Mandrill.sendTemplate({
+            "key": Meteor.settings.mandrillKey,
+            "template_name": slug,
+            "template_content": [
+                {}
+            ],
+            "message": {
+                "to": [
+                    {"email": email_address}
+                ],
+                "bcc_address": "support@trashmountain.com",
+                "merge_vars": [
+                    {
+                        "rcpt": email_address,
+                        "vars": [
+                            {
+                                "name": "StartDate",
+                                "content": started_at
+                            }, {
+                                "name": "DEV",
+                                "content": Meteor.settings.dev
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+        /*} //End try
+         catch (e) {
+         logger.error('Mandril sendEmailOutAPI Method error message: ' + e.message);
+         logger.error('Mandril sendEmailOutAPI Method error: ' + e);
+         throw new Meteor.error(e);
+         }*/
+    }
 });

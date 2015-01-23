@@ -185,3 +185,18 @@ Router.route(':root/expiring', {
         var root = Meteor.settings.public.root;
     }
 });
+
+Router.route(':root/scheduled', function () {
+    var root = Meteor.settings.public.root;
+
+    if (this.ready()) {
+        this.render('Scheduled', {
+        });
+        this.next();
+    }else {
+        this.render('Loading');
+        this.next();
+    }
+}, {
+    name: 'donation.scheduled'
+});

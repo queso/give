@@ -51,14 +51,16 @@ Utils = {
           total_amount: Match.Integer, 
           donateTo: String, 
           donateWith: Match.OneOf("Card", "Check"), 
-          is_recurring: Match.OneOf("one_time", "monthly"),
+          is_recurring: Match.OneOf("one_time", "monthly", "weekly", "daily"),
           coverTheFees: Boolean, 
           created_at: String,
           type: Match.OneOf("Card", "Check"),
           href: Match.Optional(String),
           id: Match.Optional(String),
           fees: Match.Optional(Number),
-          writeIn: Match.Optional(String)
+          writeIn: Match.Optional(String),
+          start_date: Match.Optional(String),
+          later: Match.Optional(Boolean)
         },
         customer: {
           fname: String, 
