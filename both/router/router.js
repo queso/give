@@ -15,7 +15,7 @@ Router.onBeforeAction(function () {
         this.next();
     }
     }, {
-    except: ['donation.form', 'donation.thanks', 'donation.gift']
+    except: ['donation.form', 'donation.thanks', 'donation.gift', 'donation.scheduled']
 });
 
 Router.route(':root', function () {
