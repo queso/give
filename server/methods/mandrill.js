@@ -478,7 +478,7 @@ _.extend(Utils,{
 	      throw new Meteor.error(e);
 	    }
 	},
-    send_scheduled_email: function (id) {
+    send_scheduled_email: function (id, subscription_guid) {
         /*try {*/
         logger.info("Started send_donation_email with ID: " + id);
 
@@ -517,6 +517,9 @@ _.extend(Utils,{
                             }, {
                                 "name": "DEV",
                                 "content": Meteor.settings.dev
+                            }, {
+                                "name": "SUB_GUID",
+                                "content": subscription_guid
                             }
                         ]
                     }

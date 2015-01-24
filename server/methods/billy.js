@@ -321,7 +321,7 @@ Meteor.methods({
                 var return_this = {_id: data._id, transaction_guid: transaction_guid};
                 return return_this;
             } else {
-                Utils.send_scheduled_email(data._id);
+                Utils.send_scheduled_email(data._id, debitInformation.subscription_guid);
                 var return_this = {_id: data._id, transaction_guid: "scheduled"};
                 return return_this;
             }
