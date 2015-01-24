@@ -100,7 +100,6 @@ function subscribeToBillyPlan(id) {
 		logIt();
         var donate_doc = Donate.findOne(id);
         var plan_guid;
-        console.dir(donate_doc);
         if(donate_doc.is_recurring === "monthly"){
             plan_guid = Meteor.settings.billy_monthly_GUID;
         }else if(donate_doc.is_recurring === "weekly"){

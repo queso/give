@@ -279,7 +279,7 @@ Template.DonationForm.events({
         }
     },
     'change #is_recurring': function() {
-        if ($("#is_recurring").val() && $("#is_recurring").val() !== 'one-time') {
+        if ($("#is_recurring").val() !== 'one_time') {
             Session.set('recurring', true);
             $('#calendarSection').show();
         } else {
@@ -439,6 +439,10 @@ Template.DonationForm.rendered = function() {
         placement: 'auto top'
     });
 
+    // show the datepicker if the frequency is monthly when the page loads
+    if(Session.equals('params.recurring', 'monthly')){
+        $('#calendarSection').show();
+    }
     //setup modal for entering give toward information
     if (Session.equals('params.donateTo', 'WriteIn') && !(Session.equals('showWriteIn', 'no'))) {
         $('#modal_for_write_in').modal({
@@ -461,7 +465,7 @@ Template.DonationForm.rendered = function() {
     $.extend($.datepicker, { _checkOffset: function (inst,offset,isFixed) { return offset; } });
 
     // Now let's align datepicker with the prepend button
-    datepickerSelector.datepicker('widget').css({ 'margin-left': -datepickerSelector.prev('.input-group-btn').find('.btn').outerWidth() - 15 });
+    datepickerSelector.datepicker('widget').css({ 'margin-left': -datepickerSelector.prev('.input-group-btn').find('.btn').outerWidth() + 5 });
 
 
 };
