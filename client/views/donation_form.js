@@ -279,7 +279,7 @@ Template.DonationForm.events({
         }
     },
     'change #is_recurring': function() {
-        if ($("#is_recurring").val() !== 'one-time' && $("#is_recurring").val()) {
+        if ($("#is_recurring").val() && $("#is_recurring").val() !== 'one-time') {
             Session.set('recurring', true);
             $('#calendarSection').show();
         } else {
@@ -447,21 +447,21 @@ Template.DonationForm.rendered = function() {
         });
     }
 
-    var datepickerSelector = $('#datepicker-01');
+    var datepickerSelector = $('#start_date');
     datepickerSelector.datepicker({
         showOtherMonths: true,
         selectOtherMonths: true,
         dateFormat: 'd MM, yy',
         minDate: 0,
-        maxDate: +60
+        maxDate: +32
     }).prev('.input-group-btn').on('click', function (e) {
         e && e.preventDefault();
         datepickerSelector.focus();
     });
     $.extend($.datepicker, { _checkOffset: function (inst,offset,isFixed) { return offset; } });
 
-// Now let's align datepicker with the prepend button
-    datepickerSelector.datepicker('widget').css({ 'margin-left': -datepickerSelector.prev('.input-group-btn').find('.btn').outerWidth() + 3 });
+    // Now let's align datepicker with the prepend button
+    datepickerSelector.datepicker('widget').css({ 'margin-left': -datepickerSelector.prev('.input-group-btn').find('.btn').outerWidth() - 15 });
 
 
 };

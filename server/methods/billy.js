@@ -99,6 +99,15 @@ function subscribeToBillyPlan(id) {
 	try {
 		logIt();
         var donate_doc = Donate.findOne(id);
+        var plan_guid;
+        console.dir(donate_doc);
+        if(donate_doc.is_recurring === "monthly"){
+            plan_guid = Meteor.settings.billy_monthly_GUID;
+        }else if(donate_doc.is_recurring === "weekly"){
+            plan_guid = Meteor.settings.billy_weekly_GUID;
+        }else if(donate_doc.is_recurring === "daily"){
+            plan_guid = Meteor.settings.billy_daily_GUID;
+        }
         var started_date;
         if(donate_doc.later){
             started_date = donate_doc.start_date;
@@ -119,7 +128,7 @@ function subscribeToBillyPlan(id) {
 		resultSet = HTTP.post("https://billy.balancedpayments.com/v1/subscriptions", {
 			params: {
 				"customer_guid": Donate.findOne(id).billy_customer.guid,
-				"plan_guid": Meteor.settings.billy_monthly_GUID,
+				"plan_guid": plan_guid,
 				"funding_instrument_uri": "/" + Meteor.settings.balanced_uri + funding_instrument_uri,
 				"appears_on_statement_as": "Trash Mountain",
 				"amount": billyAmount,
@@ -218,7 +227,8 @@ Meteor.methods({
 	                'debit.status': 'pending',
                     'viewable': true,
                     'start_date': data.paymentInformation.start_date,
-                    'later': data.paymentInformation.later
+                    'later': data.paymentInformation.later,
+                    'is_recurring': data.paymentInformation.is_recurring
 				}
 			});
 			logger.info("ID: " + data._id);
