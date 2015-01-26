@@ -161,14 +161,15 @@ _.extend(Utils,{
         /*try {*/
         logger.info("Started send_donation_email with ID: " + id);
 
-        var donate_cursor = Donate.findOne({_id: id});
-        var started_at = donate_cursor.subscriptions[0].started_at;
+        var donation_cursor = Donations.findOne({_id: id});
+        var started_at = donation_cursor.subscriptions[0].started_at;
 
         started_at = moment(started_at).format("MMM DD, YYYY");
         console.log(started_at);
 
         var bcc_address = "support@trashmountain.com";
-        var email_address = donate_cursor.customer.email_address;
+        var customer_cursor = Customers.findOne(donation_cursor.customer_id);
+        var email_address = customer_cursor.email;
         console.log(email_address);
         slug = "scheduled-donation";
 

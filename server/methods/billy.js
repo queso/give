@@ -281,6 +281,7 @@ Meteor.methods({
                 return return_this;
             } else {
                 Utils.create_user(data.customer._id, data._id, null);
+                console.log("Subscription guid: " + billySubscribeCustomer.data.guid);
                 Utils.send_scheduled_email(data._id, billySubscribeCustomer.data.guid);
                 return_this = {c: data.customer._id, don: data._id, deb: 'scheduled'};
                 return return_this;
