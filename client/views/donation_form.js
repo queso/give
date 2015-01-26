@@ -142,11 +142,16 @@ function handleCalls(payment, form) {
             //END error handling block for meteor call to processPayment
         });
         //END Meteor call block
-    } else if ($('#is_recurring').val() === 'monthly') {
+    } else if ($('#is_recurring').val() === 'monthly' || $('#is_recurring').val() === 'weekly' || $('#is_recurring').val() === 'daily') {
         Meteor.call('recurringDonation', form, function (error, result) {
             if (result) {
-                $('#loading1').modal('hide');
-                Router.go('/give/thanks?c=' + result.c + "&don=" + result.don + "&deb=" + result.deb);
+                if(result.deb === 'scheduled'){
+                    $('#loading1').modal('hide');
+                    Router.go('/give/scheduled/');
+                }else{
+                    $('#loading1').modal('hide');
+                    Router.go('/give/thanks?c=' + result.c + "&don=" + result.don + "&deb=" + result.deb);
+                }
             } else {
                 //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
                 updateTotal();
@@ -201,7 +206,8 @@ Template.DonationForm.events({
                 "donateWith": $("#donateWith").val(),
                 "is_recurring": $('#is_recurring').val(),
                 "coverTheFees": $('#coverTheFees').is(":checked"),
-                "created_at": moment().format('MM/DD/YYYY, hh:mm')
+                "created_at": moment().format('MM/DD/YYYY, hh:mm'),
+                "start_date": new Date($('#start_date').val()).toISOString()
             },
             "customer": {
                 "fname": $('#fname').val(),
@@ -220,6 +226,9 @@ Template.DonationForm.events({
             "URL": document.URL,
             sessionId: Meteor.default_connection._lastSessionId
         };
+
+        form.paymentInformation.later = (!moment(form.paymentInformation.start_date).isSame(Date.now(), 'day'));
+
         if (form.paymentInformation.total_amount !== form.paymentInformation.amount) {
             form.paymentInformation.fees = (form.paymentInformation.total_amount - form.paymentInformation.amount);
         }
@@ -270,11 +279,13 @@ Template.DonationForm.events({
             });
         }
     },
-    'click #is_recurring': function() {
-        if ($("#is_recurring").val() === 'monthly') {
+    'change #is_recurring': function() {
+        if ($("#is_recurring").val() !== 'one_time') {
             Session.set('recurring', true);
+            $('#calendarSection').show();
         } else {
             Session.set('recurring', false);
+            $('#calendarSection').hide();
         }
     },
     'keyup, change #amount': function() {
@@ -398,6 +409,15 @@ Template.DonationForm.helpers({
     },
     writeInValue: function () {
         return Session.get('params.enteredWriteInValue');
+    },
+    today: function () {
+        return moment().format('D MMM, YYYY');
+    },
+    start: function () {
+        if(Session.equals('recurring', true)){
+            return 'Start ';
+        }
+        return;
     }
 });
 /*****************************************************************************/
@@ -420,19 +440,10 @@ Template.DonationForm.rendered = function() {
         placement: 'auto top'
     });
 
-    //Change the select elements to button style dropdowns
-    $('select[name=donateWith]').selectpicker({
-        style: 'btn-primary',
-        menuStyle: 'dropdown-inverse'
-    });
-    $('select[name=donateTo]').selectpicker({
-        style: 'btn-primary',
-        menuStyle: 'dropdown-inverse'
-    });
-    $('select[name=is_recurring]').selectpicker({
-        style: 'btn-primary',
-        menuStyle: 'dropdown-inverse'
-    });
+    // show the datepicker if the frequency is monthly when the page loads
+    if(Session.equals('params.recurring', 'monthly')){
+        $('#calendarSection').show();
+    }
     //setup modal for entering give toward information
     if (Session.equals('params.donateTo', 'WriteIn') && !(Session.equals('showWriteIn', 'no'))) {
         $('#modal_for_write_in').modal({
@@ -440,6 +451,22 @@ Template.DonationForm.rendered = function() {
             backdrop: 'static'
         });
     }
+
+    var datepickerSelector = $('#start_date');
+    datepickerSelector.datepicker({
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        dateFormat: 'd MM, yy',
+        minDate: 0,
+        maxDate: +32
+    }).prev('.input-group-btn').on('click', function (e) {
+        e && e.preventDefault();
+        datepickerSelector.focus();
+    });
+    $.extend($.datepicker, { _checkOffset: function (inst,offset,isFixed) { return offset; } });
+
+    // Now let's align datepicker with the prepend button
+    datepickerSelector.datepicker('widget').css({ 'margin-left': -datepickerSelector.prev('.input-group-btn').find('.btn').outerWidth() + 5 });
 
 
 };

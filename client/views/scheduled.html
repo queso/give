@@ -1,0 +1,26 @@
+<template name="DonationScheduled">
+    <!--[if lt IE 9]>
+        <style>
+            #success_pending_icon, #failed_icon {
+                display:none;
+            } 
+    <![endif]-->
+    <div class="row text-center hidden-print">
+        <div class="blackBackground"><a href="https://trashmountain.com" target="_blank"><img class="logoImage" src="https://trashmountain.com/system/wp-content/uploads/2012/07/bw_logo.png">	</a>
+        </div>
+    </div>
+    <div class="container hidden-print fix-height">
+        <div class="row vertical-center-row">
+            <div class="col-lg-10 col-lg-offset-1 alignReceipt">
+                <h3 class='text-center'>Thank you, we have scheduled your gift!</h3>
+                <p class='alert alert-info'>
+                    You will receive an email acknowledgement immediately and an email receipt after your gift has been successfully processed.
+                    <strong>For ACH gifts it may take up to four days to receive an email receipt.</strong>
+                </p>
+                <p  id='success_pending_icon' class='text-center alert alert-success'>
+                    <i class='fa fa-check-square large-check'></i>
+                </p>
+            </div>
+        </div>
+    </div>
+</template>

@@ -1,9 +1,10 @@
+
 Router.configure({
-  layoutTemplate: 'MasterLayout',
-  loadingTemplate: 'Loading',
-  notFoundTemplate: 'NotFound',
-  templateNameConverter: 'upperCamelCase',
-  routeControllerNameConverter: 'upperCamelCase'
+    layoutTemplate: 'MasterLayout',
+    loadingTemplate: 'Loading',
+    notFoundTemplate: 'NotFound',
+    templateNameConverter: 'upperCamelCase',
+    routeControllerNameConverter: 'upperCamelCase'
 });
 
 Router.onBeforeAction(function () {
@@ -14,21 +15,21 @@ Router.onBeforeAction(function () {
         // otherwise don't hold up the rest of hooks or our route/action function from running
         this.next();
     }
-    }, {
-    except: ['donation.form', 'donation.thanks', 'enrollAccount']
+}, {
+    except: ['donation.form', 'donation.thanks', 'donation.gift', 'donation.scheduled']
 });
 
 Router.route(':root', function () {
     var root = Meteor.settings.public.root;
     var params = this.params;
-    
+
     Session.set('params.donateTo', params.query.donateTo);
     Session.set('params.amount', params.query.amount);
     Session.set('params.donateWith', params.query.donateWith);
     Session.set('params.recurring', params.query.recurring);
     Session.set('params.writeIn', params.query.writeIn);
     Session.set('params.enteredWriteInValue', params.query.enteredWriteInValue);
-    
+
     this.render('DonationForm');
 }, {
     name: 'donation.form'
@@ -53,6 +54,29 @@ Router.route(':root/thanks', {
             }
         });
     }
+});
+
+Router.route(':root/gift/:_id', function () {
+    var root = Meteor.settings.public.root;
+    var params = this.params;
+
+    this.subscribe('donate', params._id).wait();
+
+    if (this.ready()) {
+        this.render('Gift', {
+            data: function () {
+                Session.set('print', params.query.print);
+                Session.set('transaction_guid', params.query.transaction_guid);
+                return Donate.findOne(params._id);
+            }
+        });
+        this.next();
+    }else {
+        this.render('Loading');
+        this.next();
+    }
+}, {
+    name: 'donation.gift'
 });
 
 Router.route(':root/dashboard', function () {
@@ -180,4 +204,12 @@ Router.route(':root/user', function () {
     }
 }, {
     name: 'user.profile'
+});
+
+Router.route(':root/scheduled', {
+    name: 'donation.scheduled',
+    
+    data: function () {
+        var root = Meteor.settings.public.root;
+    }
 });
