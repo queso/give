@@ -267,13 +267,14 @@ Meteor.methods({
                 //Construct the object to insert into the debits collection
                 var insert_debit = Utils.get_debit(billyTransaction.data.items[0].processor_uri);
                 console.log(data.customer._id);
+                insert_debit._id = insert_debit.id;
                 insert_debit.customer_id = data.customer._id;
                 insert_debit.donation_id = data._id;
                 insert_debit.transaction_guid = insert_debit.meta['billy.transaction_guid'];
                 delete insert_debit.meta;
 
                 //Insert object into debits collection and get the _id
-                var debit_id = Debits.insert({_id: insertTransaction.debit_id}, insert_debit);
+                var debit_id = Debits.insert(insert_debit);
                 console.log("LOOK HERE " + debit_id);
 
                 return_this = {c: data.customer._id, don: data._id, deb: debit_id};
