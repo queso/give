@@ -6,6 +6,7 @@ _.extend(Evts,{
 			logger.info("Inside controller and debits area");
 			var status 		=			body.events[0].entity[type][0].status;
 			var id 			= 			body.events[0].entity.debits[0].id;
+            console.log("debit_id of this event is: " + id);
 			var amount 		=			body.events[0].entity.debits[0].amount;
 			var billy 		= 			body.events[0].entity.debits[0].meta['billy.transaction_guid'] !== undefined;
 			var subscription_guid;
