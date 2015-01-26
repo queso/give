@@ -5,7 +5,7 @@ _.extend(Evts,{
 		if(type === "debits"){
 			logger.info("Inside controller and debits area");
 			var status 		=			body.events[0].entity[type][0].status;
-			var id 			= 			body.events[0].entity.debits[0].id;
+			var id      	= 			body.events[0].entity.debits[0].id;
             console.log("debit_id of this event is: " + id);
 			var amount 		=			body.events[0].entity.debits[0].amount;
 			var billy 		= 			body.events[0].entity.debits[0].meta['billy.transaction_guid'] !== undefined;
@@ -145,6 +145,7 @@ _.extend(Evts,{
 			var insert_debit = {};
 
 			if(Donations.findOne({'subscriptions.guid': subscription_guid})){
+                insert_debit = body;
 				logger.info("Found this donation subscription_guid in the Donations colleciton");
 				insert_debit.donation_id = Donations.findOne({'subscriptions.guid': subscription_guid})._id;
 				insert_debit.transaction_guid = trans_guid;
@@ -152,7 +153,8 @@ _.extend(Evts,{
 				insert_debit._id = id;
 
 				//Insert object into debits collection and get the _id
-				Debits.insert(insert_debit);
+				var inserted_debit = Debits.insert(insert_debit);
+                return inserted_debit;
 			}else {
 				Convert.start_conversion(id, type, body, billy, trans_guid, subscription_guid);
 			}
