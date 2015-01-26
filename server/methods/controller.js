@@ -145,7 +145,8 @@ _.extend(Evts,{
 			var insert_debit = {};
 
 			if(Donations.findOne({'subscriptions.guid': subscription_guid})){
-                insert_debit = body;
+                delete body.events[0].entity.debits[0].meta['billy.transaction_guid'];
+                insert_debit = body.events[0].entity.debits[0];
 				logger.info("Found this donation subscription_guid in the Donations colleciton");
 				insert_debit.donation_id = Donations.findOne({'subscriptions.guid': subscription_guid})._id;
 				insert_debit.transaction_guid = trans_guid;
