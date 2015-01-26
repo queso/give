@@ -48,6 +48,7 @@ _.extend(Evts,{
 		var stored_amount;
 		if(Debits.findOne(id)){
 			stored_amount = Debits.findOne(id).amount;
+            console.log("stored_amount = " + stored_amount + " event amount = " + amount);
 			if(stored_amount === amount) {
 				if(amount >= 50000){
 					Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, 'large_gift');
