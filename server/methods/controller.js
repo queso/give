@@ -47,6 +47,7 @@ _.extend(Evts,{
 	},
 	debit_succeeded: function(id, billy, trans_guid, subscription_guid, invoice_guid, status, amount, body){
 		var stored_amount;
+        console.log("id: " + id);
 		if(Debits.findOne(id)){
             console.log("Debits.findOne(id).amount = " + Debits.findOne(id).amount);
 			stored_amount = Debits.findOne(id).amount;
