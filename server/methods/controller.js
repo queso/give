@@ -48,9 +48,10 @@ _.extend(Evts,{
 	debit_succeeded: function(id, billy, trans_guid, subscription_guid, invoice_guid, status, amount, body){
 		var stored_amount;
         console.log("id: " + id);
-		if(Debits.findOne(id)){
-            console.log("Debits.findOne(id).amount = " + Debits.findOne(id).amount);
-			stored_amount = Debits.findOne(id).amount;
+        var debit_cursor = Debits.findOne(id);
+		if(debit_cursor){
+            console.log("Debits.findOne(id).amount = " + debit_cursor.amount);
+			stored_amount = debit_cursor.amount;
             console.log("stored_amount = " + stored_amount + " event amount = " + amount);
 			if(stored_amount === amount) {
 				if(amount >= 50000){
@@ -61,6 +62,7 @@ _.extend(Evts,{
 				if(billy){
 					Evts.addTrans_Invoice(trans_guid, subscription_guid, invoice_guid);
 				}
+                Utils.create_user(debit_cursor.customer_id, debit_cursor.donation_id, id);
 			} else{
 				logger.error("The amount from the received event and the amount of the debit do not match!");
 			}
@@ -72,20 +74,23 @@ _.extend(Evts,{
 					logger.error("It might be that there was no subscription to be found, and so the Debit couldn't be created.");
 					logger.error("Check for this subscription in Billy: " + subscription_guid);
 					return;
-				}
-				stored_amount = Debits.findOne(id).amount;
-				if(stored_amount === amount) {
-					if(amount >= 50000){
-						Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, 'large_gift');
-					}
-					Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, 'succeeded');
-					Utils.credit_order(billy, id);
-					if(billy){
-						Evts.addTrans_Invoice(trans_guid, subscription_guid, invoice_guid);
-					}
-				} else{
-					logger.error("The amount from the received event and the amount of the debit do not match!");
-				}
+				}else{
+                    debit_cursor =  Debits.findOne(id);
+                    stored_amount = debit_cursor.amount;
+                    if(stored_amount === amount) {
+                        if(amount >= 50000){
+                            Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, 'large_gift');
+                        }
+                        Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, 'succeeded');
+                        Utils.credit_order(billy, id);
+                        if(billy){
+                            Evts.addTrans_Invoice(trans_guid, subscription_guid, invoice_guid);
+                        }
+                        Utils.create_user(debit_cursor.customer_id, debit_cursor.donation_id, id);
+                    } else{
+                        logger.error("The amount from the received event and the amount of the debit do not match!");
+                    }
+                }
 			}, 30000);
 		}
 	},
