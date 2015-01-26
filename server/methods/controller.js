@@ -138,7 +138,7 @@ _.extend(Evts,{
 			return 1;
 		} else if(billy){
 			console.log("Subscription guid is " + subscription_guid);
-			var insert_debit;
+			var insert_debit = {};
 
 			if(Donations.findOne({'subscriptions.guid': subscription_guid})){
 				logger.info("Found this donation subscription_guid in the Donations colleciton");
