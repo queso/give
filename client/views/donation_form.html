@@ -8,30 +8,33 @@
             <div class="col-md-6 col-md-offset-3">
                 <h4>Your Donation Amount:</h4>
                 <h4 id="total_amount_display" >${{amount}}</h4>
-                  
                 <input type="hidden" id="total_amount" name="total_amount" value="{{amount}}" />
             </div>
             <div class="col-md-6 col-md-offset-3">
-    			<div class="form-group noBottomMargin">
+    			<div class="form-group">
                     <div class="col-md-12">
                         <label>Donation Summary:</label>&nbsp;<i class="fa fa-question-circle" name="donationSummary"></i>
                     </div>
-                    <div class="col-md-12">
-                        {{> DonationTo}}
-                        <div class="fixSpacingBetweenInputsTop">
-                            <select name="donateWith" id="donateWith" class="form-control select-green-background" required>
+                    <div class="row">
+                        <div class="col-md-4">
+                            {{> DonationTo}}
+                        </div>
+                        <div class="col-md-4">
+                            <select name="donateWith" id="donateWith" class="form-control select select-primary mbl" required>
                                 <option value="Check">Check</option>
                                 <option value="Card">Card</option>
                             </select>
+                            <label for="donateWith">Method of Payment</label>
                         </div>
-                        <div class="fixSpacingBetweenInputsTop" name="is_recurring">
-                            <select name="is_recurring" id="is_recurring" class="form-control select-green-background" required data-parsley-errors-messages-disabled>
-                                <option value="">Choose One</option>
+                        <div class="col-md-4">
+                            <select name="is_recurring" id="is_recurring" class="form-control select select-primary mbl" required>
+                                <option selected></option>
                                 <option value="one_time">One-Time</option>
                                 <option value="monthly">Monthly</option>
                                 <option value="weekly">Weekly</option>
                                 <option value="daily">Daily</option>
                             </select>
+                            <label for="is_recurring" id="frequency_label">Donation Frequency</label>
                         </div>
                     </div>
                 </div>
@@ -178,7 +181,7 @@
     <div class="form-group">
         <div class="col-lg-6 col-md-7 col-sm-5 col-xs-5">
             <label class="control-label" for="account_type">Account Type <i class="makeRightOfInput fa fa-question-circle" id="accountTypeQuestion"></i></label>
-            <select class="form-control" name="account_type">
+            <select class="form-control select select-primary select-block mbl" name="account_type">
               <option>Checking</option>
               <option>Savings</option>
             </select>

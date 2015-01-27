@@ -170,6 +170,14 @@ Template.DonationForm.events({
         e.preventDefault();
         // Stop propagation prevents the form from being submitted more than once.
         e.stopPropagation();
+
+
+        if($("#is_recurring").val() === ''){
+            $("#s2id_is_recurring").children().addClass("redText");
+            $('#loading1').modal('hide');
+            return;
+        }
+
         $(window).off('beforeunload');
 
         updateTotal();
@@ -429,6 +437,13 @@ Template.DonationForm.destroyed = function() {
 Template.DonationForm.rendered = function() {
     // Setup parsley form validation
     $('#donation_form').parsley();
+
+    //enable selectpicker for those select elements with the .selectpicker class
+    $('select').select2({dropdownCssClass: 'dropdown-inverse'});
+
+    $("#is_recurring").select2({
+        placeholder: "Choose One"
+    });
 
     //Set the checkboxes to unchecked
     $(':checkbox').checkbox('uncheck');
