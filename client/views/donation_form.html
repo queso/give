@@ -1,5 +1,5 @@
 <template name="DonationForm">
-    <div class="row text-center">
+    <div class="row text-center" id="spinContainer">
         <div class="blackBackground"><a href="https://trashmountain.com" target="_blank"><img class="logoImage" src="/give/images/bw_logo.png"  style="width:235px;height:60px"></a></div>
     <h2 class="">THANK YOU</h2>
 
@@ -162,6 +162,9 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div id="spinDiv" class="fadeMe">
+        {{> spinner}}
     </div>
 </template>
 

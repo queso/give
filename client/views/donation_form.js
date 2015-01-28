@@ -7,6 +7,7 @@
 // amount that is shown to the user and passed as total_amount through the form
 //display error modal if there is an error while initially submitting data from the form.
 function handleErrors(error) {
+    Session.set("loaded", true);
     if(error.reason === "Match failed"){
         var gatherInfo = {};
         gatherInfo.browser = navigator.userAgent
@@ -131,12 +132,12 @@ function handleCalls(payment, form) {
     if ($('#is_recurring').val() === 'one_time') {
         Meteor.call("singleDonation", form, function (error, result) {
             if (result) {
-                window.loading_screen.finish();
+
                 Router.go('/give/thanks?c=' + result.c + "&don=" + result.don + "&deb=" + result.deb);
             } else {
                 //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
                 updateTotal();
-                window.loading_screen.finish();
+
                 handleErrors(error);
             }
             //END error handling block for meteor call to processPayment
@@ -146,18 +147,20 @@ function handleCalls(payment, form) {
         Meteor.call('recurringDonation', form, function (error, result) {
             if (result) {
                 if(result.deb === 'scheduled'){
-                    window.loading_screen.finish();
+
                     Router.go('/give/scheduled/');
                 }else{
-                    window.loading_screen.finish();
+
                     Router.go('/give/thanks?c=' + result.c + "&don=" + result.don + "&deb=" + result.deb);
                 }
             } else {
                 //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
                 updateTotal();
-                window.loading_screen.finish();
+
                 //handleErrors is used to check the returned error and the display a user friendly message about what happened that caused
                 //the error.
+                $("#spinDiv").hide();
+                spinner.stop;
                 handleErrors(error);
             }
         });
@@ -171,12 +174,24 @@ Template.DonationForm.events({
         // Stop propagation prevents the form from being submitted more than once.
         e.stopPropagation();
 
-
         if($("#is_recurring").val() === ''){
             $("#s2id_is_recurring").children().addClass("redText");
-            window.loading_screen.finish();
+
             return;
         }
+        var opts = {color: '#FFF', length: 60, width: 10, lines: 8};
+        var target = document.getElementById('spinContainer');
+        spinner = new Spinner(opts).spin(target);
+
+        $.fn.scrollView = function () {
+            return this.each(function () {
+                $('html, body').animate({
+                    scrollTop: $(this).offset().top
+                }, 1000);
+            });
+        }
+        $('#spinContainer').scrollView();
+        $("#spinDiv").show();
 
         $(window).off('beforeunload');
 
@@ -198,18 +213,7 @@ Template.DonationForm.events({
             handleErrors(error);
             throw new Meteor.Error(error);
         }
-        //Start the bootstrap modal with the awesome font refresh logo
-        //Also, backdrop: 'static' sets the modal to not be exited when
-        //a user clicks in the background.
 
-
-        var message = '<p class="loading-message">Please wait, the system is processing your gift.</p>';
-        var spinner = '<div class="sk-spinner sk-spinner-rotating-plane"></div>';
-        window.loading_screen = window.pleaseWait({
-            logo: '/images/TMP_Logo_White_Background_WO_Live_the_Command.png',
-            backgroundColor: '#7f8c8d',
-            loadingHtml: message + spinner
-        });
 
         var form = {
             "paymentInformation": {
@@ -268,7 +272,6 @@ Template.DonationForm.events({
                 } else {
                     //error logic here
                     var sendError = {reason: response.errors[0].category_code, details: response.errors[0].description};
-                    window.loading_screen.finish();
                     handleErrors(sendError);
                 }
             });
@@ -289,7 +292,6 @@ Template.DonationForm.events({
                 } else {
                     //error logic here
                     console.error(response);
-                    window.loading_screen.finish();
                 }
             });
         }
@@ -390,6 +392,9 @@ Template.DonationForm.events({
 
 });
 Template.DonationForm.helpers({
+    loaded: function() {
+        return Session.equals("loaded");
+    },
     paymentWithCard: function() {
         return Session.equals("paymentMethod", "Card");
     },
@@ -434,6 +439,11 @@ Template.DonationForm.destroyed = function() {
 
 };
 Template.DonationForm.rendered = function() {
+    // Stop spinner in case the back button is used.
+    /*if(spinner) {
+        spinner.stop();
+    }*/
+
     // Setup parsley form validation
     $('#donation_form').parsley();
 
