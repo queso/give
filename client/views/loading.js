@@ -1,6 +1,19 @@
-Template.Loading.rendered = function() {
-    $('#loading1').modal('show');
-}
-Template.Loading.destroyed = function() {
-    $('#loading1').modal('hide');
-}
+Template.loading.rendered = function () {
+    if ( ! Session.get('loadingSplash') ) {
+        this.loading = window.pleaseWait({
+            logo: '/images/TMP_Logo_White_Background_WO_Live_the_Command.png',
+            backgroundColor: '#7f8c8d',
+            loadingHtml: message + spinner
+        });
+        Session.set('loadingSplash', true); // just show loading splash once
+    }
+};
+
+Template.loading.destroyed = function () {
+    if ( this.loading ) {
+        this.loading.finish();
+    }
+};
+
+var message = '<p class="loading-message">Loading Message</p>';
+var spinner = '<div class="sk-spinner sk-spinner-rotating-plane"></div>';
