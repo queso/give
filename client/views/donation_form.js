@@ -392,9 +392,6 @@ Template.DonationForm.events({
 
 });
 Template.DonationForm.helpers({
-    loaded: function() {
-        return Session.equals("loaded");
-    },
     paymentWithCard: function() {
         return Session.equals("paymentMethod", "Card");
     },
@@ -439,20 +436,11 @@ Template.DonationForm.destroyed = function() {
 
 };
 Template.DonationForm.rendered = function() {
-    // Stop spinner in case the back button is used.
-    /*if(spinner) {
-        spinner.stop();
-    }*/
-
     // Setup parsley form validation
     $('#donation_form').parsley();
 
     //enable select2 for those select elements with the .select class
     $('select').select2({dropdownCssClass: 'dropdown-inverse'});
-
-    $("#is_recurring").select2({
-        placeholder: "Choose One"
-    });
 
     //Set the checkboxes to unchecked
     $(':checkbox').radiocheck('uncheck');

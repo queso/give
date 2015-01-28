@@ -1,9 +1,14 @@
 <template name="DonationForm">
     <div class="row text-center" id="spinContainer">
-        <div class="blackBackground"><a href="https://trashmountain.com" target="_blank"><img class="logoImage" src="/give/images/bw_logo.png"  style="width:235px;height:60px"></a></div>
+        <div class="blackBackground">
+            <a href="https://trashmountain.com" target="_blank"><img class="logoImage"
+              src="/give/images/bw_logo.png"  style="width:235px;height:60px">
+            </a>
+        </div>
     <h2 class="">THANK YOU</h2>
 
-		<form class="form-horizontal donation-form" role="form" id="donation_form" name="donation_form" data-parsley-focus="first" data-parsley-excluded="input[type=submit], input[type=reset], input[type=hidden], [disabled], :hidden">
+		<form class="form-horizontal donation-form" role="form" id="donation_form" name="donation_form" data-parsley-focus="first"
+              data-parsley-excluded="input[type=submit], input[type=reset], input[type=hidden], [disabled], :hidden">
 
             <div class="col-md-6 col-md-offset-3">
                 <h4>Your Donation Amount:</h4>
@@ -14,7 +19,9 @@
     			<div class="form-group">
                     <div class="col-md-12">
                         <label>Donation Summary:</label>&nbsp;
-                        <i class="fa fa-question-circle" name="donationSummary" data-toggle="popover" data-trigger="hover focus" data-content="Below is the summary of your donation. To change your options please use the dropdown buttons." title="Donation Summary"></i>
+                        <i class="fa fa-question-circle" name="donationSummary" data-toggle="popover" data-trigger="hover focus"  data-placement="bottom" data-container="body"
+                           data-content="Below is the summary of your donation. To change your options please use the dropdown buttons." title="Donation Summary">
+                        </i>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
@@ -30,7 +37,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3">
-                            <select name="is_recurring" id="is_recurring" class="form-control select select-primary mbl" required>
+                            <select name="is_recurring" id="is_recurring" class="form-control select select-primary mbl" required data-placeholder="Select an option">
                                 <option selected></option>
                                 <option value="one_time">One-Time</option>
                                 <option value="monthly">Monthly</option>
@@ -68,7 +75,10 @@
                         <label class="checkbox" for="coverTheFees">
                             <input type="checkbox" name="coverTheFees" id="coverTheFees" data-toggle="checkbox" {{coverTheFeesChecked}} />
                             I'll cover the credit card processing fees.&nbsp;&nbsp;
-                            <i id="coverTheFeesQuestion" class="fa fa-question-circle" data-toggle="popover"  data-placement="bottom" data-trigger="hover focus" title="Processor fees" data-container="body" data-content="Our credit card processor charges 2.9% + .30 per transaction. If you check the box to cover these fees we'll do the math and change your gift amount to reflect this amount."></i>
+                            <i id="coverTheFeesQuestion" class="fa fa-question-circle" data-toggle="popover"
+                               data-placement="bottom" data-trigger="hover focus" title="Processor fees" data-container="body"
+                               data-content="Our credit card processor charges 2.9% + .30 per transaction. If you check the box to cover these fees we'll do the math and change your gift amount to reflect this amount.">
+                            </i>
                         </label>
                     </div>
                 </div>
@@ -91,7 +101,8 @@
                                 <label>Amount</label>
                             <![endif]-->
     				            <span class="input-group-addon">$</span>
-    				            <input {{attributes_Input_Amount}} value="{{amount}}" class="form-control slim-borders" required data-parsley-error-message="Please enter an amount with no commas." />
+    				            <input {{attributes_Input_Amount}} value="{{amount}}" class="form-control slim-borders"
+                                   required data-parsley-error-message="Please enter an amount with no commas." />
     				        </div>
     				    </div>
     				</div>
@@ -110,7 +121,8 @@
                     <br>
     				<div class="form-group padBottom">
     			        <div class="col-sm-offset-2 col-sm-8">
-    			          <button name="submitThisForm" type="submit" class="btn btn-block btn-hg btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Submit Donation</button>
+    			          <button name="submitThisForm" type="submit" class="btn btn-block btn-hg btn-primary"
+                                  data-toggle="modal" data-target=".bs-example-modal-lg">Submit Donation</button>
                         </div>
                     </div>
     			</fieldset>
@@ -151,10 +163,13 @@
                     <h4 class="modal-title"><strong>Enter</strong> a designation below.</h4>
                 </div>
                 <div class="modal-body">
-                    <p>You selected the 'Support a Trip Participant', please enter a description of where you want the funds to be directed. If you have any questions or don't seem to be finding what you are looking for please email us. Thanks </p>
+                    <p>You selected the 'Support a Trip Participant', please enter a description of where you want the
+                        funds to be directed. If you have any questions or don't seem to be finding what you are looking
+                        for please email us. Thanks </p>
                     <a href="mailto:info@trashmountain.com?Subject=Donation Question">info@trashmountain.com.</a>
                     <p>
-                        <input id="writeIn" data-parsley-type="text" class="form-control slim-borders" placeholder="Name or other designation." />
+                        <input id="writeIn" data-parsley-type="text" class="form-control slim-borders"
+                               placeholder="Name or other designation." />
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -189,7 +204,11 @@
     <div class="form-group">
         <div class="col-lg-6 col-md-7 col-sm-5 col-xs-5">
             <label class="control-label" for="account_type">Account Type
-                <i class="makeRightOfInput fa fa-question-circle" id="accountTypeQuestion" data-toggle="popover" data-trigger="hover focus" data-placement="bottom" title="Account Type" data-content="Give by ACH. There are usually 3 sets of numbers at the bottom of a check. The short check number, the 9 digit routing number and the account number."></i></label>
+                <i class="makeRightOfInput fa fa-question-circle" id="accountTypeQuestion" data-toggle="popover"
+                   data-trigger="hover focus" title="Give by ACH" data-container="body"
+                   data-content="There are usually 3 sets of numbers at the bottom of a check. The short check number, the 9 digit routing number and the account number.">
+                </i>
+            </label>
             <select class="form-control select select-primary select-block mbl" name="account_type">
               <option>Checking</option>
               <option>Savings</option>
@@ -211,13 +230,15 @@
             <!--[if lt IE 9]>
                 <label>Card Number</label>
             <![endif]-->
-          <input type="text" class="form-control slim-borders" name="card_number" id="card_number" placeholder="Debit/Credit Card Number" data-parsley-type="number" data-parsley-length="[15,16]" required>
+          <input type="text" class="form-control slim-borders" name="card_number" id="card_number"
+                 placeholder="Debit/Credit Card Number" data-parsley-type="number" data-parsley-length="[15,16]" required>
         </div> <!-- 4111111111111111 -->
         <div class="col-md-3 col-sm-3 col-xs-4">
             <!--[if lt IE 9]>
                 <label>CVV Code</label>
             <![endif]-->        
-            <input type="text" class="form-control slim-borders" name="cvv" id="cvv" placeholder="CVV" data-parsley-type="number" data-parsley-minlength="3" required>
+            <input type="text" class="form-control slim-borders" name="cvv" id="cvv"
+                   placeholder="CVV" data-parsley-type="number" data-parsley-minlength="3" required>
         </div>
     </div>
     <div class="form-group">
