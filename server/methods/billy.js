@@ -223,11 +223,11 @@ Meteor.methods({
 			billyPayment = Billy.createPaymentMethod(data.customer._id, data.paymentInformation.donateWith, data.paymentInformation.href, data.customer.billy.processor_uri);
 			var billySubscribeCustomer = '';
 			billySubscribeCustomer = Billy.subscribeToBillyPlan(data._id, data.customer._id, data.paymentInformation.type, data.paymentInformation.href);
-			Donations.update(data._id, {
+			/*Donations.update(data._id, {
 				$push: {
 					'subscriptions': billySubscribeCustomer.data
 				}
-			});
+			});*/
 
             var return_this;
 			//Get the whole invoice if there is one
@@ -236,11 +236,11 @@ Meteor.methods({
                 billyInvoice = getInvoice(billySubscribeCustomer.data.guid);
                 billyInvoice.data.items[0].subscription_guid = billySubscribeCustomer.data.guid;
                 //push this invoice into the document
-                Donations.update(data._id, {
+                /*Donations.update(data._id, {
                     $push: {
                         'invoices': billyInvoice.data.items[0]
                     }
-                });
+                });*/
                 logger.info("Inserted invoice into appropriate subscription.");
 
                 //Get the whole Transaction
@@ -260,7 +260,9 @@ Meteor.methods({
 
                 Donations.update(data._id, {
                     $push: {
-                        'transactions': insertTransaction
+                        'transactions': insertTransaction,
+                        'invoices': billyInvoice.data.items[0],
+                        'subscriptions': billySubscribeCustomer.data
                     }
                 });
 
@@ -271,14 +273,15 @@ Meteor.methods({
                 insert_debit.customer_id = data.customer._id;
                 insert_debit.donation_id = data._id;
                 insert_debit.transaction_guid = insert_debit.meta['billy.transaction_guid'];
-                delete insert_debit.meta;
+                delete insert_debit.meta['billy.transaction_guid'];
 
                 //Insert object into debits collection and get the _id
-                var debit_id = Debits.insert(insert_debit);
-                console.log("LOOK HERE " + debit_id);
+                if(!Debits.findOne(insert_debit.id)){
+                    var debit_id = Debits.insert(insert_debit);
+                }
 
-                return_this = {c: data.customer._id, don: data._id, deb: debit_id};
-                Utils.create_user(data.customer._id, data._id, debit_id);
+                return_this = {c: data.customer._id, don: data._id, deb: insert_debit.id};
+                Utils.create_user(data.customer._id, data._id,  insert_debit.id);
                 return return_this;
             } else {
                 Utils.create_user(data.customer._id, data._id, null);

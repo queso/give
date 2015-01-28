@@ -131,12 +131,12 @@ function handleCalls(payment, form) {
     if ($('#is_recurring').val() === 'one_time') {
         Meteor.call("singleDonation", form, function (error, result) {
             if (result) {
-                $('#loading1').modal('hide');
+                window.loading_screen.finish();
                 Router.go('/give/thanks?c=' + result.c + "&don=" + result.don + "&deb=" + result.deb);
             } else {
                 //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
                 updateTotal();
-                $('#loading1').modal('hide');
+                window.loading_screen.finish();
                 handleErrors(error);
             }
             //END error handling block for meteor call to processPayment
@@ -146,16 +146,16 @@ function handleCalls(payment, form) {
         Meteor.call('recurringDonation', form, function (error, result) {
             if (result) {
                 if(result.deb === 'scheduled'){
-                    $('#loading1').modal('hide');
+                    window.loading_screen.finish();
                     Router.go('/give/scheduled/');
                 }else{
-                    $('#loading1').modal('hide');
+                    window.loading_screen.finish();
                     Router.go('/give/thanks?c=' + result.c + "&don=" + result.don + "&deb=" + result.deb);
                 }
             } else {
                 //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
                 updateTotal();
-                $('#loading1').modal('hide');
+                window.loading_screen.finish();
                 //handleErrors is used to check the returned error and the display a user friendly message about what happened that caused
                 //the error.
                 handleErrors(error);
@@ -170,6 +170,14 @@ Template.DonationForm.events({
         e.preventDefault();
         // Stop propagation prevents the form from being submitted more than once.
         e.stopPropagation();
+
+
+        if($("#is_recurring").val() === ''){
+            $("#s2id_is_recurring").children().addClass("redText");
+            window.loading_screen.finish();
+            return;
+        }
+
         $(window).off('beforeunload');
 
         updateTotal();
@@ -193,10 +201,16 @@ Template.DonationForm.events({
         //Start the bootstrap modal with the awesome font refresh logo
         //Also, backdrop: 'static' sets the modal to not be exited when
         //a user clicks in the background.
-        $('#loading1').modal({
-            visibility: 'show',
-            backdrop: 'static'
+
+
+        var message = '<p class="loading-message">Please wait, the system is processing your gift.</p>';
+        var spinner = '<div class="sk-spinner sk-spinner-rotating-plane"></div>';
+        window.loading_screen = window.pleaseWait({
+            logo: '/images/TMP_Logo_White_Background_WO_Live_the_Command.png',
+            backgroundColor: '#7f8c8d',
+            loadingHtml: message + spinner
         });
+
         var form = {
             "paymentInformation": {
                 "amount": parseInt(($('#amount').val().replace(/[^\d\.\-\ ]/g, '')) * 100),
@@ -254,7 +268,7 @@ Template.DonationForm.events({
                 } else {
                     //error logic here
                     var sendError = {reason: response.errors[0].category_code, details: response.errors[0].description};
-                    $('#loading1').modal('hide');
+                    window.loading_screen.finish();
                     handleErrors(sendError);
                 }
             });
@@ -275,6 +289,7 @@ Template.DonationForm.events({
                 } else {
                     //error logic here
                     console.error(response);
+                    window.loading_screen.finish();
                 }
             });
         }
@@ -307,15 +322,7 @@ Template.DonationForm.events({
     'change [name=coverTheFees]': function() {
         return updateTotal();
     },
-    'click [name=donateWith]': function() {
-        var selectedValue = $("[name=donateWith]").val();
-        Session.set("paymentMethod", selectedValue);
-    },
     'change [name=donateWith]': function() {
-        setTimeout(function() {
-            toggleBox(); //call the same function twice,
-            toggleBox(); //ugly hack to fix the box not appearing when switching between check and card
-        }, 20);
         var selectedValue = $("[name=donateWith]").val();
         Session.set("paymentMethod", selectedValue);
     },
@@ -430,15 +437,17 @@ Template.DonationForm.rendered = function() {
     // Setup parsley form validation
     $('#donation_form').parsley();
 
-    //Set the checkboxes to unchecked
-    $(':checkbox').checkbox('uncheck');
-    //Set the tooltips for the question mark icons.
-    $('[name=donationSummary]').tooltip({
-        trigger: 'hover focus',
-        template: '<div class="tooltip tooltipWide" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner tooltipInnerWide"></div></div>',
-        title: 'Below is the summary of your donation. To change your options please use the dropdown buttons.',
-        placement: 'auto top'
+    //enable select2 for those select elements with the .select class
+    $('select').select2({dropdownCssClass: 'dropdown-inverse'});
+
+    $("#is_recurring").select2({
+        placeholder: "Choose One"
     });
+
+    //Set the checkboxes to unchecked
+    $(':checkbox').radiocheck('uncheck');
+
+    $('[data-toggle="popover"]').popover();
 
     // show the datepicker if the frequency is monthly when the page loads
     if(Session.equals('params.recurring', 'monthly')){
@@ -492,23 +501,20 @@ Template.checkPaymentInformation.helpers({
 });
 //Check Payment Template mods
 Template.checkPaymentInformation.rendered = function() {
-    $('select[name="account_type"]').selectpicker({
-        style: 'btn-lg',
-        menuStyle: 'dropdown-inverse',
-        'min-height': '80px'
-    });
+    $('[data-toggle="popover"]').popover();
     $("#routing_number").mask("999999999");
-    $('#accountTypeQuestion').tooltip({
+    /*$('#accountTypeQuestion').tooltip({
         container: 'body',
         trigger: 'hover focus',
         template: '<div class="tooltip tooltipWide" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner tooltipInnerWide"></div></div>',
         title: 'Give by ACH. There are usually 3 sets of numbers at the bottom of a check. The short check number, the 9 digit routing number and the account number.',
         placement: 'auto top'
-    });
+    });*/
 };
 //Card Payment Template mods
 Template.cardPaymentInformation.rendered = function() {
-    $('#expirationDataQuestion').tooltip({
+    $('[data-toggle="popover"]').popover();
+    /*$('#expirationDataQuestion').tooltip({
         container: 'body',
         trigger: 'hover focus',
         title: 'Card expiration date',
@@ -520,5 +526,5 @@ Template.cardPaymentInformation.rendered = function() {
         template: '<div class="tooltip tooltipWide" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner tooltipInnerWide"></div></div>',
         title: 'Our credit card processor charges 2.9% + .30 per transaction. If you check the box to cover these fees we\'ll do the math and change your gift amount to reflect this amount.',
         placement: 'auto top'
-    });
+    });*/
 };
