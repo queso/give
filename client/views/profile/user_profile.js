@@ -14,11 +14,21 @@ Template.UserProfile.helpers({
     donation: function () {
         return Donations.find({}, {sort: {created_at: 1}});
     },
+    donationItem: function(id){
+        var donation_cursor;
+        if( donation_cursor = Donations.findOne(id)){
+            if(donation_cursor.donateTo){
+                return donation_cursor.donateTo;
+            }
+            else return;
+        }
+        else return;
+    },
     total_amount: function () {
         return this.total_amount / 100;
     },
     debits: function () {
-        return Debits.find();
+        return Debits.find({}, {sort: {created_at: -11}});
     },
     given: function () {
         var debits = Debits.find();

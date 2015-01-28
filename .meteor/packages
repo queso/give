@@ -24,4 +24,4 @@ reactive-var
 
 audit-argument-checks
 meteor-platform
-pcel:loading
+sacha:spin

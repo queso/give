@@ -73,11 +73,11 @@
                             <th>Date</th>
                             <th>Amount</th>
                         </tr>
-                        {{#each donation}}
+                        {{#each debits}}
                         <tr class="responsiveFont">
-                            <td>{{donateTo}}</td>
+                            <td style="font-size: .9em">{{#with donationItem this.donation_id}}{{this}}{{/with}}</td>
                             <td>{{shortIt this.created_at 10}}</td>
-                            <td class="text-right">${{twoDecimalPlaces this.total_amount}}</td>
+                            <td class="text-right">${{twoDecimalPlaces this.amount}}</td>
                         </tr>
                         {{/each}}
                         </tbody>
