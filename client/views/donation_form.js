@@ -503,28 +503,11 @@ Template.checkPaymentInformation.helpers({
 Template.checkPaymentInformation.rendered = function() {
     $('[data-toggle="popover"]').popover();
     $("#routing_number").mask("999999999");
-    /*$('#accountTypeQuestion').tooltip({
-        container: 'body',
-        trigger: 'hover focus',
-        template: '<div class="tooltip tooltipWide" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner tooltipInnerWide"></div></div>',
-        title: 'Give by ACH. There are usually 3 sets of numbers at the bottom of a check. The short check number, the 9 digit routing number and the account number.',
-        placement: 'auto top'
-    });*/
+
+    $('select').select2({dropdownCssClass: 'dropdown-inverse'});
 };
 //Card Payment Template mods
 Template.cardPaymentInformation.rendered = function() {
     $('[data-toggle="popover"]').popover();
-    /*$('#expirationDataQuestion').tooltip({
-        container: 'body',
-        trigger: 'hover focus',
-        title: 'Card expiration date',
-        placement: 'auto top'
-    });
-    $('#coverTheFeesQuestion').tooltip({
-        container: 'body',
-        trigger: 'hover focus',
-        template: '<div class="tooltip tooltipWide" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner tooltipInnerWide"></div></div>',
-        title: 'Our credit card processor charges 2.9% + .30 per transaction. If you check the box to cover these fees we\'ll do the math and change your gift amount to reflect this amount.',
-        placement: 'auto top'
-    });*/
+    $('select').select2({dropdownCssClass: 'dropdown-inverse'});
 };
