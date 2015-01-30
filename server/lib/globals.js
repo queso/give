@@ -82,6 +82,6 @@ Utils = {
         insertThis.donations =  donation_id;
         insertThis.debits = debit_id;
 
-        Meteor.users.update(userId, {$push: insertThis});
+        Meteor.users.update(userId, {$addToSet: insertThis});
     }
 };

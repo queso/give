@@ -421,12 +421,6 @@ Template.DonationForm.helpers({
     },
     today: function () {
         return moment().format('D MMM, YYYY');
-    },
-    start: function () {
-        if(Session.equals('recurring', true)){
-            return 'Start ';
-        }
-        return;
     }
 });
 /*****************************************************************************/
@@ -440,7 +434,7 @@ Template.DonationForm.rendered = function() {
     $('#donation_form').parsley();
 
     //enable select2 for those select elements with the .select class
-    $('select').select2({dropdownCssClass: 'dropdown-inverse'});
+    //$('select').select2({dropdownCssClass: 'dropdown-inverse'});
 
     //Set the checkboxes to unchecked
     $(':checkbox').radiocheck('uncheck');

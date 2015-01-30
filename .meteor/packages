@@ -18,10 +18,10 @@ j4507:datatables-bootstrap-3
 useraccounts:bootstrap
 accounts-password
 zimme:iron-router-active
-mrt:moment
 meteorhacks:kadira
 reactive-var
 
 audit-argument-checks
 meteor-platform
 sacha:spin
+momentjs:moment

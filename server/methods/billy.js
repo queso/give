@@ -223,11 +223,6 @@ Meteor.methods({
 			billyPayment = Billy.createPaymentMethod(data.customer._id, data.paymentInformation.donateWith, data.paymentInformation.href, data.customer.billy.processor_uri);
 			var billySubscribeCustomer = '';
 			billySubscribeCustomer = Billy.subscribeToBillyPlan(data._id, data.customer._id, data.paymentInformation.type, data.paymentInformation.href);
-			/*Donations.update(data._id, {
-				$push: {
-					'subscriptions': billySubscribeCustomer.data
-				}
-			});*/
 
             var return_this;
 			//Get the whole invoice if there is one
@@ -284,6 +279,11 @@ Meteor.methods({
                 Utils.create_user(data.customer._id, data._id,  insert_debit.id);
                 return return_this;
             } else {
+                Donations.update(data._id, {
+                    $push: {
+                        'subscriptions': billySubscribeCustomer.data
+                    }
+                });
                 Utils.create_user(data.customer._id, data._id, null);
                 console.log("Subscription guid: " + billySubscribeCustomer.data.guid);
                 Utils.send_scheduled_email(data._id, billySubscribeCustomer.data.guid);

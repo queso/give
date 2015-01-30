@@ -167,7 +167,8 @@ _.extend(Evts,{
 		} else {
 			var insert_this_debit = body.events[0].entity.debits[0];
 			insert_this_debit._id = id;
-			insert_this_debit.transaction_guid = trans_guid;
+			//insert_this_debit.transaction_guid = trans_guid;
+            //Don't think I need the trans_guid here since I just tested to see if it was billy
 			var insert_body = Debits.insert(insert_this_debit);
 			return insert_body;
 		}

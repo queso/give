@@ -51,6 +51,9 @@ Convert = {
         }else{
             console.log("Didn't find that Debit, inserting");
             Debits.insert(debit);
+
+            //TODO: here is where I need to link this gift to the user
+
         }
     },
     insert_customer: function (donateDoc, payment, type, customer_id) {

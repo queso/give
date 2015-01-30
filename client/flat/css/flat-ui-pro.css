@@ -3732,7 +3732,7 @@ fieldset[disabled] .input-group-btn .btn-default.active {
 .dropdown-menu,
 .select2-drop {
   z-index: 1000;
-  min-width: 220px;
+  min-width: 200px;
   padding: 0;
   margin-top: 9px;
   font-size: 14px;
@@ -3875,7 +3875,7 @@ fieldset[disabled] .input-group-btn .btn-default.active {
   position: relative;
   display: inline-block;
   width: auto;
-  min-width: 220px;
+  min-width: 200px;
   vertical-align: top;
   }
 .form-group .select {
@@ -4345,7 +4345,7 @@ fieldset[disabled] .input-group-btn .btn-default.active {
   position: absolute;
   top: 100%;
   z-index: 9999;
-  min-width: 220px;
+  min-width: 200px;
   margin-top: 9px;
   font-size: 14px;
   visibility: visible;
