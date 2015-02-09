@@ -124,6 +124,26 @@ Meteor.publish("userCustomers", function () {
 	}
 });
 
+Meteor.publish("userDT", function () {
+	var persona_ids = Meteor.users.findOne({_id: this.userId}).persona_id;
+	console.log(persona_ids);
+	if (this.userId) {
+		return DT_donations.find( { persona_id: { $in: persona_ids } } );
+	} else {
+		this.ready();
+	}
+});
+
+Meteor.publish("userDTFunds", function () {
+    if (this.userId) {
+        return DT_funds.find();
+    } else {
+        this.ready();
+    }
+});
+
+
+
 /*
 Meteor.publish("userGivingFocus", function () {
 	//var donation_ids = Meteor.users.findOne({_id: this.userId}).donations;

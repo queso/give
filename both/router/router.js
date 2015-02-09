@@ -35,6 +35,20 @@ Router.route(':root', function () {
     name: 'donation.form'
 });
 
+Router.route(':root/donorTools', function () {
+    var root = Meteor.settings.public.root;
+    var params = this.params;
+
+    Session.set('params.id', params.query.id);
+    Session.set('params.persona_id', params.query.persona_id);
+    Session.set('params.email', params.query.email);
+    Session.set('params.donation_id', params.query.donation_id);
+
+    this.render('DonorTools');
+}, {
+    name: 'donation.dt'
+});
+
 Router.route(':root/thanks', {
     name: 'donation.thanks',
     waitOn: function () {
@@ -194,6 +208,8 @@ Router.route(':root/user', function () {
     this.subscribe('userDebits').wait();
     this.subscribe('userDonations').wait();
     this.subscribe('userCustomers').wait();
+    this.subscribe('userDT').wait();
+    this.subscribe('userDTFunds').wait();
 
     if (this.ready()) {
         this.render('UserProfile');

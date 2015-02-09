@@ -36,17 +36,17 @@
                         </div>
                         <div class="col-xs-12 divider text-center">
                             <div class="col-xs-12 col-sm-4 emphasis">
-                                <h3 class="negativeMarginLeft"><strong>${{given.total}}</strong></h3>
+                                <h3 class="negativeMarginLeft"><strong>${{dt_gifts.total_given}}</strong></h3>
                                 <p><small>Given</small></p>
                                 <a href="/give" class="btn btn-default btn-block" role="button"><span class="fa fa-plus-circle"></span> Give </a>
                             </div>
                             <div class="col-xs-12 col-sm-4 emphasis">
-                                <h3><strong>{{given.count}}</strong></h3>
+                                <h3><strong>{{dt_gifts.number_of_gifts}}</strong></h3>
                                 <p><small>Gifts</small></p>
                                 <button class="btn btn-default btn-block" id="viewHistory"><span class="fa fa-history"></span> View History </button>
                             </div>
                             <div class="col-xs-12 col-sm-4 emphasis">
-                                <h3><strong>{{categories}}</strong></h3>
+                                <h3><strong>{{dt_gifts.categories}}</strong></h3>
                                 <p><small>Categories</small></p>
                                 <!-- Single button -->
                                 <div class="btn-group dropup btn-block fixGroupButton">
@@ -70,15 +70,15 @@
                     <table class="table table-striped">
                         <tbody>
                             <tr class="responsiveFont">
-                                <th>To</th>
                                 <th>Date</th>
+                                <th>To</th>
                                 <th>Amount</th>
                             </tr>
-                            {{#each debits}}
+                            {{#each dt_donations}}
                             <tr class="responsiveFont">
-                                <td style="font-size: .9em">{{#with donationItem this.donation_id}}{{this}}{{/with}}</td>
-                                <td>{{shortIt this.created_at 10}}</td>
-                                <td class="text-right">${{twoDecimalPlaces this.amount}}</td>
+                                <td>{{formatDate this.received_on}}</td>
+                                <td style="font-size: .9em">{{#each split}} {{{fundName}}} <br>{{/each}}</td>
+                                <td class="text-right">${{#each split}}{{twoDecimalPlaces this.amount_in_cents }} <br>{{/each}}</td>
                             </tr>
                             {{/each}}
                         </tbody>

@@ -63,11 +63,17 @@ Utils = {
     create_user: function (customer_id, donation_id, debit_id) {
         var email_address = Customers.findOne(customer_id).email;
         var user_id = Meteor.users.findOne({'emails.address': email_address});
+        var name = Customers.findOne(customer_id).name;
+
         if(!user_id){
-            var name = Customers.findOne(customer_id).name;
             user_id = Accounts.createUser({email: email_address});
+
+            //Get all the persona_ids from DT for this email address
+            var persona_id = Utils.get_dt_id(email_address, name, user_id);
+            Utils.get_all_dt_donations(persona_id);
+
             Accounts.sendEnrollmentEmail(user_id);
-            Meteor.users.update(user_id, {$set: {'profile.name': name, 'primary_customer_id': customer_id}});
+            Meteor.users.update(user_id, {$set: {'profile.name': name, 'primary_customer_id': customer_id, 'persona_id': persona_id}});
         } else {
             console.log("User already exists.");
         }
