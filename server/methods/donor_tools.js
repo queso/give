@@ -181,18 +181,24 @@ Meteor.methods({
                 logger.info("Started insert_donation_into_dt Meteor");
 
                 var user_id = Meteor.users.findOne({'donations': donation_id})._id;
-                var donation = Donations.findOne({_id: donation_id});
-                console.log(donation.customer_id);
+                var donation = Donations.findOne(donation_id);
                 var customer = Customers.findOne(donation.customer_id);
-                console.log(customer._id);
+
                 var source_id;
                 var business_name;
+
                 if (customer && customer.business_name){
                     business_name = customer.business_name;
                     source_id = 42776;
                 }else
                     business_name = '';
                     source_id = 42754;
+
+                var recognition_name;
+                if(business_name){
+                    recognition_name = business_name;
+                } else
+                    recognition_name = customer.name;
 
                 var newDonationResult;
                 newDonationResult = HTTP.post(Meteor.settings.donor_tools_site + '/donations.json', {
@@ -204,12 +210,20 @@ Meteor.methods({
                                 "memo": Meteor.settings.dev
                             }],
                             "donation_type_id": 2985,
-                            "received_on": '2015-02-06',
+                            "received_on": moment(new Date(donation.created_at)).format("YYYY/MM/DD"),
                             "source_id": source_id,
                             "find_or_create_person": {
                                 "company_name": business_name,
                                 "full_name": customer.name,
-                                "email_address": customer.email
+                                "email_address": customer.email,
+                                "street_address": customer.address.line1 + " \n" + customer.address.line2,
+                                "city": customer.address.city,
+                                "state": customer.address.state,
+                                "postal_code": customer.address.postal_code,
+                                "phone_number": customer.phone,
+                                "web_address": "https://trashmountain.com/give/users" + user_id,
+                                "salutation_formal": customer.name,
+                                "recognition_name": recognition_name
                             }
                         }
                     },

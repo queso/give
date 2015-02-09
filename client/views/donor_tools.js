@@ -156,7 +156,7 @@ Template.DonorToolsInsertAccountAndDonation.events({
         Meteor.call("insert_donation_into_dt", donation_id, function (error, result) {
             if (result) {
                 console.dir(result);
-                $('#data').html('<div class="col-lg-6 text-center"><br><p>' + result+ '</p></div>');
+                $('#data').html('<div class="col-lg-6 text-center"><br><p><a target="_blank" href="' + 'https://trashmountain.donortools.com/people/' + result.data.donation.persona_id + '">Result</a></p></div>');
                 $('#form_result').show();
 
             } else {

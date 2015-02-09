@@ -19,6 +19,9 @@ Meteor.methods({
             balanced.configure(Meteor.settings.balanced_api_key);
 
             var customerData = Utils.create_customer(data.customer, false);
+            console.log("LOOK HERE *************");
+            console.dir(customerData);
+
 
             data._id = Donations.insert({
                 created_at: data.paymentInformation.created_at,
@@ -31,7 +34,7 @@ Meteor.methods({
                 'amount': data.paymentInformation.amount,
                 'fees': data.paymentInformation.fees,
                 'coveredTheFees': data.paymentInformation.coverTheFees,
-                'customer_id': data.customer._id,
+                'customer_id': customerData.id,
                 'status': 'pending'
             });
             logger.info("ID: " + data._id);

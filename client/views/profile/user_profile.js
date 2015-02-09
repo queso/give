@@ -138,3 +138,11 @@ Template.UserProfile.rendered = function(){
     // Setup parsley form validation
     $('#userAddressForm').parsley();
 };
+
+Template.UserNav.events({
+    'click #nav-button-password': function(evt){
+        evt.preventDefault();
+        evt.stopPropagation();
+        Router.go('changePwd');
+    }
+})
