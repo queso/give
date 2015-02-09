@@ -11,11 +11,9 @@ Evts = {
      		var status = 			body.events[0].entity[type][0].status;
      		var billy_id = 			Evts.update_billy(transaction_guid, invoice_guid, subscription_info, type, status, body);
 
-
-
      		if(select_type === "debit_created") {
      			var sending_email_for_created = Evts.send_email(true, billy_id, transaction_guid, subscription_guid, 'initial_sent', status, body.events[0].entity.debits[0].amount);
-     		}else if(select_type === "debit_succeeded") {
+     		} else if(select_type === "debit_succeeded") {
                 var debit_cursor = Debits.findOne({id: body.debits[0].id});
                 var amount = debit_cursor.amount;
                 if(amount === body.events[0].entity.debits[0].amount) {
@@ -24,18 +22,13 @@ Evts = {
                 } else{
                     logger.error("The amount from the received event and the amount of the subscription do not match!");
                 }
-     		}
-     		if(select_type === "debit_failed"){
+     		} else if(select_type === "debit_failed"){
      			var failed_update = Evts.failed_collection_update(true, 'debits', body.events[0].entity.debits[0].id, invoice_guid, body);
      		}
         } else{
+            //Not handling any other event types at this time (don't really see the need to)
             logger.info("************* Received an event and didn't do anything with it.");
         }
-	},
-	get_invoice_guid: function(type, body) {
-		logger.info("Started get_invoice_guid");
-        var description = body.events[0].entity[type][0].description;
-        return (("" + description).replace(/[\s-]+$/, '').split(/[\s-]/).pop());
 	},
 	get_transaction_guid: function(type, body) {
 		logger.info("Started get_transaction_guid");

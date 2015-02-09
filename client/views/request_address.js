@@ -93,7 +93,7 @@ Template.RequestAddress.helpers({
         type: "text",
         name: "postal_code",
           id: "postal_code",
-        placeholder: "zip or postal code",
+        placeholder: "Zip or Postal Code",
         required: true
       }
     },

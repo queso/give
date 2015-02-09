@@ -84,7 +84,7 @@ select {
 }
 
 .jumboSize {
-	font-size:3.2em;
+	font-size:3em;
 	font-weight:700;
 	letter-spacing:2px;
 	margin-bottom:-20px
@@ -221,36 +221,35 @@ hr {
 }
 
 .fixSpacingBetweenInputsTop {
-	width:184px;
+	width:180px;
 	padding-right:0;
-	margin-left:-7px;
 	display:inline-block
 }
 
 /*==========  Mobile First Method  ==========*/
 /* Custom, iPhone Retina */
 @media only screen and (min-width: 320px) {
-.addSomePaddingLeft {
-	padding-left:0;
-	width:190px;
-	padding-right:0;
-	display:inline-block
-}
+    .addSomePaddingLeft {
+        padding-left:0;
+        width:184px;
+        padding-right:0;
+        display:inline-block
+    }
 }
 
 /* Custom, iPhone Retina */
 @media only screen and (min-width: 480px) {
-.addSomePaddingLeft {
-	padding-left:0;
-	width:184px;
-	padding-right:0;
-	display:inline-block
-}
+    .addSomePaddingLeft {
+        padding-left:0;
+        width:184px;
+        padding-right:0;
+        display:inline-block
+    }
 
-.fixQuestionLocaiton {
-	margin-left:-60px;
-	margin-top:8px
-}
+    .fixQuestionLocaiton {
+        margin-left:-60px;
+        margin-top:8px
+    }
 }
 
 /* Parsley CSS */
@@ -341,6 +340,7 @@ legend {
 .slim-borders {
 	border: 1px solid #bdc3c7; 
 }
+
 .notice-top-wrapper {
     left: 0;
     position: fixed;
@@ -354,4 +354,47 @@ legend {
     background-color:#00ed32;
     color:#FFF;
     padding:15px;
+}
+
+.ui-datepicker-unselectable {
+	opacity: .5;
+}
+
+.select-green-background {
+    background-color: #1abc9c;
+    border: none;
+    color: #FFFFFF;
+}
+
+.redText {
+    color: red!important;
+}
+
+.select2-container {
+    background-color: transparent;
+}
+
+
+/*
+#s2id_donateTo {
+    margin-left: -40px;
+    width: 220px;
+}
+
+#s2id_is_recurring {
+    margin-left: 26px;
+    width: 220px;
+}
+*/
+
+div.fadeMe {
+    opacity:    0.5;
+    background: #000;
+    width:      100%;
+    height:     100%;
+    z-index:    10;
+    top:        0;
+    left:       0;
+    position:   fixed;
+    display:    none;
 }

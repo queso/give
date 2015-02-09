@@ -31,7 +31,8 @@ _.extend(Utils, {
                 'updated_at': billyCustomer.updated_at
             };
         }
-        insertThis._id = Customers.insert(insertThis);
+        insertThis._id = Customers.insert({_id: customerData.id});
+        Customers.update({_id: customerData.id}, {$set: insertThis});
         logger.info("Customer _id: " + insertThis._id);
         return insertThis;
     },
@@ -89,14 +90,26 @@ _.extend(Utils, {
     },
     get_debit: function (debitHref) {
         console.log("Inside get_debit.");
+        console.log("Debit Href: " + debitHref);
+        balanced.configure(Meteor.settings.balanced_api_key);
 
+        //var debit = Utils.extractFromPromise(balanced.get(debitHref));
         var debit = Utils.extractFromPromise(balanced.get(debitHref));
+        //console.log(Object.getOwnPropertyNames(debit));
         console.log(debit._api.cache[debit.href]);
         var insert_debit = debit._api.cache[debit.href];
         return insert_debit;
     },
+    get_customer: function (customerHref) {
+        console.log("Inside get_customer.");
+        console.log("Customer Href: " + customerHref);
+        balanced.configure(Meteor.settings.balanced_api_key);
 
-
+        var customer = Utils.extractFromPromise(balanced.get(customerHref));
+        console.log(customer._api.cache[customer.href]);
+        var customer_info = customer._api.cache[customer.href];
+        return customer_info;
+    },
     getDonateTo: function (donateTo) {
         var returnToCalled;
         switch (donateTo) {

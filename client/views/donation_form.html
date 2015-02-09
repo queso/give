@@ -1,34 +1,64 @@
 <template name="DonationForm">
-    <div class="row text-center">
-        <div class="blackBackground"><a href="https://trashmountain.com" target="_blank"><img class="logoImage" src="/give/images/bw_logo.png"  style="width:235px;height:60px"></a></div>
-    <h1 class="jumboSize">THANK YOU</h1>
+    <div class="row text-center" id="spinContainer">
+        <div class="blackBackground">
+            <a href="https://trashmountain.com" target="_blank"><img class="logoImage"
+              src="/give/images/bw_logo.png"  style="width:235px;height:60px">
+            </a>
+        </div>
+    <h2 class="">THANK YOU</h2>
 
-		<form class="form-horizontal donation-form" role="form" id="donation_form" name="donation_form" data-parsley-focus="first" data-parsley-excluded="input[type=submit], input[type=reset], input[type=hidden], [disabled], :hidden">
+		<form class="form-horizontal donation-form" role="form" id="donation_form" name="donation_form" data-parsley-focus="first"
+              data-parsley-excluded="input[type=submit], input[type=reset], input[type=hidden], [disabled], :hidden">
 
             <div class="col-md-6 col-md-offset-3">
                 <h4>Your Donation Amount:</h4>
                 <h4 id="total_amount_display" >${{amount}}</h4>
-                  
                 <input type="hidden" id="total_amount" name="total_amount" value="{{amount}}" />
             </div>
-            <div class="col-md-6 col-md-offset-3">
-    			<div class="form-group noBottomMargin">
-                    <div class="col-md-12">
-                        <label>Donation Summary:</label>&nbsp;<i class="fa fa-question-circle" name="donationSummary"></i>
+            <div class="col-lg-8 col-md-8 col-md-offset-2">
+    			<div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <label>Donation Summary:</label>&nbsp;
+                            <i class="fa fa-question-circle" name="donationSummary" data-toggle="popover" data-trigger="hover focus"  data-placement="bottom" data-container="body"
+                               data-content="Below is the summary of your donation. To change your options please use the dropdown buttons." title="Donation Summary">
+                            </i>
+                        </div>
                     </div>
-                    <div class="col-md-12">
-                        {{> DonationTo}}
-                        <div class="fixSpacingBetweenInputsTop">
-                            <select name="donateWith" id="donateWith" class="form-control noBorder">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            {{> DonationTo}}
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <select name="donateWith" id="donateWith" class="form-control select select-primary mbl" required>
                                 <option value="Check">Check</option>
                                 <option value="Card">Card</option>
                             </select>
+                            <label for="donateWith">Method of Payment</label>
                         </div>
-                        <div class="fixSpacingBetweenInputsTop" name="is_recurring">
-                            <select name="is_recurring" id="is_recurring" class="form-control noBorder" >
-                                <option value="one_time" selected>One-Time</option>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <select name="is_recurring" id="is_recurring" class="form-control select select-primary mbl" required data-placeholder="Select an option">
+                                <option selected></option>
+                                <option value="one_time">One-Time</option>
                                 <option value="monthly">Monthly</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="daily">Daily</option>
                             </select>
+                            <label for="is_recurring" id="frequency_label">Donation Frequency</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-10 col-xs-offset-1" style="display: none;" id="calendarSection">
+                        <div class="form-group">
+                            <label>Donation Start Date:</label>
+                            <div class="input-group">
+
+                                <span class="input-group-btn">
+                                    <button class="btn" type="button"><span class="fui-calendar"></span></button>
+                                </span>
+                                <input type="text" class="form-control" value="{{today}}" id="start_date" />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -43,7 +73,12 @@
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2 col-sm-11 col-sm-offset-1 col-xs-11 col-xs-offset-1 text-center">
                         <label class="checkbox" for="coverTheFees">
-                            <input type="checkbox" name="coverTheFees" id="coverTheFees" data-toggle="checkbox" {{coverTheFeesChecked}} /> I'll cover the credit card processing fees.&nbsp;&nbsp; <i id="coverTheFeesQuestion" class="fa fa-question-circle"></i>
+                            <input type="checkbox" name="coverTheFees" id="coverTheFees" data-toggle="checkbox" {{coverTheFeesChecked}} />
+                            I'll cover the credit card processing fees.&nbsp;&nbsp;
+                            <i id="coverTheFeesQuestion" class="fa fa-question-circle" data-toggle="popover"
+                               data-placement="bottom" data-trigger="hover focus" title="Processor fees" data-container="body"
+                               data-content="Our credit card processor charges 2.9% + .30 per transaction. If you check the box to cover these fees we'll do the math and change your gift amount to reflect this amount.">
+                            </i>
                         </label>
                     </div>
                 </div>
@@ -66,7 +101,8 @@
                                 <label>Amount</label>
                             <![endif]-->
     				            <span class="input-group-addon">$</span>
-    				            <input {{attributes_Input_Amount}} value="{{amount}}" class="form-control slim-borders" required data-parsley-error-message="Please enter an amount with no commas." />
+    				            <input {{attributes_Input_Amount}} value="{{amount}}" class="form-control slim-borders"
+                                   required data-parsley-error-message="Please enter an amount with no commas." />
     				        </div>
     				    </div>
     				</div>
@@ -85,7 +121,8 @@
                     <br>
     				<div class="form-group padBottom">
     			        <div class="col-sm-offset-2 col-sm-8">
-    			          <button name="submitThisForm" type="submit" class="btn btn-block btn-hg btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Submit Donation</button>
+    			          <button name="submitThisForm" type="submit" class="btn btn-block btn-hg btn-primary"
+                                  data-toggle="modal" data-target=".bs-example-modal-lg">Submit Donation</button>
                         </div>
                     </div>
     			</fieldset>
@@ -126,10 +163,13 @@
                     <h4 class="modal-title"><strong>Enter</strong> a designation below.</h4>
                 </div>
                 <div class="modal-body">
-                    <p>You selected the 'Support a Trip Participant', please enter a description of where you want the funds to be directed. If you have any questions or don't seem to be finding what you are looking for please email us. Thanks </p>
+                    <p>You selected the 'Support a Trip Participant', please enter a description of where you want the
+                        funds to be directed. If you have any questions or don't seem to be finding what you are looking
+                        for please email us. Thanks </p>
                     <a href="mailto:info@trashmountain.com?Subject=Donation Question">info@trashmountain.com.</a>
                     <p>
-                        <input id="writeIn" data-parsley-type="text" class="form-control slim-borders" placeholder="Name or other designation." />
+                        <input id="writeIn" data-parsley-type="text" class="form-control slim-borders"
+                               placeholder="Name or other designation." />
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -137,6 +177,9 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div id="spinDiv" class="fadeMe">
+        {{> spinner}}
     </div>
 </template>
 
@@ -160,8 +203,13 @@
 	</div>
     <div class="form-group">
         <div class="col-lg-6 col-md-7 col-sm-5 col-xs-5">
-            <label class="control-label" for="account_type">Account Type <i class="makeRightOfInput fa fa-question-circle" id="accountTypeQuestion"></i></label>
-            <select class="form-control" name="account_type">
+            <label class="control-label" for="account_type">Account Type
+                <i class="makeRightOfInput fa fa-question-circle" id="accountTypeQuestion" data-toggle="popover"
+                   data-trigger="hover focus" title="Give by ACH" data-container="body"
+                   data-content="There are usually 3 sets of numbers at the bottom of a check. The short check number, the 9 digit routing number and the account number.">
+                </i>
+            </label>
+            <select class="form-control select select-primary select-block mbl" name="account_type">
               <option>Checking</option>
               <option>Savings</option>
             </select>
@@ -182,19 +230,21 @@
             <!--[if lt IE 9]>
                 <label>Card Number</label>
             <![endif]-->
-          <input type="text" class="form-control slim-borders" name="card_number" id="card_number" placeholder="Debit/Credit Card Number" data-parsley-type="number" data-parsley-length="[15,16]" required>
+          <input type="text" class="form-control slim-borders" name="card_number" id="card_number"
+                 placeholder="Debit/Credit Card Number" data-parsley-type="number" data-parsley-length="[15,16]" required>
         </div> <!-- 4111111111111111 -->
         <div class="col-md-3 col-sm-3 col-xs-4">
             <!--[if lt IE 9]>
                 <label>CVV Code</label>
             <![endif]-->        
-            <input type="text" class="form-control slim-borders" name="cvv" id="cvv" placeholder="CVV" data-parsley-type="number" data-parsley-minlength="3" required>
+            <input type="text" class="form-control slim-borders" name="cvv" id="cvv"
+                   placeholder="CVV" data-parsley-type="number" data-parsley-minlength="3" required>
         </div>
     </div>
     <div class="form-group">
-        <label class="col-lg-3 col-md-4 col-sm-4 col-xs-3 control-label noRightPadding" for="expiry_month">Expiration Date <i class="fa fa-question-circle" id="expirationDataQuestion"></i></label>
-        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6" id="expiry_monthDiv">
-            <select class="form-control smallerHeight slim-borders" name="expiry_month" id="expiry_month" required="true">
+        <!--<label class="col-lg-3 col-md-4 col-sm-4 col-xs-3 control-label noRightPadding" for="expiry_month">Expiration Date</label>-->
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="expiry_monthDiv">
+            <select class="form-control  select select-primary select-block mbl" name="expiry_month" id="expiry_month" required="true">
                 <option value="">Month</option>
                 <option value="01">Jan (01)</option>
                 <option value="02">Feb (02)</option>
@@ -210,8 +260,8 @@
                 <option value="12">Dec (12)</option>
             </select>
         </div>
-        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 marginRight" name="expiry_yearDiv">
-            <select class="form-control smallerHeight slim-borders" name="expiry_year" id="expiry_year" required="true">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" name="expiry_yearDiv">
+            <select class="form-control select select-primary select-block mbl" name="expiry_year" id="expiry_year" required="true">
                 <option value="">Year</option>
                 <option value="2014">2014</option>
                 <option value="2015">2015</option>

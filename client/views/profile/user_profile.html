@@ -2,7 +2,10 @@
     <div class="UserCSS">
         <div class="container">
             <div class="row">
-                <div class="col-md-8 col-lg-6">
+                <div class="col-lg-12">
+                    <p class="text-danger text-center">Your giving history may still be updating. It might not reflect the latest numbers we have in our donation system.</p>
+                </div>
+                <div class="col-md-6 col-lg-6">
                     <div class="well profile">
                         <div class="col-sm-12">
                             <br>
@@ -23,8 +26,9 @@
                             </div>
                             <div class="col-xs-12 col-sm-4 text-center">
                                 <figure>
-                                    <p>Your Giving Focus</p>
-                                    <img src="https://trashmountain.com/system/wp-content/uploads/2014/12/Honduras-01.svg" alt="" class="img-circle img-responsive">
+                                    <!--TODO: fix this area to reflect the area of giving focus for each person.-->
+                                    <!--<p>Your Giving Focus</p>
+                                    <strong><em>{{{giving_focus}}}</em></strong>-->
                                 </figure>
                             </div>
                             <br>&nbsp;
@@ -32,17 +36,17 @@
                         </div>
                         <div class="col-xs-12 divider text-center">
                             <div class="col-xs-12 col-sm-4 emphasis">
-                                <h3 class="negativeMarginLeft"><strong>${{given.total}}</strong></h3>
+                                <h3 class="negativeMarginLeft"><strong>${{dt_gifts.total_given}}</strong></h3>
                                 <p><small>Given</small></p>
                                 <a href="/give" class="btn btn-default btn-block" role="button"><span class="fa fa-plus-circle"></span> Give </a>
                             </div>
                             <div class="col-xs-12 col-sm-4 emphasis">
-                                <h3><strong>{{given.count}}</strong></h3>
+                                <h3><strong>{{dt_gifts.number_of_gifts}}</strong></h3>
                                 <p><small>Gifts</small></p>
                                 <button class="btn btn-default btn-block" id="viewHistory"><span class="fa fa-history"></span> View History </button>
                             </div>
                             <div class="col-xs-12 col-sm-4 emphasis">
-                                <h3><strong>{{categories}}</strong></h3>
+                                <h3><strong>{{dt_gifts.categories}}</strong></h3>
                                 <p><small>Categories</small></p>
                                 <!-- Single button -->
                                 <div class="btn-group dropup btn-block fixGroupButton">
@@ -61,21 +65,22 @@
                     </div>
                 </div>
                 {{#if showHistory}}
-                <div class="col-md-8 col-lg-6">
+                <div class="col-md-6 col-lg-6">
                     <h5>Your giving</h5>
                     <table class="table table-striped">
-                        <tbody><tr>
-                            <th>To</th>
-                            <th>Date</th>
-                            <th>Amount</th>
-                        </tr>
-                        {{#each donation}}
-                        <tr>
-                            <td>{{donateTo}}</td>
-                            <td>{{created_at}}</td>
-                            <td>${{total_amount}}</td>
-                        </tr>
-                        {{/each}}
+                        <tbody>
+                            <tr class="responsiveFont">
+                                <th>Date</th>
+                                <th>To</th>
+                                <th>Amount</th>
+                            </tr>
+                            {{#each dt_donations}}
+                            <tr class="responsiveFont">
+                                <td>{{formatDate this.received_on}}</td>
+                                <td style="font-size: .9em">{{#each split}} {{{fundName}}} <br>{{/each}}</td>
+                                <td class="text-right">${{#each split}}{{twoDecimalPlaces this.amount_in_cents }} <br>{{/each}}</td>
+                            </tr>
+                            {{/each}}
                         </tbody>
                     </table>
                 </div>

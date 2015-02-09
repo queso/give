@@ -1,0 +1,144 @@
+<template name="DonorTools">
+    <div class="row">
+        <div class="col-lg-4">
+            {{> DonorToolsFunds}}
+        </div>
+        <div class="col-lg-4">
+            {{> DTInsertPersona}}
+        </div>
+        <div class="col-lg-4">
+            {{> DonorToolsSearch}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            {{> DonorToolsInsertAccount}}
+        </div>
+        <div class="col-lg-4">
+            {{> DonorToolsInsertAccountAndDonation}}
+        </div>
+    </div>
+</template>
+
+<template name="DonorToolsPerson">
+    <p class="text-center">DT Person Form</p>
+    <form name="donorToolsPerson">
+        <input type="text" class="form-control" value="5612129" id="person_id" />
+        <div class="form-group padBottom">
+            <div class="col-sm-offset-2 col-sm-8">
+                <button name="submitThisForm" type="submit" class="btn btn-block btn-hg btn-primary">Submit Persona_id</button>
+            </div>
+        </div>
+
+        <div class="">
+            <div id="form_result" style="display: none;">
+                <div id="data">
+
+                </div>
+            </div>
+        </div>
+    </form>
+</template>
+<template name="DTInsertPersona">
+    <p class="text-center">DT Persona -> Meteor User</p>
+    <form name="donorToolsDonations">
+        <input type="text" class="form-control" id="id" placeholder="Meteor User ID" value="{{id}}" />
+        <input type="text" class="form-control" id="persona_id" placeholder="Persona ID" value="{{persona_id}}"/>
+        <br>
+        <div class="form-group padBottom">
+            <div class="col-sm-offset-2 col-sm-8">
+                <button name="submitThisForm" type="submit" class="btn btn-block btn-hg btn-primary">Submit Persona_id</button>
+            </div>
+        </div>
+
+        <div class="">
+            <div id="form_result" style="display: none;">
+                <div id="data">
+
+                </div>
+            </div>
+        </div>
+    </form>
+</template>
+<template name="DonorToolsSearch">
+    <p class="text-center">DT Search</p>
+    <form name="donorToolsSearch">
+        <input type="text" class="form-control" value="{{email}}" id="search_string" />
+        <br>
+        <div class="form-group padBottom">
+            <div class="col-sm-offset-2 col-sm-8">
+                <button name="submitThisForm" type="submit" class="btn btn-block btn-hg btn-primary">Submit Search</button>
+            </div>
+        </div>
+
+        <div class="">
+            <div id="form_result" style="display: none;">
+                <div id="data">
+
+                </div>
+            </div>
+        </div>
+    </form>
+</template>
+<template name="DonorToolsFunds">
+    <p class="text-center">DT Funds -> DT_Funds Collection</p>
+    <form name="donorToolsFunds">
+        <div class="form-group padBottom">
+            <div class="col-sm-offset-2 col-sm-8">
+                <button name="submitThisForm" type="submit" class="btn btn-block btn-hg btn-primary">Get Funds</button>
+            </div>
+        </div>
+
+        <div class="">
+            <div id="form_result" style="display: none;">
+                <div id="data">
+
+                </div>
+            </div>
+        </div>
+    </form>
+</template>
+
+
+<template name="DonorToolsInsertAccount">
+    <p class="text-center">Meteor User -> Create DT Account</p>
+    <br>
+    <form name="donorToolsSearch">
+        <input type="text" class="form-control" value="{{id}}" id="user_id" />
+        <br>
+        <div class="form-group padBottom">
+            <div class="col-sm-offset-2 col-sm-8">
+                <button name="submitThisForm" type="submit" class="btn btn-block btn-hg btn-primary">Submit Search</button>
+            </div>
+        </div>
+
+        <div class="">
+            <div id="form_result" style="display: none;">
+                <div id="data">
+
+                </div>
+            </div>
+        </div>
+    </form>
+</template>
+
+<template name="DonorToolsInsertAccountAndDonation">
+    <p class="text-center">Meteor Donation -> Create DT Donation & Person. Add persona_id to user account</p>
+    <form name="donorToolsSearch">
+        <input type="text" class="form-control" value="{{donation_id}}" id="donation_id" />
+        <br>
+        <div class="form-group padBottom">
+            <div class="col-sm-offset-2 col-sm-8">
+                <button name="submitThisForm" type="submit" class="btn btn-block btn-hg btn-primary">Insert Person & Donation</button>
+            </div>
+        </div>
+
+        <div class="">
+            <div id="form_result" style="display: none;">
+                <div id="data">
+
+                </div>
+            </div>
+        </div>
+    </form>
+</template>

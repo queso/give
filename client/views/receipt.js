@@ -75,7 +75,6 @@ Template.Receipt.helpers({
                 return card.brand + ", ending in " + card.number.slice(-4);
         } else if (source.slice(0,2) === 'BA'){
             var bank_account = _.findWhere(this.bank_accounts, {id: source});
-            console.log(bank_account);
             return  bank_account.bank_name +  ", ending in " + bank_account.account_number.slice(-4);
         }
    },

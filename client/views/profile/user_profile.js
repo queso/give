@@ -12,13 +12,23 @@ Template.UserProfile.helpers({
         return Session.get("showHistory");
     },
     donation: function () {
-        return Donations.find();
+        return Donations.find({}, {sort: {created_at: 1}});
+    },
+    donationItem: function(id){
+        var donation_cursor;
+        if( donation_cursor = Donations.findOne(id)){
+            if(donation_cursor.donateTo){
+                return donation_cursor.donateTo;
+            }
+            else return;
+        }
+        else return;
     },
     total_amount: function () {
         return this.total_amount / 100;
     },
     debits: function () {
-        return Debits.find();
+        return Debits.find({}, {sort: {created_at: -1}});
     },
     given: function () {
         var debits = Debits.find();
@@ -30,17 +40,21 @@ Template.UserProfile.helpers({
         });
         return {total: total/100, count: count};
     },
-    categories: function () {
-        var donations = Donations.find();
-        var categories = 1;
-        var lastCategory = donations.fetch()[0].donateTo;
-        donations.forEach(function (cursor) {
-            if(cursor.donateTo !== lastCategory) {
-                categories += 1;
-                lastCategory = cursor.donateTo;
-            }
+    dt_gifts: function () {
+        var donations = DT_donations.find({});
+        var fullSplitList = [];
+        var number_of_gifts = 0;
+        var total_given = 0;
+        donations.forEach(function (element){
+            number_of_gifts++;
+            element.splits.forEach(function (value){
+                total_given += value.amount_in_cents;
+                if(!_.contains(fullSplitList, value.fund_id)){
+                    fullSplitList.push(value.fund_id)}
+            });
         });
-        return categories;
+        total_given = (total_given / 100);
+        return {categories: fullSplitList.length, number_of_gifts: number_of_gifts, total_given: total_given};
     },
     customer: function () {
         return Customers.findOne();
@@ -54,6 +68,34 @@ Template.UserProfile.helpers({
         if(Customers.findOne().business_name) {
             return '<h5>' + Customers.findOne().business_name + '</h5>';
         } else return;
+    },
+    giving_focus: function () {
+        var donations = Donations.find().fetch();
+        var orgs = {};
+
+        _.each(donations, function(donation) {
+            if (orgs[donation.donateTo] == null)
+                orgs[donation.donateTo] = 0;
+            orgs[donation.donateTo] += donation.amount;
+        });
+
+        var amount = _.max(_.values(orgs));
+        var donateTo = _.invert(orgs)[amount];
+        var count = _.where(donations, {donateTo: donateTo}).length;
+        var result = {donateTo: donateTo, amount: amount, count: count};
+        return result.donateTo === 'Honduras Urgent' ? '<img src="https://trashmountain.com/system/wp-content/uploads/2014/12/Honduras-01.svg" alt="" class="img-circle img-responsive">' : result.donateTo;
+    },
+    dt_donations: function() {
+        return DT_donations.find({}, {sort: {received_on: -1}});
+    },
+    split: function () {
+        return this.splits;
+    },
+    fundName: function() {
+        if(DT_funds.findOne({_id: this.fund_id}) && DT_funds.findOne({_id: this.fund_id}).name){
+            return DT_funds.findOne({_id: this.fund_id}).name;
+        }
+        else return '<span style="color: red;">Fund not found</span>';
     }
 
 });
@@ -78,7 +120,7 @@ Template.UserProfile.events({
             'address.city':           $('#city').val(),
             'address.state':          $('#state').val(),
             'address.postal_code':    $('#postal_code').val(),
-            phone:          $('#phone').val()
+            phone:                    $('#phone').val()
         }};
         console.log("worked");
 
@@ -96,3 +138,11 @@ Template.UserProfile.rendered = function(){
     // Setup parsley form validation
     $('#userAddressForm').parsley();
 };
+
+Template.UserNav.events({
+    'click #nav-button-password': function(evt){
+        evt.preventDefault();
+        evt.stopPropagation();
+        Router.go('changePwd');
+    }
+})

@@ -75,3 +75,6 @@
 .UserCSS .fa-pencil {
   cursor: pointer;
 }
+.UserCSS .responsiveFont {
+  font-size: 1.5rem;
+}

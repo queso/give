@@ -1,10 +1,14 @@
 _.extend(Utils,{
-	send_donation_email: function (billy, id, trans_guid, amount, status) {
-		try {
+	send_donation_email: function (billy, id, trans_guid, subscription_guid, amount, status) {
+		/*try {*/
 			logger.info("Started send_donation_email with ID: " + id);
+			if(!Donate.findOne({'subscriptions.guid': subscription_guid}) && !Donations.findOne({'subscriptions.guid': subscription_guid})){
+				logger.error("Exiting the send_donation_email function because the Donation doesn't exist in any collection");
+				return;
+			}
 
 			var debit_cursor = Debits.findOne({id: id});
-			var customer_cursor = Customers.findOne({_id: debit_cursor.customer_id});
+			var customer_cursor = Customers.findOne({_id: debit_cursor.links.customer});
 			var donation_cursor = Donations.findOne({_id: debit_cursor.donation_id});
 			var donateWithType  = donation_cursor.type;
 
@@ -146,11 +150,67 @@ _.extend(Utils,{
 	        ]
 	      }
 	      });
-	    } //End try
+	    /*} //End try
 	    catch (e) {
 	      logger.error('Mandril sendEmailOutAPI Method error message: ' + e.message);
 	      logger.error('Mandril sendEmailOutAPI Method error: ' + e);
 	      throw new Meteor.error(e);
-	    }
-	}
+	    }*/
+	},
+    send_scheduled_email: function (id, subscription_guid) {
+        /*try {*/
+        logger.info("Started send_donation_email with ID: " + id);
+
+        var donation_cursor = Donations.findOne({_id: id});
+        var started_at = donation_cursor.subscriptions[0].started_at;
+
+        started_at = moment(started_at).format("MMM DD, YYYY");
+        console.log(started_at);
+
+        var bcc_address = "support@trashmountain.com";
+        var customer_cursor = Customers.findOne(donation_cursor.customer_id);
+        var email_address = customer_cursor.email;
+        console.log(email_address);
+        slug = "scheduled-donation";
+
+        //Evts.update_email_collection(id, 'scheduled');
+
+        logger.info("Sending with template name: " + slug);
+        Meteor.Mandrill.sendTemplate({
+            "key": Meteor.settings.mandrillKey,
+            "template_name": slug,
+            "template_content": [
+                {}
+            ],
+            "message": {
+                "to": [
+                    {"email": email_address}
+                ],
+                "bcc_address": "support@trashmountain.com",
+                "merge_vars": [
+                    {
+                        "rcpt": email_address,
+                        "vars": [
+                            {
+                                "name": "StartDate",
+                                "content": started_at
+                            }, {
+                                "name": "DEV",
+                                "content": Meteor.settings.dev
+                            }, {
+                                "name": "SUB_GUID",
+                                "content": subscription_guid
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+        /*} //End try
+         catch (e) {
+         logger.error('Mandril sendEmailOutAPI Method error message: ' + e.message);
+         logger.error('Mandril sendEmailOutAPI Method error: ' + e);
+         throw new Meteor.error(e);
+         }*/
+    }
 });

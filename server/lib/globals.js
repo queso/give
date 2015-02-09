@@ -2,39 +2,14 @@ var Future = Meteor.npmRequire("fibers/future");
 
 Utils = {
     extractFromPromise: function(promise) {
-    var fut = new Future();
-    promise.then(function (result) {
-        fut.return(result);
-    }, function (error) {
-        logger.info(error);
-        fut.throw(error);
-    });
-    return fut.wait();
-    },
-    getBillySubscriptionGUID: function(invoiceID){
-        var IDs = {};
-        var invoice = HTTP.get("https://billy.balancedpayments.com/v1/invoices/" + invoiceID, {
-                auth: Meteor.settings.billy_key + ':'
+        var fut = new Future();
+        promise.then(function (result) {
+            fut.return(result);
+        }, function (error) {
+            logger.info(error);
+            fut.throw(error);
         });
-        logger.info("getBillySubscriptionGUID");
-        IDs.subscription_guid = invoice.data.subscription_guid;
-        logger.info("Got the subscription_guid: " + IDs.subscription_guid);
-        if(Donate.findOne({'subscriptions.guid': IDs.subscription_guid})){
-            IDs.id = Donate.findOne({'subscriptions.guid': IDs.subscription_guid})._id;
-            logger.info("Got the _id: " + IDs.id);
-
-            return IDs;
-        }else if (Donate.findOne({'recurring.subscriptions.guid': IDs.subscription_guid})){
-            logger.warn("Need to remove this from recurring since that is no longer used.");
-            IDs.id = Donate.findOne({'recurring.subscriptions.guid': IDs.subscription_guid})._id;
-            logger.info("Got the _id: " + IDs.id);
-
-            return IDs;
-        }
-        else{
-            logger.error("Couldn't find the subscription for this invoice...bummer: " + invoiceID);
-            throw new Meteor.Error(404, 'Error 404: Not found', invoiceID); 
-        }        
+        return fut.wait();
     },
     getInvoice: function(subGUID){
         var resultSet;
@@ -51,14 +26,16 @@ Utils = {
           total_amount: Match.Integer, 
           donateTo: String, 
           donateWith: Match.OneOf("Card", "Check"), 
-          is_recurring: Match.OneOf("one_time", "monthly"),
+          is_recurring: Match.OneOf("one_time", "monthly", "weekly", "daily"),
           coverTheFees: Boolean, 
           created_at: String,
           type: Match.OneOf("Card", "Check"),
           href: Match.Optional(String),
           id: Match.Optional(String),
           fees: Match.Optional(Number),
-          writeIn: Match.Optional(String)
+          writeIn: Match.Optional(String),
+          start_date: Match.Optional(String),
+          later: Match.Optional(Boolean)
         },
         customer: {
           fname: String, 
@@ -86,15 +63,23 @@ Utils = {
     create_user: function (customer_id, donation_id, debit_id) {
         var email_address = Customers.findOne(customer_id).email;
         var user_id = Meteor.users.findOne({'emails.address': email_address});
+        var name = Customers.findOne(customer_id).name;
+
         if(!user_id){
-            var name = Customers.findOne(customer_id).name;
             user_id = Accounts.createUser({email: email_address});
+
+            //Get all the persona_ids from DT for this email address
+            var persona_id = Utils.get_dt_id(email_address, name, user_id, donation_id);
+            Utils.get_all_dt_donations(persona_id);
+
             Accounts.sendEnrollmentEmail(user_id);
-            Meteor.users.update(user_id, {$set: {'profile.name': name, 'primary_customer_id': customer_id}});
+            Meteor.users.update(user_id, {$set: {'profile.name': name, 'primary_customer_id': customer_id, 'persona_id': persona_id}});
         } else {
             console.log("User already exists.");
         }
-        Utils.linkGiftToUser(customer_id, donation_id, debit_id, user_id);
+        if(debit_id){
+            Utils.linkGiftToUser(customer_id, donation_id, debit_id, user_id);
+        }
     },
     linkGiftToUser: function(customer_id, donation_id, debit_id, userId) {
         var insertThis = {};
@@ -103,6 +88,6 @@ Utils = {
         insertThis.donations =  donation_id;
         insertThis.debits = debit_id;
 
-        Meteor.users.update(userId, {$push: insertThis});
+        Meteor.users.update(userId, {$addToSet: insertThis});
     }
 };
