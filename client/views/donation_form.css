@@ -84,7 +84,7 @@ select {
 }
 
 .jumboSize {
-	font-size:3.2em;
+	font-size:3em;
 	font-weight:700;
 	letter-spacing:2px;
 	margin-bottom:-20px
@@ -221,9 +221,8 @@ hr {
 }
 
 .fixSpacingBetweenInputsTop {
-	width:184px;
+	width:180px;
 	padding-right:0;
-	margin-left:-7px;
 	display:inline-block
 }
 
@@ -232,7 +231,7 @@ hr {
 @media only screen and (min-width: 320px) {
 .addSomePaddingLeft {
 	padding-left:0;
-	width:190px;
+	width:184px;
 	padding-right:0;
 	display:inline-block
 }
@@ -341,6 +340,7 @@ legend {
 .slim-borders {
 	border: 1px solid #bdc3c7; 
 }
+
 .notice-top-wrapper {
     left: 0;
     position: fixed;
@@ -354,4 +354,15 @@ legend {
     background-color:#00ed32;
     color:#FFF;
     padding:15px;
+}
+
+.ui-datepicker-unselectable {
+	opacity: .5;
+}
+
+.select-green-background {
+    background-color: #1abc9c;
+    border: none;
+    -webkit-appearance: menulist;
+    color: #FFFFFF;
 }

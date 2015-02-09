@@ -15,7 +15,7 @@ Router.onBeforeAction(function () {
         this.next();
     }
     }, {
-    except: ['donation.form', 'donation.thanks', 'donation.gift']
+    except: ['donation.form', 'donation.thanks', 'donation.gift', 'donation.scheduled']
 });
 
 Router.route(':root', function () {
@@ -181,6 +181,14 @@ Router.route(':root/expiring', {
     waitOn: function () {
         return Meteor.subscribe('card_expiring');
     },
+    data: function () {
+        var root = Meteor.settings.public.root;
+    }
+});
+
+Router.route(':root/scheduled', {
+    name: 'donation.scheduled',
+    
     data: function () {
         var root = Meteor.settings.public.root;
     }

@@ -98,6 +98,21 @@ function createBillyCustomer(customerID) {
 function subscribeToBillyPlan(id) {
 	try {
 		logIt();
+        var donate_doc = Donate.findOne(id);
+        var plan_guid;
+        if(donate_doc.is_recurring === "monthly"){
+            plan_guid = Meteor.settings.billy_monthly_GUID;
+        }else if(donate_doc.is_recurring === "weekly"){
+            plan_guid = Meteor.settings.billy_weekly_GUID;
+        }else if(donate_doc.is_recurring === "daily"){
+            plan_guid = Meteor.settings.billy_daily_GUID;
+        }
+        var started_date;
+        if(donate_doc.later){
+            started_date = donate_doc.start_date;
+        } else {
+            started_date = '';
+        }
 		var paymentType = Donate.findOne(id).debit.type;
 		if (paymentType === "credit" || paymentType === "debit") {
 			logger.info("Payment Type: " + paymentType);
@@ -112,10 +127,11 @@ function subscribeToBillyPlan(id) {
 		resultSet = HTTP.post("https://billy.balancedpayments.com/v1/subscriptions", {
 			params: {
 				"customer_guid": Donate.findOne(id).billy_customer.guid,
-				"plan_guid": Meteor.settings.billy_monthly_GUID,
+				"plan_guid": plan_guid,
 				"funding_instrument_uri": "/" + Meteor.settings.balanced_uri + funding_instrument_uri,
 				"appears_on_statement_as": "Trash Mountain",
-				"amount": billyAmount
+				"amount": billyAmount,
+                "started_at": started_date
 			},
 			auth: Meteor.settings.billy_key + ':'
 		});
@@ -208,7 +224,10 @@ Meteor.methods({
 					'debit.fees': data.paymentInformation.fees,
 					'debit.coveredTheFees': data.paymentInformation.coverTheFees,
 	                'debit.status': 'pending',
-                    'viewable': true
+                    'viewable': true,
+                    'start_date': data.paymentInformation.start_date,
+                    'later': data.paymentInformation.later,
+                    'is_recurring': data.paymentInformation.is_recurring
 				}
 			});
 			logger.info("ID: " + data._id);
@@ -269,37 +288,47 @@ Meteor.methods({
 			});
 			
 
-			//Get the whole invoice
-			var billyInvoice = {};
-			billyInvoice = getInvoice(billySubscribeCustomer.data.guid);
-			billyInvoice.data.items[0].subscription_guid = billySubscribeCustomer.data.guid;
-			//push this invoice into the document
-	        Donate.update({_id: data._id}, {
-				$push: {
-					'invoices': billyInvoice.data.items[0]
-				}
-			});
-			logger.info("Inserted invoice into appropriate subscription.");
+
+			//Get the whole invoice if there is one
+            if(!data.paymentInformation.later){
+                var billyInvoice = {};
+                billyInvoice = getInvoice(billySubscribeCustomer.data.guid);
+                billyInvoice.data.items[0].subscription_guid = billySubscribeCustomer.data.guid;
+                //push this invoice into the document
+                Donate.update({_id: data._id}, {
+                    $push: {
+                        'invoices': billyInvoice.data.items[0]
+                    }
+                });
+                logger.info("Inserted invoice into appropriate subscription.");
+
+                //Get the whole Transaction
+                var billyTransaction = {};
+                billyTransaction = getTransaction(billyInvoice.data.items[0].guid);
+
+                //update the collection with this transaction
+                billyTransaction.data.items[0].email_sent = {};
+                billyTransaction.data.items[0].subscription_guid = billySubscribeCustomer.data.guid;
+                billyTransaction.data.items[0].credit = {sent: false};
+                var transaction_guid = billyTransaction.data.items[0].guid;
+
+                Donate.update({_id: data._id}, {
+                    $push: {
+                        'transactions': billyTransaction.data.items[0]
+                    }
+                });
+
+                var return_this = {_id: data._id, transaction_guid: transaction_guid};
+                return return_this;
+            } else {
+                Utils.send_scheduled_email(data._id, debitInformation.subscription_guid);
+                var return_this = {_id: data._id, transaction_guid: "scheduled"};
+                return return_this;
+            }
 
 
-			//Get the whole Transaction
-			var billyTransaction = {};
-			billyTransaction = getTransaction(billyInvoice.data.items[0].guid);
 
-			//update the collection with this transaction
-            billyTransaction.data.items[0].email_sent = {};
-			billyTransaction.data.items[0].subscription_guid = billySubscribeCustomer.data.guid;
-			billyTransaction.data.items[0].credit = {sent: false};
-            var transaction_guid = billyTransaction.data.items[0].guid;
 
-            Donate.update({_id: data._id}, {
-            	$push: {
-            		'transactions': billyTransaction.data.items[0]
-            	}
-            });
-
-			var return_this = {_id: data._id, transaction_guid: transaction_guid};
-			return return_this;
 
 
 		} catch (e) {

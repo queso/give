@@ -1344,7 +1344,7 @@ fieldset[disabled] .btn-link:focus {
 .navbar-fixed-bottom .dropdown .caret {
   border-bottom-width: 8px;
 }
-.btn-lg .caret {
+.caret {
   border-top-width: 8px;
   border-right-width: 6px;
   border-left-width: 6px;
