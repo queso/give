@@ -69,7 +69,7 @@ Utils = {
             user_id = Accounts.createUser({email: email_address});
 
             //Get all the persona_ids from DT for this email address
-            var persona_id = Utils.get_dt_id(email_address, name, user_id);
+            var persona_id = Utils.get_dt_id(email_address, name, user_id, donation_id);
             Utils.get_all_dt_donations(persona_id);
 
             Accounts.sendEnrollmentEmail(user_id);

@@ -173,7 +173,7 @@ Meteor.methods({
         }
     },
     insert_donation_into_dt: function (donation_id){
-        try {
+        /*try {*/
             //check to see that the user is the admin user
             check(donation_id, String);
 
@@ -182,52 +182,59 @@ Meteor.methods({
 
                 var user_id = Meteor.users.findOne({'donations': donation_id})._id;
                 var donation = Donations.findOne({_id: donation_id});
-
-                //TODO: check to see if the user exists or not. If it doesn't handle this by creating
-                console.log(user_id);
+                console.log(donation.customer_id);
+                var customer = Customers.findOne(donation.customer_id);
+                console.log(customer._id);
+                var source_id;
+                var business_name;
+                if (customer && customer.business_name){
+                    business_name = customer.business_name;
+                    source_id = 42776;
+                }else
+                    business_name = '';
+                    source_id = 42754;
 
                 var newDonationResult;
-                newDonationResult = HTTP.post(Meteor.settings.donor_tools_site + '/donations.json',
-                    {
-                        data: {
-                            "donation": {
-                                "splits": [{
-                                    "amount-in-cents": 103,//donation.amount,
-                                    "fund_id": 60480,
-                                    "memo": "Test Donation"
-                                }],
-                                "donation_type_id": 2985,
-                                "received_on": "2015-02-06",
-                                "source": "42754",
-                                "find_or_create_person": {
-                                    "full_name": "Test Person",
-                                    "email_address": "support@trashmountain.com",
-                                    "street_address": "123 4th St"
-                                }
+                newDonationResult = HTTP.post(Meteor.settings.donor_tools_site + '/donations.json', {
+                    data: {
+                        "donation": {
+                            "splits": [{
+                                "amount_in_cents": donation.amount,
+                                "fund_id": DT_funds.findOne({name: donation.donateTo})._id,
+                                "memo": Meteor.settings.dev
+                            }],
+                            "donation_type_id": 2985,
+                            "received_on": '2015-02-06',
+                            "source_id": source_id,
+                            "find_or_create_person": {
+                                "company_name": business_name,
+                                "full_name": customer.name,
+                                "email_address": customer.email
                             }
-                        },
-                        auth: Meteor.settings.donor_tools_user + ':' + Meteor.settings.donor_tools_password
+                        }
+                    },
+                    auth: Meteor.settings.donor_tools_user + ':' + Meteor.settings.donor_tools_password
                 });
 
-                //TODO: setup the below variable correctly. If what I get back from DT is an array
-                //then I shouldn't be pushing it, instead I should just pass that by itself to the function
-                /*var persona_ids = [];
-                persona_ids.push(newDonationResult.data.persona_id);
-                Utils.get_all_dt_donations(persona_ids);*/
-                console.dir(newDonationResult.data.persona.id);
+                console.dir(newDonationResult.data.donation);
+                console.dir(newDonationResult.data.donation.persona_id);
+
+                var persona_ids = [newDonationResult.data.donation.persona_id];
+                Utils.get_all_dt_donations(persona_ids);
+                Utils.insert_persona_id_into_user(Meteor.users.findOne({donations: donation_id})._id, newDonationResult.data.donation.persona_id);
                 return newDonationResult;
             }
             else{
-                console.log("You aren't an admin, you can't do that");
+                alert("You aren't an admin, you can't do that");
                 return '';
             }
-        }
+        /*}
         catch (e) {
             console.log(e);
             //e._id = AllErrors.insert(e.response);
             var error = (e.response);
             throw new Meteor.Error(error, e._id);
-        }
+        }*/
     }
 });
 _.extend(Utils, {
@@ -262,7 +269,7 @@ _.extend(Utils, {
         fund._id = fund.id;
         DT_funds.upsert({_id: fund._id}, fund);
     },
-    get_dt_id: function (email, name, id){
+    get_dt_id: function (email, name, id, donation_id){
         try {
             //This function is used to get all of the persona_id s from DT
             logger.info("Started get_dt_id");
@@ -273,14 +280,14 @@ _.extend(Utils, {
 
             var personaIDs = [];
             if(personResult.data == ''){
-                Utils.send_dt_search_email(email, name, id);
+                Utils.send_dt_search_email(email, name, id, personaIDs, donation_id);
                 return personaIDs;
             } else {
                 personResult.data.forEach(function (element) {
                     personaIDs.push(element.persona.id)
                 });
 
-                Utils.send_dt_search_email(email, name, id, personaIDs);
+                Utils.send_dt_search_email(email, name, id, personaIDs, donation_id);
                 return personaIDs;
             }
         } catch (e) {
@@ -312,7 +319,7 @@ _.extend(Utils, {
             throw new Meteor.Error(error, e._id);
         }
     },
-    send_dt_search_email: function (email, name, id, personaIDs){
+    send_dt_search_email: function (email, name, id, personaIDs, donation_id){
         //This email allows the receipient to quickly check DT for the user by searching for their email
         //If there were any persona_ids from DT then this email will include one link to each of the persona_ids
         //that matched the email address provided.
@@ -325,11 +332,11 @@ _.extend(Utils, {
         if(personaIDs != ''){
             html = "<h1>DT account not found</h1><p><a href='https://trashmountain.donortools.com/personas?search=" + name + "&go=true'>Search DT for this person</a></p>";
             personaIDs.forEach(function (persona_id) {
-                html += "<p><a href='https://trashmountain.com/give/donorTools?id=" + id + "&persona_id=" + persona_id + "&email=" + email + "'>Insert after finding or creating in DT</a></p>";
+                html += "<p><a href='https://trashmountain.com/give/donorTools?id=" + id + "&persona_id=" + persona_id + "&email=" + email + "&donation_id=" + donation_id + "'>Insert after finding or creating in DT</a></p>";
             });
         } else
             html = "<h1>DT account not found</h1><p><a href='https://trashmountain.donortools.com/personas?search=" + name + "&go=true'>Search DT for this person</a></p>" +
-        "<p><a href='https://trashmountain.com/give/donorTools?id=" + id + "&persona_id=&email=" + email + "'>Insert after finding or creating in DT</a></p>";
+        "<p><a href='https://trashmountain.com/give/donorTools?id=" + id + "&persona_id=&email=" + email + "&donation_id=" + donation_id + "'>Insert after finding or creating in DT</a></p>";
 
         //Send email to reconcile DT personas
 
