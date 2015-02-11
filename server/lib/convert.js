@@ -1,10 +1,10 @@
 Convert = {
     start_conversion: function(id, type, body, billy, transaction_guid, subscription_guid){
-        console.log("Inside start_conversion.");
+        logger.info("Inside start_conversion.");
         Convert.find_donate(subscription_guid, body.events[0].entity.debits[0].links.customer, id, transaction_guid);
     },
     find_donate: function (subscription_guid, customer_id, debit_id, transaction_guid) {
-        console.log("Inside find_donate.");
+        logger.info("Inside find_donate.");
         var payment, type;
         if(Donate.findOne({'subscriptions.guid': subscription_guid})){
             var donateDoc = Donate.findOne({'subscriptions.guid': subscription_guid});
@@ -26,30 +26,30 @@ Convert = {
 
     },
     find_debits: function (donateDoc, donations_id) {
-        console.log("Inside find_debits with donaations_id of " + donations_id);
+        logger.info("Inside find_debits with donations_id of " + donations_id);
 
         donateDoc.transactions.forEach(function (element) {
-            console.log(element.processor_uri);
+            logger.info(element.processor_uri);
             Convert.insert_debit(donateDoc, donations_id, element.processor_uri, element.guid);
         });
 
     },
     insert_debit: function(donateDoc, donation_id, debit_href, transaction_guid){
-        console.log("Inside insert_debit with transaction_guid of " + transaction_guid);
+        logger.info("Inside insert_debit with transaction_guid of " + transaction_guid);
         //add the donation_id and the transaction_guid to each of the Debit objects before inserting into the collection
         var debit = Utils.get_debit(debit_href);
         debit.donation_id = donation_id;
         debit.transaction_guid = transaction_guid;
         debit._id = debit.id;
         delete debit.meta['billy.transaction_guid'];
-        console.log(debit.id);
+        logger.info(debit.id);
 
         // double check that the debit you are inserting isn't already stored in Debits. if it is just return to the calling function, else insert it.
         if(Debits.findOne({_id: debit.id})){
-            console.log("Found that Debit, exiting insert");
+            logger.info("Found that Debit, exiting insert");
             return;
         }else{
-            console.log("Didn't find that Debit, inserting");
+            logger.info("Didn't find that Debit, inserting");
             Debits.insert(debit);
 
             //TODO: here is where I need to link this gift to the user
@@ -57,7 +57,7 @@ Convert = {
         }
     },
     insert_customer: function (donateDoc, payment, type, customer_id) {
-        console.log("Inside insert_customer.");
+        logger.info("Inside insert_customer.");
         // get the customer object from balanced
         var customer = Utils.get_customer('/customers/' + customer_id);
         customer._id = customer.id;
@@ -84,7 +84,7 @@ Convert = {
 
     },
     insert_donation: function (donateDoc, customer_id, debit_id, transaction_guid) {
-        console.log("Inside insert_donation.");
+        logger.info("Inside insert_donation.");
         //copy and delete the object properties needed to fit the change from the donate to the donations collection
 
         var copied_doc = donateDoc;

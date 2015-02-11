@@ -61,12 +61,19 @@ Utils = {
       });
     },
     create_user: function (customer_id, donation_id, debit_id) {
+        logger.info("Inside create_user.");
+
         var email_address = Customers.findOne(customer_id).email;
         var user_id = Meteor.users.findOne({'emails.address': email_address});
         var name = Customers.findOne(customer_id).name;
 
         if(!user_id){
+
             user_id = Accounts.createUser({email: email_address});
+
+            if(debit_id){
+                var waitForInsert = Utils.linkGiftToUser(customer_id, donation_id, debit_id, user_id);
+            }
 
             //Get all the persona_ids from DT for this email address
             var persona_id = Utils.get_dt_id(email_address, name, user_id, donation_id);
@@ -75,11 +82,15 @@ Utils = {
             Accounts.sendEnrollmentEmail(user_id);
             Meteor.users.update(user_id, {$set: {'profile.name': name, 'primary_customer_id': customer_id, 'persona_id': persona_id}});
         } else {
-            console.log("User already exists.");
+           logger.info("User already exists.");
+            // This doesn't work, need to figure out a better way to call the insert
+            // Utils.insert_donation_into_dt(donation_id, Meteor.users.findOne(user_id).persona_id[0], user_id);
+            if(debit_id){
+                Utils.linkGiftToUser(customer_id, donation_id, debit_id, user_id);
+            }
         }
-        if(debit_id){
-            Utils.linkGiftToUser(customer_id, donation_id, debit_id, user_id);
-        }
+        return;
+
     },
     linkGiftToUser: function(customer_id, donation_id, debit_id, userId) {
         var insertThis = {};

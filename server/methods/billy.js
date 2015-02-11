@@ -276,7 +276,10 @@ Meteor.methods({
                 }
 
                 return_this = {c: data.customer._id, don: data._id, deb: insert_debit.id};
-                Utils.create_user(data.customer._id, data._id,  insert_debit.id);
+                Meteor.setTimeout(function(){
+                    Utils.create_user(data.customer._id, data._id,  insert_debit.id);
+                }, 100);
+
                 return return_this;
             } else {
                 Donations.update(data._id, {
@@ -284,9 +287,12 @@ Meteor.methods({
                         'subscriptions': billySubscribeCustomer.data
                     }
                 });
-                Utils.create_user(data.customer._id, data._id, null);
-                console.log("Subscription guid: " + billySubscribeCustomer.data.guid);
-                Utils.send_scheduled_email(data._id, billySubscribeCustomer.data.guid);
+                Meteor.setTimeout(function(){
+                    Utils.create_user(data.customer._id, data._id, null);
+                    console.log("Subscription guid: " + billySubscribeCustomer.data.guid);
+                    Utils.send_scheduled_email(data._id, billySubscribeCustomer.data.guid);
+                }, 100);
+
                 return_this = {c: data.customer._id, don: data._id, deb: 'scheduled'};
                 return return_this;
             }

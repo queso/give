@@ -7,6 +7,9 @@
 // amount that is shown to the user and passed as total_amount through the form
 //display error modal if there is an error while initially submitting data from the form.
 function handleErrors(error) {
+    spinner.stop();
+    $("#spinDiv").hide();
+
     Session.set("loaded", true);
     if(error.reason === "Match failed"){
         var gatherInfo = {};
@@ -35,16 +38,19 @@ Location HREF: " + location.href + "'><button type='button' class='btn btn-dange
                     </tr>\
                 </tr>";
 
+
         $('#modal_for_initial_donation_error').modal({show: true});
+        $(".modal-dialog").css("z-index", "1500");
         $('#errorCategory').html(error.reason);
-        $('#errorDescription').html(error.details);  
+        $('#errorDescription').html(error.details);
     } else{
-        //$('#modal_for_initial_donation_error').modal('show');
+
         $('#modal_for_initial_donation_error').modal({show: true});
+        $(".modal-dialog").css("z-index", "1500");
         $('#errorCategory').html(error.reason);
         $('#errorDescription').html(error.details);
     }
-    
+
 }
 
 function fillForm() {
@@ -137,7 +143,6 @@ function handleCalls(payment, form) {
             } else {
                 //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
                 updateTotal();
-
                 handleErrors(error);
             }
             //END error handling block for meteor call to processPayment
@@ -154,13 +159,12 @@ function handleCalls(payment, form) {
                     Router.go('/give/thanks?c=' + result.c + "&don=" + result.don + "&deb=" + result.deb);
                 }
             } else {
+
                 //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
                 updateTotal();
 
                 //handleErrors is used to check the returned error and the display a user friendly message about what happened that caused
                 //the error.
-                $("#spinDiv").hide();
-                spinner.stop;
                 handleErrors(error);
             }
         });
@@ -176,7 +180,6 @@ Template.DonationForm.events({
 
         if($("#is_recurring").val() === ''){
             $("#s2id_is_recurring").children().addClass("redText");
-
             return;
         }
         var opts = {color: '#FFF', length: 60, width: 10, lines: 8};

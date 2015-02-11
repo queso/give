@@ -31,7 +31,7 @@ _.extend(Utils,{
 				slug = 'fall-2014-donation-failed';
 			} else if(status === 'created'){
 				if(email_cursor && email_cursor.created && email_cursor.created.sent) {
-					console.log("A 'created' email has already been sent for this debit, exiting email send function.");
+					logger.info("A 'created' email has already been sent for this debit, exiting email send function.");
 					return;
 				}
 				Evts.update_email_collection(id, 'created');
@@ -39,14 +39,14 @@ _.extend(Utils,{
 				bcc_address = null;
 			} else if (status === 'succeeded'){
 				if(email_cursor && email_cursor.succeeded && email_cursor.succeeded.sent) {
-					console.log("A 'succeeded' email has already been sent for this debit, exiting email send function.");
+					logger.info("A 'succeeded' email has already been sent for this debit, exiting email send function.");
 					return;
 				}
 				Evts.update_email_collection(id, 'succeeded');
 				slug = "fall-2014-donation-receipt-multi-collection";
 			} else if (status === 'large_gift') {
 				if(email_cursor && email_cursor.large_gift && email_cursor.large_gift.sent) {
-					console.log("A 'large_gift' email has already been sent for this debit, exiting email send function.");
+					logger.info("A 'large_gift' email has already been sent for this debit, exiting email send function.");
 					return;
 				}
 				Evts.update_email_collection(id, 'large_gift');
@@ -165,12 +165,10 @@ _.extend(Utils,{
         var started_at = donation_cursor.subscriptions[0].started_at;
 
         started_at = moment(started_at).format("MMM DD, YYYY");
-        console.log(started_at);
 
         var bcc_address = "support@trashmountain.com";
         var customer_cursor = Customers.findOne(donation_cursor.customer_id);
         var email_address = customer_cursor.email;
-        console.log(email_address);
         slug = "scheduled-donation";
 
         //Evts.update_email_collection(id, 'scheduled');

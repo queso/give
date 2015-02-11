@@ -5,6 +5,7 @@ Meteor.methods({
     singleDonation: function (data) {
         logger.info("Started singleDonation");
         /*try {*/
+
             //Check the form to make sure nothing malicious is being submitted to the server
             Utils.checkFormFields(data);
 
@@ -73,7 +74,10 @@ Meteor.methods({
                 var debitOrder = Utils.debit_order(data.paymentInformation.total_amount, data._id, customerData._id, orders.href, check.href);
 
             }
-            Utils.create_user(customerData._id, data._id, debitOrder._id);
+            Meteor.setTimeout(function(){
+                Utils.create_user(customerData._id, data._id, debitOrder._id);
+            }, 100);
+
             return {c: customerData._id, don: data._id, deb: debitOrder._id};
 
         /*} catch (e) {
@@ -101,3 +105,4 @@ Meteor.methods({
          }*/
     }
 });
+
