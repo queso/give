@@ -1,10 +1,11 @@
 /* Donate Methods */
 /*****************************************************************************/
+Fiber = Npm.require('fibers');
 
 Meteor.methods({
     singleDonation: function (data) {
         logger.info("Started singleDonation");
-        /*try {*/
+        try {
 
             //Check the form to make sure nothing malicious is being submitted to the server
             Utils.checkFormFields(data);
@@ -71,16 +72,20 @@ Meteor.methods({
                 var associate = Utils.create_association(customerData._id, check.href, customerData.href);
 
                 //Debit the order
-                var debitOrder = Utils.debit_order(data.paymentInformation.total_amount, data._id, customerData._id, orders.href, check.href);
+                var debit_id = Utils.debit_order(data.paymentInformation.total_amount, data._id, customerData._id, orders.href, check.href);
 
             }
+
+            // setTimeout is used here to let the function return to the user and then run Utils.create_user
+            // since Utils.create_user can take 10 seconds or more to run and since I don't want to print any errors
+            // from it out to the user
             Meteor.setTimeout(function(){
-                Utils.create_user(customerData._id, data._id, debitOrder._id);
+                Utils.create_user(customerData._id, data._id, debit_id);
             }, 100);
 
-            return {c: customerData._id, don: data._id, deb: debitOrder._id};
+            return {c: customerData._id, don: data._id, deb: debit_id};
 
-        /*} catch (e) {
+        } catch (e) {
          logger.error("Got to catch error area of processPayment function." + e + " " + e.reason);
          logger.error("e.category_code = " + e.category_code + " e.descriptoin = " + e.description);
          if(e.category_code) {
@@ -102,7 +107,7 @@ Meteor.methods({
          }else {
              throw new Meteor.Error(500, e.reason, e.details);
          }
-         }*/
+         }
     }
 });
 

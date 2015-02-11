@@ -24,14 +24,15 @@ _.extend(Utils, {
 
         console.log(debit._api.cache[debit.href]);
         var debit_insert = debit._api.cache[debit.href];
+        console.dir(debit_insert)
         debit_insert.donation_id = donation_id;
         debit_insert.customer_id = customer_id;
-        //add debit response from Balanced to the database
-        var debit_id = Debits.insert(debit_insert);
+        debit_insert._id = debit_insert.id;
 
-        debit._id = debit_id;
-        logger.info("Finished balanced order debit. Debits ID: " + debit_id);
-        return debit;
+        //add debit response from Balanced to the database
+        Debits.insert(debit_insert);
+        logger.info("Finished balanced order debit. Debits ID: " + debit_insert.id);
+        return debit_insert.id;
     },
     credit_order: function(debitID) {
         if(Donate.findOne({'debit.id': debitID, 'credit.sent': {$exists: true}})) {

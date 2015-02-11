@@ -1,4 +1,4 @@
-Meteor.methods({
+/*Meteor.methods({
     get_dt: function (id, url_part) {
         try {
             //check to see that the user is the admin user
@@ -12,10 +12,10 @@ Meteor.methods({
                 });
 
                 if(url_part === '/donations.json'){
-                    /*var insertThis = [];
+                    *//*var insertThis = [];
                     _.each(donorResult.data, function(value) {
                         insertThis.push(value.donation)
-                    });*/
+                    });*//*
                     Utils.separate_donations(donorResult.data);
                     return donorResult;
                 }
@@ -171,86 +171,8 @@ Meteor.methods({
             var error = (e.response);
             throw new Meteor.Error(error, e._id);
         }
-    }/*,
-    insert_donation_into_dt: function (donation_id){
-        *//*try {*//*
-            //check to see that the user is the admin user
-            check(donation_id, String);
-
-            if(this.userId === Meteor.settings.admin_user) {
-                logger.info("Started insert_donation_into_dt Meteor Method");
-
-                var user_id = Meteor.users.findOne({'donations': donation_id})._id;
-                var donation = Donations.findOne(donation_id);
-                var customer = Customers.findOne(donation.customer_id);
-
-                var source_id;
-                var business_name;
-
-                if (customer && customer.business_name){
-                    business_name = customer.business_name;
-                    source_id = 42776;
-                }else
-                    business_name = '';
-                    source_id = 42754;
-
-                var recognition_name;
-                if(business_name){
-                    recognition_name = business_name;
-                } else
-                    recognition_name = customer.name;
-
-                var newDonationResult;
-                newDonationResult = HTTP.post(Meteor.settings.donor_tools_site + '/donations.json', {
-                    data: {
-                        "donation": {
-                            "splits": [{
-                                "amount_in_cents": donation.amount,
-                                "fund_id": DT_funds.findOne({name: donation.donateTo})._id,
-                                "memo": Meteor.settings.dev
-                            }],
-                            "donation_type_id": 2985,
-                            "received_on": moment(new Date(donation.created_at)).format("YYYY/MM/DD"),
-                            "source_id": source_id,
-                            "find_or_create_person": {
-                                "company_name": business_name,
-                                "full_name": customer.name,
-                                "email_address": customer.email,
-                                "street_address": customer.address.line1 + " \n" + customer.address.line2,
-                                "city": customer.address.city,
-                                "state": customer.address.state,
-                                "postal_code": customer.address.postal_code,
-                                "phone_number": customer.phone,
-                                "web_address": "https://trashmountain.com/give/users" + user_id,
-                                "salutation_formal": customer.name,
-                                "recognition_name": recognition_name
-                            }
-                        }
-                    },
-                    auth: Meteor.settings.donor_tools_user + ':' + Meteor.settings.donor_tools_password
-                });
-
-                console.dir(newDonationResult.data.donation);
-                console.dir(newDonationResult.data.donation.persona_id);
-
-                var persona_ids = [newDonationResult.data.donation.persona_id];
-                Utils.get_all_dt_donations(persona_ids);
-                Utils.insert_persona_id_into_user(Meteor.users.findOne({donations: donation_id})._id, newDonationResult.data.donation.persona_id);
-                return newDonationResult;
-            }
-            else{
-                alert("You aren't an admin, you can't do that");
-                return '';
-            }
-        *//*}
-        catch (e) {
-            console.log(e);
-            //e._id = AllErrors.insert(e.response);
-            var error = (e.response);
-            throw new Meteor.Error(error, e._id);
-        }*//*
-    }*/
-});
+    }
+});*/
 _.extend(Utils, {
     separate_donations: function(serverResponse){
         logger.info("Inside separate_donations");
@@ -287,6 +209,7 @@ _.extend(Utils, {
         /*try {*/
             //This function is used to get all of the persona_id s from DT
             logger.info("Started get_dt_id");
+
             var personResult;
             personResult = HTTP.get(Meteor.settings.donor_tools_site + "/people.json?search=" + email, {
                 auth: Meteor.settings.donor_tools_user + ':' + Meteor.settings.donor_tools_password
@@ -420,7 +343,7 @@ _.extend(Utils, {
                             "state": customer.address.state,
                             "postal_code": customer.address.postal_code,
                             "phone_number": customer.phone,
-                            "web_address": "https://trashmountain.com/give/users" + user_id,
+                            "web_address": "https://trashmountain.com/give/dashboard/users?userID=" + user_id,
                             "salutation_formal": customer.name,
                             "recognition_name": recognition_name
                         }
@@ -429,10 +352,12 @@ _.extend(Utils, {
                 auth: Meteor.settings.donor_tools_user + ':' + Meteor.settings.donor_tools_password
             });
 
-            console.dir(newDonationResult.data.donation);
-            console.dir(newDonationResult.data.donation.persona_id);
-
-            var persona_ids = [newDonationResult.data.donation.persona_id];
+            if(newDonationResult && newDonationResult.data && newDonationResult.data.persona_id){
+                var persona_ids = [newDonationResult.data.donation.persona_id];
+            }else{
+                logger.error("The persona ID wasn't returned from DT, or something else happened with the connection to DT.");
+                throw new Meteor.Error("Couldn't get the persona_id for some reason");
+            }
             Utils.get_all_dt_donations(persona_ids);
             Utils.insert_persona_id_into_user(user_id, newDonationResult.data.donation.persona_id);
             if(newDonationResult && newDonationResult.data && newDonationResult.data.donation && newDonationResult.data.donation.persona_id){

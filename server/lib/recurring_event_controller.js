@@ -148,34 +148,41 @@ Evts = {
         }
 	},
 	failed_collection_update: function (billy, type, event_debit_id, invoice_guid, body){
-		if(billy){
-            var returnedIDs = Utils.getBillySubscriptionGUID(invoice_guid);
-            if(returnedIDs){
-                id = returnedIDs.id;
-                subscription_guid = returnedIDs.subscription_guid;
+        try {
+            if (billy) {
+                var returnedIDs = Utils.getBillySubscriptionGUID(invoice_guid);
+                if (returnedIDs) {
+                    id = returnedIDs.id;
+                    subscription_guid = returnedIDs.subscription_guid;
 
-                Donations.update(id, {$set: {'failed.failure_reason': body.events[0].entity[type][0].failure_reason,
-                    'failed.failure_reason_code': body.events[0].entity[type][0].failure_reason_code,
-                    'failed.transaction_number': body.events[0].entity[type][0].transaction_number,
-                    'failed.updated': moment().valueOf(),
-                    'debit.status': 'failed'}}
-                );
-            }
+                    Donations.update(id, {
+                            $set: {
+                                'failed.failure_reason': body.events[0].entity[type][0].failure_reason,
+                                'failed.failure_reason_code': body.events[0].entity[type][0].failure_reason_code,
+                                'failed.transaction_number': body.events[0].entity[type][0].transaction_number,
+                                'failed.updated': moment().valueOf()
+                            }
+                        }
+                    );
 
-        }else if(Donate.findOne({'debit.id': event_debit_id})) {
-            var id = Donate.findOne({'debit.id': event_debit_id})._id;
-            if (id){
-                Donate.update(id, {$set: {'failed.failure_reason': body.events[0].entity[type][0].failure_reason,
-                    'failed.failure_reason_code': body.events[0].entity[type][0].failure_reason_code,
-                    'failed.transaction_number': body.events[0].entity[type][0].transaction_number,
-                    'failed.updated': moment().valueOf(),
-                    'debit.status': 'failed'}}
-                );
-            } else{
-                logger.error("Failed to find an id inside of failed_collection_update");
+                    Debits.upsert(id,
+                        {
+                            'failure_reason': body.events[0].entity[type][0].failure_reason,
+                            'failure_reason_code': body.events[0].entity[type][0].failure_reason_code,
+                            'status': 'failed'
+                        }
+                    );
+                }
+            } else {
+                var debit = body.events[0].entity[type][0];
+                debit._id = debit.id;
+                debit.failure_reason =  body.events[0].entity[type][0].failure_reason;
+                debit.failure_reason_code = body.events[0].entity[type][0].failure_reason_code;
+                debit.status =  'failed';
+                Debits.upsert(debit);
             }
-        } else{
-            logger.error("Can't run a failed_collection_update when the event_debit_id passed in can't be found in the collection. Check to see if this is a Billy debit.");    
+        } catch (e) {
+            logger.error(e);
         }
 	}
 };
