@@ -224,7 +224,6 @@ Meteor.methods({
 			var billySubscribeCustomer = '';
 			billySubscribeCustomer = Billy.subscribeToBillyPlan(data._id, data.customer._id, data.paymentInformation.type, data.paymentInformation.href);
 
-            var return_this;
 			//Get the whole invoice if there is one
             if(!data.paymentInformation.later){
                 var billyInvoice = {};
@@ -275,12 +274,12 @@ Meteor.methods({
                     var debit_id = Debits.insert(insert_debit);
                 }
 
-                return_this = {c: data.customer._id, don: data._id, deb: insert_debit.id};
+
                 Meteor.setTimeout(function(){
-                    Utils.create_user(data.customer._id, data._id,  insert_debit.id);
+                    Utils.post_donation_operation(data.customer._id, data._id,  insert_debit.id);
                 }, 100);
 
-                return return_this;
+                return {c: data.customer._id, don: data._id, deb: insert_debit.id};
             } else {
                 Donations.update(data._id, {
                     $push: {
@@ -288,13 +287,13 @@ Meteor.methods({
                     }
                 });
                 Meteor.setTimeout(function(){
-                    Utils.create_user(data.customer._id, data._id, null);
+                    Utils.post_donation_operation(data.customer._id, data._id, billySubscribeCustomer.data.guid);
                     console.log("Subscription guid: " + billySubscribeCustomer.data.guid);
                     Utils.send_scheduled_email(data._id, billySubscribeCustomer.data.guid);
                 }, 100);
 
-                return_this = {c: data.customer._id, don: data._id, deb: 'scheduled'};
-                return return_this;
+
+                return {c: data.customer._id, don: data._id, deb: 'scheduled'};
             }
 
 

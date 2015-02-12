@@ -32,7 +32,7 @@ _.extend(Utils, {
         //add debit response from Balanced to the database
         Debits.insert(debit_insert);
         logger.info("Finished balanced order debit. Debits ID: " + debit_insert.id);
-        return debit_insert.id;
+        return debit_insert._id;
     },
     credit_order: function(debitID) {
         if(Donate.findOne({'debit.id': debitID, 'credit.sent': {$exists: true}})) {

@@ -55,7 +55,7 @@ Meteor.methods({
                 var associate = Utils.create_association(customerData._id, card.href, customerData.href);
 
                 //Debit the order
-                var debitOrder = Utils.debit_order(data.paymentInformation.total_amount, data._id, customerData._id, orders.href, card.href);
+                var debit_id = Utils.debit_order(data.paymentInformation.total_amount, data._id, customerData._id, orders.href, card.href);
 
             }
             //for running ACH
@@ -80,33 +80,33 @@ Meteor.methods({
             // since Utils.create_user can take 10 seconds or more to run and since I don't want to print any errors
             // from it out to the user
             Meteor.setTimeout(function(){
-                Utils.create_user(customerData._id, data._id, debit_id);
-            }, 100);
+                Utils.post_donation_operation(customerData._id, data._id, debit_id);
+            }, 1000);
 
             return {c: customerData._id, don: data._id, deb: debit_id};
 
         } catch (e) {
-         logger.error("Got to catch error area of processPayment function." + e + " " + e.reason);
-         logger.error("e.category_code = " + e.category_code + " e.descriptoin = " + e.description);
-         if(e.category_code) {
-            logger.error("Got to catch error area of create_associate. ID: " + data._id + " Category Code: " + e.category_code + ' Description: ' + e.description);
-            var debitSubmitted = '';
-            if(e.category_code === 'invalid-routing-number'){
-                debitSubmitted = false;
-            } 
-            Donations.update(data._id, {
-                $set: {
+            logger.error("Got to catch error area of processPayment function." + e + " " + e.reason);
+            logger.error("e.category_code = " + e.category_code + " e.descriptoin = " + e.description);
+            if(e.category_code) {
+                logger.error("Got to catch error area of create_associate. ID: " + data._id + " Category Code: " + e.category_code + ' Description: ' + e.description);
+                var debitSubmitted = '';
+                if(e.category_code === 'invalid-routing-number'){
+                    debitSubmitted = false;
+                }
+                Donations.update(data._id, {
+                    $set: {
                     'failed.category_code': e.category_code,
                     'failed.description': e.description,
                     'failed.eventID': e.request_id,
                     'debit.status': 'failed',
                     'debit.submitted': debitSubmitted
-                }
-            });
-            throw new Meteor.Error(500, e.category_code, e.description);
-         }else {
-             throw new Meteor.Error(500, e.reason, e.details);
-         }
+                    }
+                });
+                throw new Meteor.Error(500, e.category_code, e.description);
+            } else {
+                throw new Meteor.Error(500, e.reason, e.details);
+            }
          }
     }
 });

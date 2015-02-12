@@ -96,18 +96,17 @@ Meteor.publish("userDataPublish", function () {
 });
 
 Meteor.publish("userDonations", function () {
-	var donations = Meteor.users.findOne({_id: this.userId}).donations;
-
 	if (this.userId) {
-		return Donations.find({'_id': { $in: donations}});
+        var donations = Meteor.users.findOne({_id: this.userId}).donations;
+        return Donations.find({'_id': { $in: donations}});
 	} else {
 		this.ready();
 	}
 });
 
 Meteor.publish("userDebits", function () {
-	var debits = Meteor.users.findOne({_id: this.userId}).debits;
 	if (this.userId) {
+        var debits = Meteor.users.findOne({_id: this.userId}).debits;
 		return Debits.find({'_id': { $in: debits}});
 	} else {
 		this.ready();
@@ -115,9 +114,9 @@ Meteor.publish("userDebits", function () {
 });
 
 Meteor.publish("userCustomers", function () {
-	var customers = Meteor.users.findOne({_id: this.userId}).primary_customer_id;
-	console.log(customers);
 	if (this.userId) {
+        var customers = Meteor.users.findOne({_id: this.userId}).primary_customer_id;
+        console.log(customers);
 		return Customers.find(customers);
 	} else {
 		this.ready();
@@ -125,9 +124,9 @@ Meteor.publish("userCustomers", function () {
 });
 
 Meteor.publish("userDT", function () {
-	var persona_ids = Meteor.users.findOne({_id: this.userId}).persona_id;
-	console.log(persona_ids);
 	if (this.userId) {
+        var persona_ids = Meteor.users.findOne({_id: this.userId}).persona_id;
+        console.log(persona_ids);
 		return DT_donations.find( { persona_id: { $in: persona_ids } } );
 	} else {
 		this.ready();
