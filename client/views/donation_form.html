@@ -21,7 +21,8 @@
                         <div class="col-lg-12 col-md-12">
                             <label>Donation Summary:</label>&nbsp;
                             <i class="fa fa-question-circle" name="donationSummary" data-toggle="popover" data-trigger="hover focus"  data-placement="bottom" data-container="body"
-                               data-content="Below is the summary of your donation. To change your options please use the dropdown buttons." title="Donation Summary">
+                               data-content="Above is the amount total, below are your donation options. To change your
+                               options please use the dropdown buttons." title="Donation Summary">
                             </i>
                         </div>
                     </div>
@@ -30,13 +31,14 @@
                             {{> DonationTo}}
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-4">
+                            <label for="donateWith">Method of Payment</label>
                             <select name="donateWith" id="donateWith" class="form-control select select-primary mbl" required>
                                 <option value="Check">Check</option>
                                 <option value="Card">Card</option>
                             </select>
-                            <label for="donateWith">Method of Payment</label>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-4">
+                            <label for="is_recurring" id="frequency_label">Donation Frequency</label>
                             <select name="is_recurring" id="is_recurring" class="form-control select select-primary mbl" required data-placeholder="Select an option">
                                 <option selected></option>
                                 <option value="one_time">One-Time</option>
@@ -44,7 +46,6 @@
                                 <option value="weekly">Weekly</option>
                                 <option value="daily">Daily</option>
                             </select>
-                            <label for="is_recurring" id="frequency_label">Donation Frequency</label>
                         </div>
                     </div>
                 </div>
