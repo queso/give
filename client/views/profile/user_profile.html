@@ -13,15 +13,15 @@
                                 <h5>{{#with user}}{{name}}{{/with}}</h5>
                                 {{{business_name}}}
                                 <p><strong>Address: </strong>  <i class="fa fa-pencil edit_address"></i><br>
-                                    <span class="tags">{{customer.address.line1}}</span> <br>
+                                    {{customer.address.line1}} <br>
                                     {{{address_line2}}}
-                                    <span class="tags">{{customer.address.city}}, {{customer.address.state}} {{customer.address.postal_code}}</span>
+                                    {{customer.address.city}}, {{customer.address.state}} {{customer.address.postal_code}}
                                 </p>
                                 <p><strong>Phone:  </strong> <i class="fa fa-pencil edit_address"></i><br>
-                                    <span class="tags">{{customer.phone}}</span> <br>
+                                    {{customer.phone}} <br>
                                 </p>
                                 <p><strong>Email:  </strong> <br>
-                                    {{#with email}}<span class="tags">{{email}}</span> <br>{{/with}}
+                                    {{#with email}}{{email}} <br>{{/with}}
                                 </p>
                                 <p>
                                     <button type="button" class="btn btn-default btn-block" data-toggle="modal" data-target="#modal_for_address_change">
@@ -46,12 +46,12 @@
                                                 <span class="pull-right"><h7>{{dt_gifts.number_of_gifts}}</h7></span>
                                             <!--</a>-->
                                         </li>
-                                        <li class="text-left">
-                                            <!--<a href="#">-->
+                                        <!--<li class="text-left">
+                                            <a href="#">
                                                 <h7>Categories</h7>
                                                 <span class="pull-right"><h7>{{dt_gifts.categories}}</h7></span>
-                                            <!--</a>-->
-                                        </li>
+                                            </a>
+                                        </li>-->
                                         <!--<li class="divider"></li>
                                         <li class="nav-header">Heading</li>
                                         <li class="disabled">
