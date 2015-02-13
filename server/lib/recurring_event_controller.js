@@ -13,6 +13,11 @@ Evts = {
 
      		if(select_type === "debit_created") {
      			var sending_email_for_created = Evts.send_email(true, billy_id, transaction_guid, subscription_guid, 'initial_sent', status, body.events[0].entity.debits[0].amount);
+                Meteor.setTimeout(function(){
+                    //Call the DT_Donation update function
+                    // this should update in DT
+                });
+
      		} else if(select_type === "debit_succeeded") {
                 var debit_cursor = Debits.findOne({id: body.debits[0].id});
                 var amount = debit_cursor.amount;

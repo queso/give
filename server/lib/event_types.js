@@ -95,7 +95,7 @@ Event_types = {
     }, 
     fee_settlement_updated: function () {
         logger.info("Got to the fee_settlement_updated");
-    }, 
+    }
     /*************************************************************/
     /************         END INVOICES AREA         **************/
     /*************************************************************/

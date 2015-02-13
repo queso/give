@@ -387,6 +387,11 @@ legend {
 }
 */
 
+.select2-drop .select2-result-with-children > .select2-result-label{
+    color: #000;
+    font-weight: bold;
+}
+
 div.fadeMe {
     opacity:    0.5;
     background: #000;

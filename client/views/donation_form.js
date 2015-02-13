@@ -92,7 +92,7 @@ function updateTotal() {
             });
             return Session.set("total_amount", testValueTransfer);
         } else {
-            return $("#total_amount_display").text("Please enter a number in the amount field").css({
+            return $("#total_amount_display").text("Please enter a number in the amount field.").css({
                 'color': 'red'
             });
         }
@@ -395,6 +395,28 @@ Template.DonationForm.events({
 
 });
 Template.DonationForm.helpers({
+    paymentQuestionIcon: function(){
+        if(Session.equals('paymentMethod', 'Check')){
+            return "<i class='makeRightOfInput fa fa-question-circle' id='accountTypeQuestion' data-toggle='popover' " +
+                "data-trigger='hover focus' data-container='body' data-content='There are usually 3 sets of "+
+                "numbers at the bottom of a check. The short check number, the 9 digit routing number and the" +
+                "account number.'>" +
+                "</i>";
+        } else {
+            return "<i class='makeRightOfInput fa fa-question-circle' id='accountTypeQuestion' data-toggle='popover' " +
+                "data-trigger='hover focus' data-container='body' data-content='" +
+                "Visa®, Mastercard®, and Discover® cardholders: " +
+                "Turn your card over and look at the signature box. You should see either the entire 16-digit credit " +
+                "card number or just the last four digits followed by a special 3-digit code. This 3-digit code is " +
+                "your CVV number / Card Security Code.  " +
+                "American Express® cardholders: " +
+                "Look for the 4-digit code printed on the front of your card just above and to the right of your " +
+                "main credit card number. This 4-digit code is your Card Identification Number (CID). The CID is the " +
+                "four-digit code printed just above the Account Number.'" +
+                "</i>";
+        }
+
+    },
     paymentWithCard: function() {
         return Session.equals("paymentMethod", "Card");
     },
@@ -442,7 +464,7 @@ Template.DonationForm.rendered = function() {
     //Set the checkboxes to unchecked
     $(':checkbox').radiocheck('uncheck');
 
-    $('[data-toggle="popover"]').popover();
+    $('[data-toggle="popover"]').popover({html: true});
 
     // show the datepicker if the frequency is monthly when the page loads
     if(Session.equals('params.recurring', 'monthly')){

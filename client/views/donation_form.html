@@ -11,21 +11,16 @@
               data-parsley-excluded="input[type=submit], input[type=reset], input[type=hidden], [disabled], :hidden">
 
             <div class="col-md-6 col-md-offset-3">
-                <h4>Your Donation Amount:</h4>
+                <legend>DONATION AMOUNT & SUMMARY <i class="fa fa-question-circle" name="donationSummary"
+                    data-toggle="popover" data-trigger="hover focus"  data-placement="bottom" data-container="body"
+                    data-content="Below is the amount total, and below that your donation options. To change your
+                    options please use the dropdown buttons." >
+                </i></legend>
                 <h4 id="total_amount_display" >${{amount}}</h4>
                 <input type="hidden" id="total_amount" name="total_amount" value="{{amount}}" />
             </div>
             <div class="col-lg-8 col-md-8 col-md-offset-2">
     			<div class="form-group">
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12">
-                            <label>Donation Summary:</label>&nbsp;
-                            <i class="fa fa-question-circle" name="donationSummary" data-toggle="popover" data-trigger="hover focus"  data-placement="bottom" data-container="body"
-                               data-content="Above is the amount total, below are your donation options. To change your
-                               options please use the dropdown buttons." title="Donation Summary">
-                            </i>
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             {{> DonationTo}}
@@ -44,7 +39,7 @@
                                 <option value="one_time">One-Time</option>
                                 <option value="monthly">Monthly</option>
                                 <option value="weekly">Weekly</option>
-                                <option value="daily">Daily</option>
+                                <!--<option value="daily">Daily</option>-->
                             </select>
                         </div>
                     </div>
@@ -52,7 +47,7 @@
                 <div class="row">
                     <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-10 col-xs-offset-1" style="display: none;" id="calendarSection">
                         <div class="form-group">
-                            <label>Donation Start Date:</label>
+                            <label>Choose Your Donation Start Date</label>
                             <div class="input-group">
 
                                 <span class="input-group-btn">
@@ -90,7 +85,6 @@
                 {{/if}}
     			<fieldset>
     				<!-- Form Name -->
-                    <hr>
     				<legend>CONTACT INFORMATION</legend>
 
     				<!-- Amount of donation -->
@@ -111,7 +105,9 @@
     				<!--call the address portion of the form -->
                     {{> RequestAddress}}
 
-                    <legend>PAYMENT DETAILS</legend>
+                    <legend>PAYMENT DETAILS
+                        {{{paymentQuestionIcon}}}
+                    </legend>
 
                     {{#if paymentWithCard}}
     					{{> cardPaymentInformation}}
@@ -201,12 +197,7 @@
 	</div>
     <div class="form-group">
         <div class="col-lg-6 col-md-7 col-sm-5 col-xs-5">
-            <label class="control-label" for="account_type">Account Type
-                <i class="makeRightOfInput fa fa-question-circle" id="accountTypeQuestion" data-toggle="popover"
-                   data-trigger="hover focus" title="Give by ACH" data-container="body"
-                   data-content="There are usually 3 sets of numbers at the bottom of a check. The short check number, the 9 digit routing number and the account number.">
-                </i>
-            </label>
+            <label class="control-label" for="account_type">Account Type</label>
             <select class="form-control select select-primary select-block mbl" name="account_type">
               <option>Checking</option>
               <option>Savings</option>

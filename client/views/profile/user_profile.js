@@ -102,14 +102,11 @@ Template.UserProfile.helpers({
 
 Template.UserProfile.events({
     'click #viewHistory': function() {
-        Session.set("showHistory", true);
+        Session.set("showHistory", false);
     },
     'click .edit_address': function () {
         //setup modal for entering give toward information
-        $('#modal_for_address_change').modal({
-            show: true,
-            backdrop: 'static'
-        });
+        $('#modal_for_address_change').modal({show: true, static: true});
     },
     'submit form': function (evt, tmpl) {
         evt.preventDefault();
@@ -133,7 +130,7 @@ Template.UserProfile.events({
 });
 
 Template.UserProfile.rendered = function(){
-   Session.set("showHistory", false);
+   Session.set("showHistory", true);
 
     // Setup parsley form validation
     $('#userAddressForm').parsley();

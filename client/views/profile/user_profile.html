@@ -10,7 +10,7 @@
                         <div class="col-sm-12">
                             <br>
                             <div class="col-xs-12 col-sm-8">
-                                <h2>{{#with user}}{{name}}{{/with}}</h2>
+                                <h5>{{#with user}}{{name}}{{/with}}</h5>
                                 {{{business_name}}}
                                 <p><strong>Address: </strong>  <i class="fa fa-pencil edit_address"></i><br>
                                     <span class="tags">{{customer.address.line1}}</span> <br>
@@ -23,67 +23,93 @@
                                 <p><strong>Email:  </strong> <br>
                                     {{#with email}}<span class="tags">{{email}}</span> <br>{{/with}}
                                 </p>
+                                <p>
+                                    <button type="button" class="btn btn-default btn-block" data-toggle="modal" data-target="#modal_for_address_change">
+                                        Edit Profile
+                                    </button>
+                                </p>
+                                <p>
+                                    <a href="/give" class="btn btn-default btn-block" role="button"><span class="fa fa-plus-circle"></span> Give </a>
+                                </p>
+                                <div class="col-xs-12 divider text-center">
+                                    <ul class="nav nav-list">
+                                        <li class="nav-header">Lifetime Giving Stats</li>
+                                        <li class="active text-left">
+                                            <!--<a href="#">-->
+                                                <h7>Total Giving</h7>
+                                                <span class="pull-right"><h7>${{dt_gifts.total_given}}</h7></span>
+                                            <!--</a>-->
+                                        </li>
+                                        <li class="text-left">
+                                            <!--<a href="#">-->
+                                                <h7>Number of Gifts</h7>
+                                                <span class="pull-right"><h7>{{dt_gifts.number_of_gifts}}</h7></span>
+                                            <!--</a>-->
+                                        </li>
+                                        <li class="text-left">
+                                            <!--<a href="#">-->
+                                                <h7>Categories</h7>
+                                                <span class="pull-right"><h7>{{dt_gifts.categories}}</h7></span>
+                                            <!--</a>-->
+                                        </li>
+                                        <!--<li class="divider"></li>
+                                        <li class="nav-header">Heading</li>
+                                        <li class="disabled">
+                                            <a href="#">
+                                                Title
+                                                <span class="badge pull-right">21</span>
+                                            </a>
+                                        </li>-->
+                                    </ul>
+                                    <!--<div class="col-xs-12 col-sm-4 emphasis">
+                                        &lt;!&ndash; Single button &ndash;&gt;
+                                        <div class="btn-group dropup btn-block fixGroupButton">
+                                            <button type="button" class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                Edit Profile <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu text-left" role="menu">
+                                                <li class="disabled"><a href="#"><span class="fa fa-envelope pull-right"></span> Change My Email Address  </a></li>
+                                                <li class="edit_address"><a href="#"><span class="fa fa-list pull-right"></span> Edit My Address  </a></li>
+                                                <li class="divider"></li>
+                                                <li class="disabled"><a href="#">&lt;!&ndash;<span class="fa fa-warning pull-right" ></span>&ndash;&gt;Change Recurring Gift  </a></li>
+                                            </ul>
+                                        </div>
+                                    </div>-->
+                                </div>
                             </div>
                             <div class="col-xs-12 col-sm-4 text-center">
                                 <figure>
                                     <!--TODO: fix this area to reflect the area of giving focus for each person.-->
-                                    <!--<p>Your Giving Focus</p>
-                                    <strong><em>{{{giving_focus}}}</em></strong>-->
+                                    <p>Your Giving Focus</p>
+                                    <strong><em>{{{giving_focus}}}</em></strong>
                                 </figure>
                             </div>
                             <br>&nbsp;
                             <br>&nbsp;
                         </div>
-                        <div class="col-xs-12 divider text-center">
-                            <div class="col-xs-12 col-sm-4 emphasis">
-                                <h3 class="negativeMarginLeft"><strong>${{dt_gifts.total_given}}</strong></h3>
-                                <p><small>Given</small></p>
-                                <a href="/give" class="btn btn-default btn-block" role="button"><span class="fa fa-plus-circle"></span> Give </a>
-                            </div>
-                            <div class="col-xs-12 col-sm-4 emphasis">
-                                <h3><strong>{{dt_gifts.number_of_gifts}}</strong></h3>
-                                <p><small>Gifts</small></p>
-                                <button class="btn btn-default btn-block" id="viewHistory"><span class="fa fa-history"></span> View History </button>
-                            </div>
-                            <div class="col-xs-12 col-sm-4 emphasis">
-                                <h3><strong>{{dt_gifts.categories}}</strong></h3>
-                                <p><small>Categories</small></p>
-                                <!-- Single button -->
-                                <div class="btn-group dropup btn-block fixGroupButton">
-                                    <button type="button" class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        Edit Profile <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu text-left" role="menu">
-                                        <li class="disabled"><a href="#"><span class="fa fa-envelope pull-right"></span> Change My Email Address  </a></li>
-                                        <li class="edit_address"><a href="#"><span class="fa fa-list pull-right"></span> Edit My Address  </a></li>
-                                        <li class="divider"></li>
-                                        <li class="disabled"><a href="#"><!--<span class="fa fa-warning pull-right" ></span>-->Change Recurring Gift  </a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
                 {{#if showHistory}}
-                <div class="col-md-6 col-lg-6">
-                    <h5>Your giving</h5>
-                    <table class="table table-striped">
-                        <tbody>
+                    <div class="col-md-6 col-lg-6">
+                        <h5>Your giving</h5>
+                        <table class="table table-striped">
+                            <tbody>
                             <tr class="responsiveFont">
                                 <th>Date</th>
                                 <th>To</th>
                                 <th>Amount</th>
                             </tr>
                             {{#each dt_donations}}
-                            <tr class="responsiveFont">
-                                <td>{{formatDate this.received_on}}</td>
-                                <td style="font-size: .9em">{{#each split}} {{{fundName}}} <br>{{/each}}</td>
-                                <td class="text-right">${{#each split}}{{twoDecimalPlaces this.amount_in_cents }} <br>{{/each}}</td>
-                            </tr>
+                                <tr class="responsiveFont">
+                                    <td>{{formatDate this.received_on}}</td>
+                                    <td style="font-size: .9em">{{#each split}} {{{fundName}}} <br>{{/each}}</td>
+                                    <td class="text-right">${{#each split}}{{twoDecimalPlaces this.amount_in_cents }} <br>{{/each}}</td>
+                                </tr>
                             {{/each}}
-                        </tbody>
-                    </table>
-                </div>
+                            </tbody>
+                        </table>
+                    </div>
                 {{/if}}
             </div>
         </div>

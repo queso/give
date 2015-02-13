@@ -62,7 +62,7 @@ _.extend(Evts,{
 				if(billy){
 					Evts.addTrans_Invoice(trans_guid, subscription_guid, invoice_guid);
 				}
-                Utils.create_user(body.events[0].entity.debits[0].links.customer, debit_cursor.donation_id, id);
+                Utils.post_donation_operation(body.events[0].entity.debits[0].links.customer, debit_cursor.donation_id, id);
 			} else{
 				logger.error("The amount from the received event and the amount of the debit do not match!");
 			}
@@ -86,7 +86,7 @@ _.extend(Evts,{
                         if(billy){
                             Evts.addTrans_Invoice(trans_guid, subscription_guid, invoice_guid);
                         }
-                        Utils.create_user(body.events[0].entity.debits[0].links.customer, debit_cursor.donation_id, id);
+                        Utils.post_donation_operation(body.events[0].entity.debits[0].links.customer, debit_cursor.donation_id, id);
                     } else{
                         logger.error("The amount from the received event and the amount of the debit do not match!");
                     }
