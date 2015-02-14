@@ -2,9 +2,7 @@
     <div class="UserCSS">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12">
-                    <p class="text-danger text-center">Your giving history may still be updating. It might not reflect the latest numbers we have in our donation system.</p>
-                </div>
+
                 <div class="col-md-6 col-lg-6">
                     <div class="well profile">
                         <div class="col-sm-12">
@@ -12,55 +10,57 @@
                             <div class="col-xs-12 col-sm-8">
                                 <h5>{{#with user}}{{name}}{{/with}}</h5>
                                 {{{business_name}}}
-                                <p><strong>Address: </strong>  <i class="fa fa-pencil edit_address"></i><br>
+                                <p><strong>Address: </strong>  <i class="fa fa-pencil edit_address green-icons"></i><br>
                                     {{customer.address.line1}} <br>
                                     {{{address_line2}}}
                                     {{customer.address.city}}, {{customer.address.state}} {{customer.address.postal_code}}
                                 </p>
-                                <p><strong>Phone:  </strong> <i class="fa fa-pencil edit_address"></i><br>
+                                <p><strong>Phone:  </strong> <i class="fa fa-pencil edit_address green-icons"></i><br>
                                     {{customer.phone}} <br>
                                 </p>
                                 <p><strong>Email:  </strong> <br>
                                     {{#with email}}{{email}} <br>{{/with}}
                                 </p>
                                 <p>
-                                    <button type="button" class="btn btn-default btn-block" data-toggle="modal" data-target="#modal_for_address_change">
+                                    <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modal_for_address_change">
                                         Edit Profile
                                     </button>
                                 </p>
                                 <p>
-                                    <a href="/give" class="btn btn-default btn-block" role="button"><span class="fa fa-plus-circle"></span> Give </a>
+                                    <a href="/give" class="btn btn-primary btn-block" role="button"><span class="fa fa-plus-circle"></span> Give </a>
                                 </p>
                                 <div class="col-xs-12 divider text-center">
-                                    <ul class="nav nav-list">
-                                        <li class="nav-header">Lifetime Giving Stats</li>
-                                        <li class="active text-left">
-                                            <!--<a href="#">-->
-                                                <h7>Total Giving</h7>
-                                                <span class="pull-right"><h7>${{dt_gifts.total_given}}</h7></span>
-                                            <!--</a>-->
-                                        </li>
-                                        <li class="text-left">
-                                            <!--<a href="#">-->
-                                                <h7>Number of Gifts</h7>
-                                                <span class="pull-right"><h7>{{dt_gifts.number_of_gifts}}</h7></span>
-                                            <!--</a>-->
-                                        </li>
-                                        <!--<li class="text-left">
-                                            <a href="#">
-                                                <h7>Categories</h7>
-                                                <span class="pull-right"><h7>{{dt_gifts.categories}}</h7></span>
-                                            </a>
-                                        </li>-->
-                                        <!--<li class="divider"></li>
-                                        <li class="nav-header">Heading</li>
-                                        <li class="disabled">
-                                            <a href="#">
-                                                Title
-                                                <span class="badge pull-right">21</span>
-                                            </a>
-                                        </li>-->
-                                    </ul>
+                                    <p>
+                                        <ul class="nav nav-list">
+                                            <li class="nav-header text-left"><br>Lifetime Giving Stats</li>
+                                            <li class="active text-left">
+                                                <!--<a href="#">-->
+                                                    <h7>Total Giving</h7>
+                                                    <span class="pull-right"><h7>${{dt_gifts.total_given}}</h7></span>
+                                                <!--</a>-->
+                                            </li>
+                                            <li class="text-left">
+                                                <!--<a href="#">-->
+                                                    <h7>Number of Gifts</h7>
+                                                    <span class="pull-right"><h7>{{dt_gifts.number_of_gifts}}</h7></span>
+                                                <!--</a>-->
+                                            </li>
+                                            <!--<li class="text-left">
+                                                <a href="#">
+                                                    <h7>Categories</h7>
+                                                    <span class="pull-right"><h7>{{dt_gifts.categories}}</h7></span>
+                                                </a>
+                                            </li>-->
+                                            <!--<li class="divider"></li>
+                                            <li class="nav-header">Heading</li>
+                                            <li class="disabled">
+                                                <a href="#">
+                                                    Title
+                                                    <span class="badge pull-right">21</span>
+                                                </a>
+                                            </li>-->
+                                        </ul>
+                                    </p>
                                     <!--<div class="col-xs-12 col-sm-4 emphasis">
                                         &lt;!&ndash; Single button &ndash;&gt;
                                         <div class="btn-group dropup btn-block fixGroupButton">
@@ -92,7 +92,7 @@
                 </div>
                 {{#if showHistory}}
                     <div class="col-md-6 col-lg-6">
-                        <h5>Your giving</h5>
+                        <h5>Your Giving History</h5>
                         <table class="table table-striped">
                             <tbody>
                             <tr class="responsiveFont">
@@ -109,6 +109,10 @@
                             {{/each}}
                             </tbody>
                         </table>
+                        <ul class="pager">
+                            <li class="previous"><a href="#">Previous</a> </li>
+                            <li class="next"><a href="#">Next</a> </li>
+                        </ul>
                     </div>
                 {{/if}}
             </div>
@@ -118,7 +122,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">Edit Your Address</h4>
+                        <h4 class="modal-title">Edit Your Profile</h4>
                     </div>
                     <div class="modal-body">
                         <form class="form-horizontal" role="form" id="userAddressForm">
@@ -157,8 +161,8 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <div class="col-sm-offset-8 col-sm-4">
-                                    <button type="submit" class="btn btn-default">Submit</button>
+                                <div class="col-sm-offset-8 col-sm-4 text-right">
+                                    <button type="submit" class="btn btn-default text-right">Submit</button>
                                 </div>
                             </div>
                         </form>

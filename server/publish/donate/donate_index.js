@@ -123,7 +123,7 @@ Meteor.publish("userCustomers", function () {
 	}
 });
 
-Meteor.publish("userDT", function () {
+Meteor.publish("userDT", function (page) {
 	if (this.userId) {
         var persona_ids = Meteor.users.findOne({_id: this.userId}).persona_id;
         console.log(persona_ids);

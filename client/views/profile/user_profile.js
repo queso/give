@@ -1,3 +1,5 @@
+Session.setDefault('dt_donations_cursor', 0);
+
 Template.UserProfile.helpers({
     user: function () {
         return Meteor.users.findOne();
@@ -61,7 +63,7 @@ Template.UserProfile.helpers({
     },
     address_line2: function () {
         if(Customers.findOne().address.line2) {
-            return '<span class="tags">' + Customers.findOne().address.line2 + '</span> <br>';
+            return '<span class="">' + Customers.findOne().address.line2 + '</span> <br>';
         } else return;
     },
     business_name: function () {
@@ -86,7 +88,8 @@ Template.UserProfile.helpers({
         return result.donateTo === 'Honduras Urgent' ? '<img src="https://trashmountain.com/system/wp-content/uploads/2014/12/Honduras-01.svg" alt="" class="img-circle img-responsive">' : result.donateTo;
     },
     dt_donations: function() {
-        return DT_donations.find({}, {sort: {received_on: -1}});
+        var page = Session.get('dt_donations_cursor');
+        return DT_donations.find({}, {sort: {received_on: -1}, limit: 10, skip: page});
     },
     split: function () {
         return this.splits;
@@ -125,8 +128,20 @@ Template.UserProfile.events({
         if(updateCustomer === 1) {
             $('#modal_for_address_change').modal('hide')
         }
-
+    },
+    'click .previous': function(evt, tmpl){
+        evt.preventDefault();
+        evt.stopPropagation();
+        if(Number(Session.get('dt_donations_cursor')> 9)){
+            Session.set('dt_donations_cursor', Number(Session.get('dt_donations_cursor')-10));
+        }
+    },
+    'click .next': function(evt, tmpl){
+        evt.preventDefault();
+        evt.stopPropagation();
+        Session.set('dt_donations_cursor', Number(Session.get('dt_donations_cursor')+10));
     }
+
 });
 
 Template.UserProfile.rendered = function(){
