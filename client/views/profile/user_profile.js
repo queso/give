@@ -99,6 +99,11 @@ Template.UserProfile.helpers({
             return DT_funds.findOne({_id: this.fund_id}).name;
         }
         else return '<span style="color: red;">Fund not found</span>';
+    },
+    redText: function(){
+        if(this.payment_status && this.payment_status === 'pending'){
+            return 'orange-text';
+        }
     }
 
 });

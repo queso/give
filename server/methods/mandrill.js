@@ -157,9 +157,9 @@ _.extend(Utils,{
 	      throw new Meteor.error(e);
 	    }*/
 	},
-    send_scheduled_email: function (id, subscription_guid) {
+    send_scheduled_email: function (id, subscription_guid, frequency, amount) {
         /*try {*/
-        logger.info("Started send_donation_email with ID: " + id);
+        logger.info("Started send_donation_email with ID: " + id + " and frequency, amount" + frequency + ", " + amount);
 
         var donation_cursor = Donations.findOne({_id: id});
         var started_at = donation_cursor.subscriptions[0].started_at;
@@ -169,7 +169,7 @@ _.extend(Utils,{
         var bcc_address = "support@trashmountain.com";
         var customer_cursor = Customers.findOne(donation_cursor.customer_id);
         var email_address = customer_cursor.email;
-        slug = "scheduled-donation";
+        slug = "scheduled-donation-with-amount-and-frequency";
 
         //Evts.update_email_collection(id, 'scheduled');
 
@@ -198,6 +198,12 @@ _.extend(Utils,{
                             }, {
                                 "name": "SUB_GUID",
                                 "content": subscription_guid
+                            }, {
+                                "name": "Frequency",
+                                "content": frequency
+                            }, {
+                                "name": "Amount",
+                                "content": amount
                             }
                         ]
                     }

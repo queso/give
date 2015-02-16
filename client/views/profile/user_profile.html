@@ -101,18 +101,23 @@
                                 <th>Amount</th>
                             </tr>
                             {{#each dt_donations}}
-                                <tr class="responsiveFont">
+                                <tr class="responsiveFont {{redText}}">
                                     <td>{{formatDate this.received_on}}</td>
                                     <td style="font-size: .9em">{{#each split}} {{{fundName}}} <br>{{/each}}</td>
                                     <td class="text-right">${{#each split}}{{twoDecimalPlaces this.amount_in_cents }} <br>{{/each}}</td>
                                 </tr>
                             {{/each}}
                             </tbody>
+                            <span class="red-text">
+                                (pending gifts will appear in red)
+                            </span>
                         </table>
-                        <ul class="pager">
-                            <li class="previous"><a href="#">Previous</a> </li>
-                            <li class="next"><a href="#">Next</a> </li>
-                        </ul>
+                        <nav>
+                            <ul class="pager">
+                                <li class="previous"><a href="#"><span aria-hidden="true">&larr;</span> Newer gifts</a></li>
+                                <li class="next"><a href="#">Older gifts <span aria-hidden="true">&rarr;</span></a></li>
+                            </ul>
+                        </nav>
                     </div>
                 {{/if}}
             </div>

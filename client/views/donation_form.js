@@ -67,8 +67,8 @@ function fillForm() {
     }
     $('#fname').val("John");
     $('#lname').val("Doe");
-    $('#org').val("Business Name");
-    $('#email_address').val("support@trashmountain.com");
+    $('#org').val("");
+    $('#email_address').val("josh@trashmountain.com");
     $('#phone').val("(785) 246-6845");
     $('#address_line1').val("Address Line 1");
     $('#address_line2').val("Address Line 2");

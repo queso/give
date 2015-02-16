@@ -76,13 +76,6 @@ Meteor.methods({
 
             }
 
-            // setTimeout is used here to let the function return to the user and then run Utils.create_user
-            // since Utils.create_user can take 10 seconds or more to run and since I don't want to print any errors
-            // from it out to the user
-            Meteor.setTimeout(function(){
-                Utils.post_donation_operation(customerData._id, data._id, debit_id);
-            }, 1000);
-
             return {c: customerData._id, don: data._id, deb: debit_id};
 
         } catch (e) {

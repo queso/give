@@ -77,6 +77,7 @@ Billy = {
             var started_date;
             if(donate_doc.later){
                 started_date = donate_doc.start_date;
+                //started_date = '2015-02-16T07:50:44.090-06:00'
             } else {
                 started_date = '';
             }
@@ -274,11 +275,6 @@ Meteor.methods({
                     var debit_id = Debits.insert(insert_debit);
                 }
 
-
-                Meteor.setTimeout(function(){
-                    Utils.post_donation_operation(data.customer._id, data._id,  insert_debit.id);
-                }, 100);
-
                 return {c: data.customer._id, don: data._id, deb: insert_debit.id};
             } else {
                 Donations.update(data._id, {
@@ -287,11 +283,12 @@ Meteor.methods({
                     }
                 });
                 Meteor.setTimeout(function(){
-                    Utils.post_donation_operation(data.customer._id, data._id, billySubscribeCustomer.data.guid);
+                    // TODO: without sending to the post_donation_operation function here there will be no scheduled debit entries in DT
+                    // I think this is ok for now though.
+                    //Utils.post_donation_operation(data.customer._id, data._id, billySubscribeCustomer.data.guid);
                     console.log("Subscription guid: " + billySubscribeCustomer.data.guid);
-                    Utils.send_scheduled_email(data._id, billySubscribeCustomer.data.guid);
-                }, 100);
-
+                    Utils.send_scheduled_email(data._id, billySubscribeCustomer.data.guid, data.paymentInformation.is_recurring, (data.paymentInformation.total_amount/100));
+                }, 10);
 
                 return {c: data.customer._id, don: data._id, deb: 'scheduled'};
             }

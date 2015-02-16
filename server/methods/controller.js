@@ -33,9 +33,19 @@ _.extend(Evts,{
 	debit_created: function(id, billy, trans_guid, subscription_guid, invoice_guid, status, amount, body){
 		logger.info("Inside debit_created with debit ID: " + id);
 		logger.info("Checking to see if this debit ID exists in the collection");
+
+        var debit_cursor = Debits.findOne(id);
+
 		var check_for_existing_debit = Evts.check_for_debit(id, 'debit_created', body, billy, trans_guid, subscription_guid);
-		var send_email = Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, 'created');
+	    var send_email = Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, 'created');
 	},
+    debit_updated: function(id, billy, trans_guid, subscription_guid, invoice_guid, status, amount, body){
+        logger.info("Stared debit_updated");
+
+        // insert the meta information into the Debit document
+        /*var debit_to_insert;
+        Debits.update(id, {$set: {meta: body.events[0].entity.debits[0].meta}});*/
+    },
 	debit_failed: function(id, billy, trans_guid, subscription_guid, invoice_guid, status, amount, body){
 		if(billy){
 			//Utils.send_donation_email(billy, id, subscription_guid, amount, 'failed');
@@ -62,7 +72,9 @@ _.extend(Evts,{
 				if(billy){
 					Evts.addTrans_Invoice(trans_guid, subscription_guid, invoice_guid);
 				}
-                Utils.post_donation_operation(body.events[0].entity.debits[0].links.customer, debit_cursor.donation_id, id);
+                // update the donation status in DT
+                Utils.update_dt_status(id, 1);
+
 			} else{
 				logger.error("The amount from the received event and the amount of the debit do not match!");
 			}
@@ -86,7 +98,7 @@ _.extend(Evts,{
                         if(billy){
                             Evts.addTrans_Invoice(trans_guid, subscription_guid, invoice_guid);
                         }
-                        Utils.post_donation_operation(body.events[0].entity.debits[0].links.customer, debit_cursor.donation_id, id);
+                        Utils.audit_dt_donation(body.events[0].entity.debits[0].links.customer, debit_cursor.donation_id, id);
                     } else{
                         logger.error("The amount from the received event and the amount of the debit do not match!");
                     }
@@ -144,6 +156,10 @@ _.extend(Evts,{
 		console.log("Inside of check_for_debit");
 		if (Debits.findOne({_id: id})) {
 			logger.info("Found this debit id in the Debits colleciton, proceeding normally with the debit_created operations");
+
+            // Send this event to the post donation function after checking its audit status
+            Utils.audit_dt_donation(id, body.events[0].entity.debits[0].links.customer, Debits.findOne({_id: id}).donation_id);
+
 			return 1;
 		} else if(billy){
 			console.log("Subscription guid is " + subscription_guid);
@@ -155,11 +171,16 @@ _.extend(Evts,{
 				logger.info("Found this donation subscription_guid in the Donations colleciton");
 				insert_debit.donation_id = Donations.findOne({'subscriptions.guid': subscription_guid})._id;
 				insert_debit.transaction_guid = trans_guid;
-				delete insert_debit.meta;
+                // commented because I don't believe this is needed any longer, Mongo doesn't like the way
+                // Billy inserts the transaction_guid so I was deleting it, but it should already be removed above
+				//delete insert_debit.meta['billy.transaction_guid'];
 				insert_debit._id = id;
 
 				//Insert object into debits collection and get the _id
 				var inserted_debit = Debits.insert(insert_debit);
+
+                Utils.audit_dt_donation(id, body.events[0].entity.debits[0].links.customer, Debits.findOne({_id: id}).donation_id);
+
                 return inserted_debit;
 			}else {
 				Convert.start_conversion(id, type, body, billy, trans_guid, subscription_guid);

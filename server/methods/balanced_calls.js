@@ -1,6 +1,6 @@
 _.extend(Utils, {
     create_customer: function (customerInfo, billy) {
-        console.log("Inside create_customer.");
+        logger.info("Inside create_customer.");
         var customerData = {};
         customerData= Utils.extractFromPromise(balanced.marketplace.customers.create({
             'name': customerInfo.fname + " " + customerInfo.lname,
@@ -37,7 +37,7 @@ _.extend(Utils, {
         return insertThis;
     },
     get_card: function (customer_id, cardHref) {
-        console.log("Inside get_card.");
+        logger.info("Inside get_card.");
         var card;
         card = Utils.extractFromPromise(balanced.get(cardHref));
 
@@ -54,7 +54,7 @@ _.extend(Utils, {
     },
     create_association: function (customer_id, paymentHref, customerHref) {
         /*try {*/
-            console.log("Inside create_association function");
+            logger.info("Inside create_association function");
             associate = Utils.extractFromPromise(balanced.get(paymentHref).associate_to_customer(customerHref));
             //add debit response from Balanced to the database
             var insert_this = associate._api.cache[associate.href];
@@ -75,7 +75,7 @@ _.extend(Utils, {
 
             return associate;
         /*} catch (e) {
-            console.log("Got to catch error area of create_associate. Donation_id: " + donation_id + " Category Code: " + e.category_code + ' Description: ' + e.description);
+            logger.info("Got to catch error area of create_associate. Donation_id: " + donation_id + " Category Code: " + e.category_code + ' Description: ' + e.description);
             Donations.update(donation_id, {
                 $set: {
                     'failed.category_code': e.category_code,
@@ -89,24 +89,24 @@ _.extend(Utils, {
         }*/
     },
     get_debit: function (debitHref) {
-        console.log("Inside get_debit.");
-        console.log("Debit Href: " + debitHref);
+        logger.info("Inside get_debit.");
+        logger.info("Debit Href: " + debitHref);
         balanced.configure(Meteor.settings.balanced_api_key);
 
         //var debit = Utils.extractFromPromise(balanced.get(debitHref));
         var debit = Utils.extractFromPromise(balanced.get(debitHref));
-        //console.log(Object.getOwnPropertyNames(debit));
-        console.log(debit._api.cache[debit.href]);
+        //logger.info(Object.getOwnPropertyNames(debit));
+        logger.info(debit._api.cache[debit.href]);
         var insert_debit = debit._api.cache[debit.href];
         return insert_debit;
     },
     get_customer: function (customerHref) {
-        console.log("Inside get_customer.");
-        console.log("Customer Href: " + customerHref);
+        logger.info("Inside get_customer.");
+        logger.info("Customer Href: " + customerHref);
         balanced.configure(Meteor.settings.balanced_api_key);
 
         var customer = Utils.extractFromPromise(balanced.get(customerHref));
-        console.log(customer._api.cache[customer.href]);
+        logger.info(customer._api.cache[customer.href]);
         var customer_info = customer._api.cache[customer.href];
         return customer_info;
     },

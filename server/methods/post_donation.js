@@ -1,35 +1,39 @@
 _.extend(Utils, {
     post_donation_operation: function (customer_id, donation_id, debit_id) {
         // If this is the dev environment I don't want it to affect DT live account.
-        if(Meteor.settings.dev){
+        /*if(Meteor.settings.dev){
             return;
-        }
+        }*/
         logger.info("Started post_donation_operation.");
 
-        //Check the connection to DT before starting, if it isn't good then schedule this to happen in an hour Meteor.setTimeout({ function here }, 3600000);
-        // Don't see how to do this yet
-
-
-        // create an email_address variable to be reused below
-        var email_address = Customers.findOne(customer_id).email;
-        //create user
-        var user_id = Utils.create_user(email_address, customer_id);
-
-        //check dt for user, persona_ids will be an array of 0 to many persona_ids
-        var persona_ids = Utils.check_for_dt_user(email_address);
-
-        //create dt user since one wasn't found in DT
-        if(persona_ids == '') {
-            //Call DT create function
-            var single_persona_id = Utils.insert_donation_and_donor_into_dt(customer_id, donation_id, user_id, debit_id);
-
-            // the persona_ids is expected to be an array
-            persona_ids = [single_persona_id];
-
-            // Send me an email letting me know a new user was created in DT.
-            Utils.send_dt_new_dt_account_added(email_address, user_id, single_persona_id);
+        if(DT_donations.findOne({transaction_id: debit_id})){
+            logger.info("There is already a DT donation with that debit_id in the collection");
+            return;
         } else {
-            Utils.insert_donation_into_dt(customer_id, donation_id, user_id, persona_ids, debit_id);
+            // TODO: Check the connection to DT before starting, if it isn't good then schedule this to happen in an hour Meteor.setTimeout({ function here }, 3600000);
+            // Don't see how to do this yet
+
+            // create an email_address variable to be reused below
+            var email_address = Customers.findOne(customer_id).email;
+            //create user
+            var user_id = Utils.create_user(email_address, customer_id);
+
+            //check dt for user, persona_ids will be an array of 0 to many persona_ids
+            var persona_ids = Utils.check_for_dt_user(email_address);
+
+            //create dt user since one wasn't found in DT
+            if (persona_ids == '') {
+                //Call DT create function
+                var single_persona_id = Utils.insert_donation_and_donor_into_dt(customer_id, donation_id, user_id, debit_id);
+
+                // the persona_ids is expected to be an array
+                persona_ids = [single_persona_id];
+
+                // Send me an email letting me know a new user was created in DT.
+                Utils.send_dt_new_dt_account_added(email_address, user_id, single_persona_id);
+            } else {
+                Utils.insert_donation_into_dt(customer_id, donation_id, user_id, persona_ids, debit_id);
+            }
         }
 
         // Get all of the donations related to the persona_id that was either just created or that was just used when
@@ -117,7 +121,7 @@ _.extend(Utils, {
         var donation = Donations.findOne(donation_id);
         var customer = Customers.findOne(customer_id);
 
-        var source_id, business_name, payment_status;
+        var source_id, business_name, payment_status, received_on;
 
         if (customer && customer.business_name){
             business_name = customer.business_name;
@@ -136,8 +140,10 @@ _.extend(Utils, {
 
         if(debit_id.substring(0, 1) == 'SU'){
             payment_status = 'Scheduled'
+            received_on = donation.start_date;
         } else {
-
+            received_on = moment(new Date(donation.created_at)).format("YYYY/MM/DD");
+            payment_status = "pending";
         }
 
 
@@ -151,9 +157,9 @@ _.extend(Utils, {
                         "memo": Meteor.settings.dev
                     }],
                     "donation_type_id": 2985,
-                    "received_on": moment(new Date(donation.created_at)).format("YYYY/MM/DD"),
+                    "received_on": received_on,
                     "source_id": source_id,
-                    "payment_status": 'pending',
+                    "payment_status": payment_status,
                     "transaction_id": debit_id,
                     "find_or_create_person": {
                         "company_name": business_name,
@@ -197,11 +203,11 @@ _.extend(Utils, {
         });
     },
     insert_each_dt_donation: function(donation){
-        logger.info("Inside insert_each_dt_donation with " + donation.id);
+        //logger.info("Inside insert_each_dt_donation with " + donation.id);
 
         //Insert each donation into the DT_donations collection
         donation._id = donation.id;
-        logger.info(donation._id);
+        //logger.info(donation._id);
         DT_donations.upsert({_id: donation._id}, donation);
     },
     separate_funds: function(fundResults){
@@ -278,6 +284,15 @@ _.extend(Utils, {
         /*try {*/
         logger.info("Started insert_donation_into_dt");
 
+        //TODO: still need to fix the below for any time when the debit isn't being passed here, like for scheduled gifts
+        if(Audit_trail.findOne({debit_id: debit_id}) && Audit_trail.findOne({debit_id: debit_id}).dt_donation_created){
+            logger.info("Already inserted the donation into DT.");
+            return;
+        } else {
+            Audit_trail.upsert({_id: debit_id}, {$set: {dt_donation_created: true}});
+        }
+
+
         var donation = Donations.findOne(donation_id);
         var customer = Customers.findOne(customer_id);
         var dt_fund = DT_funds.findOne({name: donation.donateTo});
@@ -317,6 +332,9 @@ _.extend(Utils, {
         });
 
         if(newDonationResult && newDonationResult.data && newDonationResult.data.donation && newDonationResult.data.donation.persona_id){
+            // Send the id of this new DT donation to the function which will update the debit to add that meta text.
+            Utils.update_debit_with_dt_donation_id(debit_id, newDonationResult.data.donation.id);
+
             return newDonationResult.data.donation.persona_id;
         } else {
             logger.error("The persona ID wasn't returned from DT, or something else happened with the connection to DT.");
@@ -349,6 +367,79 @@ _.extend(Utils, {
             html: html
         });
     },
+    update_debit_with_dt_donation_id: function(debit_id, dt_donation_id){
+        logger.info("Started update_debit_with_dt_donation_id");
 
+        // Setup balanced key
+        balanced.configure(Meteor.settings.balanced_api_key);
 
+        // save the donor tools donation id to the meta text of the debit which was just created
+        var debit = Utils.extractFromPromise(balanced.get('/debits/' + debit_id).set('meta', {'dt_donation_id': dt_donation_id}).save());
+        ///Utils.extractFromPromise(debit.set('meta', {dt_donation_id: dt_donation_id}).save());
+    },
+    update_dt_status: function (debit_id, interval) {
+        logger.info("Started update_dt_status");
+        console.log(interval);
+        console.log(debit_id);
+
+        // Check to see if the donor tools donation has been inserted yet. Return if it hasn't
+        Meteor.setTimeout(function(){
+            var dt_donation = DT_donations.findOne({transaction_id: debit_id});
+
+            if(dt_donation){
+                console.log(dt_donation.id);
+                var debit_cursor = Debits.findOne(debit_id);
+                var get_dt_donation = HTTP.get(Meteor.settings.donor_tools_site + '/donations/' + dt_donation.id + '.json', {
+                    auth: Meteor.settings.donor_tools_user + ':' + Meteor.settings.donor_tools_password
+                });
+                console.dir(get_dt_donation.data.donation);
+                get_dt_donation.data.donation.payment_status = debit_cursor.status;
+
+                var update_donation = HTTP.call("PUT", Meteor.settings.donor_tools_site + '/donations/'+ dt_donation.id + '.json',
+                    {
+                        data: {"donation": get_dt_donation.data.donation},
+                        auth: Meteor.settings.donor_tools_user + ':' + Meteor.settings.donor_tools_password
+                    },
+                    function (error, result) {
+                        if (!error) {
+                            return result;
+                        } else {
+                            if(!interval || interval < 10){
+                                console.log(error + '\nFailed...retrying');
+                                Meteor.setTimeout(function(){
+                                    console.log(interval);
+                                    Utils.update_dt_status(debit_id, interval+=1);
+                                },60000);
+                            } else{
+                                logger.warn("Retried for 10 minutes, still could not connect.");
+                            }
+                        }
+                    });
+
+                /*var update_donation = HTTP.post(Meteor.settings.donor_tools_site + '/donations.json'+ dt_donation.id + '.json', {
+                    data:{
+                        "donation": get_dt_donation.data.donation
+                    },
+                    auth: Meteor.settings.donor_tools_user + ':' + Meteor.settings.donor_tools_password
+                });*/
+
+            } else {
+                // There may not actually be a problem here, just want a warning in case there is.
+                logger.warn("There is no DT_donation found, can't update its status");
+                return;
+            }
+        }, 20000);
+    },
+    audit_dt_donation: function (debit_id, customer_id, donation_id){
+        logger.info("Started audit_dt_donation");
+
+        var audit_cursor = Audit_trail.findOne({debit_id: debit_id});
+        if(audit_cursor && audit_cursor.dt_donation_created){
+            // TODO: go to a function that just updates the DT Donation status, send that update to DT
+            Utils.update_dt_status(debit_id);
+        } else {
+            Audit_trail.upsert({_id: debit_id}, {$set: {dt_donation_created: true}});
+            Utils.post_donation_operation(customer_id, donation_id, debit_id);
+        }
+    }
 });
