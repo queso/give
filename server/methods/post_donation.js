@@ -393,8 +393,8 @@ _.extend(Utils, {
                     auth: Meteor.settings.donor_tools_user + ':' + Meteor.settings.donor_tools_password
                 });
                 console.dir(get_dt_donation.data.donation);
-                get_dt_donation.data.donation.transaction_fee_in_cents = get_dt_donation.data.donation.transaction_fee_in_cents /100;
-                get_dt_donation.data.donation.amount.cents = get_dt_donation.data.donation.amount.cents /100;
+                var temp_value = {};
+                temp_value.transaction_fee = (get_dt_donation.data.donation.transaction_fee /100)
                 get_dt_donation.data.donation.payment_status = debit_cursor.status;
 
                 var update_donation = HTTP.call("PUT", Meteor.settings.donor_tools_site + '/donations/'+ dt_donation.id + '.json',

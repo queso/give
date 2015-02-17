@@ -153,7 +153,8 @@ function handleCalls(payment, form) {
             if (result) {
                 if(result.deb === 'scheduled'){
 
-                    Router.go('/give/scheduled/');
+                    // Send the user to the scheduled page and include the frequency and the amount in the url for displaying to them
+                    Router.go('/give/scheduled/?frequency=' + form.paymentInformation.is_recurring + '&amount=' + form.paymentInformation.amount/100 + '&start_date=' + form.paymentInformation.start_date );
                 }else{
 
                     Router.go('/give/thanks?c=' + result.c + "&don=" + result.don + "&deb=" + result.deb);

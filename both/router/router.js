@@ -227,5 +227,8 @@ Router.route(':root/scheduled', {
     
     data: function () {
         var root = Meteor.settings.public.root;
+        Session.set('params.frequency', this.params.query.frequency);
+        Session.set('params.amount', this.params.query.amount);
+        Session.set('params.start_date', moment(this.params.query.start_date).format('DD MMM, YYYY'));
     }
 });
