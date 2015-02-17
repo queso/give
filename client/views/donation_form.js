@@ -391,6 +391,23 @@ Template.DonationForm.events({
         $(window).on('beforeunload', function(){
             return "It looks like you have input you haven't submitted."
         });
+    },
+    'click .signInOut': function (e){
+        //prevent the default reaction to submitting this form
+        e.preventDefault();
+        // Stop propagation prevents the form from being submitted more than once.
+        e.stopPropagation();
+        //Router.go('signIn');
+        $('#modal_for_login').modal({
+            show: true
+        });
+    },
+    'click #userProfileButton': function (e){
+        //prevent the default reaction to submitting this form
+        e.preventDefault();
+        // Stop propagation prevents the form from being submitted more than once.
+        e.stopPropagation();
+        Router.go('/give/user');
     }
 
 });
@@ -446,6 +463,9 @@ Template.DonationForm.helpers({
     },
     today: function () {
         return moment().format('D MMM, YYYY');
+    },
+    userLoggedIn: function() {
+        return Boolean(Meteor.users.findOne());
     }
 });
 /*****************************************************************************/

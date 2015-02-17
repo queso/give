@@ -24,7 +24,7 @@ UI.registerHelper('shortIt', function(stringToShorten, maxCharsAmount){
 });
 
 UI.registerHelper('twoDecimalPlaces', function(stringToAddDecimal){
-  return parseFloat(Math.round(stringToAddDecimal) / 100).toFixed(2);
+  return parseFloat(Math.round(stringToAddDecimal) / 100).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 });
 
 UI.registerHelper('formatDate', function(context, options) {

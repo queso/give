@@ -55,7 +55,6 @@ Template.UserProfile.helpers({
                     fullSplitList.push(value.fund_id)}
             });
         });
-        total_given = (total_given / 100);
         return {categories: fullSplitList.length, number_of_gifts: number_of_gifts, total_given: total_given};
     },
     customer: function () {
@@ -154,6 +153,8 @@ Template.UserProfile.rendered = function(){
 
     // Setup parsley form validation
     $('#userAddressForm').parsley();
+
+    $('[data-toggle="popover"]').popover({html: true});
 };
 
 Template.UserNav.events({

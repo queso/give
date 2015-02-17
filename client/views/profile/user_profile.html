@@ -36,7 +36,7 @@
                                             <li class="active text-left">
                                                 <!--<a href="#">-->
                                                     <h7>Total Giving</h7>
-                                                    <span class="pull-right"><h7>${{dt_gifts.total_given}}</h7></span>
+                                                    <span class="pull-right"><h7>${{twoDecimalPlaces dt_gifts.total_given}}</h7></span>
                                                 <!--</a>-->
                                             </li>
                                             <li class="text-left">
@@ -78,8 +78,8 @@
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-4 text-center">
-                                <figure>
-                                    <!--TODO: fix this area to reflect the area of giving focus for each person.-->
+                                <figure data-toggle="popover" data-trigger="hover focus"  data-placement="auto" data-container="body"
+                                        data-content="This is the area that you have had the most giving.">
                                     <p>Your Giving Focus</p>
                                     <strong><em>{{{giving_focus}}}</em></strong>
                                 </figure>
@@ -108,8 +108,8 @@
                                 </tr>
                             {{/each}}
                             </tbody>
-                            <span class="red-text">
-                                (pending gifts will appear in red)
+                            <span class="orange-text">
+                                (pending gifts will appear in orange)
                             </span>
                         </table>
                         <nav>
@@ -167,7 +167,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-offset-8 col-sm-4 text-right">
-                                    <button type="submit" class="btn btn-default text-right">Submit</button>
+                                    <button type="submit" class="btn btn-primary text-right">Submit</button>
                                 </div>
                             </div>
                         </form>

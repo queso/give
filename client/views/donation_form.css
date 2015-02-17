@@ -403,3 +403,9 @@ div.fadeMe {
     position:   fixed;
     display:    none;
 }
+
+.loginButton {
+    float: right;
+    top: 0px;
+    right: 0px;
+}
