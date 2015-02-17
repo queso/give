@@ -20,14 +20,17 @@
             <dl class="invoice-meta">
                 <dt class="invoice-number">Donation ID:</dt>
                 <dd>
-                    {{#with debit}}
-                        {{id}}
-                    {{/with}}
+                    {{debit.id}}
                 </dd>
                 <dt class="invoice-date">Donation Date</dt>
                 <dd>
                     {{#with debit}}
                         {{date}}
+                    {{/with}}
+                </dd><dt class="invoice-frequency">Donation Frequency</dt>
+                <dd>
+                    {{#with donation}}
+                        <span class="invoice-frequency">{{frequency}}</span>
                     {{/with}}
                 </dd>
             </dl>

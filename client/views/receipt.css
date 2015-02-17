@@ -27,3 +27,7 @@
 .recap {
 	margin-bottom: 10px;
 }
+
+.invoice-frequency {
+    text-transform: capitalize;
+}

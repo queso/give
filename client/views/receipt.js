@@ -18,6 +18,14 @@ Template.Receipt.helpers({
     debit: function () {
         return Debits.findOne();
     },
+    frequency: function () {
+        if(this.is_recurring){
+            return this.is_recurring;
+        }else{
+            return 'One-time';
+        }
+
+    },
    date: function () {
    		return moment(this.created_at).format('MM/DD/YYYY');
    },
@@ -54,20 +62,20 @@ Template.Receipt.helpers({
    		}else {
    			return this.address.country_code;
    		}
-   },
-   email: function () {
-   		return this.email;
-   },
-   phone: function () {
-      if(this.phone !== '') {
+    },
+    email: function () {
+        return this.email;
+    },
+    phone: function () {
+        if(this.phone !== '') {
          return this.phone;
-      } else {
+        } else {
          return false;
-      }   		
-   },
-   donateTo: function () {
-   		return this.donateTo;
-   },
+        }
+    },
+    donateTo: function () {
+        return this.donateTo;
+},
     donateWith: function () {
         var source = Debits.findOne().links.source;
         if(source.slice(0,2) === 'CC'){

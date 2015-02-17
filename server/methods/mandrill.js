@@ -1,5 +1,5 @@
 _.extend(Utils,{
-	send_donation_email: function (billy, id, trans_guid, subscription_guid, amount, status) {
+	send_donation_email: function (billy, id, trans_guid, subscription_guid, amount, status, frequency) {
 		/*try {*/
 			logger.info("Started send_donation_email with ID: " + id);
 			if(!Donate.findOne({'subscriptions.guid': subscription_guid}) && !Donations.findOne({'subscriptions.guid': subscription_guid})){
@@ -144,7 +144,10 @@ _.extend(Utils,{
 	            },{
 					"name": "URL",
 					"content": donation_cursor.URL
-				}
+				}, {
+                    "name": "Frequency",
+                    "content": frequency
+                }
 	            ]
 	          }
 	        ]
@@ -159,7 +162,7 @@ _.extend(Utils,{
 	},
     send_scheduled_email: function (id, subscription_guid, frequency, amount) {
         /*try {*/
-        logger.info("Started send_donation_email with ID: " + id + " and frequency, amount" + frequency + ", " + amount);
+        logger.info("Started send_donation_email with ID: " + id + " and frequency, amount " + frequency + ", " + amount);
 
         var donation_cursor = Donations.findOne({_id: id});
         var started_at = donation_cursor.subscriptions[0].started_at;

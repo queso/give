@@ -13,9 +13,9 @@ _.extend(Evts,{
 			var trans_guid;
 			var invoice_guid;
 			if (billy) {
-				invoice_guid = 				Evts.get_invoice_guid(body.events[0].entity[type][0].description);
-				var subscription_guid = 	Evts.getBillySubscriptionGUID(invoice_guid);
-				trans_guid = 				body.events[0].entity.debits[0].meta['billy.transaction_guid'];
+				invoice_guid            = 	Evts.get_invoice_guid(body.events[0].entity[type][0].description);
+				var subscription_guid   = 	Evts.getBillySubscriptionGUID(invoice_guid);
+				trans_guid              = 	body.events[0].entity.debits[0].meta['billy.transaction_guid'];
 				console.log("trans_guid: " + trans_guid);
 			}
 
@@ -56,28 +56,10 @@ _.extend(Evts,{
 		//TODO: need to figure out what needs to be done here (if anything)
 	},
 	debit_succeeded: function(id, billy, trans_guid, subscription_guid, invoice_guid, status, amount, body){
-		var stored_amount;
         console.log("id: " + id);
         var debit_cursor = Debits.findOne(id);
 		if(debit_cursor){
-            console.log("Debits.findOne(id).amount = " + debit_cursor.amount);
-			stored_amount = debit_cursor.amount;
-            console.log("stored_amount = " + stored_amount + " event amount = " + amount);
-			if(stored_amount === amount) {
-				if(amount >= 50000){
-					Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, 'large_gift');
-				}
-				Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, 'succeeded');
-				Utils.credit_order(billy, id);
-				if(billy){
-					Evts.addTrans_Invoice(trans_guid, subscription_guid, invoice_guid);
-				}
-                // update the donation status in DT
-                Utils.update_dt_status(id, 1);
-
-			} else{
-				logger.error("The amount from the received event and the amount of the debit do not match!");
-			}
+            Evts.get_succeeded_info(debit_cursor, billy, trans_guid, subscription_guid, invoice_guid, amount);
 		} else{
 			logger.info("Didn't find the Debit, starting the setTimeout to wait for the initial creation event to be processed.")
 			Meteor.setTimeout(function(){
@@ -88,20 +70,7 @@ _.extend(Evts,{
 					return;
 				}else{
                     debit_cursor =  Debits.findOne(id);
-                    stored_amount = debit_cursor.amount;
-                    if(stored_amount === amount) {
-                        if(amount >= 50000){
-                            Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, 'large_gift');
-                        }
-                        Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, 'succeeded');
-                        Utils.credit_order(billy, id);
-                        if(billy){
-                            Evts.addTrans_Invoice(trans_guid, subscription_guid, invoice_guid);
-                        }
-                        Utils.audit_dt_donation(body.events[0].entity.debits[0].links.customer, debit_cursor.donation_id, id);
-                    } else{
-                        logger.error("The amount from the received event and the amount of the debit do not match!");
-                    }
+                    Evts.get_succeeded_info(debit_cursor, billy, trans_guid, subscription_guid, invoice_guid, amount);
                 }
 			}, 30000);
 		}
@@ -236,5 +205,42 @@ _.extend(Evts,{
 			auth: Meteor.settings.billy_key + ':'
 		}).data;
 		return invoice;
-	}
+	},
+    get_donation_frequency: function(debit_cursor){
+        logger.info("Started get_donation_frequency");
+        var frequency;
+        var donation_id = debit_cursor.donation_id;
+        if(donation_id){
+            var donation_cursor = Donations.findOne(donation_id);
+            if(donation_cursor.is_recurring){
+                frequency = donation_cursor.is_recurring;
+            } else {
+                frequency = 'one-time';
+            }
+        }
+        return frequency;
+    },
+    get_succeeded_info: function (debit_cursor, billy, trans_guid, subscription_guid, invoice_guid, amount){
+        var stored_amount, frequency;
+        // Get the donation frequency
+        frequency = Evts.get_donation_frequency(debit_cursor);
+        console.log("Debits.findOne(id).amount = " + debit_cursor.amount);
+        stored_amount = debit_cursor.amount;
+        console.log("stored_amount = " + stored_amount + " event amount = " + amount);
+        if(stored_amount === amount) {
+            if(amount >= 50000){
+                Utils.send_donation_email(billy, debit_cursor._id, trans_guid, subscription_guid, amount, 'large_gift', frequency);
+            }
+            Utils.send_donation_email(billy, debit_cursor._id, trans_guid, subscription_guid, amount, 'succeeded', frequency);
+            Utils.credit_order(billy, debit_cursor._id);
+            if(billy){
+                Evts.addTrans_Invoice(trans_guid, subscription_guid, invoice_guid);
+            }
+            // update the donation status in DT
+            Utils.update_dt_status(debit_cursor._id, 1);
+
+        } else{
+            logger.error("The amount from the received event and the amount of the debit do not match!");
+        }
+    }
 });
