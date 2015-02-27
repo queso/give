@@ -49,8 +49,8 @@ _.extend(Evts,{
 	debit_failed: function(id, billy, trans_guid, subscription_guid, invoice_guid, status, amount, body){
         Debits.update(id, {
             $set: {
-                failure_reason: body.events[0].entity[type][0].failure_reason,
-                failure_reason_code: body.events[0].entity[type][0].failure_reason_code
+                failure_reason: body.events[0].entity.debits[0].failure_reason,
+                failure_reason_code: body.events[0].entity.debits[0].failure_reason_code
             }
         });
 		if(billy){
