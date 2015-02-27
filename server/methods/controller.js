@@ -146,18 +146,21 @@ _.extend(Evts,{
                     upsert: true
                 });
 
-            }
-
-            // Show that a failed email was sent for this debit _id
-            Emails.update({balanced_debit_id: id}, {
+            } else {
+                // Show that a failed email was sent for this subscription
+                Emails.update({
+                    balanced_debit_id: id
+                }, {
                     $set: {
                         'failed.sent': true,
-                        'failed.time': new Date()
-                    }},
-                {
+                        'failed.time': new Date(),
+                        'failed.failure_reason': body_object.failure_reason,
+                        'failed.failure_reason_code': body_object.failure_reason_code
+                    }
+                }, {
                     upsert: true
-                }
-            );
+                });
+            }
         }
 	},
 	check_for_debit: function (id, type, body, billy, trans_guid, subscription_guid) {
