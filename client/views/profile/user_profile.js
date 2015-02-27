@@ -102,6 +102,8 @@ Template.UserProfile.helpers({
     redText: function(){
         if(this.payment_status && this.payment_status === 'pending'){
             return 'orange-text';
+        } else if(this.payment_status && this.payment_status === 'failed'){
+            return 'red-text';
         }
     }
 

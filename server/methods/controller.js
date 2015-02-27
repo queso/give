@@ -47,6 +47,9 @@ _.extend(Evts,{
         Debits.update(id, {$set: {meta: body.events[0].entity.debits[0].meta}});*/
     },
 	debit_failed: function(id, billy, trans_guid, subscription_guid, invoice_guid, status, amount, body){
+        console.log("^^^^^^^^^^^^^^^^^^^LOOK HERE^^^^^^^^^^^^^^^^^^^")
+        console.log(body.events[0].entity.debits[0].failure_reason);
+        console.log(body.events[0].entity.debits[0].failure_reason_code);
         Debits.update(id, {
             $set: {
                 failure_reason: body.events[0].entity.debits[0].failure_reason,
@@ -62,7 +65,7 @@ _.extend(Evts,{
 		} else{
             Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, status, null, body);
         }
-        
+
         // update the donation status in DT
         Utils.update_dt_status(debit_cursor._id, 1);
 
