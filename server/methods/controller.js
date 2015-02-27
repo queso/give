@@ -53,14 +53,18 @@ _.extend(Evts,{
                 failure_reason_code: body.events[0].entity.debits[0].failure_reason_code
             }
         });
+        var debit_cursor = Debits.findOne(id);
+
 		if(billy){
-            var debit_cursor = Debits.findOne(id);
             console.log("****LOOK HERE ***** " + debit_cursor._id);
             var frequency = Evts.get_donation_frequency(debit_cursor);
 			Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, status, frequency, body);
 		} else{
             Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, status, null, body);
         }
+        
+        // update the donation status in DT
+        Utils.update_dt_status(debit_cursor._id, 1);
 
 		//Evts.update_email_collection(id, 'failed', body.events[0].entity[type][0]);
 		//Utils.failed_collection_update(billy, 'debits', id, null, body);
