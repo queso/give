@@ -208,6 +208,7 @@ _.extend(Evts,{
 	},
     get_donation_frequency: function(debit_cursor){
         logger.info("Started get_donation_frequency");
+
         var frequency;
         var donation_id = debit_cursor.donation_id;
         if(donation_id){
@@ -221,6 +222,8 @@ _.extend(Evts,{
         return frequency;
     },
     get_succeeded_info: function (debit_cursor, billy, trans_guid, subscription_guid, invoice_guid, amount){
+        logger.info("Started get_succeeded_info");
+
         var stored_amount, frequency;
         // Get the donation frequency
         frequency = Evts.get_donation_frequency(debit_cursor);
