@@ -54,7 +54,9 @@ _.extend(Evts,{
             }
         });
 		if(billy){
-            var frequency = Evts.get_donation_frequency(Debits.findOne(id));
+            var debit_cursor = Debits.findOne(id);
+            console.log("****LOOK HERE ***** " + debit_cursor._id);
+            var frequency = Evts.get_donation_frequency(debit_cursor);
 			Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, status, frequency, body);
 		} else{
             Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, status, null, body);
