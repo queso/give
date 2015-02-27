@@ -418,12 +418,9 @@ _.extend(Utils, {
                         }
                     });
 
-                /*var update_donation = HTTP.post(Meteor.settings.donor_tools_site + '/donations.json'+ dt_donation.id + '.json', {
-                    data:{
-                        "donation": get_dt_donation.data.donation
-                    },
-                    auth: Meteor.settings.donor_tools_user + ':' + Meteor.settings.donor_tools_password
-                });*/
+                DT_donations.update(dt_donation, {$set: {'payments_status': 'succeeded'}});
+
+
 
             } else {
                 // There may not actually be a problem here, just want a warning in case there is.
