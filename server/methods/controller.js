@@ -97,7 +97,7 @@ _.extend(Evts,{
 			return bank_account.bank_name +  ", ending in " + bank_account.account_number.slice(-4);
 		}
 	},
-	update_email_collection: function (id, type, body_object) {
+	update_email_collection: function (id, type, body_object, billy) {
 		if(type === 'created'){
 			Emails.update({balanced_debit_id: id}, {
 				$set: {

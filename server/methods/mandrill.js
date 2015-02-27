@@ -28,7 +28,7 @@ _.extend(Utils,{
 			var bcc_address = 'support@trashmountain.com';
 			var email_address = customer_cursor.email;
 			if (status === "failed") {
-                Evts.update_email_collection(id, 'failed', body.events[0].entity.debits[0]);
+                Evts.update_email_collection(id, 'failed', body.events[0].entity.debits[0], billy);
 				slug = 'fall-2014-donation-failed';
 			} else if(status === 'created'){
 				if(email_cursor && email_cursor.created && email_cursor.created.sent) {
