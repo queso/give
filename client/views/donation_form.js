@@ -7,7 +7,7 @@
 // amount that is shown to the user and passed as total_amount through the form
 //display error modal if there is an error while initially submitting data from the form.
 function handleErrors(error) {
-    console.dir(error);
+    console.dir
     spinner.stop();
     $("#spinDiv").hide();
 
@@ -56,8 +56,8 @@ Location HREF: " + location.href + "'><button type='button' class='btn btn-dange
 
 function fillForm() {
     if (Session.get("paymentMethod") === "Check") {
-        $('#routing_number').val("021000021"); // Invalid test = 100000007 fail after initial screen = 021000021 valid test = 321174851
-        $('#account_number').val("9900000004"); // Invalid test = 8887776665555 fail after initial screen = 9900000004 valid test = 9900000003
+        $('#routing_number').val("321174851"); // Invalid test = 100000007 fail after initial screen = 021000021 valid test = 321174851
+        $('#account_number').val("9900000003"); // Invalid test = 8887776665555 fail after initial screen = 9900000004 valid test = 9900000003
     } else {
         $('#card_number').val("4111111111111111"); //Succeeded = 4111111111111111 Failed = 4444444444444448 CVV mismatch = 5112000200000002
         $('#expiry_month option').prop('selected', false).filter('[value=12]').prop('selected', true);

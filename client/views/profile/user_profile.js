@@ -125,7 +125,7 @@ Template.UserProfile.events({
             'address.line2':          $('#line2').val(),
             'address.city':           $('#city').val(),
             'address.state':          $('#state').val(),
-            'address.postal_code':    $('#postal_code').val(),
+            'address.postal_code':    $('#zip').val(),
             phone:                    $('#phone').val()
         }};
         console.log("worked");
@@ -134,6 +134,13 @@ Template.UserProfile.events({
         if(updateCustomer === 1) {
             $('#modal_for_address_change').modal('hide')
         }
+        Meteor.call('update_customer', updateThis.$set,  Customers.findOne()._id, DT_donations.findOne().persona_id, function(error, result){
+           if(result){
+               console.log(result);
+           } else{
+               console.log(error);
+           }
+        });
     },
     'click .previous': function(evt, tmpl){
         evt.preventDefault();

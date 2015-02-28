@@ -1,4 +1,4 @@
-/* Donate Methods */
+/* singleDonation Method */
 /*****************************************************************************/
 Fiber = Npm.require('fibers');
 

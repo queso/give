@@ -18,6 +18,22 @@ Utils = {
         });
         return resultSet;
     },
+    // Check donation form entries
+    check_update_customer_form: function(form, customer_id, dt_persona_id) {
+        check(dt_persona_id, Number);
+        check(customer_id, String);
+        check(form,
+            {
+                'address.line1': String,
+                'address.line2': String,
+                'address.city': String,
+                'address.state': String,
+                'address.postal_code': String,
+                'phone': String
+            }
+        );
+    },
+    // Check donation form entries
     checkFormFields: function(form) {
 
       check(form, 

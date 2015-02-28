@@ -49,7 +49,6 @@ _.extend(Evts,{
 	debit_failed: function(id, billy, trans_guid, subscription_guid, invoice_guid, status, amount, body){
         console.log("^^^^^^^^^^^^^^^^^^^LOOK HERE^^^^^^^^^^^^^^^^^^^");
         console.dir(body.events[0].entity.debits[0]);
-        console.log(body.events[0].entity.debits[0].failure_reason_code);
         Debits.update(id, {
             $set: {
                 failure_reason: body.events[0].entity.debits[0].failure_reason,
