@@ -42,21 +42,26 @@ _.extend(Utils, {
         var get_dt_persona = HTTP.get(Meteor.settings.donor_tools_site + '/people/' + dt_persona_id + '.json', {
             auth: Meteor.settings.donor_tools_user + ':' + Meteor.settings.donor_tools_password
         });
-        console.dir(get_dt_persona.data.persona);
+        var persona = get_dt_persona.data.persona;
 
         // Shape the data the way it needs to go into the persona record
         var street_address = form['address.line1'] + " \n" + form['address.line2'];
-        get_dt_persona.data.persona.addresses[0] = {
+        persona.addresses[0] = {
             "city": form['address.city'],
             "state": form['address.state'],
             "street_address": street_address,
             "postal_code": form['address.postal_code']
         };
-        get_dt_persona.data.persona.phone_numbers[0].phone_number = form.phone;
+        persona.phone_numbers[0].phone_number = form.phone;
+        console.dir(persona);
+
+        delete persona.total_donations;
+        delete persona.max_donation;
+        delete persona.first_donation_amount;
 
         var update_persona = HTTP.call("PUT", Meteor.settings.donor_tools_site + '/people/'+ dt_persona_id + '.json',
             {
-                data: {"persona": get_dt_persona.data.persona},
+                data: {"persona": persona},
                 auth: Meteor.settings.donor_tools_user + ':' + Meteor.settings.donor_tools_password
             });
         console.log("***********LOOK HERE************");
