@@ -379,7 +379,11 @@ legend {
 }
 
 .redText {
-    color: red!important;
+     color: red!important;
+}
+
+.redText:hover {
+    color: black!important;
 }
 
 .select2-container {

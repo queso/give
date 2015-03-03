@@ -53,11 +53,16 @@ _.extend(Utils, {
             "postal_code": form['address.postal_code']
         };
         persona.phone_numbers[0].phone_number = form.phone;
-        console.dir(persona);
 
         delete persona.total_donations;
         delete persona.max_donation;
         delete persona.first_donation_amount;
+        delete persona.most_recent_donation_amount;
+        delete persona.most_recent_donation_date;
+        delete persona.first_donation_date;
+        delete persona.updated_at;
+        delete persona.created_at;
+        console.dir(persona);
 
         var update_persona = HTTP.call("PUT", Meteor.settings.donor_tools_site + '/people/'+ dt_persona_id + '.json',
             {
@@ -275,3 +280,5 @@ _.extend(Utils, {
         }
     }
 });
+
+

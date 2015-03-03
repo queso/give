@@ -69,7 +69,8 @@ function fillForm() {
     $('#fname').val("John");
     $('#lname').val("Doe");
     $('#org').val("");
-    $('#email_address').val("josh@trashmountain.com");
+    $('#email_address').val("josh@trashmountain.org");
+    $('#email_address_verify').val('josh@trashmountain.org');
     $('#phone').val("(785) 246-6845");
     $('#address_line1').val("Address Line 1");
     $('#address_line2').val("Address Line 2");
@@ -305,9 +306,11 @@ Template.DonationForm.events({
         if ($("#is_recurring").val() !== 'one_time') {
             Session.set('recurring', true);
             $('#calendarSection').show();
+            $("#s2id_is_recurring").children().removeClass("redText");
         } else {
             Session.set('recurring', false);
             $('#calendarSection').hide();
+            $("#s2id_is_recurring").children().removeClass("redText");
         }
     },
     'keyup, change #amount': function() {

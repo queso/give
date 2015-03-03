@@ -35,6 +35,17 @@
             <input {{attributes_Input_Email_Address}} class="form-control email slim-borders" >
         </div>
     </div>
+    <!-- email address input verify-->
+    <div class="form-group">
+        <div class="col-sm-12">
+            <!--[if lt IE 9]>
+                <label>Verify Your Email Address</label>
+            <![endif]-->
+            <input {{attributes_Input_Email_Address_Verify}} class="form-control email slim-borders" data-parsley-equalto="#email_address"
+                data-parsley-error-message="Please make sure this is the same as the email address above.">
+        </div>
+    </div>
+
     <!-- phone number input-->
     <div class="form-group" id="phoneDiv">
         <div class="col-sm-12">

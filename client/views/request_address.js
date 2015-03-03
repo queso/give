@@ -44,7 +44,16 @@ Template.RequestAddress.helpers({
         type: "email",
         name: "email_address",
           id: "email_address",
-        placeholder: "Email address",
+        placeholder: "Email Address",
+        required: true
+      }
+    },
+    attributes_Input_Email_Address_Verify: function () {
+      return {
+        type: "email",
+        name: "email_address_verify",
+          id: "email_address_verify",
+        placeholder: "Retype Your Email Address",
         required: true
       }
     },

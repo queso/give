@@ -96,12 +96,7 @@ Router.route(':root/gift/:_id', function () {
 Router.route(':root/dashboard', function () {
     this.layout('AdminLayout');
     var root = Meteor.settings.public.root;
-
-    if (this.ready()) {
-        this.render('Dashboard');
-    }else {
-        this.render('Loading');
-    }
+    this.render('Dashboard');
 }, {
     name: 'admin.dashboard'
 });
