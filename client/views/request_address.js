@@ -2,19 +2,22 @@
 /* RequestAddress: Event Handlers and Helpers */
 /*****************************************************************************/
 Template.RequestAddress.events({
-   'change #country': function(e, tmpl) {
-    var countryValue;
-    if($('#country').val() !== "US") {
-      console.log("Value of country " + $('#country').val());
-      $('#phone').hide().find('input, textarea').prop('disabled', true);
-      $('#phone, text').val("");
-      $('#phoneDiv').hide().find('input, textarea').prop('disabled', true);
-    } else {
-      console.log("In else");
-      $('#phoneDiv').show().find('input, textarea').prop('disabled', false);
-      $('#phone').show().find('input, textarea').prop('disabled', false);
+    'change #country': function(e, tmpl) {
+        var countryValue;
+        if($('#country').val() !== "US") {
+            console.log("Value of country " + $('#country').val());
+            $('#phone').hide().find('input, textarea').prop('disabled', true);
+            $('#phone, text').val("");
+            $('#phoneDiv').hide().find('input, textarea').prop('disabled', true);
+            $('#city').attr("placeholder", "City / Town");
+            $('#region').attr("placeholder", "State / Province / Region");
+            $('#postal_code').attr("placeholder", "ZIP / Postal Code");
+        } else {
+            console.log("In else");
+            $('#phoneDiv').show().find('input, textarea').prop('disabled', false);
+            $('#phone').show().find('input, textarea').prop('disabled', false);
+        }
     }
-   }
 });
 
 Template.RequestAddress.helpers({
@@ -41,7 +44,16 @@ Template.RequestAddress.helpers({
         type: "email",
         name: "email_address",
           id: "email_address",
-        placeholder: "Email address",
+        placeholder: "Email Address",
+        required: true
+      }
+    },
+    attributes_Input_Email_Address_Verify: function () {
+      return {
+        type: "email",
+        name: "email_address_verify",
+          id: "email_address_verify",
+        placeholder: "Retype Your Email Address",
         required: true
       }
     },

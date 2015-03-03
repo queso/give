@@ -21,45 +21,46 @@ Billy = {
 		}
 	},
 	createPaymentMethod: function(customer_id, donateWith, href, processor_uri) {
-		try {
-		logger.info("Started createPaymentMethod");
+        try {
+            logger.info("Started createPaymentMethod");
+            logger.info("In create Payment Method before if: " + donateWith);
+            var associate;
+            if (donateWith === "Card") {
+                logger.info("Stepped into createPaymentMethod card if statement");
+                //Get card URL
+                var card = Utils.get_card(customer_id, href);
+                logger.info("Finished adding card into the collection.");
+                logger.info("Started Associate Function.");
+                associate = Utils.create_association(customer_id, card.href,
+                    processor_uri);
+            }
+            //for running ACH
+            else {
+                logger.info("In check portion of create payment Method");
+                //Create bank account
+                var check = Utils.get_check(customer_id, href);
+                logger.info("Finished adding bank_account into the collection.");
+                logger.info("Started Associate Function.");
+                associate = Utils.create_association(customer_id, check.href,
+                    processor_uri);
+            }
+        } catch (e) {
+            console.log("createPaymentMethod ERROR Properties here");
 
-		logger.info("In create Payment Method before if: " + donateWith);
-
-		if (donateWith === "Card") {
-			logger.info("Stepped into createPaymentMethod card if statement");
-
-			//Get card URL
-			var card = Utils.get_card(customer_id, href);
-
-			logger.info("Finished adding card into the collection.");
-			logger.info("Started Associate Function.");
-
-			var associate = Utils.create_association(customer_id, card.href, processor_uri);
-
-		}
-		//for running ACH
-		else
-		{
-			logger.info("In check portion of create payment Method");
-			//Create bank account
-			var check = Utils.get_check(customer_id, href);
-
-			logger.info("Finished adding bank_account into the collection.");
-			logger.info("Started Associate Function.");
-			associate = Utils.create_association(customer_id, check.href, processor_uri);
-
-		}
-		}catch (e) {
-		 if(e.category_code) {
-		 logger.error("Category_code area: e.details " + e.details);
-		 throw new Meteor.Error(500, e.category_code, e.description);
-		 }else {
-		 logger.error("No category_code area: e.details " + e.details);
-		 throw new Meteor.Error(500, e.reason, e.details);
-		 }
-		 //throwTheError(e);
-		 }
+            console.dir(e);
+            if (e.category_code) {
+                logger.error("Category_code area: e.details " + e.details);
+                throw new Meteor.Error(500, e.category_code, e.description);
+            } else {
+                var first_parse = JSON.parse(e, null, 4);
+                var error = JSON.parse(first_parse, null, 4);
+                console.log(error.errors[0]);
+                console.log("No category_code area: error.errors[0].category_code ");
+                console.dir(error.errors[0].category_code);
+                throw new Meteor.Error(500, error.errors[0].category_code, error.errors[0]);
+            }
+            //throwTheError(e);
+        }
 	},
 	subscribeToBillyPlan: function(donation_id, customer_id, paymentType, funding_instrument_uri) {
 		try {
@@ -185,7 +186,7 @@ function getTransaction(invoiceID) {
 Meteor.methods({
     recurringDonation: function(data) {
 		logger.info("Started billy method calls.");
-		/*try {*/
+		try {
 
 			//Check the form to make sure nothing malicious is being submitted to the server
 			Utils.checkFormFields(data);
@@ -294,11 +295,12 @@ Meteor.methods({
             }
 
 
-		/*} catch (e) {
-			logger.info(e);
-			logger.info(e.error_message);
-			logger.info(e.reason);
-			throw new Meteor.Error(500, e.reason, e.details);
-		}*/
+		} catch (e) {
+            if(e.details && e.details.description){
+                throw new Meteor.Error(500, e.reason, e.details.description);
+            } else{
+                throw new Meteor.Error(500, e.reason, e.details);
+            }
+		}
 	}
 });

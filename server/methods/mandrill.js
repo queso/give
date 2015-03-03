@@ -1,5 +1,5 @@
 _.extend(Utils,{
-	send_donation_email: function (billy, id, trans_guid, subscription_guid, amount, status, frequency) {
+	send_donation_email: function (billy, id, trans_guid, subscription_guid, amount, status, frequency, body) {
 		/*try {*/
 			logger.info("Started send_donation_email with ID: " + id);
 			if(!Donate.findOne({'subscriptions.guid': subscription_guid}) && !Donations.findOne({'subscriptions.guid': subscription_guid})){
@@ -28,6 +28,11 @@ _.extend(Utils,{
 			var bcc_address = 'support@trashmountain.com';
 			var email_address = customer_cursor.email;
 			if (status === "failed") {
+                if(email_cursor && email_cursor.failed && email_cursor.failed.sent) {
+                    logger.info("A 'failed' email has already been sent for this debit, exiting email send function.");
+                    return;
+                }
+                Evts.update_email_collection(id, 'failed', body.events[0].entity.debits[0], billy);
 				slug = 'fall-2014-donation-failed';
 			} else if(status === 'created'){
 				if(email_cursor && email_cursor.created && email_cursor.created.sent) {

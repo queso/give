@@ -47,11 +47,28 @@ _.extend(Evts,{
         Debits.update(id, {$set: {meta: body.events[0].entity.debits[0].meta}});*/
     },
 	debit_failed: function(id, billy, trans_guid, subscription_guid, invoice_guid, status, amount, body){
+        console.log("^^^^^^^^^^^^^^^^^^^LOOK HERE^^^^^^^^^^^^^^^^^^^");
+        console.dir(body.events[0].entity.debits[0]);
+        Debits.update(id, {
+            $set: {
+                failure_reason: body.events[0].entity.debits[0].failure_reason,
+                failure_reason_code: body.events[0].entity.debits[0].failure_reason_code
+            }
+        });
+        var debit_cursor = Debits.findOne(id);
+
 		if(billy){
-			//Utils.send_donation_email(billy, id, subscription_guid, amount, 'failed');
-			// TODO: need to get this working, not sure how to test this though. Also, it usually fails many times, so only send one email.
-		}
-		//Evts.update_email_collection(id, 'failed'); //also, this doesn't go here, need to send the update from within Mandrill
+            console.log("****LOOK HERE ***** " + debit_cursor._id);
+            var frequency = Evts.get_donation_frequency(debit_cursor);
+			Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, status, frequency, body);
+		} else{
+            Utils.send_donation_email(billy, id, trans_guid, subscription_guid, amount, status, null, body);
+        }
+
+        // update the donation status in DT
+        Utils.update_dt_status(debit_cursor._id, 1);
+
+		//Evts.update_email_collection(id, 'failed', body.events[0].entity[type][0]);
 		//Utils.failed_collection_update(billy, 'debits', id, null, body);
 		//TODO: need to figure out what needs to be done here (if anything)
 	},
@@ -88,7 +105,7 @@ _.extend(Evts,{
 			return bank_account.bank_name +  ", ending in " + bank_account.account_number.slice(-4);
 		}
 	},
-	update_email_collection: function (id, type) {
+	update_email_collection: function (id, type, body_object, billy) {
 		if(type === 'created'){
 			Emails.update({balanced_debit_id: id}, {
 				$set: {
@@ -119,7 +136,38 @@ _.extend(Evts,{
 					upsert: true
 				}
 			);
-		}
+		} else if (type === 'failed') {
+            if(billy){
+                // Show that a failed email was sent for this subscription if it used Billy
+                Emails.update({
+                    balanced_debit_id: id
+                }, {
+                    $set: {
+                        'failed.sent': true,
+                        'failed.time': new Date(),
+                        'failed.failure_reason': body_object.failure_reason,
+                        'failed.failure_reason_code': body_object.failure_reason_code
+                    }
+                }, {
+                    upsert: true
+                });
+
+            } else {
+                // Show that a failed email was sent for this subscription
+                Emails.update({
+                    balanced_debit_id: id
+                }, {
+                    $set: {
+                        'failed.sent': true,
+                        'failed.time': new Date(),
+                        'failed.failure_reason': body_object.failure_reason,
+                        'failed.failure_reason_code': body_object.failure_reason_code
+                    }
+                }, {
+                    upsert: true
+                });
+            }
+        }
 	},
 	check_for_debit: function (id, type, body, billy, trans_guid, subscription_guid) {
 		console.log("Inside of check_for_debit");
@@ -208,6 +256,7 @@ _.extend(Evts,{
 	},
     get_donation_frequency: function(debit_cursor){
         logger.info("Started get_donation_frequency");
+
         var frequency;
         var donation_id = debit_cursor.donation_id;
         if(donation_id){
@@ -221,6 +270,8 @@ _.extend(Evts,{
         return frequency;
     },
     get_succeeded_info: function (debit_cursor, billy, trans_guid, subscription_guid, invoice_guid, amount){
+        logger.info("Started get_succeeded_info");
+
         var stored_amount, frequency;
         // Get the donation frequency
         frequency = Evts.get_donation_frequency(debit_cursor);

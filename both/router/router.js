@@ -16,7 +16,7 @@ Router.onBeforeAction(function () {
         this.next();
     }
 }, {
-    except: ['donation.form', 'donation.thanks', 'donation.gift', 'donation.scheduled', 'enrollAccount']
+    except: ['donation.form', 'donation.thanks', 'donation.gift', 'donation.scheduled', 'enrollAccount', 'forgotPwd', 'resetPwd']
 });
 
 Router.route(':root', function () {
@@ -96,12 +96,7 @@ Router.route(':root/gift/:_id', function () {
 Router.route(':root/dashboard', function () {
     this.layout('AdminLayout');
     var root = Meteor.settings.public.root;
-
-    if (this.ready()) {
-        this.render('Dashboard');
-    }else {
-        this.render('Loading');
-    }
+    this.render('Dashboard');
 }, {
     name: 'admin.dashboard'
 });

@@ -24,10 +24,15 @@ Template.Thanks.helpers({
     },
     failedTrans: function () {
         var referrer = Donations.findOne().URL;
-        var errorMessage = Donations.findOne().failed.failure_reason ? Donations.findOne().failed.failure_reason + " " + Donations.findOne().failed.failure_reason_code : 'The error we got from the card \
+        var errorMessage = Debits.findOne().failure_reason ? Debits.findOne().failure_reason + " " + Debits.findOne().failure_reason_code : 'The error we got from the card \
         processor was not very helpful so instead of displaying their cryptic error message you got this message, sorry we could not be more helpful.';
         if(!referrer || !errorMessage) {
-          return;
+          return "<h3 class='text-center badText'>Something went wrong.</h3>\
+              <p class='text-center alert alert-error'>\
+                We weren't able to process your gift. <a href='https://trashmountain.com/donate'>go back</a> and try again.\
+                <br>\
+                <a id='failed_icon' href='https://trashmountain.com/donate'><i class='fa fa-arrow-left large-arrow'></i></a>\
+              </p>";
         }
         return "<h3 class='text-center badText'>Something went wrong.</h3>\
               <p class='text-center alert alert-error'>\

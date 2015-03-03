@@ -379,8 +379,8 @@ _.extend(Utils, {
     },
     update_dt_status: function (debit_id, interval) {
         logger.info("Started update_dt_status");
-        console.log(interval);
-        console.log(debit_id);
+        console.log("Interval: " + interval);
+        console.log("Debit_id: " + debit_id);
 
         // Check to see if the donor tools donation has been inserted yet. Return if it hasn't
         Meteor.setTimeout(function(){
@@ -393,8 +393,8 @@ _.extend(Utils, {
                     auth: Meteor.settings.donor_tools_user + ':' + Meteor.settings.donor_tools_password
                 });
                 console.dir(get_dt_donation.data.donation);
-                var temp_value = {};
-                temp_value.transaction_fee = (get_dt_donation.data.donation.transaction_fee /100)
+                /*var temp_value = {};
+                temp_value.transaction_fee = (get_dt_donation.data.donation.transaction_fee /100);*/
                 get_dt_donation.data.donation.payment_status = debit_cursor.status;
 
                 var update_donation = HTTP.call("PUT", Meteor.settings.donor_tools_site + '/donations/'+ dt_donation.id + '.json',
@@ -417,13 +417,8 @@ _.extend(Utils, {
                             }
                         }
                     });
-
-                /*var update_donation = HTTP.post(Meteor.settings.donor_tools_site + '/donations.json'+ dt_donation.id + '.json', {
-                    data:{
-                        "donation": get_dt_donation.data.donation
-                    },
-                    auth: Meteor.settings.donor_tools_user + ':' + Meteor.settings.donor_tools_password
-                });*/
+                console.log("***********LOOK HERE************");
+                DT_donations.update(dt_donation, {$set: {'payment_status': debit_cursor.status}});
 
             } else {
                 // There may not actually be a problem here, just want a warning in case there is.

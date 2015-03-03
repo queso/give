@@ -1,3 +1,6 @@
+//This file is left here only for legacy support. Once the DT branch is finished this file will be removed.
+
+
 Evts = {
 	recurring_controller: function(body) {
         logger.info("Got to recurring_controller");

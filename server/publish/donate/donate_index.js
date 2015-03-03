@@ -9,7 +9,6 @@ Meteor.publish('receipt_donations', function (input) {
 		sessionId: 0,
 		viewable: 0,
 		created_at: 0,
-		URL: 0,
 		order: 0
 	}});
 });
@@ -44,7 +43,9 @@ Meteor.publish('receipt_debits', function (input) {
 	return Debits.find({_id: input}, {fields: {
 		'status': 1,
 		'links.source': 1,
-		'id': 1
+		'id': 1,
+        'failure_reason': 1,
+        'failure_reason_code': 1
 	}});
 });
 
