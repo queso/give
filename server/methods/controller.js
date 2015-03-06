@@ -47,7 +47,7 @@ _.extend(Evts,{
         Debits.update(id, {$set: {meta: body.events[0].entity.debits[0].meta}});*/
     },
 	debit_failed: function(id, billy, trans_guid, subscription_guid, invoice_guid, status, amount, body){
-        console.log("^^^^^^^^^^^^^^^^^^^LOOK HERE^^^^^^^^^^^^^^^^^^^");
+        logger.info("Stared debit_failed");
         console.dir(body.events[0].entity.debits[0]);
         Debits.update(id, {
             $set: {
@@ -73,7 +73,7 @@ _.extend(Evts,{
 		//TODO: need to figure out what needs to be done here (if anything)
 	},
 	debit_succeeded: function(id, billy, trans_guid, subscription_guid, invoice_guid, status, amount, body){
-        console.log("id: " + id);
+        logger.info("Stared debit_succeeded");
         var debit_cursor = Debits.findOne(id);
 		if(debit_cursor){
             Evts.get_succeeded_info(debit_cursor, billy, trans_guid, subscription_guid, invoice_guid, amount);

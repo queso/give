@@ -55,12 +55,12 @@ Convert = {
         if(Debits.findOne({_id: debit.id})){
             logger.info("Found that Debit, exiting insert");
             return;
-        }else{
+        }else {
             logger.info("Didn't find that Debit, inserting");
             Debits.insert(debit);
 
-            //TODO: here is where I need to link this gift to the user
-
+            // Link the gift to this user and process the post donation operations
+            Utils.post_donation_operation(debit.links.customer, donation_id, debit._id);
         }
     },
     insert_customer: function (donateDoc, payment, type, customer_id) {
