@@ -164,6 +164,7 @@ Template.UserProfile.rendered = function(){
     $('#userAddressForm').parsley();
 
     $('[data-toggle="popover"]').popover({html: true});
+
 };
 
 Template.UserNav.events({
@@ -172,4 +173,6 @@ Template.UserNav.events({
         evt.stopPropagation();
         Router.go('changePwd');
     }
-})
+});
+
+

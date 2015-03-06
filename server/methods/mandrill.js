@@ -8,8 +8,20 @@ _.extend(Utils,{
 			}
 
 			var debit_cursor = Debits.findOne({id: id});
+            if(!debit_cursor){
+                logger.error("No debit found here, exiting.");
+                return;
+            }
 			var customer_cursor = Customers.findOne({_id: debit_cursor.links.customer});
+            if(!customer_cursor){
+                logger.error("No debit found here, exiting.");
+                return;
+            }
 			var donation_cursor = Donations.findOne({_id: debit_cursor.donation_id});
+            if(!donation_cursor){
+                logger.error("No debit found here, exiting.");
+                return;
+            }
 			var donateWithType  = donation_cursor.type;
 
 			//Get the donation with description for either the card or the bank account

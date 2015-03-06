@@ -25,13 +25,20 @@ Convert = {
         Convert.insert_customer(donateDoc, payment, type, customer_id);
 
     },
-    find_debits: function (donateDoc, donations_id) {
+    find_debits: function (donateDoc, donations_id, debit_id, transaction_guid) {
         logger.info("Inside find_debits with donations_id of " + donations_id);
 
-        donateDoc.transactions.forEach(function (element) {
-            logger.info(element.processor_uri);
-            Convert.insert_debit(donateDoc, donations_id, element.processor_uri, element.guid);
-        });
+        // First check to see if this are any transactions
+        // if no transactions exist then this debit was from a scheduled gift
+        if(donateDoc && donateDoc.transactions && donateDoc.transactions.constructor === Array){
+            donateDoc.transactions.forEach(function (element) {
+                logger.info(element.processor_uri);
+                Convert.insert_debit(donateDoc, donations_id, element.processor_uri, element.guid);
+            });
+        } else if (donateDoc){
+            logger.info("Looks like this is a debit from a scheduled gift and there are no transactions to process.");
+            Convert.insert_debit(donateDoc, donations_id, '/debits/' + debit_id, transaction_guid);
+        }
 
     },
     insert_debit: function(donateDoc, donation_id, debit_href, transaction_guid){
@@ -109,6 +116,6 @@ Convert = {
         //insert the donation into the collection
         var donations_id = Donations.insert(copied_doc);
         Convert.insert_debit(copied_doc, donations_id, '/debits/' + debit_id, transaction_guid);
-        Convert.find_debits(copied_doc, donations_id);
+        Convert.find_debits(copied_doc, donations_id, debit_id, transaction_guid);
     }
 };

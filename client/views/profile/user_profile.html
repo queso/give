@@ -3,12 +3,12 @@
         <div class="container">
             <div class="row">
 
-                <div class="col-md-6 col-lg-6">
+                <div id="giving_section" class="col-md-6 col-lg-6">
                     <div class="well profile">
                         <div class="col-sm-12">
                             <br>
                             <div class="col-xs-12 col-sm-8">
-                                <h5>{{#with user}}{{name}}{{/with}}</h5>
+                                <h5 id="profile_section">{{#with user}}{{name}}{{/with}}</h5>
                                 {{{business_name}}}
                                 <p><strong>Address: </strong>  <i class="fa fa-pencil edit_address green-icons"></i><br>
                                     {{customer.address.line1}} <br>
@@ -91,8 +91,8 @@
                     </div>
                 </div>
                 {{#if showHistory}}
-                    <div class="col-md-6 col-lg-6">
-                        <h5>Your Giving History</h5>
+                    <div id="" class="col-md-6 col-lg-6">
+                        <h5 id="">Your Giving History</h5>
                         <table class="table table-striped">
                             <tbody>
                             <tr class="responsiveFont">
