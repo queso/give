@@ -2,6 +2,7 @@ _.extend(Evts,{
 	controller: function(body) {
 		var type = Object.keys(body.events[0].entity)[0];
 		logger.info("Type is equal to: " + type);
+        console.dir(body);
 		if(type === "debits"){
 			logger.info("Inside controller and debits area");
 			var status 		=			body.events[0].entity[type][0].status;
@@ -196,6 +197,7 @@ _.extend(Evts,{
 				//Insert object into debits collection and get the _id
 				var inserted_debit = Debits.insert(insert_debit);
 
+                console.dir(body.events[0].entity[0].links);
                 Utils.audit_dt_donation(id, body.events[0].entity.debits[0].links.customer, Debits.findOne({_id: id}).donation_id);
 
                 return inserted_debit;

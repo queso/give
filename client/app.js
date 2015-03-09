@@ -32,3 +32,9 @@ UI.registerHelper('formatDate', function(context, options) {
         return moment(context).format('MMM DD, YYYY');
 });
 
+UI.registerHelper('logged_in', function(context) {
+    // use the primary_customer_id to find all of the info to insert here
+    if(Meteor.user() && context === 'line1'){
+        return "line1";
+    }
+});

@@ -1,5 +1,4 @@
 Template.DonationTo.helpers({
-
 	attributes_Input_DonationTo: function () {
 	    return {
 	        name: "donateTo",
@@ -9,7 +8,7 @@ Template.DonationTo.helpers({
 	  },
 	donateToParam: function () {
     	return $("#donateTo").val(this.params.donateTo);
-    },
+    }
 });
 
 Template.DonationTo.rendered = function () {

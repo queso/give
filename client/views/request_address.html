@@ -5,7 +5,7 @@
             <!--[if lt IE 9]>
                 <label>First Name</label>
             <![endif]-->        
-			<input {{attributes_Input_FName}} class="form-control slim-borders capitalize_this" data-parsley-error-message="Please enter your first name." >
+			<input {{attributes_Input_FName}} class="form-control slim-borders capitalize_this" data-parsley-error-message="Please enter your first name.">
 		</div>
     </div>
     <div class="form-group">
@@ -63,7 +63,7 @@
             <!--[if lt IE 9]>
                 <label>Address Line 1</label>
             <![endif]-->        
-            <input {{attributes_Input_AddressLine1}} class="form-control slim-borders capitalize_this" data-parsley-error-message="Please enter your street address.">
+            <input {{attributes_Input_AddressLine1}} class="form-control slim-borders capitalize_this" data-parsley-error-message="Please enter your street address." value="{{logged_in 'line1'}}">
         </div>
     </div>
     <!-- address-line2 input-->
@@ -72,7 +72,7 @@
             <!--[if lt IE 9]>
                 <label>Address Line 2</label>
             <![endif]-->        
-            <input {{attributes_Input_AddressLine2}} class="form-control slim-borders capitalize_this" data-parsley-error-message="Please enter your street address." >
+            <input {{attributes_Input_AddressLine2}} class="form-control slim-borders capitalize_this" data-parsley-error-message="Please enter your street address." value="{{logged_in 'line2'}}" >
         </div>
     </div>
     <!-- city input-->
@@ -81,7 +81,7 @@
             <!--[if lt IE 9]>
                 <label>City</label>
             <![endif]-->        
-            <input {{attributes_Input_City}} class="form-control slim-borders capitalize_this" data-parsley-error-message="Please enter your city name.">
+            <input {{attributes_Input_City}} class="form-control slim-borders capitalize_this" data-parsley-error-message="Please enter your city name." value="{{logged_in 'city'}}" >
         </div>
     </div>
     <!-- region input-->
@@ -90,7 +90,7 @@
             <!--[if lt IE 9]>
                 <label>State</label>
             <![endif]-->     
-            <input {{attributes_Input_State}} class="form-control text-capitalize slim-borders capitalize_this" data-parsley-error-message="Please enter your state name." >
+            <input {{attributes_Input_State}} class="form-control text-capitalize slim-borders capitalize_this" data-parsley-error-message="Please enter your state name." value="{{logged_in 'state'}}" >
         </div>
     </div>
     <!-- postal-code input-->
@@ -99,7 +99,7 @@
             <!--[if lt IE 9]>
                 <label>Postal Code</label>
             <![endif]-->        
-            <input {{attributes_Input_Zip}} pattern="(\d{5}([\-]\d{4})?)" class="form-control slim-borders" data-parsley-error-message="Please enter your postal code.">
+            <input {{attributes_Input_Zip}} pattern="(\d{5}([\-]\d{4})?)" class="form-control slim-borders" data-parsley-error-message="Please enter your postal code." value="{{logged_in 'zip'}}">
         </div>
     </div>
     <!-- country select -->
