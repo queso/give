@@ -2,13 +2,7 @@ Session.setDefault('dt_donations_cursor', 0);
 
 Template.UserProfile.helpers({
     user: function () {
-        return Meteor.users.findOne();
-    },
-    name: function () {
-        return this.profile.name;
-    },
-    email: function () {
-        return Meteor.users.findOne().emails[0].address;
+        return Meteor.user();
     },
     showHistory: function () {
         return Session.get("showHistory");
@@ -61,13 +55,18 @@ Template.UserProfile.helpers({
         return Customers.findOne();
     },
     address_line2: function () {
-        if(Customers.findOne().address.line2) {
-            return '<span class="">' + Customers.findOne().address.line2 + '</span> <br>';
+        if(Meteor.user().profile.address.line2) {
+            return '<span class="">' + Meteor.user().profile.address.line2 + '</span> <br>';
+        } else return;
+    },
+    email: function () {
+        if(Meteor.user().emails[0].address) {
+            return Meteor.user().emails[0].address;
         } else return;
     },
     business_name: function () {
-        if(Customers.findOne().business_name) {
-            return '<h5>' + Customers.findOne().business_name + '</h5>';
+        if(Meteor.user().profile.business_name) {
+            return '<h5>' + Meteor.user().profile.business_name + '</h5>';
         } else return;
     },
     giving_focus: function () {
@@ -120,15 +119,20 @@ Template.UserProfile.events({
     'submit form': function (evt, tmpl) {
         evt.preventDefault();
         evt.stopPropagation();
-        var updateThis = {$set: {
-            'address.line1':          $('#line1').val(),
-            'address.line2':          $('#line2').val(),
-            'address.city':           $('#city').val(),
-            'address.state':          $('#state').val(),
-            'address.postal_code':    $('#zip').val(),
-            phone:                    $('#phone').val()
-        }};
-        console.log("worked");
+        var fields = {
+            address: {
+                'line1':          $('#line1').val(),
+                'line2':          $('#line2').val(),
+                'city':           $('#city').val(),
+                'state':          $('#state').val(),
+                'postal_code':    $('#zip').val()
+            },
+            phone:                $('#phone').val()
+        };
+        var updateThis = {$set: fields};
+
+        // Update the Meteor.user profile
+        Meteor.users.update(Meteor.user()._id, {$set: {'profile.address': fields.address, 'profile.phone': fields.phone}});
 
         var updateCustomer = Customers.update(Customers.findOne()._id, updateThis);
         if(updateCustomer === 1) {
@@ -159,6 +163,9 @@ Template.UserProfile.events({
 
 Template.UserProfile.rendered = function(){
    Session.set("showHistory", true);
+
+    // Make sure the user can't enter anything, except what would go in a phone number field
+    $("#phone").mask("(999)999-9999");
 
     // Setup parsley form validation
     $('#userAddressForm').parsley();

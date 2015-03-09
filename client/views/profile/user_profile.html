@@ -8,20 +8,22 @@
                         <div class="col-sm-12">
                             <br>
                             <div class="col-xs-12 col-sm-8">
-                                <h5 id="profile_section">{{#with user}}{{name}}{{/with}}</h5>
+                                {{#with user}}
+                                <h5 id="profile_section">{{profile.fname}} {{profile.lname}}</h5>
                                 {{{business_name}}}
                                 <p><strong>Address: </strong>  <i class="fa fa-pencil edit_address green-icons"></i><br>
-                                    {{customer.address.line1}} <br>
+                                    {{profile.address.line1}} <br>
                                     {{{address_line2}}}
-                                    {{customer.address.city}}, {{customer.address.state}} {{customer.address.postal_code}}<br>
-                                    {{customer.address.country_code}}
+                                    {{profile.address.city}}, {{profile.address.state}} {{profile.address.postal_code}}<br>
+                                    {{profile.address.country_code}}
                                 </p>
                                 <p><strong>Phone:  </strong> <i class="fa fa-pencil edit_address green-icons"></i><br>
-                                    {{customer.phone}} <br>
+                                    {{profile.phone}} <br>
                                 </p>
                                 <p><strong>Email:  </strong> <br>
-                                    {{#with email}}{{email}} <br>{{/with}}
+                                    {{email}} <br>
                                 </p>
+                                {{/with}}
                                 <p>
                                     <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modal_for_address_change">
                                         Edit Profile
@@ -135,38 +137,37 @@
                     </div>
                     <div class="modal-body">
                         <form class="form-horizontal" role="form" id="userAddressForm">
+                        {{#with user}}
                             <div class="form-group">
                                 <label class="control-label col-sm-3" for="email">Address Line 1:</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="line1" placeholder="Address" value="{{customer.address.line1}}" required data-parsley-error-message="Please enter an address">
+                                    <input type="text" class="form-control" id="line1" placeholder="Address" value="{{profile.address.line1}}" required data-parsley-error-message="Please enter an address">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-3" for="email">Address Line 2:</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="line2" placeholder="Address Line 2" value="{{customer.address.line2}}" >
+                                    <input type="text" class="form-control" id="line2" placeholder="Address Line 2" value="{{profile.address.line2}}" >
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-1" for="email">City</label>
                                 <div class="col-sm-5">
-                                    <input type="text" class="form-control" id="city" placeholder="City" value="{{customer.address.city}}" required data-parsley-error-message="Please enter a city">
+                                    <input type="text" class="form-control" id="city" placeholder="City" value="{{profile.address.city}}" required data-parsley-error-message="Please enter a city">
                                 </div>
                                 <label class="control-label col-sm-1" for="email">State</label>
                                 <div class="col-sm-5">
-                                    <input type="text" class="form-control" id="state" placeholder="State" value="{{customer.address.state}}" required data-parsley-error-message="Please enter a state">
+                                    <input type="text" class="form-control" id="state" placeholder="State" value="{{profile.address.state}}" required data-parsley-error-message="Please enter a state">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-1" for="pwd">Zip</label>
                                 <div class="col-sm-5">
-                                    <input type="text" class="form-control" id="zip" placeholder="Postal Code" value="{{customer.address.postal_code}}" required data-parsley-error-message="Please enter a postal code">
+                                    <input type="text" class="form-control" id="zip" placeholder="Postal Code" value="{{profile.address.postal_code}}" required data-parsley-error-message="Please enter a postal code">
                                 </div>
                                 <label class="control-label col-sm-1" for="email">Phone</label>
                                 <div class="col-sm-5">
-                                    <input type="tel" class="form-control" id="phone" placeholder="Phone" value="{{customer.phone}}" required data-parsley-error-message="Please enter a phone number"
-                                           oninvalid="setCustomValidity('Please enter only numbers')"
-                                           onchange="try{setCustomValidity('')}catch(e){}">
+                                    <input type="tel" class="form-control" id="phone" placeholder="Phone" value="{{profile.phone}}" required data-parsley-error-message="Please enter a phone number" >
                                 </div>
                             </div>
                             <div class="form-group">
@@ -174,6 +175,7 @@
                                     <button type="submit" class="btn btn-primary text-right">Submit</button>
                                 </div>
                             </div>
+                        {{/with}}
                         </form>
                     </div>
                 </div><!-- /.modal-content -->

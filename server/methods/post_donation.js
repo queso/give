@@ -70,7 +70,17 @@ _.extend(Utils, {
             user_id = Accounts.createUser({email: email});
 
             // Add some details to the new user account
-            Meteor.users.update(user_id, {$set: {'profile.name': name, 'primary_customer_id': customer_id}});
+            var firstName = name.split(' ').slice(0, -1).join(' ');
+            var lastName = name.split(' ').slice(-1).join(' ');
+            Meteor.users.update(user_id, {$set: {'profile':
+                {
+                    fname: firstName,
+                    lname: lastName,
+                    address: customer_cursor.address,
+                    phone: customer_cursor.phone
+                },
+                business_name: customer_cursor.business_name,
+                'primary_customer_id': customer_id}});
 
             // Send an enrollment Email to the new user
             Accounts.sendEnrollmentEmail(user_id);

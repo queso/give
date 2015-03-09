@@ -78,3 +78,12 @@
 .UserCSS .responsiveFont {
   font-size: 1.5rem;
 }
+.UserCSS .green-icons {
+  color: #48c9b0;
+}
+.UserCSS .orange-text {
+  color: orange;
+}
+.UserCSS .red-text {
+  color: red;
+}

@@ -244,7 +244,7 @@ hr {
 }
 
 /* Custom, iPhone Retina */
-@media only screen and (min-width: 480px) {
+@media only screen and (min-width: 992px) {
     .addSomePaddingLeft {
         padding-left:0;
         width:184px;
@@ -259,7 +259,7 @@ hr {
 
     .positionedAbsolute {
         position: absolute;
-        right: 0;
+        right: 10px;
         top: 0;
     }
 }

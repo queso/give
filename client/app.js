@@ -33,8 +33,45 @@ UI.registerHelper('formatDate', function(context, options) {
 });
 
 UI.registerHelper('logged_in', function(context) {
-    // use the primary_customer_id to find all of the info to insert here
-    if(Meteor.user() && context === 'line1'){
-        return "line1";
+    if(Meteor.user()){
+        switch(context){
+            case "fname":
+                return Meteor.user().profile.fname;
+                break;
+            case "lname":
+                return Meteor.user().profile.lname;
+                break;
+            case "email":
+                return Meteor.user().emails[0].address;
+                break;
+            case "line1":
+                return Meteor.user().profile.address.line1;
+                break;
+            case "line2":
+                return Meteor.user().profile.address.line2;
+                break;
+            case "city":
+                return Meteor.user().profile.address.city;
+                break;
+            case "state":
+                return Meteor.user().profile.address.state;
+                break;
+            case "postal_code":
+                return Meteor.user().profile.address.postal_code;
+                break;
+            case "phone":
+                return Meteor.user().profile.phone;
+                break;
+            case "business_name":
+                if(Meteor.user().profile.business_name){
+                    return  Meteor.user().profile.business_name;
+                }
+                break;
+            default:
+                return;
+        }
+    }
+    else{
+        return;
     }
 });
