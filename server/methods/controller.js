@@ -1,4 +1,4 @@
-_.extend(Evts,{
+Evts = {
 	controller: function(body) {
 		var type = Object.keys(body.events[0].entity)[0];
 		logger.info("Type is equal to: " + type);
@@ -296,4 +296,4 @@ _.extend(Evts,{
             logger.error("The amount from the received event and the amount of the debit do not match!");
         }
     }
-});
+};
