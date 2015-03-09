@@ -197,7 +197,7 @@ Evts = {
 				//Insert object into debits collection and get the _id
 				var inserted_debit = Debits.insert(insert_debit);
 
-                console.dir(body.events[0].entity[0].links);
+                console.dir(body.events[0].entity.debits[0].links);
                 Utils.audit_dt_donation(id, body.events[0].entity.debits[0].links.customer, Debits.findOne({_id: id}).donation_id);
 
                 return inserted_debit;
