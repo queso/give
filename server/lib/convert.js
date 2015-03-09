@@ -21,8 +21,8 @@ Convert = {
             type = 'bank_account';
         }
 
-        Convert.insert_donation(donateDoc, customer_id, debit_id, transaction_guid);
         Convert.insert_customer(donateDoc, payment, type, customer_id);
+        Convert.insert_donation(donateDoc, customer_id, debit_id, transaction_guid);
 
     },
     find_debits: function (donateDoc, donations_id, debit_id, transaction_guid) {
