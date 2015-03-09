@@ -184,6 +184,7 @@ Evts = {
 			var insert_debit = {};
 
 			if(Donations.findOne({'subscriptions.guid': subscription_guid})){
+                console.log("FOUND THE SUBSCRIPTION IN THE DONATIONS COLLECTION");
                 delete body.events[0].entity.debits[0].meta['billy.transaction_guid'];
                 insert_debit = body.events[0].entity.debits[0];
 				logger.info("Found this donation subscription_guid in the Donations colleciton");
@@ -202,6 +203,7 @@ Evts = {
 
                 return inserted_debit;
 			}else {
+                console.log("HERE IS WHERE THE CONVERSION FROM OLD DONATE COLLECTION STARTS");
 				Convert.start_conversion(id, type, body, billy, trans_guid, subscription_guid);
 			}
 		} else {

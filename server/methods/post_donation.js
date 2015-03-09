@@ -14,7 +14,12 @@ _.extend(Utils, {
             // Don't see how to do this yet
 
             // create an email_address variable to be reused below
-            var email_address = Customers.findOne(customer_id).email;
+            var email_address = Customers.findOne(customer_id) && Customers.findOne(customer_id).email;
+            if(email_address) {
+
+            } else {
+
+            }
             //create user
             var user_id = Utils.create_user(email_address, customer_id);
 

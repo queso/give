@@ -45,6 +45,7 @@ Convert = {
         logger.info("Inside insert_debit with transaction_guid of " + transaction_guid);
         //add the donation_id and the transaction_guid to each of the Debit objects before inserting into the collection
         var debit = Utils.get_debit(debit_href);
+        console.dir(debit);
         debit.donation_id = donation_id;
         debit.transaction_guid = transaction_guid;
         debit._id = debit.id;
@@ -72,8 +73,6 @@ Convert = {
         if (donateDoc.billy_customer) {
             customer.billy = donateDoc.billy_customer
         }
-        else{}
-
 
         if (type === 'card') {
             customer.cards = payment;
