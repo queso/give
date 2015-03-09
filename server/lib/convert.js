@@ -21,6 +21,7 @@ Convert = {
             type = 'bank_account';
         }
 
+        // Need to insert the customer first because the insert_donation function depends on the customer document
         Convert.insert_customer(donateDoc, payment, type, customer_id);
         Convert.insert_donation(donateDoc, customer_id, debit_id, transaction_guid);
 
