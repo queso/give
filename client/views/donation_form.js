@@ -226,7 +226,7 @@ Template.DonationForm.events({
             "URL": document.URL,
             sessionId: Meteor.default_connection._lastSessionId
         };
-
+        
         form.paymentInformation.later = (!moment(form.paymentInformation.start_date).isSame(Date.now(), 'day'));
 
         if (form.paymentInformation.total_amount !== form.paymentInformation.amount) {
