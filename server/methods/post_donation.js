@@ -15,29 +15,30 @@ _.extend(Utils, {
 
             // create an email_address variable to be reused below
             var email_address = Customers.findOne(customer_id) && Customers.findOne(customer_id).email;
+
+            // check that there was a customer record and that record had an email address
             if(email_address) {
+                //create user
+                var user_id = Utils.create_user(email_address, customer_id);
 
+                //check dt for user, persona_ids will be an array of 0 to many persona_ids
+                var persona_ids = Utils.check_for_dt_user(email_address);
+
+                //create dt user since one wasn't found in DT
+                if (persona_ids == '') {
+                    //Call DT create function
+                    var single_persona_id = Utils.insert_donation_and_donor_into_dt(customer_id, donation_id, user_id, debit_id);
+
+                    // the persona_ids is expected to be an array
+                    persona_ids = [single_persona_id];
+
+                    // Send me an email letting me know a new user was created in DT.
+                    Utils.send_dt_new_dt_account_added(email_address, user_id, single_persona_id);
+                } else {
+                    Utils.insert_donation_into_dt(customer_id, donation_id, user_id, persona_ids, debit_id);
+                }
             } else {
-
-            }
-            //create user
-            var user_id = Utils.create_user(email_address, customer_id);
-
-            //check dt for user, persona_ids will be an array of 0 to many persona_ids
-            var persona_ids = Utils.check_for_dt_user(email_address);
-
-            //create dt user since one wasn't found in DT
-            if (persona_ids == '') {
-                //Call DT create function
-                var single_persona_id = Utils.insert_donation_and_donor_into_dt(customer_id, donation_id, user_id, debit_id);
-
-                // the persona_ids is expected to be an array
-                persona_ids = [single_persona_id];
-
-                // Send me an email letting me know a new user was created in DT.
-                Utils.send_dt_new_dt_account_added(email_address, user_id, single_persona_id);
-            } else {
-                Utils.insert_donation_into_dt(customer_id, donation_id, user_id, persona_ids, debit_id);
+                logger.error("Didn't find the customer record, exiting.")
             }
         }
 
