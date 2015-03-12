@@ -85,7 +85,7 @@ _.extend(Utils, {
             // Send an enrollment Email to the new user
             Accounts.sendEnrollmentEmail(user_id);
         } else {
-            logger.info("Found a user with the provided email address, didn't create a user.")
+            logger.info("Found a user with the provided email address, didn't create a user.");
         }
         return user_id;
     },
@@ -133,8 +133,9 @@ _.extend(Utils, {
         /*try {*/
         logger.info("Started insert_donation_and_donor_into_dt");
 
-        var donation = Donations.findOne(donation_id);
-        var customer = Customers.findOne(customer_id);
+        var donation =  Donations.findOne(donation_id);
+        var customer =  Customers.findOne(customer_id);
+        var debit =     Debits.findOne(debit_id);
 
         var source_id, business_name, payment_status, received_on;
 
@@ -157,7 +158,7 @@ _.extend(Utils, {
             payment_status = 'Scheduled'
             received_on = donation.start_date;
         } else {
-            received_on = moment(new Date(donation.created_at)).format("YYYY/MM/DD");
+            received_on = moment(new Date(debit.created_at)).format("YYYY/MM/DD");
             payment_status = "pending";
         }
 
