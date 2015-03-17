@@ -55,7 +55,7 @@ Router.route(':root/thanks', {
         return  [
             Meteor.subscribe('receipt_donations', this.params.query.don),
             Meteor.subscribe('receipt_customers', this.params.query.c),
-            Meteor.subscribe('receipt_debits', this.params.query.deb)
+            Meteor.subscribe('receipt_charges', this.params.query.charge)
         ];
     },
     data: function () {
@@ -242,16 +242,6 @@ Router.route(':root/webhooks/stripe', function () {
         this.response.statusCode = 400;
         this.response.end('Oh hai Stripe!\n\n');
     }
-    /*switch(request.type){
-        case "customer.subscription.updated":
-            stripeUpdateSubscription(request.data.object);
-            break;
-        case "invoice.payment_succeeded":
-            stripeCreateInvoice(request.data.object);
-            break;
-    }
-    */
-
 }, {where: 'server',
     name: 'stripe_webhooks'
 });

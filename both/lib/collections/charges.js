@@ -1,6 +1,7 @@
-Debits = new Meteor.Collection('debits');
+Charges = new Meteor.Collection('charges');
 if (Meteor.isServer) {
-    Debits.deny({
+    Charges._ensureIndex({'id': 1}, {background: true});
+    Charges.deny({
         insert: function (userId, doc) {
             if(userId === Meteor.settings.admin_user){
                 return false;
@@ -26,7 +27,7 @@ if (Meteor.isServer) {
         }
     });
 
-    Debits.allow({
+    Charges.allow({
         insert: function (userId, doc) {
             if(userId === Meteor.settings.admin_user){
                 return true;

@@ -4,12 +4,15 @@ Template.Thanks.rendered = function() {
 };
 Template.Thanks.helpers({
 	displayReceipt: function () {
-        var debitStatus = Debits.findOne().status;
+        var debitStatus = Charges.findOne() && Charges.findOne().status;
         return (debitStatus === 'succeeded');
     },
 	successOrPendingPayment: function () {
-        var debitStatus = Debits.findOne().status;
-        return (debitStatus === 'succeeded' || debitStatus === 'pending');
+        var debitStatus;
+        if(Charges.findOne()){
+            debitStatus = Charges.findOne().status;
+        }
+        return (debitStatus === 'succeeded' || debitStatus === 'pending' || debitStatus == null);
     },
 	successOrPendingTrans: function () {
         return "<h3 class='text-center'>Thank you for your gift!</h3>\
@@ -24,7 +27,7 @@ Template.Thanks.helpers({
     },
     failedTrans: function () {
         var referrer = Donations.findOne().URL;
-        var errorMessage = Debits.findOne().failure_reason ? Debits.findOne().failure_reason + " " + Debits.findOne().failure_reason_code : 'The error we got from the card \
+        var errorMessage = Charges.findOne().failure_reason ? Charges.findOne().failure_reason + " " + Charges.findOne().failure_reason_code : 'The error we got from the card \
         processor was not very helpful so instead of displaying their cryptic error message you got this message, sorry we could not be more helpful.';
         if(!referrer || !errorMessage) {
           return "<h3 class='text-center badText'>Something went wrong.</h3>\

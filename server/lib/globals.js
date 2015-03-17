@@ -1,4 +1,6 @@
-var Future = Meteor.npmRequire("fibers/future");
+Future = Meteor.npmRequire("fibers/future");
+// Initialize Stripe with the secret key
+Stripe = StripeAPI(Meteor.settings.stripe.secret);
 
 Utils = {
     extractFromPromise: function(promise) {
@@ -47,7 +49,8 @@ Utils = {
           created_at: String,
           type: Match.OneOf("Card", "Check"),
           href: Match.Optional(String),
-          id: Match.Optional(String),
+          token_id: Match.Optional(String),
+          source_id: Match.Optional(String),
           fees: Match.Optional(Number),
           writeIn: Match.Optional(String),
           start_date: Match.Optional(String),

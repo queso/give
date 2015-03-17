@@ -16,39 +16,33 @@ Meteor.publish('receipt_donations', function (input) {
 Meteor.publish('receipt_customers', function (input) {
 	//Check the input that came from the client
 	check(input, String);
-	return Customers.find({_id: input}, {fields: {
-		'links.source': 1,
-		'name': 1,
-		'address': 1,
-		'phone': 1,
-		'email': 1,
-		'id': 1,
-		'business_name': 1,
-		'cards.id': 1,
-		'cards.links.customer': 1,
-		'cards.number': 1,
-		'cards.brand': 1,
-		'bank_accounts.id': 1,
-		'bank_accounts.links.customer': 1,
-		'bank_accounts.account_number': 1,
-		'bank_accounts.bank_name': 1,
-		'bank_accounts.account_type': 1
-	}});
+	return Customers.find({_id: input}, {fields: {'id': 0}});
+    /*, {fields: {
+        'links.source': 1,
+            'name': 1,
+            'address': 1,
+            'phone': 1,
+            'email': 1,
+            'id': 1,
+            'business_name': 1,
+            'cards.id': 1,
+            'cards.links.customer': 1,
+            'cards.number': 1,
+            'cards.brand': 1,
+            'bank_accounts.id': 1,
+            'bank_accounts.links.customer': 1,
+            'bank_accounts.account_number': 1,
+            'bank_accounts.bank_name': 1,
+            'bank_accounts.account_type': 1
+    }}*/
 });
 
-Meteor.publish('receipt_debits', function (input) {
+Meteor.publish('receipt_charges', function (input) {
 	//Check the input that came from the client
 	check(input, String);
 
-	return Debits.find({_id: input}, {fields: {
-		'status': 1,
-		'links.source': 1,
-		'id': 1,
-        'failure_reason': 1,
-        'failure_reason_code': 1
-	}});
+	return Charges.find({_id: input}, {fields: {'id': 0}});
 });
-
 
 Meteor.publish('donate_list', function () {
 	//check to see that the user is the admin user

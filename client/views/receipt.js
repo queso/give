@@ -12,11 +12,11 @@ Template.Receipt.helpers({
     donation: function () {
         return Donations.findOne();
     },
-    customer: function () {
-        return Customers.findOne();
+    customer_data: function () {
+        return Customers.findOne().metadata;
     },
-    debit: function () {
-        return Debits.findOne();
+    charges: function () {
+        return Charges.findOne();
     },
     frequency: function () {
         if(this.is_recurring){
@@ -34,33 +34,18 @@ Template.Receipt.helpers({
           return this.business_name + "<br>"
         }
    },
-   name: function () {
-   		return this.name;
-   },
-   line1: function () {
-   		return this.address.line1;
-   },
-   line2: function () {
-   	if(this.address.line2) {
-   		return "<br>" + this.address.line2;
+    address_line2: function () {
+   	if(this.address_line2) {
+   		return "<br>" + this.address_line2;
    	} else {
    		return false;
    	}
    },
-   city: function () {
-   		return this.address.city;
-   },
-   state: function () {
-   		return this.address.state;
-   },
-   postal_code: function () {
-   		return this.address.postal_code;
-   },
     country_code: function () {
-   		if(this.address.country_code === 'US' || this.address.country_code === null) {
+   		if(this.country === 'US' || this.country === null) {
    			return;
    		}else {
-   			return this.address.country_code;
+   			return this.country;
    		}
     },
     email: function () {
@@ -77,7 +62,7 @@ Template.Receipt.helpers({
         return this.donateTo;
 },
     donateWith: function () {
-        var source = Debits.findOne().links.source;
+        var source = Charges.findOne().links.source;
         if(source.slice(0,2) === 'CC'){
             var card = _.findWhere(this.cards, {id: source});
                 return card.brand + ", ending in " + card.number.slice(-4);

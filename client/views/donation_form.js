@@ -138,9 +138,15 @@ function toggleBox() {
 }
 
 //This is the callback for the client side tokenization of cards and bank_accounts.
-function handleCalls(payment, form) {
+function handleCalls(payment, form, type) {
     // payment is the token returned from Stripe
-    form.paymentInformation.id = payment.id;
+    console.dir(payment);
+    form.paymentInformation.token_id = payment.id;
+    if(type === 'card'){
+        form.paymentInformation.source_id = payment.card.id;
+    } else {
+        form.paymentInformation.source_id = payment.bank_account.id;
+    }
     Meteor.call('stripeDonation', form, function (error, result) {
         if (error) {
             //handleErrors is used to check the returned error and the display a user friendly message about what happened that caused
@@ -155,11 +161,11 @@ function handleCalls(payment, form) {
                 handleErrors(send_error);
                 //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
                 updateTotal();
-            } else if(result.deb === 'scheduled'){
+            } else if(result.charge === 'scheduled'){
                 // Send the user to the scheduled page and include the frequency and the amount in the url for displaying to them
                 Router.go('/give/scheduled/?frequency=' + form.paymentInformation.is_recurring + '&amount=' + form.paymentInformation.amount/100 + '&start_date=' + form.paymentInformation.start_date );
             }else{
-                Router.go('/give/thanks?c=' + result.c + "&don=" + result.don + "&deb=" + result.deb);
+                Router.go('/give/thanks?c=' + result.c + "&don=" + result.don + "&charge=" + result.charge);
             }
         }
     });
@@ -258,7 +264,7 @@ Template.DonationForm.events({
                 "is_recurring": $('#is_recurring').val(),
                 "coverTheFees": $('#coverTheFees').is(":checked"),
                 "created_at": moment().format('MM/DD/YYYY, hh:mm'),
-                "start_date": new Date($('#start_date').val()).toISOString()
+                "start_date": moment(new Date($('#start_date').val())).format('X')
             },
             "customer": {
                 "fname": $('#fname').val(),
@@ -278,7 +284,10 @@ Template.DonationForm.events({
             sessionId: Meteor.default_connection._lastSessionId
         };
 
-        form.paymentInformation.later = (!moment(form.paymentInformation.start_date).isSame(Date.now(), 'day'));
+        form.paymentInformation.later = (!moment(moment(new Date($('#start_date').val()))).isSame(Date.now(), 'day'));
+        if(!form.paymentInformation.later){
+            form.paymentInformation.start_date = 'today';
+        }
 
         if (form.paymentInformation.total_amount !== form.paymentInformation.amount) {
             form.paymentInformation.fees = (form.paymentInformation.total_amount - form.paymentInformation.amount);
@@ -304,7 +313,7 @@ Template.DonationForm.events({
                     handleErrors(response.error);
                 } else {
                     // Call your backend
-                    handleCalls(response, form);
+                    handleCalls(response, form, 'card');
                 }
                 /*if () {
                     // Show the errors on the form
@@ -351,7 +360,7 @@ Template.DonationForm.events({
                     handleErrors(response.error);
                 } else {
                     // Call your backend
-                    handleCalls(response, form);
+                    handleCalls(response, form, 'check');
                 }
             });
             /*balanced.bankAccount.create(payload, function (response) {

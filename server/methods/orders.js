@@ -14,26 +14,6 @@ _.extend(Utils, {
 
         return order;
     },
-    debit_order: function (total, donation_id, customer_id, order, paymentHref) {
-        logger.info("Inside debit_order.");
-        var debit;
-        var paymentObject = balanced.get(paymentHref);
-        //TODO: run tests against the amount value to make sure it is always correct
-        debit = Utils.extractFromPromise(balanced.get(order).debit_from(paymentObject, ({ "amount": total,
-            "appears_on_statement_as": "Trash Mountain"})));
-
-        console.log(debit._api.cache[debit.href]);
-        var debit_insert = debit._api.cache[debit.href];
-        console.dir(debit_insert)
-        debit_insert.donation_id = donation_id;
-        debit_insert.customer_id = customer_id;
-        debit_insert._id = debit_insert.id;
-
-        //add debit response from Balanced to the database
-        Debits.insert(debit_insert);
-        logger.info("Finished balanced order debit. Debits ID: " + debit_insert.id);
-        return debit_insert._id;
-    },
     credit_order: function(debitID) {
         if(Donate.findOne({'debit.id': debitID, 'credit.sent': {$exists: true}})) {
             //Check to see if this order has already been credited.

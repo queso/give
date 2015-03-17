@@ -1,8 +1,7 @@
-//Includes address, phone, email, sources
-Customers = new Meteor.Collection('customers');
+Subscriptions = new Meteor.Collection('subscriptions');
 if (Meteor.isServer) {
-    Customers._ensureIndex({'id': 1}, {background: true});
-    Customers.deny({
+    Subscriptions._ensureIndex({'id': 1}, {background: true});
+    Subscriptions.deny({
         insert: function (userId, doc) {
             if(userId === Meteor.settings.admin_user){
                 return false;
@@ -12,8 +11,7 @@ if (Meteor.isServer) {
         },
 
         update: function (userId, doc, fieldNames, modifier) {
-            console.dir(doc);
-            if(userId === Meteor.settings.admin_user || Meteor.users.findOne(userId, doc)){
+            if(userId === Meteor.settings.admin_user){
                 return false;
             } else{
                 return true;
@@ -29,7 +27,7 @@ if (Meteor.isServer) {
         }
     });
 
-    Customers.allow({
+    Subscriptions.allow({
         insert: function (userId, doc) {
             if(userId === Meteor.settings.admin_user){
                 return true;
@@ -39,7 +37,7 @@ if (Meteor.isServer) {
         },
 
         update: function (userId, doc, fieldNames, modifier) {
-            if(userId === Meteor.settings.admin_user || Meteor.users.findOne(userId, doc)){
+            if(userId === Meteor.settings.admin_user){
                 return true;
             } else{
                 return false;

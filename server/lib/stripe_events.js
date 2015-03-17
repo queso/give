@@ -20,6 +20,9 @@ Stripe_Events = {
         return;
     },
     'charge.succeeded': function (stripeEvent, res) {
+        console.dir(stripeEvent);
+        stripeEvent.data.object._id = stripeEvent.data.object.id;
+        Charges.upsert({_id: stripeEvent.data.object._id}, stripeEvent.data.object);
         console.log(stripeEvent.type + ': event processed');
         return;
     },
@@ -72,6 +75,10 @@ Stripe_Events = {
         return;
     },
     'customer.card.deleted': function (stripeEvent, res) {
+        console.log(stripeEvent.type + ': event processed');
+        return;
+    },
+    'customer.source.created': function (stripeEvent, res) {
         console.log(stripeEvent.type + ': event processed');
         return;
     },

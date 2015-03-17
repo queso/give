@@ -20,18 +20,16 @@
             <dl class="invoice-meta">
                 <dt class="invoice-number">Donation ID:</dt>
                 <dd>
-                    {{debit.id}}
+                    {{charges._id}}
                 </dd>
                 <dt class="invoice-date">Donation Date</dt>
                 <dd>
-                    {{#with debit}}
+                    {{#with charges}}
                         {{date}}
                     {{/with}}
                 </dd><dt class="invoice-frequency">Donation Frequency</dt>
                 <dd>
-                    {{#with donation}}
-                        <span class="invoice-frequency">{{frequency}}</span>
-                    {{/with}}
+                        <span class="invoice-frequency">{{donation.frequency}}</span>
                 </dd>
             </dl>
         </header>
@@ -55,18 +53,19 @@
                 </div><!-- e: vcard -->
             </div><!-- e invoice-to -->
             <div class="invoice-from"></div>
-            {{#with customer}}
+            {{#with customer_data}}
                 <div class="invoice-from">
                     <h2>Donation From:</h2>
-                    <div id="hcard-{{name}}" class="vcard">
-                        <a class="fn">{{{business_name}}} {{name}}</a><br>
+                    <div id="hcard-{{fname}}-{{lname}}" class="vcard">
+                        <a class="fn">{{{business_name}}} {{fname}} {{lname}}</a><br>
                         <a class="email">{{email}}</a>
 
                         <div class="adr">
-                            <div class="street-address">{{line1}}{{{line2}}}</div>
+                            <div class="street-address">{{address_line1}}{{{address_line2}}}</div>
                             <span class="locality">{{city}}, </span>
                             <span class="region">{{state}}</span>
                             <span class="postal-code">{{postal_code}}</span>
+                            <span class="country-code">{{country_code}}</span>
                         </div>
 
                         <div class="tel">{{{phone}}}</div>
@@ -92,9 +91,7 @@
                             <tr>
                                 <th>{{#with donation}}{{donateTo}}{{/with}}</th>
                                 <td class="donateWith text-left">
-                                    {{#with customer}}
-                                        {{donateWith}}
-                                    {{/with}}
+                                    {{charges.source.brand}}
                                 </td>
                                 <td>${{#with donation}}{{amount}}{{/with}}</td>
                             </tr>
