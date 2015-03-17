@@ -1,3 +1,4 @@
+/*
 Billy = {
 	createBillyCustomer: function(customerID){
 		try {
@@ -232,11 +233,13 @@ Meteor.methods({
                 billyInvoice = getInvoice(billySubscribeCustomer.data.guid);
                 billyInvoice.data.items[0].subscription_guid = billySubscribeCustomer.data.guid;
                 //push this invoice into the document
-                /*Donations.update(data._id, {
+                */
+/*Donations.update(data._id, {
                     $push: {
                         'invoices': billyInvoice.data.items[0]
                     }
-                });*/
+                });*//*
+
                 logger.info("Inserted invoice into appropriate subscription.");
 
                 //Get the whole Transaction
@@ -303,4 +306,4 @@ Meteor.methods({
             }
 		}
 	}
-});
+});*/

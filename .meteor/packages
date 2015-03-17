@@ -3,7 +3,6 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
-j4507:balanced-payments-production
 meteorhacks:npm
 email
 http
@@ -25,3 +24,5 @@ audit-argument-checks
 meteor-platform
 sacha:spin
 momentjs:moment
+msavin:mongol
+mrgalaxy:stripe

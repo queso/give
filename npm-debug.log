@@ -1,0 +1,139 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'install', '-g', 'plaid' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.33
+4 verbose cache add [ 'plaid', null ]
+5 verbose cache add name=undefined spec="plaid" args=["plaid",null]
+6 verbose parsed url { protocol: null,
+6 verbose parsed url   slashes: null,
+6 verbose parsed url   auth: null,
+6 verbose parsed url   host: null,
+6 verbose parsed url   port: null,
+6 verbose parsed url   hostname: null,
+6 verbose parsed url   hash: null,
+6 verbose parsed url   search: null,
+6 verbose parsed url   query: null,
+6 verbose parsed url   pathname: 'plaid',
+6 verbose parsed url   path: 'plaid',
+6 verbose parsed url   href: 'plaid' }
+7 silly lockFile b5bf7a4c-plaid plaid
+8 verbose lock plaid /Users/Bechard/.npm/b5bf7a4c-plaid.lock
+9 silly lockFile b5bf7a4c-plaid plaid
+10 silly lockFile b5bf7a4c-plaid plaid
+11 verbose addNamed [ 'plaid', '' ]
+12 verbose addNamed [ null, '*' ]
+13 silly lockFile 1e19a915-plaid plaid@
+14 verbose lock plaid@ /Users/Bechard/.npm/1e19a915-plaid.lock
+15 silly addNameRange { name: 'plaid', range: '*', hasData: false }
+16 verbose request where is /plaid
+17 verbose request registry https://registry.npmjs.org/
+18 verbose request id 1b04f8f25b40a0b5
+19 verbose url raw /plaid
+20 verbose url resolving [ 'https://registry.npmjs.org/', './plaid' ]
+21 verbose url resolved https://registry.npmjs.org/plaid
+22 verbose request where is https://registry.npmjs.org/plaid
+23 info trying registry request attempt 1 at 00:26:47
+24 verbose etag "COAZBAWSH35X013AMUHB2RCE5"
+25 http GET https://registry.npmjs.org/plaid
+26 http 200 https://registry.npmjs.org/plaid
+27 silly registry.get cb [ 200,
+27 silly registry.get   { date: 'Thu, 12 Mar 2015 05:26:48 GMT',
+27 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+27 silly registry.get     etag: '"20-a16393f55ee4090368b387d32f260304"',
+27 silly registry.get     'content-type': 'application/json',
+27 silly registry.get     'cache-control': 'max-age=60',
+27 silly registry.get     'content-length': '8072',
+27 silly registry.get     'accept-ranges': 'bytes',
+27 silly registry.get     via: '1.1 varnish',
+27 silly registry.get     age: '0',
+27 silly registry.get     'x-served-by': 'cache-dfw1824-DFW',
+27 silly registry.get     'x-cache': 'MISS',
+27 silly registry.get     'x-cache-hits': '0',
+27 silly registry.get     'x-timer': 'S1426138007.986709,VS0,VE253',
+27 silly registry.get     'keep-alive': 'timeout=10, max=50',
+27 silly registry.get     connection: 'Keep-Alive' } ]
+28 silly addNameRange number 2 { name: 'plaid', range: '*', hasData: true }
+29 silly addNameRange versions [ 'plaid',
+29 silly addNameRange   [ '0.0.1', '0.0.2', '0.0.3', '0.0.4', '0.0.5', '0.1.0', '0.1.1' ] ]
+30 verbose addNamed [ 'plaid', '0.1.1' ]
+31 verbose addNamed [ '0.1.1', '0.1.1' ]
+32 silly lockFile 43e7dd25-plaid-0-1-1 plaid@0.1.1
+33 verbose lock plaid@0.1.1 /Users/Bechard/.npm/43e7dd25-plaid-0-1-1.lock
+34 silly lockFile 43e7dd25-plaid-0-1-1 plaid@0.1.1
+35 silly lockFile 43e7dd25-plaid-0-1-1 plaid@0.1.1
+36 silly lockFile 1e19a915-plaid plaid@
+37 silly lockFile 1e19a915-plaid plaid@
+38 silly resolved [ { name: 'plaid',
+38 silly resolved     version: '0.1.1',
+38 silly resolved     description: 'Plaid.com client',
+38 silly resolved     main: 'index',
+38 silly resolved     author: { name: 'William Hockey', email: 'william@plaid.com' },
+38 silly resolved     contributors: [ [Object] ],
+38 silly resolved     keywords: [ 'plaid', 'transactions', 'plaid.io', 'plaid.com' ],
+38 silly resolved     dependencies:
+38 silly resolved      { underscore: '1.5.2',
+38 silly resolved        request: '~2.40.0',
+38 silly resolved        async: '~0.2.6',
+38 silly resolved        forms: '~0.9.1' },
+38 silly resolved     repository: { type: 'git', url: 'git://github.com/plaid/plaid-node.git' },
+38 silly resolved     bugs: { url: 'http://github.com/plaid/plaid-node/issues' },
+38 silly resolved     licenses: [ [Object] ],
+38 silly resolved     devDependencies:
+38 silly resolved      { canon: '0.4.x',
+38 silly resolved        jscs: '1.4.x',
+38 silly resolved        jshint: '2.5.x',
+38 silly resolved        mocha: '1.21.x',
+38 silly resolved        xyz: '0.4.x' },
+38 silly resolved     scripts: { test: 'NODE_ENV=test make test' },
+38 silly resolved     directories: { test: 'test' },
+38 silly resolved     gitHead: '65e977a1bfae5d5125d2e8f1719390417a35ca56',
+38 silly resolved     homepage: 'https://github.com/plaid/plaid-node',
+38 silly resolved     _id: 'plaid@0.1.1',
+38 silly resolved     _shasum: 'abd303d03b8bbe93dcdf2ddf7ac05b9d714e4a23',
+38 silly resolved     _from: 'plaid@',
+38 silly resolved     _npmVersion: '1.4.21',
+38 silly resolved     _npmUser: { name: 'davidchambers', email: 'dc@davidchambers.me' },
+38 silly resolved     maintainers: [ [Object], [Object] ],
+38 silly resolved     dist:
+38 silly resolved      { shasum: 'abd303d03b8bbe93dcdf2ddf7ac05b9d714e4a23',
+38 silly resolved        tarball: 'http://registry.npmjs.org/plaid/-/plaid-0.1.1.tgz' },
+38 silly resolved     _resolved: 'https://registry.npmjs.org/plaid/-/plaid-0.1.1.tgz',
+38 silly resolved     readme: 'ERROR: No README data found!' } ]
+39 info install plaid@0.1.1 into /usr/local/lib
+40 info installOne plaid@0.1.1
+41 verbose lib/node_modules/plaid unbuild
+42 verbose tar unpack /Users/Bechard/.npm/plaid/0.1.1/package.tgz
+43 silly lockFile dc382b74-usr-local-lib-node-modules-plaid tar:///usr/local/lib/node_modules/plaid
+44 verbose lock tar:///usr/local/lib/node_modules/plaid /Users/Bechard/.npm/dc382b74-usr-local-lib-node-modules-plaid.lock
+45 silly lockFile edc0cd85-hard-npm-plaid-0-1-1-package-tgz tar:///Users/Bechard/.npm/plaid/0.1.1/package.tgz
+46 verbose lock tar:///Users/Bechard/.npm/plaid/0.1.1/package.tgz /Users/Bechard/.npm/edc0cd85-hard-npm-plaid-0-1-1-package-tgz.lock
+47 silly gunzTarPerm modes [ '755', '644' ]
+48 error Error: EACCES, mkdir '/usr/local/lib/node_modules/plaid'
+48 error  { [Error: EACCES, mkdir '/usr/local/lib/node_modules/plaid']
+48 error   errno: 3,
+48 error   code: 'EACCES',
+48 error   path: '/usr/local/lib/node_modules/plaid',
+48 error   fstream_type: 'Directory',
+48 error   fstream_path: '/usr/local/lib/node_modules/plaid',
+48 error   fstream_class: 'DirWriter',
+48 error   fstream_stack:
+48 error    [ '/usr/local/lib/node_modules/npm/node_modules/fstream/lib/dir-writer.js:36:23',
+48 error      '/usr/local/lib/node_modules/npm/node_modules/mkdirp/index.js:46:53',
+48 error      'Object.oncomplete (fs.js:107:15)' ] }
+49 error Please try running this command again as root/Administrator.
+50 error System Darwin 14.1.0
+51 error command "node" "/usr/local/bin/npm" "install" "-g" "plaid"
+52 error cwd /Users/Bechard/Documents/meteor/give
+53 error node -v v0.10.33
+54 error npm -v 1.4.28
+55 error path /usr/local/lib/node_modules/plaid
+56 error fstream_path /usr/local/lib/node_modules/plaid
+57 error fstream_type Directory
+58 error fstream_class DirWriter
+59 error code EACCES
+60 error errno 3
+61 error stack Error: EACCES, mkdir '/usr/local/lib/node_modules/plaid'
+62 error fstream_stack /usr/local/lib/node_modules/npm/node_modules/fstream/lib/dir-writer.js:36:23
+62 error fstream_stack /usr/local/lib/node_modules/npm/node_modules/mkdirp/index.js:46:53
+62 error fstream_stack Object.oncomplete (fs.js:107:15)
+63 verbose exit [ 3, true ]

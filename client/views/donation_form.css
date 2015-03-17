@@ -99,7 +99,8 @@ select {
 }
 
 #total_amount_display {
-	text-align:center
+    margin-left: 15px;
+    padding-top: 9px;
 }
 
 .fa-question-circle {

@@ -16,7 +16,7 @@ Router.onBeforeAction(function () {
         this.next();
     }
 }, {
-    except: ['donation.form', 'donation.thanks', 'donation.gift', 'donation.scheduled', 'enrollAccount', 'forgotPwd', 'resetPwd']
+    except: ['donation.form', 'donation.thanks', 'donation.gift', 'donation.scheduled', 'enrollAccount', 'forgotPwd', 'resetPwd', 'stripe_webhooks']
 });
 
 Router.route(':root', function () {
@@ -226,4 +226,32 @@ Router.route(':root/scheduled', {
         Session.set('params.amount', this.params.query.amount);
         Session.set('params.start_date', moment(this.params.query.start_date).format('DD MMM, YYYY'));
     }
+});
+
+Router.route(':root/webhooks/stripe', function () {
+    var root = Meteor.settings.public.root;
+
+    // Receive an event, check that it contains a data.object object and send along to appropriate function
+    var request = this.request.body;
+    if(request.data && request.data.object){
+        console.dir(request.data.object);
+        var event = Stripe_Events[request.type](request);
+        this.response.statusCode = 200;
+        this.response.end('Oh hai Stripe!\n');
+    } else {
+        this.response.statusCode = 400;
+        this.response.end('Oh hai Stripe!\n\n');
+    }
+    /*switch(request.type){
+        case "customer.subscription.updated":
+            stripeUpdateSubscription(request.data.object);
+            break;
+        case "invoice.payment_succeeded":
+            stripeCreateInvoice(request.data.object);
+            break;
+    }
+    */
+
+}, {where: 'server',
+    name: 'stripe_webhooks'
 });

@@ -11,11 +11,13 @@ function handleErrors(error) {
     $("#spinDiv").hide();
 
     Session.set("loaded", true);
-    if(error.reason === "Match failed"){
+    if(error.message === "Your card's security code is invalid."){
         var gatherInfo = {};
         gatherInfo.browser = navigator.userAgent;
 
-        error.details = "<tr>\
+
+        // Stripe seems to have good error messages, might not need this
+        /*error.details = "<tr>\
                         <td><p>Hmmm... Looks like the form was submitted with something in it that computers don't like. Computers have\
                          a strict diet, so don't try to feed them anything that they shouldn't eat. <-- Think here of dogs and chocolate ;-)</p></td>\
                         </tr>\
@@ -26,37 +28,37 @@ function handleErrors(error) {
                         Then try to submit the form again.</p></td>\
                     </tr>\
                     <tr>\
-<td><p>2. If the form looks correct and you still get this error there could be a temporary problem preventing the form from being submitted. Try reloading the browser. \
-If you are still having problems, try rebooting your computer. If you come back here and you still have problems then please report this to tech support. <br> \
-<center><a target='_blank' href='mailto:support@trashmountain.com?subject=Trouble with the match field on the giving page&body=Boy, I sure love dogs. \
-But I&#39;m not here to talk about dogs, or cats. I&#39;m having a problem giving to your fine organization. %0A%0A\
-What&#39;s more, I&#39;ve tried all the steps listed on your site but I still can&#39;t give. What gives(pun intended)? Please help. %0A%0A\
-Please leave the below information in the email. This will help us get to the bottom of the problem. %0A%0A User Agent: " + gatherInfo.browser + "%0A\
-Language:  " + window.navigator.language + "%0A\
-IE Language:  " + navigator.userLanguage + "%0A\
-Location HREF: " + location.href + "'><button type='button' class='btn btn-danger'>Send an e-mail to support</button></a></center></p></td>\
+                        <td><p>2. If the form looks correct and you still get this error there could be a temporary problem preventing the form from being submitted. Try reloading the browser. \
+                        If you are still having problems, try rebooting your computer. If you come back here and you still have problems then please report this to tech support. <br> \
+                        <center><a target='_blank' href='mailto:support@trashmountain.com?subject=Trouble with the match field on the giving page&body=Boy, I sure love dogs. \
+                        But I&#39;m not here to talk about dogs, or cats. I&#39;m having a problem giving to your fine organization. %0A%0A\
+                        What&#39;s more, I&#39;ve tried all the steps listed on your site but I still can&#39;t give. What gives(pun intended)? Please help. %0A%0A\
+                        Please leave the below information in the email. This will help us get to the bottom of the problem. %0A%0A User Agent: " + gatherInfo.browser + "%0A\
+                        Language:  " + window.navigator.language + "%0A\
+                        IE Language:  " + navigator.userLanguage + "%0A\
+                        Location HREF: " + location.href + "'><button type='button' class='btn btn-danger'>Send an e-mail to support</button></a></center></p></td>\
                     </tr>\
-                </tr>";
+                </tr>";*/
 
 
         $('#modal_for_initial_donation_error').modal({show: true});
         $(".modal-dialog").css("z-index", "1500");
-        $('#errorCategory').html(error.reason);
-        $('#errorDescription').html(error.details);
+        $('#errorCategory').html(error.code);
+        $('#errorDescription').html(error.message);
     } else{
 
         $('#modal_for_initial_donation_error').modal({show: true});
         $(".modal-dialog").css("z-index", "1500");
-        $('#errorCategory').html(error.reason);
-        $('#errorDescription').html(error.details);
+        $('#errorCategory').html(error.code);
+        $('#errorDescription').html(error.message);
     }
 
 }
 
 function fillForm() {
     if (Session.get("paymentMethod") === "Check") {
-        $('#routing_number').val("321174851"); // Invalid test = 100000007 fail after initial screen = 021000021 valid test = 321174851
-        $('#account_number').val("9900000003"); // Invalid test = 8887776665555 fail after initial screen = 9900000004 valid test = 9900000003
+        $('#routing_number').val("111000025"); // Invalid test =  fail after initial screen =  valid test = 111000025
+        $('#account_number').val("000123456789"); // Invalid test =  fail after initial screen =  valid test = 000123456789
     } else {
         $('#card_number').val("4111111111111111"); //Succeeded = 4111111111111111 Failed = 4444444444444448 CVV mismatch = 5112000200000002
         $('#expiry_month option').prop('selected', false).filter('[value=12]').prop('selected', true);
@@ -87,11 +89,11 @@ function updateTotal() {
     if (data === 'Check') {
         if ($.isNumeric(donationAmount)) {
             $("#total_amount").val(donationAmount);
-            var testValueTransfer = $("#total_amount").val();
+            $("#show_total").hide();
             $("#total_amount_display").text("$" + donationAmount).css({
                 'color': '#34495e'
             });
-            return Session.set("total_amount", testValueTransfer);
+            return Session.set("total_amount", $("#total_amount").val());
         } else {
             return $("#total_amount_display").text("Please enter a number in the amount field.").css({
                 'color': 'red'
@@ -105,16 +107,20 @@ function updateTotal() {
         } else {
             if ($.isNumeric(donationAmount)) {
                 if ($('#coverTheFees').prop('checked')) {
+                    $("#show_total").show();
+                    Session.set("coverTheFees", true);
                     var fee = (donationAmount * 0.029 + 0.30).toFixed(2);
                     var roundedAmount = (+donationAmount + (+fee)).toFixed(2);
-                    $("#total_amount_display").text("$" + donationAmount + " + $" + fee + " = $" + roundedAmount).css({
+                    $("#total_amount_display").text(" + $" + fee + " = $" + roundedAmount).css({
                         'color': '#34495e'
                     });
                     $("#total_amount").val(roundedAmount);
                     return Session.set("amount", roundedAmount);
                 } else {
+                    Session.set("coverTheFees", false);
                     $("#total_amount").val(donationAmount);
-                    return $("#total_amount_display").text("$" + donationAmount).css({
+                    $("#show_total").hide();
+                    return $("#total_amount_display").text("").css({
                         'color': '#34495e'
                     });
                 }
@@ -133,9 +139,31 @@ function toggleBox() {
 
 //This is the callback for the client side tokenization of cards and bank_accounts.
 function handleCalls(payment, form) {
-    form.paymentInformation.href = payment.href;
-    form.paymentInformation.id = payment.id;    
-
+    // payment is the token returned from Stripe
+    form.paymentInformation.id = payment.id;
+    Meteor.call('stripeDonation', form, function (error, result) {
+        if (error) {
+            //handleErrors is used to check the returned error and the display a user friendly message about what happened that caused
+            //the error.
+            handleErrors(error);
+            //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
+            updateTotal();
+        } else {
+            console.dir(result);
+            if ( result.error ) {
+                var send_error = {code: result.error, message: result.message};
+                handleErrors(send_error);
+                //run updateTotal so that when the user resubmits the form the total_amount field won't be blank.
+                updateTotal();
+            } else if(result.deb === 'scheduled'){
+                // Send the user to the scheduled page and include the frequency and the amount in the url for displaying to them
+                Router.go('/give/scheduled/?frequency=' + form.paymentInformation.is_recurring + '&amount=' + form.paymentInformation.amount/100 + '&start_date=' + form.paymentInformation.start_date );
+            }else{
+                Router.go('/give/thanks?c=' + result.c + "&don=" + result.don + "&deb=" + result.deb);
+            }
+        }
+    });
+/*
     if ($('#is_recurring').val() === 'one_time') {
         Meteor.call("singleDonation", form, function (error, result) {
             if (result) {
@@ -170,7 +198,7 @@ function handleCalls(payment, form) {
                 handleErrors(error);
             }
         });
-    }
+    }*/
 }
 
 Template.DonationForm.events({
@@ -257,18 +285,43 @@ Template.DonationForm.events({
         }
         if (form.paymentInformation.donateWith === "Card") {
             form.paymentInformation.type = "Card";
-            var payload = {
-                name: $('#fname').val() + ' ' + $('#lname').val(),
-                number: $('[name=card_number]').val(),
-                expiration_month: $('[name=expiry_month]').val(),
-                expiration_year: $('[name=expiry_year]').val(),
-                cvv: $('[name=cvv]').val(),
-                address: {
-                    postal_code: $('#postal_code').val()
-                }
-            };
 
-            balanced.card.create(payload, function (response) {
+            Stripe.card.createToken({
+                name: $('#fname').val() + ' ' + $('#lname').val(),
+                number: $('#card_number').val(),
+                cvc: $('#cvv').val(),
+                exp_month: $('#expiry_month').val(),
+                exp_year: $('#expiry_year').val(),
+                address_line1: $('#address_line1').val(),
+                address_line2: $('#address_line2').val(),
+                address_city: $('#city').val(),
+                address_state: $('#region').val(),
+                address_country: $('#country').val(),
+                address_zip: $('#postal_code').val()
+            },  function(status, response){
+                if (response.error) {
+                    //error logic here
+                    handleErrors(response.error);
+                } else {
+                    // Call your backend
+                    handleCalls(response, form);
+                }
+                /*if () {
+                    // Show the errors on the form
+                    $form.find('.payment-errors').text(response.error.message);
+                    $form.find('button').prop('disabled', false);
+                } else {
+                    // response contains id and card, which contains additional card details
+                    var token = response.id;
+                    // Insert the token into the form so it gets submitted to the server
+                    $form.append($('<input type="hidden" name="stripeToken" />').val(token));
+                    // and submit
+                    $form.get(0).submit();
+                }*/
+
+
+            });
+            /*balanced.card.create(payload, function (response) {
                 // Successful tokenization
                 if (response.status_code === 201) {
                     var fundingInstrument = response.cards != null ? response.cards[0] : response.bank_accounts[0];
@@ -279,16 +332,29 @@ Template.DonationForm.events({
                     var sendError = {reason: response.errors[0].category_code, details: response.errors[0].description};
                     handleErrors(sendError);
                 }
-            });
+            });*/
         } else {
             form.paymentInformation.type = "Check";
-            var payload = {
+            Stripe.bankAccount.createToken({
                 name: $('#fname').val() + ' ' + $('#lname').val(),
-                account_number: $('#account_number').val(),
+                country: $('#country').val(),
                 routing_number: $('#routing_number').val(),
-                account_type: $('#account_type').val()
-            };
-            balanced.bankAccount.create(payload, function (response) {
+                account_number: $('#account_number').val(),
+                address_line1: $('#address_line1').val(),
+                address_line2: $('#address_line2').val(),
+                address_city: $('#city').val(),
+                address_state: $('#region').val(),
+                address_zip: $('#postal_code').val()
+            },  function(status, response){
+                if (response.error) {
+                    //error logic here
+                    handleErrors(response.error);
+                } else {
+                    // Call your backend
+                    handleCalls(response, form);
+                }
+            });
+            /*balanced.bankAccount.create(payload, function (response) {
                 // Successful tokenization
                 if (response.status_code === 201) {
                     var fundingInstrument = response.bank_accounts != null ? response.bank_accounts[0] : response.cards[0];
@@ -298,7 +364,7 @@ Template.DonationForm.events({
                     //error logic here
                     console.error(response);
                 }
-            });
+            });*/
         }
     },
     'change #is_recurring': function() {
@@ -334,6 +400,10 @@ Template.DonationForm.events({
     'change [name=donateWith]': function() {
         var selectedValue = $("[name=donateWith]").val();
         Session.set("paymentMethod", selectedValue);
+        if(Session.equals("paymentMethod", "Check")){
+            updateTotal();
+            $("#show_total").hide();
+        }
     },
     'change #donateTo': function() {
         if($('#donateTo').val() !== 'WriteIn') {
@@ -464,6 +534,21 @@ Template.DonationForm.helpers({
     },
     userLoggedIn: function() {
         return Boolean(Meteor.users.findOne());
+    },
+    amountWidth: function() {
+        if(Session.equals("paymentMethod", "Card")){
+            return 'form-group col-md-4 col-sm-4 col-xs-12';
+        } else{
+            return 'form-group';
+        }
+    },
+    showTotal: function() {
+       return Session.equals("coverTheFees", true);
+    },
+    checkedFeeWidth: function(){
+        if(Session.equals("coverTheFees", true)){
+            return "form-group";
+        } else return "form-group";
     }
 });
 /*****************************************************************************/
@@ -518,20 +603,20 @@ Template.checkPaymentInformation.helpers({
     attributes_Input_AccountNumber: function() {
         return {
             type: "text",
-            name: "account_number",
             id: "account_number",
             placeholder: "Bank Account Number",
             required: true
         };
+        //name: "account_number",
     },
     attributes_Input_RoutingNumber: function() {
         return {
             type: "text",
-            name: "routing_number",
             id: "routing_number",
             placeholder: "Routing numbers are 9 digits long",
             required: true
         };
+        //name: "routing_number",
     }
 });
 //Check Payment Template mods

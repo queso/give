@@ -1,3 +1,4 @@
+/*
 var bodyParser = Meteor.npmRequire('body-parser');
 var EventEmitter = Meteor.npmRequire('events').EventEmitter;
 
@@ -72,3 +73,4 @@ WebApp.connectHandlers.use(bodyParser.urlencoded({
                 res.end("404");//TODO: Remove Got it text, just leave blank when this is live.
             }
     }));
+*/
