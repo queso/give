@@ -165,6 +165,34 @@ _.extend(Utils, {
         logger.info("Customer _id: " + stripeCustomer.id);
         return stripeCustomer;
     },
+    create_invoice: function (total, donation_id, customer_id, payment_id) {
+        logger.info("Inside create_invoice.");
+        var invoice = new Future();
+
+        Stripe.invoices.create({
+            amount_due: total,
+            currency: "usd",
+            customer: customer_id,
+            source: payment_id
+        }, function(error, charge){
+            if (error){
+                invoice.return(error);
+            } else {
+                invoice.return(charge);
+            }
+        });
+        invoice = invoice.wait();
+        if(!invoice.object){
+            throw new Meteor.Error(invoice.rawType, invoice.message);
+        }
+
+        invoice._id = invoice.id;
+
+        // Then
+        var paid_invoice = Stripe.invoices.pay(invoice.id);
+        logger.info("Finished create_invoice.");
+
+    },
     charge: function (total, donation_id, customer_id, payment_id) {
         logger.info("Inside charge.");
 
@@ -259,7 +287,72 @@ _.extend(Utils, {
             stripeInvoiceList.data[0].charge);
             return stripeInvoiceList.data[0].charge;
         } else {
+            //TODO: send scheduled email & log in audit_email
             return 'scheduled';
+        }
+    },
+    audit_email: function (id, type, body_object, billy) {
+        if(type === 'invoice.created'){
+            Audit_trail.update({balanced_debit_id: id}, {
+                    $set: {
+                        'invoice.created.sent': true,
+                        'invoice.created.time': new Date()
+                    }},
+                {
+                    upsert: true
+                }
+            );
+        } else if (type === 'charge.succeeded') {
+            Audit_trail.update({balanced_debit_id: id}, {
+                    $set: {
+                        'succeeded.sent': true,
+                        'succeeded.time': new Date()
+                    }},
+                {
+                    upsert: true
+                }
+            );
+        } else if (type === 'large_gift') {
+            Audit_trail.update({balanced_debit_id: id}, {
+                    $set: {
+                        'large_gift.sent': true,
+                        'large_gift.time': new Date()
+                    }},
+                {
+                    upsert: true
+                }
+            );
+        } else if (type === 'failed') {
+            if(billy){
+                // Show that a failed email was sent for this subscription if it used Billy
+                Audit_trail.update({
+                    balanced_debit_id: id
+                }, {
+                    $set: {
+                        'failed.sent': true,
+                        'failed.time': new Date(),
+                        'failed.failure_reason': body_object.failure_reason,
+                        'failed.failure_reason_code': body_object.failure_reason_code
+                    }
+                }, {
+                    upsert: true
+                });
+
+            } else {
+                // Show that a failed email was sent for this subscription
+                Audit_trail.update({
+                    balanced_debit_id: id
+                }, {
+                    $set: {
+                        'failed.sent': true,
+                        'failed.time': new Date(),
+                        'failed.failure_reason': body_object.failure_reason,
+                        'failed.failure_reason_code': body_object.failure_reason_code
+                    }
+                }, {
+                    upsert: true
+                });
+            }
         }
     }
 });

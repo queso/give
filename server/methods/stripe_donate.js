@@ -58,11 +58,12 @@ Meteor.methods({
                 //var associate = Utils.create_association(customerData._id, card.href, customerData.href);
 
                 //Charge the card (which also connects this card or bank_account to the customer)
-                var charge = Utils.charge(data.paymentInformation.total_amount, data._id, customerData.id, data.paymentInformation.source_id);
-                if(!charge.object){
-                    return {error: charge.rawType, message: charge.message};
+                var stripe_invoice = Utils.create_invoice(data.paymentInformation.total_amount, data._id, customerData.id, data.paymentInformation.source_id);
+                if(!stripe_invoice.object){
+                    return {error: stripe_invoice.rawType, message: stripe_invoice.message};
                 }
-                console.dir(charge);
+                console.dir(stripe_invoice);
+                return {c: customerData.id, don: data._id, charge: stripe_invoice.charge};
             }
             else {
                 // Print how often it it recurs?
@@ -88,7 +89,6 @@ Meteor.methods({
                 }*/
                 return {c: customerData.id, don: data._id, charge: charge_id};
             }
-            return {c: customerData.id, don: data._id, charge: charge.id};
 
         /*} catch (e) {
             logger.error("Got to catch error area of processPayment function." + e + " " + e.reason);
