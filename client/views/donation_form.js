@@ -278,13 +278,13 @@ Template.DonationForm.events({
                 "city": $('#city').val(),
                 "postal_code": $('#postal_code').val(),
                 "country": $('#country').val(),
-                "created_at": moment().format('MM/DD/YYYY, hh:mm')
+                "created_at": moment().format('MM/DD/YYYY, hh:mma')
             },
             "URL": document.URL,
             sessionId: Meteor.default_connection._lastSessionId
         };
 
-        form.paymentInformation.later = (!moment(moment(new Date($('#start_date').val()))).isSame(Date.now(), 'day'));
+        form.paymentInformation.later = (!moment(new Date($('#start_date').val())).isSame(Date.now(), 'day'));
         if(!form.paymentInformation.later){
             form.paymentInformation.start_date = 'today';
         }
@@ -313,6 +313,7 @@ Template.DonationForm.events({
                     handleErrors(response.error);
                 } else {
                     // Call your backend
+                    console.log(form.paymentInformation.start_date);
                     handleCalls(response, form, 'card');
                 }
                 /*if () {

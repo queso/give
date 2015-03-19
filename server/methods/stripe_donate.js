@@ -4,6 +4,7 @@ Meteor.methods({
         /*try {*/
             //Check the form to make sure nothing malicious is being submitted to the server
             Utils.checkFormFields(data);
+            console.log(data.paymentInformation.start_date);
 
             //Convert donation to more readable format
             var donateTo = Utils.getDonateTo(data.paymentInformation.donateTo);

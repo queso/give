@@ -185,19 +185,28 @@ _.extend(Utils,{
 	},
     send_scheduled_email: function (id, subscription_id, frequency, amount) {
         /*try {*/
-        logger.info("Started send_donation_email with ID: " + id + " and frequency, amount " + frequency + ", " + amount);
+        logger.info("Started send_donation_email with ID: " + id + " subscription_id: " + subscription_id + " frequency: " + frequency + "amount: " + amount);
 
         var donation_cursor = Donations.findOne({_id: id});
-        var started_at = donation_cursor.subscriptions[0].started_at;
+        var subscription_cursor = Subscriptions.findOne({_id: subscription_id});
+        var customer_cursor = Customers.findOne(donation_cursor.customer_id);
 
-        started_at = moment(started_at).format("MMM DD, YYYY");
+        var start_at = subscription_cursor.trial_end;
+        start_at = moment(start_at * 1000).format("MMM DD, YYYY");
 
         var bcc_address = "support@trashmountain.com";
-        var customer_cursor = Customers.findOne(donation_cursor.customer_id);
         var email_address = customer_cursor.email;
+
+        amount = (amount/100).toFixed(2);
         slug = "scheduled-donation-with-amount-and-frequency";
 
-        //Utils.audit_email(id, 'scheduled');
+        if(Audit_trail.findOne({"subscription_id": subscription_id}) &&
+            Audit_trail.findOne({"subscription_id": subscription_id}).subscription_scheduled &&
+            Audit_trail.findOne({"subscription_id": subscription_id}).subscription_scheduled.sent){
+            return;
+        } else{
+            Utils.audit_email(subscription_id, 'scheduled');
+        }
 
         logger.info("Sending with template name: " + slug);
         Meteor.Mandrill.sendTemplate({
@@ -217,7 +226,7 @@ _.extend(Utils,{
                         "vars": [
                             {
                                 "name": "StartDate",
-                                "content": started_at
+                                "content": start_at
                             }, {
                                 "name": "DEV",
                                 "content": Meteor.settings.dev

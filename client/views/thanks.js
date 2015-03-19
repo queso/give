@@ -19,7 +19,7 @@ Template.Thanks.helpers({
                     <p class='alert alert-info'>\
                         You will receive an email acknowledgement immediately and an email receipt after your gift has been successfully processed.\
                         This page will automatically show your gift receipt once the payment has been approved. <strong>For ACH gifts it may take up to a \
-                        four days to receive an email receipt.</strong> \
+                        seven days to receive an email receipt.</strong> \
                       </p>\
                 <p  id='success_pending_icon' class='text-center alert alert-success'>\
                     <i class='fa fa-check-square large-check'></i>\

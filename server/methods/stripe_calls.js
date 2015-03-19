@@ -197,11 +197,12 @@ _.extend(Utils, {
     },
     charge_plan: function (total, donation_id, customer_id, payment_id, frequency, start_date, metadata) {
         logger.info("Inside charge_plan.");
-        console.log(total);
+        console.log(start_date);
 
-        var plan;
+        var plan, subscription_frequency;
+        subscription_frequency = frequency;
 
-        switch (frequency) {
+        switch (subscription_frequency) {
             case "monthly":
                 plan = Meteor.settings.stripe.plan.monthly;
                 break;
@@ -218,7 +219,7 @@ _.extend(Utils, {
             quantity: total,
             metadata: metadata
         };
-        if (start_date = 'today') {
+        if (start_date === 'today') {
         } else {
             attributes.trial_end = start_date;
         }
@@ -261,6 +262,7 @@ _.extend(Utils, {
             stripeInvoiceList.data[0].charge);
             return stripeInvoiceList.data[0].charge;
         } else {
+            Utils.send_scheduled_email(donation_id, stripeChargePlan.id, subscription_frequency, total);
             return 'scheduled';
         }
     },
@@ -303,6 +305,16 @@ _.extend(Utils, {
                 $set: {
                     'charge.failed.sent': true,
                     'charge.failed.time': new Date()
+                }
+            }, {
+                upsert: true
+            });
+        }
+        else if (type === 'subscription.scheduled') {
+            Audit_trail.update({subscription_id: id}, {
+                $set: {
+                    'subscription_scheduled.sent': true,
+                    'subscription_scheduled.time': new Date()
                 }
             }, {
                 upsert: true
