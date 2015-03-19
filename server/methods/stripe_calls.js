@@ -1,5 +1,5 @@
 _.extend(Utils, {
-        getDonateTo: function (donateTo) {
+    getDonateTo: function (donateTo) {
         var returnToCalled;
         switch (donateTo) {
             case 'WriteIn':
@@ -98,7 +98,7 @@ _.extend(Utils, {
 
         var stripeCustomer = new Future();
         var type;
-        if(paymentDevice.slice(0,2) === 'to'){
+        if (paymentDevice.slice(0, 2) === 'to') {
             type = "card";
             Stripe.customers.create({
                 card: paymentDevice,
@@ -116,16 +116,16 @@ _.extend(Utils, {
                     "fname": customerInfo.fname,
                     "lname": customerInfo.lname
                 }
-            }, function(error, customer){
-                if (error){
+            }, function (error, customer) {
+                if (error) {
                     //console.dir(error);
                     stripeCustomer.return(error);
                 } else {
                     stripeCustomer.return(customer);
                 }
             });
-        }else if(paymentDevice.slice(0,2) === 'bt'){
-        /**/
+        } else if (paymentDevice.slice(0, 2) === 'bt') {
+            /**/
             console.log("Bank_account");
             type = "bank_account";
             Stripe.customers.create({
@@ -144,19 +144,19 @@ _.extend(Utils, {
                     "fname": customerInfo.fname,
                     "lname": customerInfo.lname
                 }
-            }, function(error, customer){
-                if (error){
+            }, function (error, customer) {
+                if (error) {
                     //console.dir(error);
                     stripeCustomer.return(error);
                 } else {
                     stripeCustomer.return(customer);
                 }
             });
-        } else{
+        } else {
             throw new Meteor.Error('Token-match', "Sorry, that token doesn't match any know prefix.");
         }
         stripeCustomer = stripeCustomer.wait();
-        if(!stripeCustomer.object){
+        if (!stripeCustomer.object) {
             throw new Meteor.Error(stripeCustomer.rawType, stripeCustomer.message);
         }
         stripeCustomer._id = stripeCustomer.id;
@@ -165,35 +165,7 @@ _.extend(Utils, {
         logger.info("Customer _id: " + stripeCustomer.id);
         return stripeCustomer;
     },
-    create_invoice: function (total, donation_id, customer_id, payment_id) {
-        logger.info("Inside create_invoice.");
-        var invoice = new Future();
-
-        Stripe.invoices.create({
-            amount_due: total,
-            currency: "usd",
-            customer: customer_id,
-            source: payment_id
-        }, function(error, charge){
-            if (error){
-                invoice.return(error);
-            } else {
-                invoice.return(charge);
-            }
-        });
-        invoice = invoice.wait();
-        if(!invoice.object){
-            throw new Meteor.Error(invoice.rawType, invoice.message);
-        }
-
-        invoice._id = invoice.id;
-
-        // Then
-        var paid_invoice = Stripe.invoices.pay(invoice.id);
-        logger.info("Finished create_invoice.");
-
-    },
-    charge: function (total, donation_id, customer_id, payment_id) {
+    charge: function (total, donation_id, customer_id, payment_id, metadata) {
         logger.info("Inside charge.");
 
         var stripeCharge = new Future();
@@ -202,9 +174,10 @@ _.extend(Utils, {
             amount: total,
             currency: "usd",
             customer: customer_id,
-            source: payment_id
-        }, function(error, charge){
-            if (error){
+            source: payment_id,
+            metadata: metadata
+        }, function (error, charge) {
+            if (error) {
                 //console.dir(error);
                 stripeCharge.return(error);
             } else {
@@ -212,7 +185,7 @@ _.extend(Utils, {
             }
         });
         stripeCharge = stripeCharge.wait();
-        if(!stripeCharge.object){
+        if (!stripeCharge.object) {
             throw new Meteor.Error(stripeCharge.rawType, stripeCharge.message);
         }
         stripeCharge._id = stripeCharge.id;
@@ -222,13 +195,13 @@ _.extend(Utils, {
         logger.info("Finished Stripe charge. Charges ID: " + stripeCharge._id);
         return stripeCharge;
     },
-    charge_plan: function (total, donation_id, customer_id, payment_id, frequency, start_date) {
+    charge_plan: function (total, donation_id, customer_id, payment_id, frequency, start_date, metadata) {
         logger.info("Inside charge_plan.");
         console.log(total);
 
         var plan;
 
-        switch(frequency){
+        switch (frequency) {
             case "monthly":
                 plan = Meteor.settings.stripe.plan.monthly;
                 break;
@@ -242,9 +215,10 @@ _.extend(Utils, {
 
         var attributes = {
             plan: plan,
-            quantity: total
+            quantity: total,
+            metadata: metadata
         };
-        if(start_date = 'today'){
+        if (start_date = 'today') {
         } else {
             attributes.trial_end = start_date;
         }
@@ -252,30 +226,30 @@ _.extend(Utils, {
         Stripe.customers.createSubscription(
             customer_id,
             attributes,
-            function(error, charge){
-            if (error){
-                //console.dir(error);
-                stripeChargePlan.return(error);
-            } else {
-                stripeChargePlan.return(charge);
-            }
-        });
+            function (error, charge) {
+                if (error) {
+                    //console.dir(error);
+                    stripeChargePlan.return(error);
+                } else {
+                    stripeChargePlan.return(charge);
+                }
+            });
         stripeChargePlan = stripeChargePlan.wait();
-        if(!stripeChargePlan.object){
+        if (!stripeChargePlan.object) {
             throw new Meteor.Error(stripeChargePlan.rawType, stripeChargePlan.message);
         }
         stripeChargePlan._id = stripeChargePlan.id;
         console.dir(stripeChargePlan);
         // Add charge response from Stripe to the collection
         Subscriptions.insert(stripeChargePlan);
-
-        if(start_date === 'today'){
+        Donations.update({_id: donation_id}, {$set: {subscription_id: stripeChargePlan.id}});
+        if (start_date === 'today') {
             var stripeInvoiceList = new Future();
             // Query Stripe to get the first invoice from this new subscription
             Stripe.invoices.list(
-                { customer: customer_id, limit: 1 },
-                function(error, invoice) {
-                    if(error){
+                {customer: customer_id, limit: 1},
+                function (error, invoice) {
+                    if (error) {
                         stripeInvoiceList.return(error);
                     } else {
                         stripeInvoiceList.return(invoice);
@@ -287,72 +261,88 @@ _.extend(Utils, {
             stripeInvoiceList.data[0].charge);
             return stripeInvoiceList.data[0].charge;
         } else {
-            //TODO: send scheduled email & log in audit_email
             return 'scheduled';
         }
     },
-    audit_email: function (id, type, body_object, billy) {
-        if(type === 'invoice.created'){
-            Audit_trail.update({balanced_debit_id: id}, {
+    audit_email: function (id, type) {
+        if (type === 'charge.pending') {
+            Audit_trail.update({charge_id: id}, {
                     $set: {
-                        'invoice.created.sent': true,
-                        'invoice.created.time': new Date()
-                    }},
+                        'charge.pending.sent': true,
+                        'charge.pending.time': new Date()
+                    }
+                },
                 {
                     upsert: true
                 }
             );
         } else if (type === 'charge.succeeded') {
-            Audit_trail.update({balanced_debit_id: id}, {
+            Audit_trail.update({charge_id: id}, {
                     $set: {
-                        'succeeded.sent': true,
-                        'succeeded.time': new Date()
-                    }},
+                        'charge.succeeded.sent': true,
+                        'charge.succeeded.time': new Date()
+                    }
+                },
                 {
                     upsert: true
                 }
             );
         } else if (type === 'large_gift') {
-            Audit_trail.update({balanced_debit_id: id}, {
+            Audit_trail.update({charge_id: id}, {
                     $set: {
-                        'large_gift.sent': true,
-                        'large_gift.time': new Date()
-                    }},
+                        'charge.large_gift.sent': true,
+                        'charge.large_gift.time': new Date()
+                    }
+                },
                 {
                     upsert: true
                 }
             );
-        } else if (type === 'failed') {
-            if(billy){
-                // Show that a failed email was sent for this subscription if it used Billy
-                Audit_trail.update({
-                    balanced_debit_id: id
-                }, {
-                    $set: {
-                        'failed.sent': true,
-                        'failed.time': new Date(),
-                        'failed.failure_reason': body_object.failure_reason,
-                        'failed.failure_reason_code': body_object.failure_reason_code
-                    }
-                }, {
-                    upsert: true
-                });
-
-            } else {
-                // Show that a failed email was sent for this subscription
-                Audit_trail.update({
-                    balanced_debit_id: id
-                }, {
-                    $set: {
-                        'failed.sent': true,
-                        'failed.time': new Date(),
-                        'failed.failure_reason': body_object.failure_reason,
-                        'failed.failure_reason_code': body_object.failure_reason_code
-                    }
-                }, {
-                    upsert: true
-                });
-            }
+        } else if (type === 'charge.failed') {
+            Audit_trail.update({charge_id: id}, {
+                $set: {
+                    'charge.failed.sent': true,
+                    'charge.failed.time': new Date()
+                }
+            }, {
+                upsert: true
+            });
         }
+    },
+    get_frequency_and_subscription: function (invoice_id) {
+        logger.info("Started get_frequency");
+
+        var return_this = {};
+        return_this.subscription = Invoices.findOne({_id: invoice_id}) && Invoices.findOne({_id: invoice_id}).subscription;
+        return_this.plan_frequency = return_this.subscription &&
+            Subscriptions.findOne({_id: return_this.subscription}) &&
+            Subscriptions.findOne({_id: return_this.subscription}).plan.interval;
+
+        if (return_this.plan_frequency == null || return_this.subscription == null) {
+            logger.error("Something went wrong, there doesn't seem to be an invoice with that id, exiting");
+            return;
+        }
+        return return_this;
+    },
+    store_stripe_event: function (event_body) {
+        logger.info("Started store_stripe_event");
+        
+        console.dir(event_body);
+
+        switch(event_body.data.object.object){
+            case "customer":
+                event_body.data.object._id = event_body.data.object.id;
+                Customers.upsert({_id: event_body.data.object._id}, event_body.data.object);
+                break;
+            case "invoice":
+                event_body.data.object._id = event_body.data.object.id;
+                Invoices.upsert({_id: event_body.data.object._id}, event_body.data.object);
+                break;
+            case "charge":
+                event_body.data.object._id = event_body.data.object.id;
+                Charges.upsert({_id: event_body.data.object._id}, event_body.data.object);
+                break;
+        }
+        
     }
 });

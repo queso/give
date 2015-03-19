@@ -29,7 +29,7 @@ Meteor.methods({
                 logger.info("Found that user in the Meteor user's collection.");
             }
 
-            data._id = Donations.insert({
+            var metadata = {
                 created_at: data.paymentInformation.created_at,
                 sessionId: data.sessionId,
                 URL: data.URL,
@@ -43,8 +43,32 @@ Meteor.methods({
                 'customer_id': customerData.id,
                 'status': 'pending',
                 'frequency': data.paymentInformation.is_recurring
-            });
+            };
+
+            data._id = Donations.insert(metadata);
             logger.info("Donation ID: " + data._id);
+
+            var customerInfo = {
+                "city": data.customer.city,
+                "state": data.customer.region,
+                "address_line1": data.customer.address_line1,
+                "address_line2": data.customer.address_line2,
+                "country": data.customer.country,
+                "postal_code": data.customer.postal_code,
+                "phone": data.customer.phone_number,
+                "business_name": data.customer.org,
+                "email": data.customer.email_address,
+                "fname": data.customer.fname,
+                "lname": data.customer.lname
+            };
+
+            for (var attrname in customerInfo) { metadata[attrname] = customerInfo[attrname]; }
+            delete metadata.URL;
+            delete metadata.created_at;
+            delete metadata.sessionId;
+            delete metadata.status;
+            delete metadata.type;
+            delete metadata.total_amount;
 
             if (data.paymentInformation.is_recurring === "one_time") {
 
@@ -58,12 +82,12 @@ Meteor.methods({
                 //var associate = Utils.create_association(customerData._id, card.href, customerData.href);
 
                 //Charge the card (which also connects this card or bank_account to the customer)
-                var stripe_invoice = Utils.create_invoice(data.paymentInformation.total_amount, data._id, customerData.id, data.paymentInformation.source_id);
-                if(!stripe_invoice.object){
-                    return {error: stripe_invoice.rawType, message: stripe_invoice.message};
+                var charge = Utils.charge(data.paymentInformation.total_amount, data._id, customerData.id, data.paymentInformation.source_id, metadata);
+                if(!charge.object){
+                    return {error: charge.rawType, message: charge.message};
                 }
-                console.dir(stripe_invoice);
-                return {c: customerData.id, don: data._id, charge: stripe_invoice.charge};
+                Donations.update({_id: data._id}, {$set: {charge_id: charge.id}});
+                console.dir(charge);
             }
             else {
                 // Print how often it it recurs?
@@ -83,12 +107,13 @@ Meteor.methods({
                 var charge_id =
                     Utils.charge_plan(data.paymentInformation.total_amount,
                         data._id, customerData.id, data.paymentInformation.source_id,
-                        data.paymentInformation.is_recurring, data.paymentInformation.start_date);
+                        data.paymentInformation.is_recurring, data.paymentInformation.start_date, metadata);
                 /*if (!charge_id.object) {
                     return {error: charge.rawType, message: charge.message};
                 }*/
                 return {c: customerData.id, don: data._id, charge: charge_id};
             }
+            return {c: customerData.id, don: data._id, charge: charge.id};
 
         /*} catch (e) {
             logger.error("Got to catch error area of processPayment function." + e + " " + e.reason);

@@ -1,7 +1,7 @@
-//Includes relevant guid or id, time_sent, sent?, template_name, sent_to
-Emails = new Meteor.Collection('emails');
+Invoices = new Meteor.Collection('invoices');
 if (Meteor.isServer) {
-    Emails.deny({
+    Invoices._ensureIndex({'id': 1}, {background: true});
+    Invoices.deny({
         insert: function (userId, doc) {
             if(userId === Meteor.settings.admin_user){
                 return false;
@@ -27,7 +27,7 @@ if (Meteor.isServer) {
         }
     });
 
-    Emails.allow({
+    Invoices.allow({
         insert: function (userId, doc) {
             if(userId === Meteor.settings.admin_user){
                 return true;

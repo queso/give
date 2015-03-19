@@ -19,14 +19,59 @@ Stripe_Events = {
         console.log(stripeEvent.type + ': event processed');
         return;
     },
+    'charge.pending': function (stripeEvent, res) {
+        var sync_request = Utils.store_stripe_event(stripeEvent);
+
+        var frequency_and_subscription;
+        if(stripeEvent.data.object.invoice) {
+
+            // Get the frequency_and_subscription of this charge, since it is part of a subscription.
+            frequency_and_subscription = Utils.get_frequency_and_subscription(stripeEvent.data.object.invoice);
+            if(frequency_and_subscription){
+                Utils.send_donation_email(true, stripeEvent.data.object.id, stripeEvent.data.object.amount, "charge.pending",
+                    stripeEvent, frequency_and_subscription.frequency, frequency_and_subscription.subscription);
+                console.log(stripeEvent.type + ': event processed');
+                return;
+            } else {
+                // null frequency_and_subscription means that either the frequency or the subscription couldn't be found using the invoice id.
+                throw new Meteor.error("This event needs to be sent again, since we couldn't find enough information to send an email.");
+                return;
+            }
+        } else {
+            Utils.send_donation_email(false, stripeEvent.data.object.id, stripeEvent.data.object.amount, "charge.pending",
+                stripeEvent, "One Time", null);
+            console.log(stripeEvent.type + ': event processed');
+            return;
+        }
+
+    },
     'charge.succeeded': function (stripeEvent, res) {
-        console.dir(stripeEvent);
-        stripeEvent.data.object._id = stripeEvent.data.object.id;
-        Charges.upsert({_id: stripeEvent.data.object._id}, stripeEvent.data.object);
-        console.log(stripeEvent.type + ': event processed');
-        return;
+        var sync_request = Utils.store_stripe_event(stripeEvent);
+
+        var frequency_and_subscription;
+        if(stripeEvent.data.object.invoice) {
+
+            // Get the frequency_and_subscription of this charge, since it is part of a subscription.
+            frequency_and_subscription = Utils.get_frequency_and_subscription(stripeEvent.data.object.invoice);
+            if(frequency_and_subscription){
+                Utils.send_donation_email(true, stripeEvent.data.object.id, stripeEvent.data.object.amount, "charge.succeeded",
+                    stripeEvent, frequency_and_subscription.frequency, frequency_and_subscription.subscription);
+                console.log(stripeEvent.type + ': event processed');
+                return;
+            } else {
+                // null frequency_and_subscription means that it couldn't be found using the invoice id.
+                return;
+            }
+        } else {
+            Utils.send_donation_email(false, stripeEvent.data.object.id, stripeEvent.data.object.amount, "charge.succeeded",
+                stripeEvent, "One Time", null);
+            console.log(stripeEvent.type + ': event processed');
+            return;
+        }
     },
     'charge.failed': function (stripeEvent, res) {
+        var sync_request = Utils.store_stripe_event(stripeEvent);
+
         console.log(stripeEvent.type + ': event processed');
         return;
     },
@@ -39,6 +84,8 @@ Stripe_Events = {
         return;
     },
     'charge.updated': function (stripeEvent, res) {
+        var sync_request = Utils.store_stripe_event(stripeEvent);
+
         console.log(stripeEvent.type + ': event processed');
         return;
     },
@@ -55,10 +102,14 @@ Stripe_Events = {
         return;
     },
     'customer.created': function (stripeEvent, res) {
+        var sync_request = Utils.store_stripe_event(stripeEvent);
+
         console.log(stripeEvent.type + ': event processed');
         return;
     },
     'customer.updated': function (stripeEvent, res) {
+        var sync_request = Utils.store_stripe_event(stripeEvent);
+
         console.log(stripeEvent.type + ': event processed');
         return;
     },
@@ -111,18 +162,24 @@ Stripe_Events = {
         return;
     },
     'invoice.created': function (stripeEvent, res) {
+        Utils.store_stripe_event(stripeEvent);
+
         console.log(stripeEvent.type + ': event processed');
         return;
     },
     'invoice.updated': function (stripeEvent, res) {
+        Utils.store_stripe_event(stripeEvent);
+
         console.log(stripeEvent.type + ': event processed');
         return;
     },
     'invoice.payment_succeeded': function (stripeEvent, res) {
+        var sync_request = Utils.store_stripe_event(stripeEvent);
         console.log(stripeEvent.type + ': event processed');
         return;
     },
     'invoice.payment_failed ': function (stripeEvent, res) {
+        var sync_request = Utils.store_stripe_event(stripeEvent);
         console.log(stripeEvent.type + ': event processed');
         return;
     },

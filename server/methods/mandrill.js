@@ -1,72 +1,81 @@
 _.extend(Utils,{
-	send_donation_email: function (billy, id, trans_guid, subscription_guid, amount, status, frequency, body) {
+
+	send_donation_email: function (recurring, id, amount, status, body, frequency, subscription) {
 		/*try {*/
 			logger.info("Started send_donation_email with ID: " + id);
-			if(!Donate.findOne({'subscriptions.guid': subscription_guid}) && !Donations.findOne({'subscriptions.guid': subscription_guid})){
-				logger.error("Exiting the send_donation_email function because the Donation doesn't exist in any collection");
-				return;
-			}
-
-			var debit_cursor = Debits.findOne({id: id});
-            if(!debit_cursor){
-                logger.error("No debit found here, exiting.");
+        
+			var charge_cursor = Charges.findOne({id: id});
+            if(!charge_cursor){
+                logger.error("No charge found here, exiting.");
                 return;
             }
-			var customer_cursor = Customers.findOne({_id: debit_cursor.links.customer});
+			var customer_cursor = Customers.findOne({_id: charge_cursor.customer});
             if(!customer_cursor){
-                logger.error("No debit found here, exiting.");
+                logger.error("No customer found here, exiting.");
                 return;
             }
-			var donation_cursor = Donations.findOne({_id: debit_cursor.donation_id});
-            if(!donation_cursor){
-                logger.error("No debit found here, exiting.");
-                return;
+            var donation_cursor;
+			if(subscription){
+                donation_cursor = Donations.findOne({subscription_id: subscription});
+                if(!donation_cursor){
+                    logger.error("No donation found here, exiting.");
+                    return;
+                }
+            } else {
+                donation_cursor = Donations.findOne({charge_id: id});
+                if(!donation_cursor){
+                    logger.error("No donation found here, exiting.");
+                    return;
+                }
             }
-			var donateWithType  = donation_cursor.type;
+
+			//var donateWithType  = charge_cursor.source.brand;
 
 			//Get the donation with description for either the card or the bank account
-			var donateWith = Evts.get_donate_with(customer_cursor, debit_cursor.links.source);
+			var donateWith = charge_cursor.source.brand;//Evts.get_donate_with(customer_cursor, charge_cursor.links.source);
 
-			var created_at = moment(Date.parse(debit_cursor.created_at)).format('MM/DD/YYYY');
+			//var created_at = moment(new Date(Number(charge_cursor.created*1000))).format('MM/DD/YYYY h:mma');
+			var created_at = '03/18/2015 7:09pm';
 			var fees = donation_cursor.fees ? (donation_cursor.fees / 100).toFixed(2) : null;
 
 			if(customer_cursor.business_name){
-				var fullName = customer_cursor.business_name + "<br>" + customer_cursor.name;
+				var fullName = customer_cursor.metadata.business_name + "<br>" +
+                    customer_cursor.metadata.fname + " " + customer_cursor.metadata.lname;
 			}else{
-				var fullName = customer_cursor.name;
+				var fullName = customer_cursor.metadata.fname + " " + customer_cursor.metadata.lname;
 			}
-			var email_cursor = Emails.findOne({balanced_debit_id: id});
+			var audit_trail_cursor = Audit_trail.findOne({charge_id: id});
 			var slug;
 			var bcc_address = 'support@trashmountain.com';
 			var email_address = customer_cursor.email;
-			if (status === "failed") {
-                if(email_cursor && email_cursor.failed && email_cursor.failed.sent) {
-                    logger.info("A 'failed' email has already been sent for this debit, exiting email send function.");
+			if (status === "charge.failed") {
+                if(audit_trail_cursor && audit_trail_cursor.failed && audit_trail_cursor.charge.failed.sent) {
+                    logger.info("A 'failed' email has already been sent for this charge, exiting email send function.");
                     return;
                 }
-                Evts.update_email_collection(id, 'failed', body.events[0].entity.debits[0], billy);
+                Utils.audit_email(id, status);
 				slug = 'fall-2014-donation-failed';
-			} else if(status === 'created'){
-				if(email_cursor && email_cursor.created && email_cursor.created.sent) {
-					logger.info("A 'created' email has already been sent for this debit, exiting email send function.");
+			} else if(status === 'charge.pending'){
+				if(audit_trail_cursor && audit_trail_cursor.created && audit_trail_cursor.charge.pending.sent) {
+					logger.info("A 'created' email has already been sent for this charge, exiting email send function.");
 					return;
 				}
-				Evts.update_email_collection(id, 'created');
+				Utils.audit_email(id, status);
 				slug = "donation-initial-email";
 				bcc_address = null;
-			} else if (status === 'succeeded'){
-				if(email_cursor && email_cursor.succeeded && email_cursor.succeeded.sent) {
-					logger.info("A 'succeeded' email has already been sent for this debit, exiting email send function.");
+			} else if (status === 'charge.succeeded'){
+				if(audit_trail_cursor && audit_trail_cursor.succeeded && audit_trail_cursor.charge.succeeded.sent) {
+					logger.info("A 'succeeded' email has already been sent for this charge, exiting email send function.");
 					return;
 				}
-				Evts.update_email_collection(id, 'succeeded');
+				Utils.audit_email(id, status);
 				slug = "fall-2014-donation-receipt-multi-collection";
 			} else if (status === 'large_gift') {
-				if(email_cursor && email_cursor.large_gift && email_cursor.large_gift.sent) {
-					logger.info("A 'large_gift' email has already been sent for this debit, exiting email send function.");
+				if(audit_trail_cursor && audit_trail_cursor.large_gift && audit_trail_cursor.charge.large_gift.sent) {
+					logger.info("A 'large_gift' email has already been sent for this charge, exiting email send function.");
 					return;
 				}
-				Evts.update_email_collection(id, 'large_gift');
+				Utils.audit_email(id, status);
 				bcc_address = null;
 				email_address = 'large_gift@trashmountain.com';
 				slug = "large-gift-notice-multi-collection";
@@ -112,10 +121,10 @@ _.extend(Utils,{
 	                "content": (donation_cursor.total_amount / 100).toFixed(2)
 	              }, {
 	                "name": "FailureReason",
-	                "content": debit_cursor.failure_reason
+	                "content": charge_cursor.failure_reason
 	               },{
 	                "name": "FailureReasonCode",
-	                "content": debit_cursor.failure_reason_code
+	                "content": charge_cursor.failure_reason_code
 	              },{
 					"name": "NAME",
 					"content": customer_cursor.name
@@ -124,25 +133,25 @@ _.extend(Utils,{
 					"content": fullName
 				}, {
 	                "name": "ORG",
-	                "content": customer_cursor.business_name
+	                "content": customer_cursor.metadata.business_name
 	            }, {
 	                "name": "ADDRESS_LINE1",
-	                "content": customer_cursor.address.line1
+	                "content": customer_cursor.metadata.address_line1
 	            }, {
 	                "name": "ADDRESS_LINE2",
-	                "content": customer_cursor.address.line2
+	                "content": customer_cursor.metadata.address_line2
 	            }, {
 	                "name": "LOCALITY",
-	                "content": customer_cursor.address.city
+	                "content": customer_cursor.metadata.city
 	            }, {
 	                "name": "REGION",
-	                "content": customer_cursor.address.state
+	                "content": customer_cursor.metadata.state
 	            }, {
 	                "name": "POSTAL_CODE",
-	                "content": customer_cursor.address.postal_code
+	                "content": customer_cursor.metadata.postal_code
 	            }, {
 	                "name": "PHONE",
-	                "content": customer_cursor.phone
+	                "content": customer_cursor.metadata.phone
 	            }, {
 	                "name": "c",
 	                "content": customer_cursor._id
@@ -150,15 +159,12 @@ _.extend(Utils,{
 					"name": "don",
 					"content": donation_cursor._id
 				}, {
-					"name": "deb",
-					"content": debit_cursor._id
+					"name": "charge",
+					"content": charge_cursor._id
 				}, {
-	                "name": "DEBITID",
+	                "name": "CHARGEID",
 	                "content": id
 	            }, {
-	                "name": "TransactionGUID",
-	                "content": trans_guid
-	            },{
 					"name": "URL",
 					"content": donation_cursor.URL
 				}, {
@@ -177,7 +183,7 @@ _.extend(Utils,{
 	      throw new Meteor.error(e);
 	    }*/
 	},
-    send_scheduled_email: function (id, subscription_guid, frequency, amount) {
+    send_scheduled_email: function (id, subscription_id, frequency, amount) {
         /*try {*/
         logger.info("Started send_donation_email with ID: " + id + " and frequency, amount " + frequency + ", " + amount);
 
@@ -191,7 +197,7 @@ _.extend(Utils,{
         var email_address = customer_cursor.email;
         slug = "scheduled-donation-with-amount-and-frequency";
 
-        //Evts.update_email_collection(id, 'scheduled');
+        //Utils.audit_email(id, 'scheduled');
 
         logger.info("Sending with template name: " + slug);
         Meteor.Mandrill.sendTemplate({
@@ -217,7 +223,7 @@ _.extend(Utils,{
                                 "content": Meteor.settings.dev
                             }, {
                                 "name": "SUB_GUID",
-                                "content": subscription_guid
+                                "content": subscription_id
                             }, {
                                 "name": "Frequency",
                                 "content": frequency
