@@ -60,7 +60,7 @@ function fillForm() {
         $('#routing_number').val("111000025"); // Invalid test =  fail after initial screen =  valid test = 111000025
         $('#account_number').val("000123456789"); // Invalid test =  fail after initial screen =  valid test = 000123456789
     } else {
-        $('#card_number').val("4111111111111111"); //Succeeded = 4111111111111111 Failed = 4444444444444448 CVV mismatch = 5112000200000002
+        $('#card_number').val("4242424242424242"); //Succeeded = 4242424242424242 Failed = 4242111111111111 AMEX = 378282246310005
         $('#expiry_month option').prop('selected', false).filter('[value=12]').prop('selected', true);
         $('select[name=expiry_month]').change();
         $('#expiry_year option').prop('selected', false).filter('[value=2015]').prop('selected', true);

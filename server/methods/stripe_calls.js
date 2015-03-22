@@ -326,11 +326,11 @@ _.extend(Utils, {
 
         var return_this = {};
         return_this.subscription = Invoices.findOne({_id: invoice_id}) && Invoices.findOne({_id: invoice_id}).subscription;
-        return_this.plan_frequency = return_this.subscription &&
+        return_this.frequency = return_this.subscription &&
             Subscriptions.findOne({_id: return_this.subscription}) &&
             Subscriptions.findOne({_id: return_this.subscription}).plan.interval;
 
-        if (return_this.plan_frequency == null || return_this.subscription == null) {
+        if (return_this.frequency == null || return_this.subscription == null) {
             logger.error("Something went wrong, there doesn't seem to be an invoice with that id, exiting");
             return;
         }

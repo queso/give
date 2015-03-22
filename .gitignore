@@ -7,3 +7,4 @@ start-dev.sh
 start-local.sh
 start-tunnel.sh
 .DS_Store
+webdriver_error.png

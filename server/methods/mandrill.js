@@ -1,7 +1,7 @@
 _.extend(Utils,{
 
 	send_donation_email: function (recurring, id, amount, status, body, frequency, subscription) {
-		/*try {*/
+		try {
 			logger.info("Started send_donation_email with ID: " + id);
         
 			var charge_cursor = Charges.findOne({id: id});
@@ -176,19 +176,29 @@ _.extend(Utils,{
 	        ]
 	      }
 	      });
-	    /*} //End try
+	    } //End try
 	    catch (e) {
 	      logger.error('Mandril sendEmailOutAPI Method error message: ' + e.message);
 	      logger.error('Mandril sendEmailOutAPI Method error: ' + e);
 	      throw new Meteor.error(e);
-	    }*/
+	    }
 	},
     send_scheduled_email: function (id, subscription_id, frequency, amount) {
-        /*try {*/
+        try {
         logger.info("Started send_donation_email with ID: " + id + " subscription_id: " + subscription_id + " frequency: " + frequency + "amount: " + amount);
 
-        var donation_cursor = Donations.findOne({_id: id});
+        // Check to see if this email has already been sent before continuing, log it if it hasn't
         var subscription_cursor = Subscriptions.findOne({_id: subscription_id});
+        if(Audit_trail.findOne({"subscription_id": subscription_id}) &&
+            Audit_trail.findOne({"subscription_id": subscription_id}).subscription_scheduled &&
+            Audit_trail.findOne({"subscription_id": subscription_id}).subscription_scheduled.sent){
+            return;
+        } else{
+            Utils.audit_email(subscription_id, 'scheduled');
+        }
+
+        // Setup the rest of the cursors that we'll need
+        var donation_cursor = Donations.findOne({_id: id});
         var customer_cursor = Customers.findOne(donation_cursor.customer_id);
 
         var start_at = subscription_cursor.trial_end;
@@ -197,16 +207,9 @@ _.extend(Utils,{
         var bcc_address = "support@trashmountain.com";
         var email_address = customer_cursor.email;
 
+        // convert the amount from an integer to a two decimal place number
         amount = (amount/100).toFixed(2);
         slug = "scheduled-donation-with-amount-and-frequency";
-
-        if(Audit_trail.findOne({"subscription_id": subscription_id}) &&
-            Audit_trail.findOne({"subscription_id": subscription_id}).subscription_scheduled &&
-            Audit_trail.findOne({"subscription_id": subscription_id}).subscription_scheduled.sent){
-            return;
-        } else{
-            Utils.audit_email(subscription_id, 'scheduled');
-        }
 
         logger.info("Sending with template name: " + slug);
         Meteor.Mandrill.sendTemplate({
@@ -245,11 +248,11 @@ _.extend(Utils,{
                 ]
             }
         });
-        /*} //End try
+        } //End try
          catch (e) {
          logger.error('Mandril sendEmailOutAPI Method error message: ' + e.message);
          logger.error('Mandril sendEmailOutAPI Method error: ' + e);
          throw new Meteor.error(e);
-         }*/
+         }
     }
 });
