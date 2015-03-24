@@ -43,7 +43,7 @@ _.extend(Utils,{
 			var donateWith = charge_cursor.source.brand;//Evts.get_donate_with(customer_cursor, charge_cursor.links.source);
 
 			//var created_at = moment(new Date(Number(charge_cursor.created*1000))).format('MM/DD/YYYY h:mma');
-			var created_at = '03/18/2015 7:09pm';
+			var created_at = moment(new Date(Number(charge_cursor.created*1000))).format('MM/DD/YYYY h:mma');//'03/18/2015 7:09pm';
 			var fees = donation_cursor.fees ? (donation_cursor.fees / 100).toFixed(2) : null;
 
 			if(customer_cursor.business_name){

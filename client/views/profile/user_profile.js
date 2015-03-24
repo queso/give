@@ -55,8 +55,8 @@ Template.UserProfile.helpers({
         return Customers.findOne();
     },
     address_line2: function () {
-        if(Meteor.user().profile.address.line2) {
-            return '<span class="">' + Meteor.user().profile.address.line2 + '</span> <br>';
+        if(Meteor.user().profile.address.address_line2) {
+            return '<span class="">' + Meteor.user().profile.address.address_line2 + '</span> <br>';
         } else return;
     },
     email: function () {

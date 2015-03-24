@@ -65,9 +65,16 @@ _.extend(Utils, {
         var profile = {
             fname: fname,
             lname: lname,
-            address: customer_cursor.address,
-            phone: customer_cursor.phone,
-            business_name: customer_cursor.business_name
+            address: {
+                address_line1: customer_cursor.metadata.address_line1,
+                address_line2: customer_cursor.metadata.address_line2,
+                city: customer_cursor.metadata.city,
+                state: customer_cursor.metadata.state,
+                postal_code: customer_cursor.metadata.postal_code,
+                country: customer_cursor.metadata.country
+            },
+            phone: customer_cursor.metadata.phone,
+            business_name: customer_cursor.metadata.business_name
         };
         //Check to see if the user exists
         var user_id = Meteor.users.findOne({'emails.address': email});
@@ -123,7 +130,7 @@ _.extend(Utils, {
         try {
             var insertThis = {};
             insertThis.customers = customer_id;
-            insertThis.debits = charge_id;
+            insertThis.charges = charge_id;
 
             Meteor.users.update(userId, {$addToSet: insertThis});
         } catch (e) {
@@ -315,9 +322,14 @@ _.extend(Utils, {
         var customer = Customers.findOne(customer_id);
         var charge = Charges.findOne(charge_id);
 
-        var dt_fund;
-        var invoice_cursor = Invoices.findOne({_id: charge.invoice});
-        dt_fund = DT_funds.findOne({name: invoice_cursor.metadata.donateTo});
+        var dt_fund, donateTo;
+        if(charge.invoice){
+            donateTo = Invoices.findOne({_id: charge.invoice}).metadata.donateTo;
+        } else{
+            donateTo = charge.metadata.donateTo;
+        }
+
+        dt_fund = DT_funds.findOne({name: donateTo});
 
         //fund_id 65663 is the No-Match-Found fund used to help reconcile
         // write-in gifts and those not matching a fund in DT

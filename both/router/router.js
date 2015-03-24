@@ -201,7 +201,7 @@ Router.route(':root/user', function () {
 
     this.subscribe('userDataPublish').wait();
     this.subscribe('userCharges').wait();
-    this.subscribe('userDonations').wait();
+    //this.subscribe('userDonations').wait();
     this.subscribe('userCustomers').wait();
     this.subscribe('userDT').wait();
     this.subscribe('userDTFunds').wait();
