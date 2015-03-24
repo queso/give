@@ -20,73 +20,32 @@ Stripe_Events = {
         return;
     },
     'charge.pending': function (stripeEvent, res) {
-        var sync_request = Utils.store_stripe_event(stripeEvent);
-
-        var frequency_and_subscription;
-        if(stripeEvent.data.object.invoice) {
-
-            // Get the frequency_and_subscription of this charge, since it is part of a subscription.
-            frequency_and_subscription = Utils.get_frequency_and_subscription(stripeEvent.data.object.invoice);
-            if(frequency_and_subscription){
-                Utils.send_donation_email(true, stripeEvent.data.object.id, stripeEvent.data.object.amount, "charge.pending",
-                    stripeEvent, frequency_and_subscription.frequency, frequency_and_subscription.subscription);
-                console.log(stripeEvent.type + ': event processed');
-                return;
-            } else {
-                // null frequency_and_subscription means that either the frequency or the subscription couldn't be found using the invoice id.
-                throw new Meteor.error("This event needs to be sent again, since we couldn't find enough information to send an email.");
-                return;
-            }
-        } else {
-            Utils.send_donation_email(false, stripeEvent.data.object.id, stripeEvent.data.object.amount, "charge.pending",
-                stripeEvent, "One Time", null);
-            console.log(stripeEvent.type + ': event processed');
-            return;
-        }
-
+        Utils.charge_events(stripeEvent);
+        if(stripeEvent.data.object.amount === 0)
+        Utils.audit_dt_donation(stripeEvent.data.object.id, stripeEvent.data.object.customer);
+        return;
     },
     'charge.succeeded': function (stripeEvent, res) {
-        var sync_request = Utils.store_stripe_event(stripeEvent);
-
-        var frequency_and_subscription;
-        if(stripeEvent.data.object.invoice) {
-
-            // Get the frequency_and_subscription of this charge, since it is part of a subscription.
-            frequency_and_subscription = Utils.get_frequency_and_subscription(stripeEvent.data.object.invoice);
-            if(frequency_and_subscription){
-                Utils.send_donation_email(true, stripeEvent.data.object.id, stripeEvent.data.object.amount, "charge.succeeded",
-                    stripeEvent, frequency_and_subscription.frequency, frequency_and_subscription.subscription);
-                console.log(stripeEvent.type + ': event processed');
-                return;
-            } else {
-                // null frequency_and_subscription means that it couldn't be found using the invoice id.
-                return;
-            }
-        } else {
-            Utils.send_donation_email(false, stripeEvent.data.object.id, stripeEvent.data.object.amount, "charge.succeeded",
-                stripeEvent, "One Time", null);
-            console.log(stripeEvent.type + ': event processed');
-            return;
-        }
+        Utils.charge_events(stripeEvent);
+        Utils.audit_dt_donation(stripeEvent.data.object.id, stripeEvent.data.object.customer);
+        return;
     },
     'charge.failed': function (stripeEvent, res) {
-        var sync_request = Utils.store_stripe_event(stripeEvent);
-
-        console.log(stripeEvent.type + ': event processed');
+        Utils.charge_events(stripeEvent);
+        Utils.audit_dt_donation(stripeEvent.data.object.id, stripeEvent.data.object.customer);
         return;
     },
     'charge.refunded': function (stripeEvent, res) {
-        console.log(stripeEvent.type + ': event processed');
+        Utils.charge_events(stripeEvent);
+        Utils.audit_dt_donation(stripeEvent.data.object.id, stripeEvent.data.object.customer);
         return;
     },
     'charge.captured': function (stripeEvent, res) {
-        console.log(stripeEvent.type + ': event processed');
+        Utils.charge_events(stripeEvent);
         return;
     },
     'charge.updated': function (stripeEvent, res) {
-        var sync_request = Utils.store_stripe_event(stripeEvent);
-
-        console.log(stripeEvent.type + ': event processed');
+        Utils.charge_events(stripeEvent);
         return;
     },
     'charge.dispute.created': function (stripeEvent, res) {
@@ -118,18 +77,26 @@ Stripe_Events = {
         return;
     },
     'customer.card.created': function (stripeEvent, res) {
+        Utils.store_stripe_event(stripeEvent);
+
         console.log(stripeEvent.type + ': event processed');
         return;
     },
     'customer.card.updated': function (stripeEvent, res) {
+        Utils.store_stripe_event(stripeEvent);
+
         console.log(stripeEvent.type + ': event processed');
         return;
     },
     'customer.card.deleted': function (stripeEvent, res) {
+        Utils.store_stripe_event(stripeEvent);
+
         console.log(stripeEvent.type + ': event processed');
         return;
     },
     'customer.source.created': function (stripeEvent, res) {
+        Utils.store_stripe_event(stripeEvent);
+
         console.log(stripeEvent.type + ': event processed');
         return;
     },
@@ -163,6 +130,7 @@ Stripe_Events = {
     },
     'invoice.created': function (stripeEvent, res) {
         Utils.store_stripe_event(stripeEvent);
+        Utils.add_meta_from_subscription_to_charge(stripeEvent);
 
         console.log(stripeEvent.type + ': event processed');
         return;

@@ -19,10 +19,10 @@ Template.Receipt.helpers({
         return Charges.findOne();
     },
     frequency: function () {
-        if(this.is_recurring){
-            return this.is_recurring;
+        if(Charges.findOne() && Charges.findOne().invoice){
+            return Charges.findOne().metadata.frequency;
         }else{
-            return 'One-time';
+            return 'One time';
         }
 
     },

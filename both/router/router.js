@@ -200,7 +200,7 @@ Router.route(':root/user', function () {
     var root = Meteor.settings.public.root;
 
     this.subscribe('userDataPublish').wait();
-    this.subscribe('userDebits').wait();
+    this.subscribe('userCharges').wait();
     this.subscribe('userDonations').wait();
     this.subscribe('userCustomers').wait();
     this.subscribe('userDT').wait();

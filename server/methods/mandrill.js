@@ -3,6 +3,14 @@ _.extend(Utils,{
 	send_donation_email: function (recurring, id, amount, status, body, frequency, subscription) {
 		try {
 			logger.info("Started send_donation_email with ID: " + id);
+            if (status === "charge.updated") {
+                logger.info("Don't need to send an email when a charge is updated, exiting the send_donation_email method.");
+                return;
+            }
+
+            if(frequency !== "One Time"){
+                frequency = frequency + "ly";
+            }
         
 			var charge_cursor = Charges.findOne({id: id});
             if(!charge_cursor){
@@ -49,14 +57,14 @@ _.extend(Utils,{
 			var bcc_address = 'support@trashmountain.com';
 			var email_address = customer_cursor.email;
 			if (status === "charge.failed") {
-                if(audit_trail_cursor && audit_trail_cursor.failed && audit_trail_cursor.charge.failed.sent) {
+                if(audit_trail_cursor && audit_trail_cursor.charge.failed && audit_trail_cursor.charge.failed.sent) {
                     logger.info("A 'failed' email has already been sent for this charge, exiting email send function.");
                     return;
                 }
-                Utils.audit_email(id, status);
+                Utils.audit_email(id, status, body.failure_message, body.failure_code);
 				slug = 'fall-2014-donation-failed';
 			} else if(status === 'charge.pending'){
-				if(audit_trail_cursor && audit_trail_cursor.created && audit_trail_cursor.charge.pending.sent) {
+				if(audit_trail_cursor && audit_trail_cursor.charge.pending && audit_trail_cursor.charge.pending.sent) {
 					logger.info("A 'created' email has already been sent for this charge, exiting email send function.");
 					return;
 				}
@@ -64,14 +72,14 @@ _.extend(Utils,{
 				slug = "donation-initial-email";
 				bcc_address = null;
 			} else if (status === 'charge.succeeded'){
-				if(audit_trail_cursor && audit_trail_cursor.succeeded && audit_trail_cursor.charge.succeeded.sent) {
+				if(audit_trail_cursor && audit_trail_cursor.charge.succeeded && audit_trail_cursor.charge.succeeded.sent) {
 					logger.info("A 'succeeded' email has already been sent for this charge, exiting email send function.");
 					return;
 				}
 				Utils.audit_email(id, status);
 				slug = "fall-2014-donation-receipt-multi-collection";
 			} else if (status === 'large_gift') {
-				if(audit_trail_cursor && audit_trail_cursor.large_gift && audit_trail_cursor.charge.large_gift.sent) {
+				if(audit_trail_cursor && audit_trail_cursor.charge.large_gift && audit_trail_cursor.charge.large_gift.sent) {
 					logger.info("A 'large_gift' email has already been sent for this charge, exiting email send function.");
 					return;
 				}
@@ -121,10 +129,10 @@ _.extend(Utils,{
 	                "content": (donation_cursor.total_amount / 100).toFixed(2)
 	              }, {
 	                "name": "FailureReason",
-	                "content": charge_cursor.failure_reason
+	                "content": charge_cursor.failure_message
 	               },{
 	                "name": "FailureReasonCode",
-	                "content": charge_cursor.failure_reason_code
+	                "content": charge_cursor.failure_code
 	              },{
 					"name": "NAME",
 					"content": customer_cursor.name

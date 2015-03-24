@@ -240,6 +240,7 @@ _.extend(Utils, {
             throw new Meteor.Error(stripeChargePlan.rawType, stripeChargePlan.message);
         }
         stripeChargePlan._id = stripeChargePlan.id;
+        console.log("Stripe charge Plan information");
         console.dir(stripeChargePlan);
         // Add charge response from Stripe to the collection
         Subscriptions.insert(stripeChargePlan);
@@ -266,7 +267,7 @@ _.extend(Utils, {
             return 'scheduled';
         }
     },
-    audit_email: function (id, type) {
+    audit_email: function (id, type, failure_message, failure_code) {
         if (type === 'charge.pending') {
             Audit_trail.update({charge_id: id}, {
                     $set: {
@@ -303,8 +304,10 @@ _.extend(Utils, {
         } else if (type === 'charge.failed') {
             Audit_trail.update({charge_id: id}, {
                 $set: {
-                    'charge.failed.sent': true,
-                    'charge.failed.time': new Date()
+                    'charge.failed.sent':       true,
+                    'charge.failed.time':       new Date(),
+                    'charge.failure_message':   failure_message,
+                    'charge.failure_code':      failure_code
                 }
             }, {
                 upsert: true
@@ -354,7 +357,97 @@ _.extend(Utils, {
                 event_body.data.object._id = event_body.data.object.id;
                 Charges.upsert({_id: event_body.data.object._id}, event_body.data.object);
                 break;
+            case "card":
+                event_body.data.object._id = event_body.data.object.id;
+                Devices.upsert({_id: event_body.data.object._id}, event_body.data.object);
+                break;
+            case "bank_account":
+                event_body.data.object._id = event_body.data.object.id;
+                Devices.upsert({_id: event_body.data.object._id}, event_body.data.object);
+                break;
+            default:
+                logger.error("This event didn't fit any of the configured cases, go into store_stripe_event and add the appropriate case.");
+
         }
         
+    },
+    charge_events: function(stripeEvent){
+        logger.info("Started charge_events");
+
+        var sync_request = Utils.store_stripe_event(stripeEvent);
+
+        var frequency_and_subscription;
+        if(stripeEvent.data.object.invoice) {
+
+            // Get the frequency_and_subscription of this charge, since it is part of a subscription.
+            frequency_and_subscription = Utils.get_frequency_and_subscription(stripeEvent.data.object.invoice);
+            if(frequency_and_subscription){
+
+                Utils.send_donation_email(true, stripeEvent.data.object.id, stripeEvent.data.object.amount, stripeEvent.type,
+                    stripeEvent, frequency_and_subscription.frequency, frequency_and_subscription.subscription);
+                console.log(stripeEvent.type + ': event processed');
+                return;
+            } else {
+                // null frequency_and_subscription means that either the frequency or the subscription couldn't be found using the invoice id.
+                throw new Meteor.error("This event needs to be sent again, since we couldn't find enough information to send an email.");
+                return;
+            }
+        } else {
+            Utils.send_donation_email(false, stripeEvent.data.object.id, stripeEvent.data.object.amount, stripeEvent.type,
+                stripeEvent, "One Time", null);
+            console.log(stripeEvent.type + ': event processed');
+            return;
+        }
+    },
+    link_card_to_customer: function(customer_id, token_id, type){
+        logger.info("Started create_card");
+
+        var stripeCreateCard = new Future();
+        var payment_device = {};
+
+        if(type === 'card') {
+            payment_device.card = token_id;
+        } else{
+                payment_device.bank_account = token_id;
+        }
+
+        Stripe.customers.createCard(
+            customer_id,
+            payment_device,
+            function (error, card) {
+                if (error) {
+                    //console.dir(error);
+                    stripeCreateCard.return(error);
+                } else {
+                    stripeCreateCard.return(card);
+                }
+            }
+        );
+
+        stripeCreateCard = stripeCreateCard.wait();
+
+        if (!stripeCreateCard.object) {
+            throw new Meteor.Error(stripeCreateCard.rawType, stripeCreateCard.message);
+        }
+
+        stripeCreateCard._id = stripeCreateCard.id;
+        console.dir(stripeCreateCard);
+
+        return stripeCreateCard;
+    },
+    add_meta_from_subscription_to_charge: function(stripeEvent) {
+        logger.info("Started add_meta_from_subscription_to_charge");
+
+        // setup a cursor for this subscription
+        var subscription_cursor = Subscriptions.findOne({_id: stripeEvent.data.object.subscription});
+
+        // update the charges document to add the metadata, this way the related gift information is attached to the charge
+        Charges.update({_id: stripeEvent.data.object.charge}, {$set: subscription_cursor.metadata});
+    },
+    stripe_get_subscription: function(invoice_id){
+        logger.info("Started stripe_get_subscription");
+
     }
+
+
 });

@@ -5,7 +5,7 @@ Meteor.methods({
             //Check the form to make sure nothing malicious is being submitted to the server
             Utils.checkFormFields(data);
             console.log(data.paymentInformation.start_date);
-
+            var customerData;
             //Convert donation to more readable format
             var donateTo = Utils.getDonateTo(data.paymentInformation.donateTo);
 
@@ -20,7 +20,7 @@ Meteor.methods({
             if ( !lookupCustomer ) {
                 logger.info("Didn't find that user in the Meteor user's collection.");
 
-                var customerData = Utils.create_customer(data.paymentInformation.token_id, data.customer);
+                 customerData = Utils.create_customer(data.paymentInformation.token_id, data.customer);
                 if(!customerData.object){
                     return {error: customerData.rawType, message: customerData.message};
                 }
@@ -28,6 +28,8 @@ Meteor.methods({
             // If the user does exist in the Meteor user's collection, run the below code
             else{
                 logger.info("Found that user in the Meteor user's collection.");
+                customerData = Customers.findOne({_id: lookupCustomer.primary_customer_id});
+                var device = Utils.link_card_to_customer(customerData._id, data.paymentInformation.token_id, type);
             }
 
             var metadata = {
@@ -43,7 +45,8 @@ Meteor.methods({
                 'coveredTheFees': data.paymentInformation.coverTheFees,
                 'customer_id': customerData.id,
                 'status': 'pending',
-                'frequency': data.paymentInformation.is_recurring
+                'frequency': data.paymentInformation.is_recurring,
+                'dt_donation_id': null
             };
 
             data._id = Donations.insert(metadata);

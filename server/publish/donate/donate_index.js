@@ -99,10 +99,10 @@ Meteor.publish("userDonations", function () {
 	}
 });
 
-Meteor.publish("userDebits", function () {
+Meteor.publish("userCharges", function () {
 	if (this.userId) {
-        var debits = Meteor.users.findOne({_id: this.userId}).debits;
-		return Debits.find({'_id': { $in: debits}});
+        var charges = Meteor.users.findOne({_id: this.userId}).charges;
+		return Charges.find({'_id': { $in: charges}});
 	} else {
 		this.ready();
 	}

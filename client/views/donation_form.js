@@ -169,8 +169,8 @@ function handleCalls(payment, form, type) {
             }
         }
     });
-/*
-    if ($('#is_recurring').val() === 'one_time') {
+
+    /*if ($('#is_recurring').val() === 'one_time') {
         Meteor.call("singleDonation", form, function (error, result) {
             if (result) {
 
