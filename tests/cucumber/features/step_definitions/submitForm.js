@@ -18,11 +18,14 @@
 
         this.Given(/^I am on the home page$/, function (callback) {
             helper.world.browser.
-                url(helper.world.cucumber.mirror.rootUrl).
+                url(helper.world.cucumber.mirror.rootUrl + 'give').
                 call(callback);
         });
         this.When(/^I enter valid form information$/, function (callback) {
             helper.world.browser.
+                selectByVisibleText('#donateWith', 1, function(res) {
+                  console.log(res);
+                }).
                 setValue('input#card_number', '4242424242424242'). //Succeeded = 4111111111111111 Failed = 4444444444444448 CVV mismatch = 5112000200000002
                 setValue('select#expiry_month', '12').
                 setValue('select#expiry_year', '2015').
@@ -46,11 +49,25 @@
         // Mimic the tokenization of the card, submission of the form and token to the Meteor method, and the API events from Stripe
         this.Then(/^My form data should be submitted to Stripe$/, function (callback) {
             // Write code here that turns the phrase above into concrete actions
-            callback.pending();
+            callback();
         });
         this.Then(/^I should be redirected to the thanks page$/, function (callback) {
             // Write code here that turns the phrase above into concrete actions
-            callback.pending();
+            helper.world.browser.
+            waitForExist('#success_pending_icon').
+            waitForVisible('#success_pending_icon').
+            url(function(err, url) {
+              console.log(url);
+            }).
+            saveScreenshot(process.env.PWD + '/thanks-page.png').
+            getText('h3', function (error, actualHeading) {
+              if (error) {
+                callback.fail(error.message);
+              }
+              console.log(actualHeading);
+              assert.equal(actualHeading[0], "Thank you for your gift!");
+              callback();
+            });
         });
         this.When(/^I enter invalid form information$/, function (callback) {
             // Write code here that turns the phrase above into concrete actions
