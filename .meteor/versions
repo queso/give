@@ -94,5 +94,6 @@ webapp-hashing@1.0.3
 wizonesolutions:underscore-string@1.0.0
 wylio:mandrill@0.2.1
 xolvio:cucumber@0.5.3
+xolvio:http-interceptor@0.4.2
 xolvio:webdriver@0.3.1
 zimme:iron-router-active@1.0.1

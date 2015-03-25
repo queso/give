@@ -46,10 +46,14 @@
         // Mimic the tokenization of the card, submission of the form and token to the Meteor method, and the API events from Stripe
         this.Then(/^My form data should be submitted to Stripe$/, function (callback) {
             // Write code here that turns the phrase above into concrete actions
-            callback.pending();
+            callback();
         });
         this.Then(/^I should be redirected to the thanks page$/, function (callback) {
             // Write code here that turns the phrase above into concrete actions
+            /*helper.world.browser.getText('h3', function (error, actualHeading) {
+                assert.equal(actualHeading[0], "Thank you for your gift!");
+                callback();
+            });*/
             callback.pending();
         });
         this.When(/^I enter invalid form information$/, function (callback) {
@@ -64,4 +68,4 @@
 
     };
 
-})();
+});
