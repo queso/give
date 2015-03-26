@@ -15,7 +15,6 @@ Meteor.startup(function() {
 
 });
 
-
 HttpInterceptor = Package['xolvio:http-interceptor'].HttpInterceptor;
 
 HttpInterceptor.registerInterceptor('https://api.stripe.com', Meteor.absoluteUrl('fake.stripe.com'));

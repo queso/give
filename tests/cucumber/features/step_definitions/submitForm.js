@@ -18,7 +18,7 @@
 
         this.Given(/^I am on the home page$/, function (callback) {
             helper.world.browser.
-                url(helper.world.cucumber.mirror.rootUrl + 'give?donateWith=Card&exp_month=12&exp_year=2016').
+                url(helper.world.cucumber.mirror.rootUrl + 'give?donateWith=Card&exp_month=12&exp_year=2016&recurring=one_time').
                 call(callback);
         });
         this.When(/^I enter valid form information$/, function (callback) {
@@ -52,18 +52,13 @@
         this.Then(/^I should be redirected to the thanks page$/, function (callback) {
             // Write code here that turns the phrase above into concrete actions
             helper.world.browser.
-            waitForExist('#success_pending_icon').
-            waitForVisible('#success_pending_icon').
-            url(function(err, url) {
-              console.log(url);
-            }).
-            saveScreenshot(process.env.PWD + '/thanks-page.png').
+            waitForExist('#success_pending_icon', 5000).
+            waitForVisible('#success_pending_icon', 5000).
             getText('h3', function (error, actualHeading) {
               if (error) {
                 callback.fail(error.message);
               }
-              console.log(actualHeading);
-              assert.equal(actualHeading[0], "Thank you for your gift!");
+              assert.equal(actualHeading, "Thank you for your gift!");
               callback();
             });
         });
