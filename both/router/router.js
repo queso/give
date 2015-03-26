@@ -27,6 +27,8 @@ Router.route(':root', function () {
     Session.set('params.amount', params.query.amount);
     Session.set('params.donateWith', params.query.donateWith);
     Session.set('params.recurring', params.query.recurring);
+    Session.set('params.exp_month', params.query.exp_month);
+    Session.set('params.exp_year', params.query.exp_year);
     Session.set('params.writeIn', params.query.writeIn);
     Session.set('params.enteredWriteInValue', params.query.enteredWriteInValue);
 

@@ -640,4 +640,12 @@ Template.checkPaymentInformation.rendered = function() {
 Template.cardPaymentInformation.rendered = function() {
     $('[data-toggle="popover"]').popover();
     $('select').select2({dropdownCssClass: 'dropdown-inverse'});
+
+    if (Session.get('params.exp_month')) {
+        $("#expiry_month").val(Session.get('params.exp_month'));
+    }
+
+    if (Session.get('params.exp_year')) {
+        $("#expiry_year").val(Session.get('params.exp_year'));
+    }
 };

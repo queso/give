@@ -18,22 +18,12 @@
 
         this.Given(/^I am on the home page$/, function (callback) {
             helper.world.browser.
-                url(helper.world.cucumber.mirror.rootUrl + 'give').
+                url(helper.world.cucumber.mirror.rootUrl + 'give?donateWith=Card&exp_month=12&exp_year=2016').
                 call(callback);
         });
         this.When(/^I enter valid form information$/, function (callback) {
             helper.world.browser.
-                /*selectByVisibleText('#donateWith', 1, function(res) {
-                  console.log(res);
-                }).*/
-                //Select sele = new Select(driver.findElement(By.id("select_category")));
-                selectByValue(':input#donateWith', 'Card', function(res){
-                    console.log("LOOK HERE" + res);
-                }).
-                /*getValue('#s2id_donateWith', function(error, value) {
-                    console.log(value);
-                }).*/
-                //setValue('select#s2id_donateWith', 'Card').
+                setValue('select#s2id_donateWith', 'Card').
                 setValue('input#card_number', '4242424242424242'). //Succeeded = 4111111111111111 Failed = 4444444444444448 CVV mismatch = 5112000200000002
                 setValue('select#expiry_month', '12').
                 setValue('select#expiry_year', '2015').
