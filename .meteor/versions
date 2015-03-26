@@ -54,7 +54,7 @@ mobile-status-bar@1.0.3
 momentjs:moment@2.9.0
 mongo@1.1.0
 mrgalaxy:stripe@2.1.0
-msavin:mongol@1.0.6
+msavin:mongol@1.0.8
 npm-bcrypt@0.7.8_1
 npm-container@1.0.0
 observe-sequence@1.0.5
